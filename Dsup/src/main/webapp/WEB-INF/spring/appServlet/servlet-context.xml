@@ -40,6 +40,6 @@
 	</beans:bean>
 
 	<context:component-scan
-		base-package="com.dsup.chat" />
+		base-package="com.dsup" />
 
 </beans:beans>

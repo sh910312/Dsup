@@ -19,5 +19,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
  	<typeAlias alias="board" type="com.company.app.board.BoardVO"/>
 	<typeAlias alias="user" type="com.company.app.user.UserVO"/>
  -->
+ 	<typeAlias alias="user" type="com.dsup.dbmanagement.UserVO"/>
  </typeAliases>
 </configuration>
