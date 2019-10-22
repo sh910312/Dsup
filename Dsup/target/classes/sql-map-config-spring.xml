@@ -15,10 +15,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 <setting name="mapUnderscoreToCamelCase" value="true"/>
 </settings>
 <typeAliases>
-<!--
- 	<typeAlias alias="board" type="com.company.app.board.BoardVO"/>
-	<typeAlias alias="user" type="com.company.app.user.UserVO"/>
- -->
  	<typeAlias alias="user" type="com.dsup.dbmanagement.UserVO"/>
+ 	<typeAlias alias="tablespace" type="com.dsup.dbmanagement.TablespaceVO"/>
  </typeAliases>
 </configuration>
