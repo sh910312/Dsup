@@ -1,5 +1,7 @@
 package com.dsup.chat;
 
-public class TestVO {
+public class ChatVO {
 
+	
+	
 }
