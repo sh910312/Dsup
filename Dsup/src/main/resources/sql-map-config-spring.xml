@@ -20,5 +20,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<typeAlias alias="user" type="com.company.app.user.UserVO"/>
  -->
  	<typeAlias alias="user" type="com.dsup.dbmanagement.UserVO"/>
+ 	<typeAlias alias="chat" type="com.dsup.chat.ChatVO"/>
+
  </typeAliases>
 </configuration>

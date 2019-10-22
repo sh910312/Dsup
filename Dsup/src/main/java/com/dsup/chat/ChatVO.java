@@ -7,10 +7,10 @@ import lombok.Data;
 @Data
 public class ChatVO {
 
-	int chat_id;
-	String user_id;
-	String nickname;
-	String contents;
-	Date write_date;
+	int chat_id;			// 채팅번호 PK
+	String user_id;			// 유저아이디 FK
+	String nickname;		// 닉네임
+	String contents;		// 채팅내용
+	Date write_date;		// 채팅시간
 	
 }
