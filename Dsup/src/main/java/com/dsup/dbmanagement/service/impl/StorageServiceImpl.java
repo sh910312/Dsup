@@ -19,7 +19,12 @@ public class StorageServiceImpl implements StorageService {
 
 	@Override
 	public List<TablespaceVO> getStorageList(String keyword) {
-		return null;
+		return dao.getStorageList(keyword);
+	}
+
+	@Override
+	public void deleteStorage(String tablespaceName) {
+		dao.deleteStorage(tablespaceName);
 	}
 
 }

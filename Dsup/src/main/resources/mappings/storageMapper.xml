@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StorageDAO">
+	
+	<select id="getTablespaceList" parameterType="String" resultType="tablespace">
+		select tablespace_name, status, contents
+		from dba_tablespaces 
+		<if test="keyword != null">
+			where tablespace_name like '%#{keyword}%'
+		</if>
+	</select>
+	
+	<delete id="deleteTablespace" parameterType="String">
+		DROP TABLESPACE #{tablespaceName} INCLUDING CONTENTS AND DATAFILES
+	</delete>
+</mapper>

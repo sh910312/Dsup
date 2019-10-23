@@ -15,6 +15,12 @@ public class StorageDAOMybatis {
 	
 	// 1022 테이블스페이스 리스트 조회
 	public List<TablespaceVO> getStorageList(String keyword) {
-		return null;
+		List<TablespaceVO> list = mybatis.selectList("StorageDAO.getTablespaceList", keyword);
+		return list;
+	}
+	
+	// 테이블 스페이스 삭제
+	public void deleteStorage(String tablespaceName) {
+		mybatis.delete("StorageDAO.deleteTablespace", tablespaceName);
 	}
 }
