@@ -6,7 +6,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.dsup.dbmanagement.DatafileVO;
 import com.dsup.dbmanagement.TablespaceVO;
 
 @Repository
@@ -23,10 +22,5 @@ public class StorageDAOMybatis {
 	// 테이블 스페이스 삭제
 	public void deleteStorage(String tablespaceName) {
 		mybatis.delete("StorageDAO.deleteTablespace", tablespaceName);
-	}
-
-	// 데이터파일 리스트 조회
-	public List<DatafileVO> getDatafileList(String tablespaceName) {
-		return mybatis.selectList("StorageDAO.getDatafileList", tablespaceName);
 	}
 }
