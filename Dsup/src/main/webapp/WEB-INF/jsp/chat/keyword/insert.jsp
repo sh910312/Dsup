@@ -8,5 +8,15 @@
 </head>
 <body>
 
+<form action="insertBoard" method="post" enctype="multipart/form-data">
+
+	제목<input name="title">
+	내용<input name="contents">
+	등록날짜<input name="write_date">
+	등록자<input name="user_id">
+	<button>등록</button>
+</form>
+
+
 </body>
 </html>
