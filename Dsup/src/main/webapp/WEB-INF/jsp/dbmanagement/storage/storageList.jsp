@@ -20,7 +20,7 @@
 		$("#delbtn").click(function(){
 			var reply = confirm("삭제하시겠습니까?");
 			if (reply == true) { // 확인
-				$("#frm").attr("action", "TSdelete.do");
+				$("#frm").attr("action", "storageDelete");
 				$("#frm").submit();
 			}
 		});
@@ -34,7 +34,7 @@
 		
 		$("#searchbtn").click(function(){
 			$("#keyword").val($("#search").val());
-			$("#frm").attr("action", "TSlist.do");
+			$("#frm").attr("action", "storageList");
 		});
 		// 검색 버튼 클릭
 		
