@@ -9,20 +9,53 @@ import org.springframework.stereotype.Service;
 import com.dsup.dbmanagement.UserVO;
 import com.dsup.dbmanagement.service.UserService;
 
-@Service("userService")
+@Service
 public class UserServiceImpl implements UserService{
 
-	@Autowired UserDAOMybatis userDAO;
+	@Autowired UserDAO userDAO;
 
 	@Override
-	public void insertUser(UserVO vo) {
-		userDAO.insertUser(vo);
+	public int insertUser(UserVO dto) {
+		return userDAO.insertUser(dto);
 	}
 
 	@Override
 	public List<Map<String, Object>> userList(UserVO vo) {
 		return userDAO.userList(vo);
 	}
+
+	@Override
+	public int userIdCheck(String user_id) {
+		return 0;
+	}
+
+	@Override
+	public int deleteUser(UserVO dto) {
+		return userDAO.deleteUser(dto);
+	}
+
+	@Override
+	public int updateUser(UserVO dto) {
+		return userDAO.updateUser(dto);
+	}
+
+	
+
+
+
+
+	
+	
+	
+	
+	
+	
+	/*
+	 * @Override public int userIdCheck(UserVO vo) { return userDAO.insertUser(vo);
+	 * }
+	 */
+
+
 	
 	
 

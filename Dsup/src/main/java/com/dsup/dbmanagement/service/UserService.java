@@ -8,8 +8,19 @@ import com.dsup.dbmanagement.UserVO;
 public interface UserService {
 
 	//등록
-	void insertUser(UserVO vo);
+	int insertUser(UserVO vo);
 	
 	//목록
 	public List<Map<String,Object>> userList(UserVO vo);
+	
+	//id중복체크
+	int userIdCheck(String user_id);
+
+	//삭제
+	public int deleteUser(UserVO vo);
+	
+	//수정
+	public int updateUser(UserVO vo);
+	
+	
 }

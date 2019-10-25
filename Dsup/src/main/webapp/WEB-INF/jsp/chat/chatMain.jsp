@@ -17,6 +17,13 @@
 
 <script>
 
+// 버튼 이벤트 기능
+$(function() {
+		
+	
+	
+});
+
 	$(document).ready(function() {
     	$("#sendBtn").click(function() {
  			sendMessage();
@@ -32,7 +39,6 @@
 	});
     
 	// 웹소켓을 지정한 url로 연결한다.
-
     let sock = new SockJS('<c:url value="/soket"/>');
     sock.onmessage = onMessage;
     sock.onclose = onClose;
@@ -72,7 +78,6 @@
 									<i class="fa fa-circle text-green"></i>
 									<%-- <c:if test="${not empty userid}"> --%>
 									<!-- 변경/등록 버튼은 userid가 있는(관리자/회원)만 볼수있다.  -->
-									<!-- <input style="width:100px; height: 40px;" type="text" id="#" class="form-control" placeholder="검색어 입력" maxlength="8"> -->
 									<button type="button" class="btn btn-default"
 										onclick="openButton(2);">등록</button>
 									<button type="button" class="btn btn-default"
@@ -90,34 +95,37 @@
 								<div class="row">
 									<div class="form-group col-xs-4">
 										<!-- 로그인을 하면 회원아이디로 대체 -->
-										<input style="height: 40px;" type="text" name="nickname" id="nickname" class="form-control" placeholder="이름" maxlength="8">
+										<input style="height: 40px;" type="text" name="nickname" id="nickname" 
+										class="form-control" placeholder="이름" maxlength="8" value="${nickname }">
 									</div>
 
 									<!-- 회원이면 로그인 버튼은 사라진다 -->
 									<c:if test="${empty userid}">
 										<div class="form-group col-xs-2">
-											<button type="button" class="btn btn-default pull-right" onclick="openButton(4)" style="height: 40px; width: 100px;">로그인</button>
+											<button type="button" class="btn btn-default pull-right" onclick="openButton(4)"
+											style="height: 40px; width: 100px;">로그인</button>
 										</div>
 									</c:if>
 
 									<div class="form-group col-xs-2 pull-right">
 										<!-- 현재 접속자 표시  -->
-										<button type="button" class="btn btn-default pull-right" onclick="openButton(3)" style="height: 40px; width: 100px;">현재	접속자</button>
+										<button type="button" class="btn btn-default pull-right" onclick="openButton(3)"
+										style="height: 40px; width: 100px;">현재	접속자</button>
 									</div>
 								</div>
 								<div class="row" style="height: 90px">
 									<div id="text" class="form-group col-xs-10">
-										<textarea style="height: 80px;" id="contents" name="contents" class="form-control" placeholder="메세지를 입력하세요." maxlength="100"></textarea>
+										<textarea style="height: 80px;" id="contents" name="contents" class="form-control"
+										 placeholder="메세지를 입력하세요." maxlength="100"></textarea>
 									</div>
 									<div class="form-group col-xs-2">
-										<button type="button" id="sendBtn" class="btn btn-default pull-right"style="height: 80px; width: 100px;">전&nbsp;&nbsp;송</button>
+										<button type="button" id="sendBtn" class="btn btn-default pull-right"
+										style="height: 80px; width: 100px;">전&nbsp;&nbsp;송</button>
 										 
 										<div class="clearfix"></div>
 									</div>
 								</div>
 							</div>
-
-							<!-- <button type="button" class="btn btn-default pull-right" onclick="chatListFunction('today');">채팅확인</button> -->
 						</div>
 					</div>
 				</div>
@@ -136,11 +144,5 @@
 			<strong>데이터베이스 오류가 발생했습니다.</strong>
 		</div> -->
 	</div>
-<!-- 	<script type="text/javascript">
-		$(document).ready(function() {
-			chatListFunction('today');
-			getInfiniteChat(); 
-		});
-	</script> -->
 </body>
 </html>

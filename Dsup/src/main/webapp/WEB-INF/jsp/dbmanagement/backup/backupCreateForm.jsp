@@ -60,22 +60,6 @@
 
 </head>
 <body>
-	<h1>데이터파일 백업</h1>
-	1. 테이블 스페이스 선택 <br>
-	<select id = "tsList">
-		<option>선택</option>
-	</select>
-	<br>
-	2. 데이터파일 선택
-	<table border = "1">
-		<thead>
-			<tr>
-				<th></th>
-				<th>데이터파일</th>
-			</tr>
-		</thead>
-		<tbody>
-		</tbody>
-	</table>
+
 </body>
 </html>

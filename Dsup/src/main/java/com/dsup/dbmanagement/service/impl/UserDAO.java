@@ -10,17 +10,27 @@ import org.springframework.stereotype.Repository;
 import com.dsup.dbmanagement.UserVO;
 
 @Repository
-public class UserDAOMybatis {
+public class UserDAO {
+	@Autowired
+	private SqlSessionTemplate mybatis;
 	
-	@Autowired SqlSessionTemplate mybatis;
-	
-	//등록
-	public void insertUser(UserVO vo) {
-		mybatis.insert("UserDAO.createUser", vo);
+	//삭제
+	public int deleteUser(UserVO dto) {
+		return mybatis.delete("UserDAO.deleteUser", dto);
 	}
-	//조회
+	//생성
+	public int insertUser(UserVO dto) {
+		return mybatis.insert("UserDAO.createUser", dto);
+		
+	}
+	//리스트
 	public List<Map<String, Object>> userList(UserVO vo) {
 		return mybatis.selectList("UserDAO.userList", vo);
 	}
+	//수정
+	public int updateUser(UserVO dto) {
+		return mybatis.update("UserDAO.updateUser", dto);
+	}
+	
 
 }
