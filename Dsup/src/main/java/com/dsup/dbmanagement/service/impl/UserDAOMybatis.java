@@ -22,4 +22,5 @@ public class UserDAOMybatis {
 	public List<Map<String, Object>> userList(UserVO vo) {
 		return mybatis.selectList("UserDAO.userList", vo);
 	}
+
 }
