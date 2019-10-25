@@ -47,9 +47,10 @@
 	<beans:bean id="soketHandler" class="com.dsup.chat.controller.SoketHandler" />
 	<websocket:handlers>
 		<websocket:mapping handler="soketHandler" path="/soket" />
-<!-- 		<websocket:handshake-interceptors>
+
+<!--  		<websocket:handshake-interceptors>
  			<beans:bean class="com.dsup.chat.controller.HandshakeInterceptor" />
-		</websocket:handshake-interceptors> -->
+		</websocket:handshake-interceptors> --> 
 		<websocket:sockjs></websocket:sockjs>
 	</websocket:handlers>
 
