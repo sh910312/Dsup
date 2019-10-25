@@ -12,22 +12,25 @@ import com.dsup.chat.service.SearchService;
 @Service
 public class SearchServiceImpl implements SearchService {
 
+	// 등록(inset) / 상세조회(get) / 전체조회(getList) / 검색(getMap)
+	
+	
 	@Autowired
 	SearchDAOMybatis searchDAOMybatis;
 
 	// 등록
 	@Override
-	public void insert(SearchVO vo) {
+	public void insertSearch(SearchVO vo) {
 		// TODO Auto-generated method stub
 		searchDAOMybatis.insert(vo);
 	}
-	// 
+	// 상세조회
 	@Override
 	public SearchVO get(SearchVO vo) {
 		// TODO Auto-generated method stub
 		return searchDAOMybatis.get(vo);
 	}
-	// 목록
+	// 전체조회
 	@Override
 	public List<SearchVO> getList(SearchVO vo) {
 		// TODO Auto-generated method stub

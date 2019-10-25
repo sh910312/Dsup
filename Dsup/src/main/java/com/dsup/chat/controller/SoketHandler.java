@@ -9,8 +9,6 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import com.dsup.chat.UserVO;
-
 public class SoketHandler extends TextWebSocketHandler implements WebSocketHandler {
 
 //	private static Logger logger = LoggerFactory.getLogger(SoketHandler.class);
@@ -25,7 +23,6 @@ public class SoketHandler extends TextWebSocketHandler implements WebSocketHandl
 
 		sessionList.add(session);
 		System.out.println(session.getId()+"님이 접속됨");
-		System.out.println(session.getAttributes()+"님이 접속됨");
 	}
 
 	// 클라이언트가 서버로 메시지를 전송했을 때 실행되는 메서드

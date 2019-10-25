@@ -150,24 +150,6 @@
 			<artifactId>tiles-extras</artifactId>
 			<version>3.0.8</version>
 		</dependency>
-<<<<<<< HEAD
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.10.0</version>
-		</dependency>
-
-=======
-
-		<!-- lombok -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.10</version>
-			<scope>provided</scope>
-		</dependency>
->>>>>>> branch 'master' of https://github.com/sh910312/Dsup.git
-
 
 		<dependency>
 			<groupId>org.mybatis</groupId>
