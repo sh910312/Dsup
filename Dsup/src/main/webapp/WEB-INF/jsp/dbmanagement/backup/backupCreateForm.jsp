@@ -49,7 +49,7 @@
 		$("tbody").empty();
 		$.each(df, function(idx, item){
 			console.log(item.fileName);
-			var $tr = $("<tr>").append($("<td>").append("<input type = 'checkbox' value = "(item.fileName)">"))
+			var $tr = $("<tr>").append($("<td>").append($("<input>").attr("type","checkbox").val((item.fileName))))
 								.append($("<td>").text((item.fileName)));
 			$("tbody").append($tr);
 		});
