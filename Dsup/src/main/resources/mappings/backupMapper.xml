@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BackupDAO">
+
+	<!-- [윤정1027] 테이블스페이스 begin backup -->
+	<insert id="beginBackup" parameterType="String">
+		{ call ts_begin_backup(#{tablespaceName}) }
+	</insert>
+	
+	<!-- [윤정1027] 테이블스페이스 end backup -->
+	<insert id="beginBackup" parameterType="String">
+		{ call ts_end_backup(#{tablespaceName}) }
+	</insert>
+</mapper>

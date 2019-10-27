@@ -5,6 +5,6 @@ import java.util.List;
 import com.dsup.dbmanagement.TablespaceVO;
 
 public interface StorageService {
-	List<TablespaceVO> getStorageList(String keyword);
+	List<TablespaceVO> getStorageList(String tablespaceName);
 	void deleteStorage(String tablespaceName);
 }
