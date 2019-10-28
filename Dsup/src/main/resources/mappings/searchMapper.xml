@@ -4,10 +4,8 @@
 <mapper namespace="SearchDAO">
 	
 	
-	
-	
-	<!-- 단건조회 -->
-	<select id="get" parameterType="search" resultType="search">
+ 	<!-- 상세내용 -->
+	<select id="getsearch" parameterType="search" resultType="search">
 		select
 			search_id,
 			contents,
@@ -15,29 +13,74 @@
 			user_id,
 			title,
 		from search 
-		where search_id = #{search_id}
+		where search_id = #{searchId}
 	</select>
 	
 	
-	<!-- 등록  -->
+	<!-- 키워드 등록  -->
 	<insert id="insertSearch" parameterType="search">
-		<selectKey keyProperty="search_id" resultType="int" order="BEFORE">
+		<selectKey keyProperty="searchId" resultType="int" order="BEFORE">
 			select
 			max(search_id) +1 from search
 		</selectKey>
 		insert into search(	search_id
-		        		  	,contents
 						 	,user_id
 						 	,title
+		        		  	,contents
 		)
 		
-		values( 	 #{search_id}
-					,#{contents}
-					,#{user_id}
+		values( 	 #{searchId}
+					,#{userId}
 					,#{title}
+					,#{contents}
 		)
 
 	</insert>
+	
+<!-- 	전체조회 -->
+
+	<select id ="searchList" resultType="search">
+	select * from search order
+	by search_id desc
+	</select>
+
+<!-- 전체조회2 -->
+
+	<select id="SearchMap" resultType="map">
+	select search_id as "searchId",
+			user_id as "userId",
+			title as "title",
+			contents as "contents",
+			to_char(write_date, 'YY/MM/DD') as "writeDate" 
+	from search
+
+	<where>
+		<if test="title != null and title != ''">
+			and title like '%' || #{title} || '%'
+		</if>
+	</where>
+	<choose>
+		<when test="orderby != null and orderby != ''">
+			order by #{orderby} desc
+		</when>
+		<otherwise>
+			order by search_id desc
+		</otherwise>
+	</choose>
+	</select>
+	
+<!-- 	선택삭제 -->
+	<delete id ="deleteSearchList" parameterType="search">
+		delete search
+		where search_id in
+		<foreach item="value" collection="searchList" open="(" close=")" 
+				 separator=",">
+			  #{value}
+		</foreach>
+	
+	</delete>
+	
+	
 	
 	
 </mapper>

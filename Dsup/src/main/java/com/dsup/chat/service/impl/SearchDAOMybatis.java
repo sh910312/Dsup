@@ -3,10 +3,9 @@ package com.dsup.chat.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.annotation.Resource;
 
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.dsup.chat.SearchVO;
@@ -16,7 +15,7 @@ public class SearchDAOMybatis { // (p.513)
 
 	// 등록(inset) / 상세조회(get) / 전체조회(getList) / 검색(getMap)
 
-	@Autowired
+	@Resource(name="sqlSessionTemplate")
 	SqlSessionTemplate mybatis;
 
 	// 등록
@@ -25,19 +24,29 @@ public class SearchDAOMybatis { // (p.513)
 		mybatis.insert("SearchDAO.insertSearch", vo);
 	}
 	
-	// 상세조회
-	public SearchVO get(SearchVO vo) {
-		return mybatis.selectOne("SearchDAO.get", vo);
+	// 전체 검색
+	public List<SearchVO> searchList() {
+	 return	mybatis.selectList("SearchDAO.searchList");
+		
 	}
-
-	// 전체조회
-	public List<SearchVO> getList() {
-		return mybatis.selectList("SearchDAO.getList");
+	// 상세 조회
+	public SearchVO getSearch(SearchVO vo) {
+		return mybatis.selectOne("SearchDAO.getsearch", vo);
 	}
-
+	
 	// 검색
-	public List<Map<String, Object>> getMap(SearchVO vo) {
-		return mybatis.selectList("SearchDAO.getMap", vo);
+	public List<Map<String, Object>> SearchMap(SearchVO vo){
+		return mybatis.selectList("SearchDAO.SearchMap", vo);
 	}
-
+	
+	// 선택 삭제
+	public void deleteSearchList(SearchVO vo) {
+		mybatis.delete("SearchDAO.deleteSearchList", vo);
+	}
+	
+	
+	
+	
+	
+	
 }

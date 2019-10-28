@@ -177,7 +177,7 @@
 			var password = $('[name="password"]').val();
 			dialog.dialog( "open" );
 			$("#name").val(userId)
-			$("#password").val(password)
+			
 		
 			
 		});
@@ -189,6 +189,7 @@
   <p class="validateTips"></p>
  
   <form id="form1">
+  <table>
     <fieldset>
     <div class="form-group row">
       <label for="id">id</label>
@@ -212,7 +213,10 @@
       <input type="text" class="text ui-widget-content ui-corner-all">
       </div>
     </fieldset>
+
+    </table>
   </form>
+  
 </div>
  
 	<div class="container">

@@ -7,9 +7,20 @@ import lombok.Data;
 @Data
 public class SearchVO {
 
-	int search;			// 검색번호
-	String user_id;		// 유저아이디
+	int searchId;		// 검색번호
+	String userId;		// 유저아이디
 	String title;		// 제목
 	String contents;	// 내용
-	Date write_date;	// 시간
+	Date writeDate;		// 시간
+	
+	
+	String orderby; // 정렬순서
+	int[] searchList; // 다건삭제 (여러건 삭제)
+	
+
+	// 아래서부터는 진행계획중
+	
+	
+	
+	
 }

@@ -10,10 +10,18 @@
 		<property name="configLocation" value="classpath:sql-map-config-spring.xml" />
 		<property name="mapperLocations" value="classpath:/mappings/*.xml" />
 	</bean>
+	<bean id="sqlSessionScott" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSourceScott" />
+		<property name="configLocation" value="classpath:sql-map-config-spring.xml" />
+		<property name="mapperLocations" value="classpath:/mappings/*.xml" />
+	</bean>
 
 <!-- SqlSessionTemplate -->
-	<bean class="org.mybatis.spring.SqlSessionTemplate">
+	<bean name="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg ref="sqlSession"></constructor-arg>
+	</bean>
+	<bean id="scott" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionScott"></constructor-arg>
 	</bean>
 
 </beans>

@@ -3,15 +3,18 @@ package com.dsup.dbmanagement.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.dsup.dbmanagement.UserVO;
+import com.dsup.dbmanagement.service.UserSchemaVO;
 
 @Repository
 public class UserDAO {
-	@Autowired
+	@Resource(name="sqlSessionTemplate")
 	private SqlSessionTemplate mybatis;
 	
 	//삭제
@@ -35,6 +38,11 @@ public class UserDAO {
 	//단건조회
 	public UserVO getUser(UserVO vo) {
 		return mybatis.selectOne("UserDAO.getUser", vo);
+	}
+	
+	//스키마 생성
+	public int insertSchemaTb(UserSchemaVO dto) {
+		return mybatis.insert("UserDAO.insertinsertSchemaTb", dto);
 	}
 
 	
