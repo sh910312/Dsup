@@ -177,7 +177,7 @@
 			var password = $('[name="password"]').val();
 			dialog.dialog( "open" );
 			$("#name").val(userId)
-			$("#password").val(password)
+			
 		
 			
 		});
