@@ -2,4 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="BackupDAO">
+<<<<<<< HEAD
+	<!-- [윤정1027] 테이블스페이스 begin backup -->
+	<update id="beginBackup" parameterType="String">
+		{ call ts_begin_backup(#{tablespaceName}) }
+	</update>
+	<!-- [윤정1027] 테이블스페이스 end backup -->
+	<update id="endBackup" parameterType="String">
+		{ call ts_end_backup(#{tablespaceName}) }
+	</update>
+	<!-- [윤정1028] 데이터파일 목록 가져오기 -->
+	<select id = "datafileList" parameterType="String" resultType="datafile">
+		SELECT file_name "fileName"
+			, tablespace_name "tablespaceName"
+		FROM dba_data_files
+		WHERE tablespace_name = #{tablespaceName}
+	</select>
+	<!-- [윤정1028] 백업 테이블에 자료 입력 -->
+	<insert id="insertBackupList" parameterType = "backup">
+		INSERT INTO user_backup_list_tb
+			(backup_file_nm, user_id, backup_date, backup_comment)
+		VALUES
+			(#{backupFileNm}, #{userId}, #{backupDate}, #{backupComment})
+	</insert>
+	<!-- [윤정1028] 백업 테이블 조회 -->
+	<select id = "getBackupList" parameterType = "String" resultType="backup">
+		SELECT backup_file_nm "backupFileNm"
+			, user_id "userId"
+			, backup_date "backupDate"
+			, backup_comment "backupComment"
+		FROM user_backup_list_nm
+		<if test="userId != null AND userId != ''">
+		WHERE userId = #{userId}
+		</if>
+	</select>
+=======
+>>>>>>> branch 'master' of https://github.com/sh910312/Dsup.git
 </mapper>

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.dsup.dbmanagement.BackupVO;
 import com.dsup.dbmanagement.service.BackupService;
 
 @Controller
@@ -24,12 +25,20 @@ public class BackupController {
 		return "dbmanagement/backup/backupCreateForm";
 	}
 	
-	/*
-	 * // [윤정1027] 백업하기
-	 * 
-	 * @RequestMapping("/backupCreate") public String backupCreate(@RequestParam
-	 * String tablespaceName) { System.out.println("백업 컨트롤러 실행");
-	 * System.out.println(tablespaceName); //storageService.beginBackup("TEST1027");
-	 * return "dbmanagement/backup/backupCreateForm"; }
-	 */
+	// [윤정1027] 백업하기
+	@RequestMapping("/backupCreate")
+	public String backupCreate(@RequestParam String tablespaceName, BackupVO vo) {
+		System.out.println("백업 컨트롤러 실행");
+		System.out.println(tablespaceName);
+		backupService.BackupCreate(vo, tablespaceName);
+		return "dbmanagement/backup/backupCreateForm";
+	}
+	
+	// [윤정1028] 백업 목록 출력 json
+	@ResponseBody
+	@RequestMapping(value="/backup", method=RequestMethod.GET)
+	public List<BackupVO> getBackupList(String userId){
+		return backupService.getBackupList(userId);
+	}
+	
 }
