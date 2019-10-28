@@ -27,7 +27,7 @@
 	// [1024] 테이블스페이스 리스트 응답
 	function tsListResult(ts) {
 		$.each(ts, function(idx, item){
-			var $radio = $("<td>").append($("<input>").attr("type","radio").val((item.tablespaceName)));
+			var $radio = $("<td>").append($("<input>").attr("name","tablespaceName").attr("type","radio").val((item.tablespaceName)));
 			$("tbody").append($("<tr>").append($radio).append("<td>" + (item.tablespaceName) + "</td>"));
 		});
 	} 
@@ -55,12 +55,6 @@
 			$("tbody").append($tr);
 		});
 	}
-	
-	// [1025] 백업하기 버튼 클릭
-	function backup() {
-		
-		
-	}
 	</script>
 </head>
 <body>
@@ -69,6 +63,8 @@
 		<table border = "1" id = "tb">
 			<tbody></tbody>
 		</table>
+		아이디<input type = "text" name = "userId">
+		코멘트<input type = "text" name = "backupComment">
 		<input type = "submit" id = "backupBtn" value = "백업하기">
 	</form>
 </body>

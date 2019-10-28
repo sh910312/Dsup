@@ -5,7 +5,7 @@
 	
 	<!-- 생성 -->
 	<insert id="createUser" parameterType="user" >
-		{call ADD_USER (#{id}, #{password})}
+		{call ADD_USER (#{id}, #{password}, #{defaultTableSpace}, #{temporaryTableSpace})}
 	</insert>
 	
 	<!-- 리스트 -->
@@ -14,6 +14,12 @@
 	<!-- 삭제 -->
 	<delete id="deleteUser" parameterType="user">
 		drop user ${id} 
-		
 	</delete>
+	
+	<!-- 단건조회 -->
+	<select id="getUser" parameterType="user" resultType="user">
+		select id, password, defaultTableSpace, temporaryTableSpace
+		from dba_users
+		where id=#{id}
+	</select>
 </mapper>

@@ -24,6 +24,28 @@ public class SearchServiceImpl implements SearchService {
 		// TODO Auto-generated method stub
 		searchDAOMybatis.insert(vo);
 	}
+	
+	// 검색
+	@Override
+	public void search(SearchVO vo) {
+		// TODO Auto-generated method stub
+		searchDAOMybatis.search(vo);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// 상세조회
 	@Override
 	public SearchVO get(SearchVO vo) {

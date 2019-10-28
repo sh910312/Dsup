@@ -4,10 +4,8 @@
 <mapper namespace="SearchDAO">
 	
 	
-	
-	
-	<!-- 단건조회 -->
-	<select id="get" parameterType="search" resultType="search">
+ 	<!-- 단건조회 -->
+	<select id="search" parameterType="search" resultType="search">
 		select
 			search_id,
 			contents,
@@ -15,29 +13,34 @@
 			user_id,
 			title,
 		from search 
-		where search_id = #{search_id}
+		where search_id = #{searchId}
 	</select>
 	
 	
-	<!-- 등록  -->
+	
+	
+	<!-- 키워드 등록  -->
 	<insert id="insertSearch" parameterType="search">
-		<selectKey keyProperty="search_id" resultType="int" order="BEFORE">
+		<selectKey keyProperty="searchId" resultType="int" order="BEFORE">
 			select
 			max(search_id) +1 from search
 		</selectKey>
 		insert into search(	search_id
-		        		  	,contents
 						 	,user_id
 						 	,title
+		        		  	,contents
 		)
 		
-		values( 	 #{search_id}
-					,#{contents}
-					,#{user_id}
+		values( 	 #{searchId}
+					,#{userId}
 					,#{title}
+					,#{contents}
 		)
 
 	</insert>
+	
+	
+	
 	
 	
 </mapper>

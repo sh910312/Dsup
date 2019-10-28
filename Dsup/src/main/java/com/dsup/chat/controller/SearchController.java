@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.dsup.chat.SearchVO;
 import com.dsup.chat.service.SearchService;
@@ -19,31 +18,50 @@ public class SearchController {
 
 	@Autowired
 	SearchService searchservice;
+	
+	// 키워드 검색창 (메인화면)
+	@RequestMapping("/search")
+	public String searchform() {
+		return "chat/keyword/searchform";
+	}
 
-	// 등록
+	/*
+	 * // 키워드 검색처리
+	 * 
+	 * @RequestMapping("/insertSearch") public String search(SearchVO vo,
+	 * HttpServletRequest request, HttpSession session) {
+	 * 
+	 * vo.setUserId("test"); // 로그인 세션 살려놓기 ( 1 = 관리자) System.out.println(vo);
+	 * 
+	 * searchservice.insertSearch(vo); // 등록 실행 끝나면 아래 실행 // redirect: << 다시
+	 * 요청하는거(재요청) return "redirect:/search"; // 이쪽으로 이동 }
+	 */
+	
+	
+	
+	// 키워드 등록
 	@RequestMapping("/insertSearchForm")
 	public String insertSearchForm() {
 
 		return "chat/keyword/insertform";
 	}
 
-	// 등록처리
+	// 키워드 등록처리
 	@RequestMapping("/insertSearch")
 	public String insertSearch(SearchVO vo, HttpServletRequest request, HttpSession session) {
 		
-		vo.setUser_id("1"); // 로그인 세션 살려놓기 ( 1 = 관리자)
+		vo.setUserId("test"); // 로그인 세션 살려놓기 ( 1 = 관리자)
+		System.out.println(vo);
+		
 		searchservice.insertSearch(vo); // 등록 실행 끝나면 아래 실행
 		// redirect: << 다시 요청하는거(재요청)
-		return "redirect:/insert"; // 이쪽으로 이동
+		return "redirect:/search"; // 이쪽으로 이동 // redirech 안에는 requestmapping 내용을 넣는다
 	}
+	
+	
+	
+	
 
-	// 상세조회
-	@RequestMapping("/getSearch")
-	public String get(SearchVO vo, Model model) {
-		model.addAttribute("search", searchservice.get(vo));
-
-		return "chat/keyword/get"; // board폴더 및에 getBoard.jsp로 가라!
-	}
 
 	// 전체조회
 	@RequestMapping("/getlistSearch")

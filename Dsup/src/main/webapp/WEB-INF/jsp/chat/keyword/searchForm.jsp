@@ -42,7 +42,7 @@
 						</div>
 						<div class="row">
 							<div id="text" class="form-group col-xs-12"> <!-- 검색 완료 후 결과보이게 조건 추가  -->
-								<textarea style="height: 150px;" id="chatContent" class="form-control" placeholder="검색결과" maxlength="100"></textarea>
+								<textarea id="chatContent" class="form-control" placeholder="검색결과" maxlength="100"></textarea>
 							</div>
 						</div>
 						<div align="center"> <!-- 검색 완료시 (등록/수정) 버튼이 보이게 조건 추가.   -->

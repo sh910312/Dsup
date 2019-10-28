@@ -26,6 +26,20 @@ public class SearchDAOMybatis { // (p.513)
 		mybatis.insert("SearchDAO.insertSearch", vo);
 	}
 	
+	
+	// 검색
+	public List search(SearchVO vo) {
+	 return	mybatis.selectList("SearchDAO.search", vo);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	// 상세조회
 	public SearchVO get(SearchVO vo) {
 		return mybatis.selectOne("SearchDAO.get", vo);

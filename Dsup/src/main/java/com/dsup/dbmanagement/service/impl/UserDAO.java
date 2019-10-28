@@ -34,5 +34,11 @@ public class UserDAO {
 		return mybatis.update("UserDAO.updateUser", dto);
 	}
 	
+	//단건조회
+	public UserVO getUser(UserVO vo) {
+		return mybatis.selectOne("UserDAO.getUser", vo);
+	}
+
+	
 
 }
