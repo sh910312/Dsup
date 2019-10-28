@@ -18,7 +18,6 @@ public class SearchController {
 
 	@Autowired
 	SearchService searchservice;
-
 	
 	// 키워드 검색창 (메인화면)
 	@RequestMapping("/search")
@@ -58,8 +57,6 @@ public class SearchController {
 		// redirect: << 다시 요청하는거(재요청)
 		return "redirect:/search"; // 이쪽으로 이동 // redirech 안에는 requestmapping 내용을 넣는다
 	}
-	
-	
 	
 	
 	

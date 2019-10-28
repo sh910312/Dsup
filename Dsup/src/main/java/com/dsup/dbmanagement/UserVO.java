@@ -3,7 +3,16 @@ package com.dsup.dbmanagement;
 public class UserVO {
 	private String id;
 	private String password;
+	private String defaultTableSpace;
+	private String temporaryTableSpace;
 	
+	
+	public String getTemporaryTableSpace() {
+		return temporaryTableSpace;
+	}
+	public void setTemporaryTableSpace(String temporaryTableSpace) {
+		this.temporaryTableSpace = temporaryTableSpace;
+	}
 	public String getId() {
 		return id;
 	}
@@ -15,6 +24,14 @@ public class UserVO {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	
+	public String getDefaultTableSpace() {
+		return defaultTableSpace;
+	}
+	public void setDefaultTableSpace(String defaultTableSpace) {
+		this.defaultTableSpace = defaultTableSpace;
 	}
 	@Override
 	public String toString() {

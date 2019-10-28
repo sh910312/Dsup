@@ -1,5 +1,11 @@
 package com.dsup.dbmanagement;
 
-public class BackupVO {
+import lombok.Data;
 
+@Data
+public class BackupVO {
+	private String backupFileNm;
+	private String userId;
+	private String backupDate;
+	private String backupComment;
 }

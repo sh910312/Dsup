@@ -56,10 +56,16 @@ public class UserController {
 			,consumes="application/json" )
 	@ResponseBody
 	public Map userCreate(@RequestBody UserVO vo, Model model) {
+		if(vo.getDefaultTableSpace() == null || vo.getTemporaryTableSpace() == null) {
+		   vo.setDefaultTableSpace("USERS");
+		   vo.setTemporaryTableSpace("TEMP");
+		}
 		userService.insertUser(vo);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("result", true);
 		map.put("user", vo);
 		return map;
 	}
+	
+
 }

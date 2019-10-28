@@ -34,6 +34,11 @@ public class UserRestController {
 		
 	}
 	
-	
+	//단건조회
+	@RequestMapping(value="/user/{id}", method=RequestMethod.GET)
+	public UserVO getUser(@PathVariable String id, UserVO vo, Model model) {
+		vo.setId(id);
+		return userService.getUser(vo);
+	}
 	
 }
