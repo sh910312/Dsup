@@ -1,6 +1,6 @@
 //공용으로 사용할 수 있는 함수 정의
 var common;
-
+var table_tag;
 var Command = (function() {
 	 var instance;
 	
@@ -146,8 +146,8 @@ var Command = (function() {
 				}
 			},
 			showData : function(k){
-				var tag = storage.getLocalStorage(k, "DISPLAY_TABLE_TAG");
-				display.showData(tag);
+				table_tag = storage.getLocalStorage(k, "DISPLAY_TABLE_TAG");
+				display.showData();
 			},
 			join : function(){
 				setting.join();

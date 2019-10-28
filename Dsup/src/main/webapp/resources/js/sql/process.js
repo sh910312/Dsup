@@ -5,11 +5,11 @@ var Process = (function() {
 
 	function createInstance() {
 		// private variables and methods
-		var result;
 
 		return {
 			getData : function(momo, info) {
 				// var settingInfo = momo.getSettingInfo();
+				var result;
 				console.log("[process] : " + info);
 				switch (momo.getType()) {
 				case "DBread":
@@ -17,12 +17,12 @@ var Process = (function() {
 					$('#sql-statement').html(sql);
 					// var sql = settingInfo["STATEMENT"];
 					momo.setTag($('#dbread-setting-bar').html());
-					request.open("Post", "DBread.do?sql=" + sql, false);
+					request.open("GET", "DBread.do?sql=" + encodeURI(sql), false);
 
 					request.onreadystatechange = function() {
 						if (request.readyState == 4 && request.status == 200) {
 							result = request.responseText;
-							// console.log("result : " + result);
+							console.log("DBread Result : " + result);
 						}
 					};
 
@@ -33,6 +33,8 @@ var Process = (function() {
 
 				case "Filter":
 					// var sql = $('#sql-statement').val();
+					var result;
+
 					var child_sql = info["SQL"];
 					for (var i = 0; i < info.length; i++) {
 						var json = JSON.parse(info[i]);
@@ -66,6 +68,7 @@ var Process = (function() {
 					break;
 
 				case 'Join':
+					var result;
 					var join_expression = $('#join-expression').text(); // empno=empno
 					var join_type = $('input[name=joinType]').val(); // innerLeft
 					// console.log("[Join Expression] : " + join_expression + "
@@ -134,6 +137,7 @@ var Process = (function() {
 					break;
 
 				case "Addition":
+					var result;
 					var child_sql;
 					var colName = $("#add-col-expression-table tr").eq(1)
 							.children().eq(0).text();
@@ -179,17 +183,22 @@ var Process = (function() {
 					break;
 
 				case 'Order':
-					var map = {};
+					var result;
+					var list = [];
 					var child_sql;
+					//var temp = {};
 					var tr_list_length = $('#sort-order-table tr').length;
 					for (var i = 1; i < tr_list_length; i++) {
+						var map = {};
 						var key = $('#sort-order-table tr').eq(i).children()
 								.eq(0).text();
 						var val = $('#sort-order-table tr').eq(i).children()
 								.eq(1).find("option:selected").val();
-						map[key] = val;
+						map["key"] = key;
+						map["value"] = val;
+						list.push(map);
 					}
-					var param = JSON.stringify(map);
+					var param = JSON.stringify({param:list});
 
 					for (var i = 0; i < info.length; i++) {
 						var json = JSON.parse(info[i]);
@@ -226,6 +235,7 @@ var Process = (function() {
 					return result;
 
 				case 'Union':
+					var result;
 					var union_type = $("#union-type-select").find(':selected')
 							.val();
 					var master = $('p:contains(Master)').parent().next().text();
@@ -284,6 +294,7 @@ var Process = (function() {
 					}
 
 				case 'Rename':
+					var result;
 					var from_table_check_cnt = $('#rename-table').find('input:checked').length;
 					var to_table_col_cnt = $('#rename-add-table tr').length-1;
 					

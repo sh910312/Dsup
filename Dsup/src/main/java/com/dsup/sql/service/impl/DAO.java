@@ -50,6 +50,7 @@ public class DAO {
 	public LinkedHashMap<String, Object> getData(String sql) {
 		// TODO Auto-generated method stub
 		//ArrayList<LinkedHashMap<String, Object>> outerList = new ArrayList<LinkedHashMap<String, Object>>();
+		
 		ArrayList<Object> innerList = null;
 		ArrayList<Object> list = null;
 		LinkedHashMap<String, Object> innerHash = new LinkedHashMap<String, Object>();
@@ -89,10 +90,10 @@ public class DAO {
 			hash.put("COL_NAME", innerList);
 			
 			if(sql.contains("*")) {
-				System.out.println("문자열 포함");
-				System.out.println("select : " + select);
+				//System.out.println("문자열 포함");
+				//System.out.println("SELECT : " + select);
 				sql = sql.replace("*", select);
-				System.out.println("--- > sql : " + sql);
+				System.out.println("Changed Child SQL : \n" + sql);
 			}
 			hash.put("SQL", sql);
 			
@@ -122,7 +123,7 @@ public class DAO {
 			hash.put("DATA", innerHash);
 			
 			//outerList.add(hash);
-			
+			System.out.println("\n---------------");
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}finally {
