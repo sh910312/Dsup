@@ -19,9 +19,10 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
  	<typeAlias alias="board" type="com.company.app.board.BoardVO"/>
 	<typeAlias alias="user" type="com.company.app.user.UserVO"/>
  -->
- 	<typeAlias alias="user" type="com.dsup.dbmanagement.UserVO"/>
+ 	<typeAlias alias="user" type="com.dsup.dbmanagement.UserVO"/> <!-- 무겸형님꺼 -->
  	<typeAlias alias="chat" type="com.dsup.chat.ChatVO"/>
  	<typeAlias alias="search" type="com.dsup.chat.SearchVO"/>
+ 	<typeAlias alias="users" type="com.dsup.chat.UsersVO"/> <!-- 로그인유저  -->
  	<typeAlias alias="tablespace" type="com.dsup.dbmanagement.TablespaceVO"/>
  	<typeAlias alias="backup" type="com.dsup.dbmanagement.BackupVO"/>
  </typeAliases>

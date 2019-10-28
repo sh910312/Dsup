@@ -12,6 +12,12 @@ public interface SearchService {
 	// 등록
 	void insertSearch(SearchVO vo);
 
+	// 검색
+	void search(SearchVO vo);
+	
+	
+	
+	
 	// 상세조회
 	SearchVO get(SearchVO vo);
 
