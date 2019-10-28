@@ -3,7 +3,6 @@ package com.dsup.chat.service.impl;
 import javax.annotation.Resource;
 
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.dsup.chat.UsersVO;
