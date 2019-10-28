@@ -24,12 +24,12 @@ public class BackupController {
 		return "dbmanagement/backup/backupCreateForm";
 	}
 	
-	// [윤정1027] 백업하기
-	@RequestMapping("/backupCreate")
-	public String backupCreate(@RequestParam String tablespaceName) {
-		System.out.println("백업 컨트롤러 실행");
-		System.out.println(tablespaceName);
-		//storageService.beginBackup("TEST1027");
-		return "dbmanagement/backup/backupCreateForm";
-	}
+	/*
+	 * // [윤정1027] 백업하기
+	 * 
+	 * @RequestMapping("/backupCreate") public String backupCreate(@RequestParam
+	 * String tablespaceName) { System.out.println("백업 컨트롤러 실행");
+	 * System.out.println(tablespaceName); //storageService.beginBackup("TEST1027");
+	 * return "dbmanagement/backup/backupCreateForm"; }
+	 */
 }
