@@ -1,5 +1,7 @@
 package com.dsup.chat.service.impl;
 
+import javax.annotation.Resource;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -11,7 +13,7 @@ public class UsersDAOMybatis { // (p.513)
 
 	// 등록(inset) / 상세조회(get) / 전체조회(getList) / 검색(getMap)
 
-	@Autowired
+	@Resource(name="sqlSessionTemplate")
 	SqlSessionTemplate mybatis;
 
 	// 회원가입
