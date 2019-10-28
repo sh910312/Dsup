@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="BackupDAO">
+<<<<<<< HEAD
 	<!-- [윤정1027] 테이블스페이스 begin backup -->
 	<update id="beginBackup" parameterType="String">
 		{ call ts_begin_backup(#{tablespaceName}) }
@@ -35,4 +36,6 @@
 		WHERE userId = #{userId}
 		</if>
 	</select>
+=======
+>>>>>>> branch 'master' of https://github.com/sh910312/Dsup.git
 </mapper>

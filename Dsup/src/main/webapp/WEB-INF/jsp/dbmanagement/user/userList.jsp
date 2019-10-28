@@ -14,7 +14,7 @@
 	$(function() {
 		userList(); //userList조회
 		userDelete(); //user삭제
-		userUpdate();
+		userUpdate(); //userUpdate
 	});
 	//목록조회요청
 	function userList() {
@@ -33,11 +33,13 @@
 	function userListResult(data) {
 		$("#userList").empty();
 		$.each(data, function(idx, item) {
-			$('<tr>').append($('<td>').html(item.USERNAME)).append(
-					$('<td>').html('<button id="btnDelete">삭제')).append(
-					$('<td>').html('<button id="btnUpdate">수정')).append( 
-					$('<input type="hidden" id="hidden_userId">').val(
-							item.USERNAME)).appendTo('#userList');
+			$('<tr>').append($('<td>').html(item.USERNAME))
+					 .append($('<td>').html(item.password))
+					 .append($('<td>').html('<button id="btnDelete">삭제'))
+					 .append($('<td>').html('<button id="btnUpdate">수정'))
+					 .append($('<input type="hidden" id="hidden_userId">')
+					 .val(item.USERNAME)).appendTo('#userList');
+					 
 			// <input type = "hidden" id = "hidden_userId" value="item.USERNAME">
 		});
 	}
@@ -70,9 +72,10 @@
 		      // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
 		      emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
 		      id = $( "#id" ),
-		      /* email = $( "#email" ),
-		      password = $( "#password" ), */
-		      allFields = $( [] ).add( id ),//.add( email ).add( password ),
+		      password = $( "#password" ),
+		      defaultTableSpace = $( "#defaultTableSpace" ), 
+		      temporaryTableSpace = $( "#temporaryTableSpace"),
+		      allFields = $( [] ).add( id ).add( password ).add( defaultTableSpace ).add( temporaryTableSpace ),
 		      tips = $( ".validateTips" );
 		 
 		    function updateTips( t ) {
@@ -110,8 +113,9 @@
 		      allFields.removeClass( "ui-state-error" );
 		 
 		      valid = valid && checkLength( id, "username", 3, 16 );
-		      /* valid = valid && checkLength( email, "email", 6, 80 );
-		      valid = valid && checkLength( password, "password", 5, 16 ); */
+		      valid = valid && checkLength( password, "password", 5, 16 );
+		      valid = valid && checkLength( defaultTableSpace, "defaultTableSpace", 6, 80 );
+		      valid = valid && checkLength( temporaryTableSpace, "temporaryTableSpace", 6, 80 );
 		 
 		      valid = valid && checkRegexp( name, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
 		      valid = valid && checkRegexp( email, emailRegex, "eg. ui@jquery.com" );
@@ -119,11 +123,14 @@
 		 
 		      if ( valid ) {
 					var id = $('input:text[name="id"]').val();
+					var password = $('input:text[name="password"]').val();
+					var defaultTableSpace = $('input:text[name"defaultTableSpace"]').val();
+					
 					$.ajax({
 						url: "users",
 						type: 'PUT',
 						dataType: 'json',
-						data: JSON.stringify({ id: id}),
+						data: JSON.stringify({ id: id}, {password: password}),
 						contenType: 'application/json',
 						success: function(data){
 							//userList();
@@ -167,9 +174,12 @@
 	function userUpdate(){
 		$('body').on('click','#btnUpdate',function(){
 			var userId = $(this).closest('tr').find('#hidden_userId').val();
+			var password = $('[name="password"]').val();
 			dialog.dialog( "open" );
 			$("#name").val(userId)
-
+			$("#password").val(password)
+		
+			
 		});
 	} 
 </script>
@@ -178,17 +188,29 @@
 <div id="dialog-form" >
   <p class="validateTips"></p>
  
-  <form>
+  <form id="form1">
     <fieldset>
+    <div class="form-group row">
       <label for="id">id</label>
       <input type="text" name="id" id="name"  class="text ui-widget-content ui-corner-all">
       <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
-      
-      <label for="password">Password</label>
-      <input type="password" name="password" id="password" class="text ui-widget-content ui-corner-all">"
-      
-       <label for="password">passwordCheck</label>
+     </div>
+     <div class="form-group row">
+      <label for="password">password</label>
+      <input type="password" name="password" id="password" class="text ui-widget-content ui-corner-all">
+     </div>
+     <div class="form-group row"> 
+      <label for="password">passwordCheck</label>
       <input type="password" name="passwordCheck" id="password" class="text ui-widget-content ui-corner-all">
+     </div>
+     <div class="form-group row">
+      <label for="defaultTableSpace">defaultTableSpace</label>
+      <input type="text">
+     </div>
+     <div class="form-group row">
+      <label for="temporaryTableSpace">temporaryTableSpace</label>
+      <input type="text" class="text ui-widget-content ui-corner-all">
+      </div>
     </fieldset>
   </form>
 </div>
@@ -205,7 +227,5 @@
 			</tbody>
 		</table>
 	</div>
-
-	
 </body>
 </html>
