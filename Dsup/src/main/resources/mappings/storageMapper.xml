@@ -8,7 +8,6 @@
 				, status "status"
 				, contents "contents"
 		FROM dba_tablespaces 
-
 	</select>
 	
 	<delete id="deleteTablespace" parameterType="String">
