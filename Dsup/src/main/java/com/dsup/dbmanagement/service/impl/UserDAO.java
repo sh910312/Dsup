@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.dsup.dbmanagement.UserVO;
+import com.dsup.dbmanagement.service.UserSchemaVO;
 
 @Repository
 public class UserDAO {
@@ -37,6 +38,11 @@ public class UserDAO {
 	//단건조회
 	public UserVO getUser(UserVO vo) {
 		return mybatis.selectOne("UserDAO.getUser", vo);
+	}
+	
+	//스키마 생성
+	public int insertSchemaTb(UserSchemaVO dto) {
+		return mybatis.insert("UserDAO.insertinsertSchemaTb", dto);
 	}
 
 	

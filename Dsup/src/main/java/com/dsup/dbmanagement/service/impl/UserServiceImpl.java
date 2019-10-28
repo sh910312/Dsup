@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dsup.dbmanagement.UserVO;
+import com.dsup.dbmanagement.service.UserSchemaVO;
 import com.dsup.dbmanagement.service.UserService;
 
 @Service
@@ -14,6 +15,7 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired UserDAO userDAO;
 
+	
 	@Override
 	public int insertUser(UserVO dto) {
 		return userDAO.insertUser(dto);
@@ -44,7 +46,10 @@ public class UserServiceImpl implements UserService{
 		return userDAO.getUser(vo);
 	}
 
-	
+	@Override
+	public int insertSchemaTb(UserSchemaVO dto) {
+		return 0;
+	}
 
 
 

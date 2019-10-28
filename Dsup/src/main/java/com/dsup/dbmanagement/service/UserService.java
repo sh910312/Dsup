@@ -24,6 +24,9 @@ public interface UserService {
 	
 	//단건조회
 	public UserVO getUser(UserVO vo);
+
+	//스키마 생성
+	public int insertSchemaTb(UserSchemaVO dto);
 	
 	
 }
