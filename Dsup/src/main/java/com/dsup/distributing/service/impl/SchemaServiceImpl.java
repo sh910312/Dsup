@@ -12,8 +12,8 @@ public class SchemaServiceImpl implements SchemaService{
 	@Autowired SchemaDAOMybatis schemaDAO;
 	
 	@Override
-	public SchemaVO selectSchema(SchemaVO vo) {
-		return schemaDAO.selectSchema(vo);
+	public SchemaVO serviceSchemaList(SchemaVO vo) {
+		return schemaDAO.serviceSchemaList(vo);
 	}
 	
 }
