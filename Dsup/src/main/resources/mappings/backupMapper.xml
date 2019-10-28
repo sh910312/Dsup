@@ -30,9 +30,6 @@
 			, user_id "userId"
 			, backup_date "backupDate"
 			, backup_comment "backupComment"
-		FROM user_backup_list_nm
-		<if test="userId != null AND userId != ''">
-		WHERE userId = #{userId}
-		</if>
+		FROM user_backup_list_tb
 	</select>
 </mapper>
