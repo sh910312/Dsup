@@ -4,7 +4,9 @@ import lombok.Data;
 
 @Data
 public class SchemaVO {
-	private int maxBt;
-	private int bt;
+	private int maxBytes;
+	private int bytes;
+	private String username;
+	private double usepct;
 	
 }

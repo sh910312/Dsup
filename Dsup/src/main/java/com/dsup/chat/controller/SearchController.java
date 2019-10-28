@@ -18,27 +18,13 @@ public class SearchController {
 
 	@Autowired
 	SearchService searchservice;
-	
-	// 키워드 검색창 (메인화면)
-	@RequestMapping("/search")
-	public String searchform() {
-		return "chat/keyword/searchform";
-	}
 
-	/*
-	 * // 키워드 검색처리
-	 * 
-	 * @RequestMapping("/insertSearch") public String search(SearchVO vo,
-	 * HttpServletRequest request, HttpSession session) {
-	 * 
-	 * vo.setUserId("test"); // 로그인 세션 살려놓기 ( 1 = 관리자) System.out.println(vo);
-	 * 
-	 * searchservice.insertSearch(vo); // 등록 실행 끝나면 아래 실행 // redirect: << 다시
-	 * 요청하는거(재요청) return "redirect:/search"; // 이쪽으로 이동 }
-	 */
-	
-	
-	
+//	// 키워드 검색창 (메인화면)
+//	@RequestMapping("/search")
+//	public String searchform() {
+//		return "chat/keyword/search";
+//	}
+
 	// 키워드 등록
 	@RequestMapping("/insertSearchForm")
 	public String insertSearchForm() {
@@ -49,25 +35,39 @@ public class SearchController {
 	// 키워드 등록처리
 	@RequestMapping("/insertSearch")
 	public String insertSearch(SearchVO vo, HttpServletRequest request, HttpSession session) {
-		
+
 		vo.setUserId("test"); // 로그인 세션 살려놓기 ( 1 = 관리자)
 		System.out.println(vo);
-		
+
 		searchservice.insertSearch(vo); // 등록 실행 끝나면 아래 실행
 		// redirect: << 다시 요청하는거(재요청)
-		return "redirect:/search"; // 이쪽으로 이동 // redirech 안에는 requestmapping 내용을 넣는다
+		return "redirect:/SearchMap"; // 이쪽으로 이동 // redirech 안에는 requestmapping 내용을 넣는다
 	}
 	
-	
-	
-	
+	// 선택 삭제
+	@RequestMapping("/deleteSearchList")
+	public String deleteSearchList(SearchVO vo) {
+		searchservice.deleteSearchList(vo);
+		return "redirect:/SearchMap";
+		
+	}
 
+	// 상세조회
+	@RequestMapping("/getSearch")
+	public String getSearch(SearchVO vo, Model model) {
 
-	// 전체조회
-	@RequestMapping("/getlistSearch")
-	public String getMap(SearchVO vo, Model model) {
-		model.addAttribute("list", searchservice.getMap(vo));
+		model.addAttribute("search", searchservice.getSearch(vo));
+		return "chat/keyword/getsearch";
+	}
+
+	// 전체 조회
+	@RequestMapping("/SearchMap")
+	public String SearchMap(SearchVO vo, Model model) {
+
+		model.addAttribute("searchList", searchservice.SearchMap(vo));
 		return "chat/keyword/search";
 	}
 
+	
+	
 }

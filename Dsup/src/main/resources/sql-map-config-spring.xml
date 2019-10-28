@@ -26,5 +26,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
  	<typeAlias alias="tablespace" type="com.dsup.dbmanagement.TablespaceVO"/>
  	<typeAlias alias="backup" type="com.dsup.dbmanagement.BackupVO"/>
  	<typeAlias alias="datafile" type="com.dsup.dbmanagement.DatafileVO"/>
+ 	<typeAlias alias="schema" type="com.dsup.distributing.SchemaVO"/>
  </typeAliases>
 </configuration>
