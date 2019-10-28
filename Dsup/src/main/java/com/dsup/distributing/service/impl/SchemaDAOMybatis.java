@@ -13,7 +13,7 @@ public class SchemaDAOMybatis {
 
 	@Resource(name="sqlSessionTemplate") SqlSessionTemplate mybatis;
 	
-	public SchemaVO selectSchema(SchemaVO vo) {
-		return mybatis.selectOne("SchemaDAO.selectShema", vo);
+	public SchemaVO serviceSchemaList(SchemaVO vo) {
+		return mybatis.selectOne("SchemaDAO.serviceSchemaList", vo);
 	}
 }

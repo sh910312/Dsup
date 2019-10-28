@@ -4,5 +4,5 @@ import com.dsup.distributing.SchemaVO;
 
 public interface SchemaService {
 
-	public SchemaVO selectSchema(SchemaVO vo);
+	public SchemaVO serviceSchemaList(SchemaVO vo);
 }

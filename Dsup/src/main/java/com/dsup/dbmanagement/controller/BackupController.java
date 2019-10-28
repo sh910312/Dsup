@@ -1,9 +1,17 @@
 package com.dsup.dbmanagement.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,8 +40,6 @@ public class BackupController {
 	// [윤정1027] 백업하기
 	@RequestMapping("/backupCreate")
 	public String backupCreate(@RequestParam String tablespaceName, BackupVO vo) {
-		System.out.println("백업 컨트롤러 실행");
-		System.out.println(tablespaceName);
 		backupService.BackupCreate(vo, tablespaceName);
 		return "dbmanagement/backup/backupCreateForm";
 	}
@@ -45,4 +51,29 @@ public class BackupController {
 		return backupService.getBackupList(userId);
 	}
 	
+	// [윤정1028] 백업파일 다운로드
+	@RequestMapping("/download/{backupFileNm:.+}")
+	public void downloadBackupResource(HttpServletRequest request,
+            						   HttpServletResponse response,
+            						   @PathVariable("backupFileNm") String fileName) {
+		Path path = Paths.get("D:\\dsupBackup",fileName);
+		if(Files.exists(path)) {
+            response.setContentType("application/octet-stream;charset=UTF-8"); // 파일의 타입
+            response.addHeader("Content-Disposition", "attachment; filename="+fileName);
+			try
+            {
+                Files.copy(path, response.getOutputStream());
+                response.getOutputStream().flush();
+            }
+            catch (IOException ex) {
+                ex.printStackTrace();
+            }
+		}
+	}
+	
+	// [윤정1028] 백업파일 삭제
+	@RequestMapping("/backupDelete")
+	public String backupDelete(BackupVO vo) {
+		return null;
+	}
 }

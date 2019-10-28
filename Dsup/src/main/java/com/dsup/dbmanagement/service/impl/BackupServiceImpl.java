@@ -27,17 +27,34 @@ public class BackupServiceImpl implements BackupService {
 	
 	@Override
 	public void BackupCreate(BackupVO vo, String tablespaceName) {
-		// 테이블스페이스 begin backup
-		dao.beginBackup(tablespaceName);
-		// 데이터파일 목록 가져오기
-		List<DatafileVO> datafile = new ArrayList<DatafileVO>();
-		datafile = dao.datafileList(tablespaceName);
-		// 압축파일 만들기
-		vo = makeZip(vo, tablespaceName, datafile);
-		// DB에 자료 입력
-		dao.insertBackupList(vo);
-		// 테이블스페이스 end backup
-		dao.endBackup(tablespaceName);
+		try {
+			// 테이블스페이스 begin backup
+			dao.beginBackup(tablespaceName);
+			// 데이터파일 목록 가져오기
+			List<DatafileVO> datafile = new ArrayList<DatafileVO>();
+			datafile = dao.datafileList(tablespaceName);
+			// 압축파일 만들기
+			vo = makeZip(vo, tablespaceName, datafile);
+			// DB에 자료 입력
+			dao.insertBackupList(vo);
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			// 테이블스페이스 end backup
+			dao.endBackup(tablespaceName);
+		}
+	}
+
+	// [윤정1028] 백업파일 목록
+	@Override
+	public List<BackupVO> getBackupList(String userId) {
+		return dao.getBackupList(userId);
+	}
+	
+	// [윤정 1028] 백업파일 삭제
+	@Override
+	public void backupDelete(BackupVO vo) {
+		
 	}
 
 	// [윤정 1028] 파일 압축하기
@@ -54,7 +71,6 @@ public class BackupServiceImpl implements BackupService {
 		
 		String zipFileName = directory + "\\" + vo.getUserId() + "_" + tablespaceName + "_" + time1 + ".zip"; // 경로, 압축파일명, 확장자
 		// 압축파일명 : userId_tablespaceName_yyyyMMdd HHmmss
-		System.out.println("zip file name : " + zipFileName);
 		vo.setBackupFileNm(zipFileName);
 		
 		byte[] buf = new byte[4096];
@@ -63,7 +79,6 @@ public class BackupServiceImpl implements BackupService {
 		    ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFileName));
 		 
 		    for(DatafileVO file : datafile) {
-		    	System.out.println(file.getFileName());
 		    	FileInputStream in = new FileInputStream(file.getFileName());
 		    	Path path = Paths.get(file.getFileName());
 		    	String fileName = path.getFileName().toString();
@@ -86,9 +101,5 @@ public class BackupServiceImpl implements BackupService {
 		return vo;
 	}
 
-	// [윤정1028] 백업파일 목록
-	@Override
-	public List<BackupVO> getBackupList(String userId) {
-		return dao.getBackupList(userId);
-	}
+
 }

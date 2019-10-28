@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dsup.dbmanagement.UserVO;
+import com.dsup.dbmanagement.service.StorageService;
 import com.dsup.dbmanagement.service.UserService;
 
 @Controller
 public class UserController {
 
 	@Autowired UserService userService;
+	@Autowired StorageService storageService;
 	//전체조회 
 	@RequestMapping("userList")
 	public String userList(UserVO vo, Model model) {
@@ -30,13 +32,7 @@ public class UserController {
 	public String userCreateForm() {
 		return "dbmanagement/user/userCreate";
 	}
-	/*
-	 * //등록
-	 * 
-	 * @RequestMapping("/userCreate") public String userCreate(UserVO vo, Model
-	 * model) { return "redirect:userList"; }
-	 */
-	
+
 	//id중복체크
 	@RequestMapping(value="/checkSingup", method=RequestMethod.POST)
 	public @ResponseBody String AjaxView(  
@@ -56,6 +52,7 @@ public class UserController {
 			,consumes="application/json" )
 	@ResponseBody
 	public Map userCreate(@RequestBody UserVO vo, Model model) {
+		model.addAttribute("list", storageService.getStorageList(""));
 		if(vo.getDefaultTableSpace() == null || vo.getTemporaryTableSpace() == null) {
 		   vo.setDefaultTableSpace("USERS");
 		   vo.setTemporaryTableSpace("TEMP");

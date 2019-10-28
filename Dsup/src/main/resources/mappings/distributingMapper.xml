@@ -2,7 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="SchemaDAO">
-	<select id="">
-	select * from SYS.DBA_TS_QUOTAS where username='SCOTT';
+	<!-- 전체 사용량 조회 -->
+	<!-- <select id="serviceUserList">
+	
+	</select> -->
+	<!-- 스키마 별 사용량 조회 -->
+	<select id="serviceSchemaList" resultType="schema">
+	select TABLESPACE_NAME,
+       	   USERNAME,
+       	   BYTES,
+       	   MAX_BYTES,
+       	   ROUND(100-(MAX_BYTES-BYTES)/MAX_BYTES*100, 2) USEPCT 
+	from SYS.DBA_TS_QUOTAS where username=#{username}
 	</select>
+	<!-- 테이블 스페이스별 사용량 조회 -->
+	<!-- <select id="serviceTableList">
+	
+	</select> -->
 </mapper>

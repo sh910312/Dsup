@@ -12,9 +12,6 @@ import com.dsup.chat.service.SearchService;
 @Service
 public class SearchServiceImpl implements SearchService {
 
-	// 등록(inset) / 상세조회(get) / 전체조회(getList) / 검색(getMap)
-	
-	
 	@Autowired
 	SearchDAOMybatis searchDAOMybatis;
 
@@ -24,45 +21,39 @@ public class SearchServiceImpl implements SearchService {
 		// TODO Auto-generated method stub
 		searchDAOMybatis.insert(vo);
 	}
-	
+
+	// 전체 조회
+	@Override
+	public List<SearchVO> SearchList(SearchVO vo) {
+		// TODO Auto-generated method stub
+		return searchDAOMybatis.searchList();
+	}
+
+	// 상세조회 // 이거 다시
+	@Override
+	public SearchVO getSearch(SearchVO vo) {
+		// TODO Auto-generated method stub
+		return searchDAOMybatis.getSearch(vo);
+	}
+
 	// 검색
 	@Override
-	public void search(SearchVO vo) {
+	public List<Map<String, Object>> SearchMap(SearchVO vo) {
 		// TODO Auto-generated method stub
-		searchDAOMybatis.search(vo);
+		return searchDAOMybatis.SearchMap(vo);
+	}
+	
+	// 삭제
+	@Override
+	public void deleteSearch(SearchVO vo) {
+		// TODO Auto-generated method stub
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// 상세조회
+	// 선택 삭제
 	@Override
-	public SearchVO get(SearchVO vo) {
+	public void deleteSearchList(SearchVO vo) {
 		// TODO Auto-generated method stub
-		return searchDAOMybatis.get(vo);
-	}
-	// 전체조회
-	@Override
-	public List<SearchVO> getList(SearchVO vo) {
-		// TODO Auto-generated method stub
-		return searchDAOMybatis.getList();
-	}
-	// 검색
-	@Override
-	public List<Map<String, Object>> getMap(SearchVO vo) {
-		// TODO Auto-generated method stub
-		return searchDAOMybatis.getMap(vo);
+		searchDAOMybatis.deleteSearchList(vo);
 	}
 
 }

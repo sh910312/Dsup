@@ -7,24 +7,21 @@ import com.dsup.chat.SearchVO;
 
 public interface SearchService {
 
-	// 등록(inset) / 상세조회(get) / 전체조회(getList) / 검색(getMap)
-	
 	// 등록
 	void insertSearch(SearchVO vo);
 
-	// 검색
-	void search(SearchVO vo);
-	
-	
-	
-	
-	// 상세조회
-	SearchVO get(SearchVO vo);
-
 	// 전체조회
-	List<SearchVO> getList(SearchVO vo);
+	List<SearchVO> SearchList(SearchVO vo);
+
+	// 상세조회
+	SearchVO getSearch(SearchVO vo);
 
 	// 검색
-	List<Map<String, Object>> getMap(SearchVO vo);
-
+	List<Map<String, Object>> SearchMap(SearchVO vo);
+	
+	// 삭제 
+	void deleteSearch(SearchVO vo);
+	
+	// 선택삭제
+	void deleteSearchList(SearchVO vo);
 }
