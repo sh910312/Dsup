@@ -1,12 +1,14 @@
 package com.dsup.dbmanagement.service.impl;
 
+import javax.annotation.Resource;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class BackupDAOMybatis {
-	@Autowired SqlSessionTemplate mybatis;
+	@Resource(name="sqlSessionTemplate") SqlSessionTemplate mybatis;
 
 	// [윤정1027] 테이블스페이스 백업 시작
  	public void beginBackup(String tablespaceName) {

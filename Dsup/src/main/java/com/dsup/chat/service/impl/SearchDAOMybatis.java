@@ -3,6 +3,7 @@ package com.dsup.chat.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -16,7 +17,7 @@ public class SearchDAOMybatis { // (p.513)
 
 	// 등록(inset) / 상세조회(get) / 전체조회(getList) / 검색(getMap)
 
-	@Autowired
+	@Resource(name="sqlSessionTemplate")
 	SqlSessionTemplate mybatis;
 
 	// 등록
