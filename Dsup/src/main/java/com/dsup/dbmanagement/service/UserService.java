@@ -22,5 +22,8 @@ public interface UserService {
 	//수정
 	public int updateUser(UserVO vo);
 	
+	//단건조회
+	public UserVO getUser(UserVO vo);
+	
 	
 }
