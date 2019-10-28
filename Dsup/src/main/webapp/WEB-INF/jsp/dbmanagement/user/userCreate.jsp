@@ -88,6 +88,8 @@ $(function idChk(){
                         <input type="password" name="passwordcheck" maxlength="50">
                     </td>
                 </tr>
+                
+                
             </table>
             <button type="button" id="btnIns">생성</button>
 	</form>
