@@ -20,12 +20,7 @@ public class SearchController {
 	@Autowired
 	SearchService searchservice;
 
-	// 등록
-	@RequestMapping("/insertSearchForm")
-	public String insertSearchForm() {
-
-		return "chat/keyword/insertform";
-	}
+	//++
 
 	// 등록처리
 	@RequestMapping("/insertSearch")

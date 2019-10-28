@@ -23,5 +23,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
  	<typeAlias alias="chat" type="com.dsup.chat.ChatVO"/>
  	<typeAlias alias="search" type="com.dsup.chat.SearchVO"/>
  	<typeAlias alias="tablespace" type="com.dsup.dbmanagement.TablespaceVO"/>
+ 	<typeAlias alias="backup" type="com.dsup.dbmanagement.BackupVO"/>
  </typeAliases>
 </configuration>

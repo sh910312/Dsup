@@ -1,16 +1,19 @@
 package com.dsup.dbmanagement.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dsup.dbmanagement.TablespaceVO;
 import com.dsup.dbmanagement.service.StorageService;
 
 @Controller
 public class StorageController {
-
-	
 	@Autowired StorageService storageService;
 
 	
@@ -26,5 +29,12 @@ public class StorageController {
 	public String StorageDelete(String tablespaceName) {
 		storageService.deleteStorage(tablespaceName);
 		return "redirect:storageList";
+	}
+	
+	// 테이블스페이스 리스트 조회
+	@ResponseBody
+	@RequestMapping(value="/tablespaceList", method=RequestMethod.GET)
+	public List<TablespaceVO> getTablespaceList(){
+		return storageService.getStorageList("");
 	}
 }

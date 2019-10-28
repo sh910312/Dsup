@@ -4,11 +4,11 @@
 <mapper namespace="StorageDAO">
 	
 	<select id="getTablespaceList" parameterType="String" resultType="tablespace">
-		select tablespace_name, status, contents
-		from dba_tablespaces 
-		<if test="keyword != null">
-			where tablespace_name like '%#{keyword}%'
-		</if>
+		SELECT tablespace_name "tablespaceName"
+				, status "status"
+				, contents "contents"
+		FROM dba_tablespaces 
+
 	</select>
 	
 	<delete id="deleteTablespace" parameterType="String">

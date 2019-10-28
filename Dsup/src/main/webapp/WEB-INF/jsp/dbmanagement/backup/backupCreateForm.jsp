@@ -10,8 +10,8 @@
 	<script>
 	$(function(){
 		tsList();
-		dfList();
-		$("#tsList").change(dfList);
+		//dfList();
+		//$("#tablespaceName").change(dfList);
 	});
 	
 	// [1024] 테이블스페이스 리스트 요청
@@ -27,7 +27,8 @@
 	// [1024] 테이블스페이스 리스트 응답
 	function tsListResult(ts) {
 		$.each(ts, function(idx, item){
-			$("#tsList").append($("<option>").val(item.tablespaceName).text(item.tablespaceName));
+			var $radio = $("<td>").append($("<input>").attr("type","radio").val((item.tablespaceName)));
+			$("tbody").append($("<tr>").append($radio).append("<td>" + (item.tablespaceName) + "</td>"));
 		});
 	} 
 	
@@ -55,11 +56,20 @@
 		});
 	}
 	
-	
+	// [1025] 백업하기 버튼 클릭
+	function backup() {
+		
+		
+	}
 	</script>
-
 </head>
 <body>
-
+	<h1>테이블스페이스 선택</h1>
+	<form id="frm" method="post" action="backupCreate">
+		<table border = "1" id = "tb">
+			<tbody></tbody>
+		</table>
+		<input type = "submit" id = "backupBtn" value = "백업하기">
+	</form>
 </body>
 </html>
