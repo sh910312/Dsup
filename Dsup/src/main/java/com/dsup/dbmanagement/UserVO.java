@@ -5,8 +5,16 @@ public class UserVO {
 	private String password;
 	private String defaultTableSpace;
 	private String temporaryTableSpace;
+	private String lock;
 	
 	
+	
+	public String getLock() {
+		return lock;
+	}
+	public void setLock(String lock) {
+		this.lock = lock;
+	}
 	public String getTemporaryTableSpace() {
 		return temporaryTableSpace;
 	}

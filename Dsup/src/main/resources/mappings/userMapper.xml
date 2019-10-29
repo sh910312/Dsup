@@ -9,19 +9,23 @@
 	</insert>
 	
 	<!-- 리스트 -->
-	<select id="userList" resultType="map">SELECT * FROM DBA_USERS</select>
+	<select id="userList" resultType="map">
+	SELECT username, LOCK_DATE, DEFAULT_TABLESPACE, TEMPORARY_TABLESPACE 
+	FROM DBA_USERS 
+	order by username
+	</select>
 	
 	<!-- 삭제 -->
 	<delete id="deleteUser" parameterType="user">
 		drop user ${id} 
 	</delete>
-	
-	<!-- 단건조회 -->
-	<select id="getUser" parameterType="user" resultType="user">
-		select id, password, defaultTableSpace, temporaryTableSpace
-		from dba_users
-		where id=#{id}
-	</select>
-	
 
+	<!-- 수정 -->
+	<update id="updateUser" parameterType="user">
+		alter user ${id} 
+			  identified by ${password} 
+			  default TableSpace ${defaultTableSpace}
+			  temporary TableSpace ${temporaryTableSpace} 
+			  account ${lock}
+	</update>
 </mapper>
