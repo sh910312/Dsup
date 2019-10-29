@@ -31,7 +31,7 @@ public class SearchDAOMybatis { // (p.513)
 	}
 	// 상세 조회
 	public SearchVO getSearch(SearchVO vo) {
-		return mybatis.selectOne("SearchDAO.getsearch", vo);
+		return mybatis.selectOne("SearchDAO.getSearch", vo);
 	}
 	
 	// 검색

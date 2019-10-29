@@ -5,13 +5,13 @@
 	
 	
  	<!-- 상세내용 -->
-	<select id="getsearch" parameterType="search" resultType="search">
+	<select id="getSearch" parameterType="search" resultType="search">
 		select
-			search_id,
-			contents,
-			write_date,
-			user_id,
-			title,
+			search_id as "searchId",
+			user_id as "userId",
+			title as "title",
+			contents as "contents",
+			write_date as "writeDate"
 		from search 
 		where search_id = #{searchId}
 	</select>
@@ -21,7 +21,10 @@
 	<insert id="insertSearch" parameterType="search">
 		<selectKey keyProperty="searchId" resultType="int" order="BEFORE">
 			select
-			NVL(max(search_id),1) +1 from search
+			max(search_id) +1 from search
+			
+			<!-- select
+			NVL(max(search_id),1) +1 from search -->
 		</selectKey>
 		insert into search(	search_id
 						 	,user_id

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- users_mapper.xml -->
+<mapper namespace="MemberDAO">
+	<select id="getMemberList" resultType="member" parameterType="member">
+		select user_id, password, nickname, e_mail, user_date, user_type
+		from users
+		<where>
+			<if test="userId != null and userId != '' ">
+				user_id like '%' || #{userId} || '%'
+			</if>
+			<if test="nickname != null and nickname != '' ">
+				and nickname like '%' || #{nickname} || '%'
+			</if>
+		</where>
+	</select>
+	<select id="getMember" parameterType="member" resultType="member">
+		select user_id,
+		password, nickname, e_mail, user_date, user_type
+		from users
+		where user_id=#{userId}
+	</select>
+	<select id="getMemberListMap" parameterType="member" resultType="map">
+		select user_id "user_id", password "password", nickname "nickname", e_mail "e_mail", user_date "user_date", user_type "user_type"
+		from users
+	</select>
+
+	<!-- 등록 -->
+	<insert id="insertMember" parameterType="member">
+		insert into users (user_id, password, nickname, e_mail, user_date, user_type)
+		values ( #{userId},
+		#{password},
+		#{nickname},
+		#{eMail},
+		#{userDate},
+		#{userType} )
+	</insert>
+
+	<!-- 수정 -->
+	<update id="updateMember" parameterType="member">
+		update users set
+		password = #{password},
+		nickname = #{nickname},
+		e_mail = #{eMail}
+		where user_id = #{userId}
+	</update>
+
+	<!-- 삭제 -->
+	<delete id="deleteMember" parameterType="member">
+		delete from users
+		where user_id = #{userId}
+	</delete>
+	
+</mapper>
