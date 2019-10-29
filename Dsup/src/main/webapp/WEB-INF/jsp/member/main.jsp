@@ -7,9 +7,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-	${sessionScope.user.name}
-	<a href="Logout">로그아웃</a>
-	<a href="">정보변경</a>
+	<a href="">정보변경</a><br>
+	${sessionScope.member.nickname}
+	<a href="logout">로그아웃</a>
+	
 	<br><br><br><br><br><br><br><br><br>
 	
 	<button>SQL</button><br>
