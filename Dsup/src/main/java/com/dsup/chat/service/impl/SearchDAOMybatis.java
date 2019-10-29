@@ -46,7 +46,4 @@ public class SearchDAOMybatis { // (p.513)
 	
 	
 	
-	
-	
-	
 }

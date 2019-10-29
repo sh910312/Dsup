@@ -62,6 +62,9 @@ var Storage = (function () {
         	},
         	getLocalStorage : function(k, d) {
         		var data = localStorage.getItem(k);
+        		if(data == null){
+        			return null;
+        		}
         		var result = data;
         		//console.log("[storage] data : " + data);
         		var json = JSON.parse(data);

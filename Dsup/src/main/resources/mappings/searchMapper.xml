@@ -21,7 +21,7 @@
 	<insert id="insertSearch" parameterType="search">
 		<selectKey keyProperty="searchId" resultType="int" order="BEFORE">
 			select
-			max(search_id) +1 from search
+			NVL(max(search_id),1) +1 from search
 		</selectKey>
 		insert into search(	search_id
 						 	,user_id

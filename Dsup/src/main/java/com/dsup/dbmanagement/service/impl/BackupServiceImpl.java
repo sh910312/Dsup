@@ -2,6 +2,7 @@ package com.dsup.dbmanagement.service.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -27,17 +28,42 @@ public class BackupServiceImpl implements BackupService {
 	
 	@Override
 	public void BackupCreate(BackupVO vo, String tablespaceName) {
-		// 테이블스페이스 begin backup
-		dao.beginBackup(tablespaceName);
-		// 데이터파일 목록 가져오기
-		List<DatafileVO> datafile = new ArrayList<DatafileVO>();
-		datafile = dao.datafileList(tablespaceName);
-		// 압축파일 만들기
-		vo = makeZip(vo, tablespaceName, datafile);
-		// DB에 자료 입력
-		dao.insertBackupList(vo);
-		// 테이블스페이스 end backup
-		dao.endBackup(tablespaceName);
+		try {
+			// 테이블스페이스 begin backup
+			dao.beginBackup(tablespaceName);
+			// 데이터파일 목록 가져오기
+			List<DatafileVO> datafile = new ArrayList<DatafileVO>();
+			datafile = dao.datafileList(tablespaceName);
+			// 압축파일 만들기
+			vo = makeZip(vo, tablespaceName, datafile);
+			// DB에 자료 입력
+			dao.insertBackupList(vo);
+		} catch (Exception e) {
+			
+		} finally {
+			// 테이블스페이스 end backup
+			dao.endBackup(tablespaceName);
+		}
+	}
+
+	// [윤정1028] 백업파일 목록
+	@Override
+	public List<BackupVO> getBackupList(String userId) {
+		return dao.getBackupList(userId);
+	}
+	
+	// [윤정 1029] 백업파일 삭제
+	@Override
+	public void backupDelete(String[] deleteFiles) {
+		for(String fileName : deleteFiles) {
+			File file = new File(fileName);
+			if(file.exists()) {
+				if(file.delete()) {
+					dao.BackupDelete(fileName);
+					// 파일이 삭제되면 테이블의 데이터도 삭제
+				} 
+			}
+		}
 	}
 
 	// [윤정 1028] 파일 압축하기
@@ -54,7 +80,6 @@ public class BackupServiceImpl implements BackupService {
 		
 		String zipFileName = directory + "\\" + vo.getUserId() + "_" + tablespaceName + "_" + time1 + ".zip"; // 경로, 압축파일명, 확장자
 		// 압축파일명 : userId_tablespaceName_yyyyMMdd HHmmss
-		System.out.println("zip file name : " + zipFileName);
 		vo.setBackupFileNm(zipFileName);
 		
 		byte[] buf = new byte[4096];
@@ -63,10 +88,10 @@ public class BackupServiceImpl implements BackupService {
 		    ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFileName));
 		 
 		    for(DatafileVO file : datafile) {
-		    	System.out.println(file.getFileName());
 		    	FileInputStream in = new FileInputStream(file.getFileName());
 		    	Path path = Paths.get(file.getFileName());
 		    	String fileName = path.getFileName().toString();
+		    	System.out.println("파일이름 : " + fileName);
 		    	
 		    	ZipEntry ze = new ZipEntry(fileName);
 		    	out.putNextEntry(ze);
@@ -80,15 +105,14 @@ public class BackupServiceImpl implements BackupService {
 		        in.close();
 		    }
 		    out.close();
+		} catch(FileNotFoundException e) {
+			System.out.println("파일 없음!");
+			e.printStackTrace();
 		} catch (IOException e) {
 		    e.printStackTrace();
 		}
 		return vo;
 	}
 
-	// [윤정1028] 백업파일 목록
-	@Override
-	public List<BackupVO> getBackupList(String userId) {
-		return dao.getBackupList(userId);
-	}
+
 }

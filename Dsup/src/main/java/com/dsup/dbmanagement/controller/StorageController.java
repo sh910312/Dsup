@@ -37,4 +37,17 @@ public class StorageController {
 	public List<TablespaceVO> getTablespaceList(){
 		return storageService.getStorageList("");
 	}
+	
+	// [윤정 1029] 테이블스페이스 생성 페이지로 이동
+	@RequestMapping("/storageCreateForm")
+	public String storageCreateForm() {
+		return "dbmanagement/storage/storageCreateForm";
+	}
+	
+	// [윤정 1029] 테이블스페이스 생성
+	@RequestMapping("/storageCreate")
+	public String storageCreate() {
+		
+		return "redirect:storageList";
+	}
 }

@@ -14,12 +14,17 @@ var Display = (function () {
         
     	return {
             // public methods and variables
-    		showData : function(tag){
-    			newWindow("MyWindow");
-    			console.log("[display] tag : " + tag);
-    			window.open("jsp/tableview.jsp?tag=" + tag, 
-    					newName, 
-    					"width=600, height=400, toolbar=no, menubar=no, scrollbars=no, resizable=yes, location=no");
+    		showData : function(){
+    			if(tag == ""){
+    				
+    			}else{
+    				newWindow("MyWindow");
+    				//console.log("[display] tag : " + tag);
+    				window.open("ShowData.do", 
+    						newName, 
+    				"width=600, height=400, toolbar=no, menubar=no, scrollbars=no, resizable=yes, location=no");
+    				
+    			}
     		}
         };
     }
