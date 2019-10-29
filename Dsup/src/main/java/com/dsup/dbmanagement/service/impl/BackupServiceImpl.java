@@ -2,6 +2,7 @@ package com.dsup.dbmanagement.service.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -38,7 +39,7 @@ public class BackupServiceImpl implements BackupService {
 			// DB에 자료 입력
 			dao.insertBackupList(vo);
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		} finally {
 			// 테이블스페이스 end backup
 			dao.endBackup(tablespaceName);
@@ -51,10 +52,18 @@ public class BackupServiceImpl implements BackupService {
 		return dao.getBackupList(userId);
 	}
 	
-	// [윤정 1028] 백업파일 삭제
+	// [윤정 1029] 백업파일 삭제
 	@Override
-	public void backupDelete(BackupVO vo) {
-		
+	public void backupDelete(String[] deleteFiles) {
+		for(String fileName : deleteFiles) {
+			File file = new File(fileName);
+			if(file.exists()) {
+				if(file.delete()) {
+					dao.BackupDelete(fileName);
+					// 파일이 삭제되면 테이블의 데이터도 삭제
+				} 
+			}
+		}
 	}
 
 	// [윤정 1028] 파일 압축하기
@@ -82,6 +91,7 @@ public class BackupServiceImpl implements BackupService {
 		    	FileInputStream in = new FileInputStream(file.getFileName());
 		    	Path path = Paths.get(file.getFileName());
 		    	String fileName = path.getFileName().toString();
+		    	System.out.println("파일이름 : " + fileName);
 		    	
 		    	ZipEntry ze = new ZipEntry(fileName);
 		    	out.putNextEntry(ze);
@@ -95,6 +105,9 @@ public class BackupServiceImpl implements BackupService {
 		        in.close();
 		    }
 		    out.close();
+		} catch(FileNotFoundException e) {
+			System.out.println("파일 없음!");
+			e.printStackTrace();
 		} catch (IOException e) {
 		    e.printStackTrace();
 		}

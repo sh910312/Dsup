@@ -48,11 +48,11 @@
 										
 										
 										<!-- 삭제권한은 관리자만 -->
-										<c:if test="${userId != null}">
-										<input id="text" name="searchList" type="checkbox" value="${search.searchId }"/>
-										</c:if>
+<%-- 										<c:if test="${userId != null}"> --%>
+										<input name="searchList" type="checkbox" value="${search.searchId }"/>
+<%-- 										</c:if> --%>
 										
-										<a href="getSearch?seq=${search.searchId }"> ${search.title }</a>
+										<a href="getSearch?searchId=${search.searchId }"> ${search.title }</a>
 										${search.userId }
 										${search.writeDate }
 										</div>
@@ -63,9 +63,9 @@
 									</div>
 								</div>
 								<div align="center"> <!-- 검색 완료시 (등록/수정) 버튼이 보이게 조건 추가.   -->
-								<c:if test="${userId != null}">  <!-- 삭제=관리자권한 -->
+ 								<c:if test="${userId != null}"> --%>  <!-- 삭제=관리자권한 -->
  									<button class="btn btn-default" style="height:40px; width:100px;">삭&nbsp;&nbsp;제</button>
- 								</c:if>
+  								</c:if>
  								<c:if test="${userId != null}">  <!-- 등록/수정 = 관리자/유저 권한 -->
  									<button type="button" class="btn btn-default" style="height:40px; width:100px;" onclick="javascript:openButton(0);">등&nbsp;&nbsp;록</button>
 									<button type="button" class="btn btn-default" style="height:40px; width:100px;" onclick="javascript:openButton(1);">수&nbsp;&nbsp;정</button>
