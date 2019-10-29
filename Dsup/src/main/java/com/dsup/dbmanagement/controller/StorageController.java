@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dsup.dbmanagement.TablespaceVO;
@@ -46,7 +47,7 @@ public class StorageController {
 	
 	// [윤정 1029] 테이블스페이스 생성
 	@RequestMapping("/storageCreate")
-	public String storageCreate() {
+	public String storageCreate(@RequestParam String sql, @RequestParam String tablespaceName, @RequestParam String userId) {
 		
 		return "redirect:storageList";
 	}
