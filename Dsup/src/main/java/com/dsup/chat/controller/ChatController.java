@@ -12,7 +12,7 @@ import com.dsup.chat.service.ChatService;
 public class ChatController {
 
 	@Autowired ChatService chatService;
-	//전체조회 
+	// 채팅 메인화면
 	@RequestMapping("chatMain")
 	public String chatList(ChatVO vo, Model model) {
 		return "chat/chatMain";

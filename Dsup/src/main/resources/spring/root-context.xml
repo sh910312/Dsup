@@ -17,8 +17,9 @@
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
         <property name="url" value="jdbc:oracle:thin:@192.168.0.108:1521:XE"/>
-        <property name="username" value="system"/>
-        <property name="password" value="oracle"/>
+		<!--!!절대 건들지말것 !! system 계정으로 통일함  -->
+        <property name="username" value="system"/> <!-- system 계정 제발 바꾸지마셈  -->  
+        <property name="password" value="oracle"/>  
     </bean>
    	<bean id="dataSourceScott" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
