@@ -27,7 +27,7 @@
 		// 삭제 버튼 클릭
 		
 		$("#crebtn").click(function(){
-			$("#frm").attr("action", "TScreateForm.do");
+			$("#frm").attr("action", "storageCreateForm");
 			$("#frm").submit();
 		});
 		// 생성 버튼 클릭
