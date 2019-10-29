@@ -7,5 +7,5 @@ import com.dsup.dbmanagement.BackupVO;
 public interface BackupService {
 	public void BackupCreate(BackupVO vo, String tablespaceName);
 	public List<BackupVO> getBackupList(String userId);
-	public void backupDelete(BackupVO vo);
+	public void backupDelete(String[] deleteFiles);
 }

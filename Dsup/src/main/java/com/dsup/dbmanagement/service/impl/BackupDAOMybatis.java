@@ -12,7 +12,7 @@ import com.dsup.dbmanagement.DatafileVO;
 
 @Repository
 public class BackupDAOMybatis {
-	@Resource(name="sqlSessionTemplate") SqlSessionTemplate mybatis;
+	@Resource(name="DBA") SqlSessionTemplate mybatis;
 
 	// [윤정1027] 테이블스페이스 백업 시작
  	public void beginBackup(String tablespaceName) {
@@ -37,5 +37,10 @@ public class BackupDAOMybatis {
  	// [윤정1028] 백업파일 목록
  	public List<BackupVO> getBackupList(String userId) {
  		return mybatis.selectList("BackupDAO.getBackupList", userId);
+ 	}
+ 	
+ 	// [윤정1029] 백업테이블 자료 삭제
+ 	public void BackupDelete(String backupFileNm) {
+ 		mybatis.delete("BackupDAO.deleteBackupList", backupFileNm);
  	}
 }
