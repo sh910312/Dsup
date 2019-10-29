@@ -16,7 +16,7 @@
 	$(function(){
 		backupList();
 		$("#delBtn").click(del);
-		//changeTr();
+		changeTr();
 		totalCheck();
 	})
 	
@@ -75,9 +75,12 @@
 	function changeTr(){
 		$("table").on("click", $("td input"), function(){
             $("td input").each(function(i, o){ 
-                $(this).parent().parent().css("background-color", "white");
                 if($(this).is(":checked")){
-                    $(this).parent().parent().css("background-color", "gold");
+                    $(this).closest("tr").addClass('info');
+                    console.log("췍")
+                } else {
+                    $(this).closest("tr").removeClass('info');
+                    console.log("언췍")
                 }
             })
         })
