@@ -50,7 +50,7 @@ $(function() {
 							<div class="portlet-footer">
 								<div class="row" >
 									<div class="form-group col-xs-10">
-										<input id="title" name="title" class="form-control" placeholder="등록할 제목을 입력하세요." maxlength="20">
+										<input id="title" name="title" class="form-control" placeholder="등록할 키워드를 입력하세요. 10자 이내로 작성하세요." maxlength="10">
 									</div>
 								</div>
 								<div class="row">
