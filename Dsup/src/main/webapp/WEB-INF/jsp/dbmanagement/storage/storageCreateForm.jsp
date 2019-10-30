@@ -8,10 +8,10 @@
 	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 	<script>
 	function formCheck(){
-		var tsname = $("#tsname").val();
+		var tsname = $("#tablespaceName").val();
 		var datafile = "";
+		
 		$("tbody>tr").each(function(){
-			var path = $(this).find("#path").val();
 			var filename = $(this).find("#filename").val();
 			var size = $(this).find("#size").val();
 			var sizeunit = $(this).find("#sizeunit").val();
@@ -21,37 +21,19 @@
 				return false;
 			}
 			
-			if(path != "") path += "\\";
-			
-			datafile += " '" + path + filename + ".dbf' size " + size + sizeunit + ","
+			datafile += " '" + filename + ".dbf' size " + size + sizeunit + ","
 		});
+		
 		datafile = datafile.substring(0, datafile.length-1); // 맨 마지막 , 제거
-		// 데이터파일 입력한 값을 '경로\데이터파일명.dbf' 용량, ... 로 양식에 맞게 만들어 datafile의 값에 저장
+		// 데이터파일 입력한 값을 '데이터파일명.dbf' size 0m, ... 로 양식에 맞게 만들어 datafile의 값에 저장
 		
-		var type = $("input[name='type']:checked").val(); // 타입 뭘 체크했는지 확인
-		
-		var tstype = "";
-		var filetype = " datafile ";
-		var plus = " LOGGING EXTENT MANAGEMENT LOCAL SEGMENT SPACE MANAGEMENT AUTO";
-		// permanent 타입인 경우
-		
-		if(type == 'temporary') { // temporary 타입인경우
-			tstype = "temporary ";
-			filetype = " tempfile ";
-			plus = " EXTENT MANAGEMENT LOCAL UNIFORM SIZE 1M";
-		} else if (type == 'undo') { // undo 타입인경우
-			tstype = "undo ";
-			plus = " RETENTION NOGUARANTEE";
-		}
-		
-		var sql = "create " + tstype + "tablespace " + tsname + filetype + datafile + plus;
+		var sql = "create tablespace " + tsname + " datafile " + datafile
+				+ " LOGGING EXTENT MANAGEMENT LOCAL SEGMENT SPACE MANAGEMENT AUTO";
 		$("#sql").val(sql);
-		console.log(sql);
 	}
 	
 	// 데이터파일 추가
 	function add(){
-		var $path = $("<input>").attr("type","text").attr("id","path"); // 경로 입력칸
 		var $filename = $("<input>").attr("type","text").attr("id","filename").attr("required",true); // 이름 입력칸
 		var $size = $("<input>").attr("type","text").attr("id","size").attr("required",true); // 용량 입력칸
 		var $sizeunit = $("<select>").attr("id","sizeunit")
@@ -62,7 +44,7 @@
 		var $btn = $("<input>").attr("type","button").attr("id","delbtn").val("삭제")
 							.click(function(){	$(this).parent().parent().remove();	}); // 삭제 버튼
 		
-		var $tr = $("<tr>").append($("<td>").append($path))
+		var $tr = $("<tr>")
 						.append($("<td>").append($filename))
 						.append($("<td>").append($size).append($sizeunit))
 						.append($("<td>").append($btn)); // 위의 칸들을 하나의 tr로 붙임
@@ -76,19 +58,12 @@
 	</script>
 </head>
 <body>
-	<form onsubmit = "formCheck()" method = "post" action = "storageCreate">
+	<form onsubmit="formCheck()" method = "post" action = "storageCreate">
 	<input type = "hidden" id = "sql" name = "sql">
 		<h1>테이블 스페이스</h1>
-		테이블 스페이스 이름 <input type = "text" id = "tsname" required> <br>
-		타입
-		<input type = "radio" id = "permanent" name = "type" value = "permanent" checked>
-			<label for = "permanent">Permanent</label>
-		<input type = "radio" id = "temporary" name = "type" value = "temporary">
-			<label for = "temporary">Temporary</label>
-		<input type = "radio" id = "undo" name = "type" value = "undo">
-			<label for = "undo">Undo</label>
-		<h1>데이터 파일</h1>
+		테이블 스페이스 이름 <input type = "text" name = "tablespaceName" id = "tablespaceName" required> <br>
 		
+		<h1>데이터 파일</h1>
 		<table border = "1" id = "tb1">
 			<thead>
 				<tr>

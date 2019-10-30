@@ -5,11 +5,16 @@
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+	
+	<util:properties id="config" location="classpath:/config/config.properties"/>
+	<!-- ↑[윤정 1030] 프로퍼티 파일 선언 -->
 	
 	<context:component-scan base-package="com"></context:component-scan>
 	<!-- Root Context: defines shared resources visible to all other web components -->
@@ -17,8 +22,8 @@
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
         <property name="url" value="jdbc:oracle:thin:@192.168.0.108:1521:XE"/>
-		<!--!!절대 건들지말것 !! sys 계정으로 통일함 1029일 회의했음 단톡방 확인바람! -->
-        <property name="username" value="sys as sysdba"/> <!-- sys 계정 제발 바꾸지마셈  -->  
+		<!--!!절대 건들지말것 !! system 계정으로 통일함  --> <!-- 10.29 긴급회의 : dba계정으로 통합~~~~~~~ -->
+        <property name="username" value="sys as sysdba"/> <!-- system 계정 제발 바꾸지마셈  -->  
         <property name="password" value="oracle"/>  
     </bean>
    	<bean id="dataSourceScott" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">

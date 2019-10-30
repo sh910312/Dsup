@@ -3,14 +3,38 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="StorageDAO">
 	
+	<!-- [윤정] 테이블스페이스 이름만 조회 : 백업생성에서 씀 -->
 	<select id="getTablespaceList" parameterType="String" resultType="tablespace">
 		SELECT tablespace_name "tablespaceName"
-				, status "status"
-				, contents "contents"
-		FROM dba_tablespaces 
+		FROM dba_tablespaces
 	</select>
 	
 	<delete id="deleteTablespace" parameterType="String">
-		DROP TABLESPACE #{tablespaceName} INCLUDING CONTENTS AND DATAFILES
+		{ call ts_delete (#{tablespaceName}) }
 	</delete>
+	
+	<insert id="createTablespace" parameterType="String">
+		${sql}
+	</insert>
+	
+	<insert id="insertUserTbspcTb" parameterType="userTbspcTb">
+		INSERT INTO user_tbspc_tb (tablespace_name, user_id)
+		VALUES( #{tablespaceName}, #{userId} )
+	</insert>
+	
+	<!-- [윤정1030] 테이블스페이스 리스트 상세 조회 -->
+	<select id="getStorage" parameterType="userTbspcTb" resultType="tablespace">
+		SELECT d.tablespace_name "tablespaceName"
+			, d.status "status"
+		    , sum(df.bytes/1024/1024) "total"
+		    , sum(fs.bytes/1024/1024) "free"
+		    , sum(df.bytes/1024/1024) - sum(fs.bytes/1024/1024) "used"
+		FROM dba_tablespaces d, user_tbspc_tb u, dba_data_files df, dba_free_space fs
+		WHERE u.user_id = #{userId}
+		AND d.tablespace_name = u.tablespace_name
+		AND u.tablespace_name LIKE '%${tablespaceName}%'
+		AND d.tablespace_name = df.tablespace_name
+		AND d.tablespace_name = fs.tablespace_name
+		GROUP BY d.tablespace_name, d.status
+	</select>
 </mapper>

@@ -6,8 +6,16 @@
 	<meta charset="UTF-8">
 	<title>Storage List</title>
 	<script src = "https://code.jquery.com/jquery-3.4.1.js"></script>
+	
+	<!-- 부트스트랩 -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+	
 	<script>
 	$(document).ready(function(){
+		tablespaceList();
+		
 		$('input:radio[name=tablespace]').eq(0).attr("checked", true);
 		// 첫 번째 라디오 자동 체크
 		
@@ -52,6 +60,29 @@
 			$("#frm").submit();
 		});
 	});
+	
+	// [윤정 1030] 테이블스페이스 리스트 조회 요청
+	function tablespaceList(){
+		$.ajax({
+			url: 'getStorage',
+			type: 'GET',
+			dataType: "json",
+			success : tablespaceListResult
+		})
+	}
+	
+	// [윤정 1030] 테이블스페이스 리스트 출력
+	function tablespaceListResult(list){
+		$.each(list, function(idx, item){
+			$("tbody").append($("tr").append( $("td").append($("<input>")).attr("type", "radio").val((item.tablespaceName)).attr("name","tablespaceName") )
+									.append( $("td").text((item.tablespaceName)) )
+									.append( $("td").text((item.status)) )
+									.append( $("td").text((item.total)) )
+									.append( $("td").text((item.used)) )
+									.append( $("td").text((item.free)) )
+					);
+		});
+	}
 	</script>
 </head>
 <body>
@@ -59,13 +90,12 @@
 	<input type = "hidden" name = "keyword" id = "keyword">
 	<input type = "text" id = "search" placeholder = "검색할 테이블 스페이스의 이름 입력">
 	<input type = "submit" id = "searchbtn" value = "검색">
-	<table border = "1">
+	<table border = "1" class = "table">
 	<thead>
 		<tr>
 			<th></th>
 			<th>tablespace name</th>
 			<th>status</th>
-			<th>contents</th>
 			<th>total MB</th>
 			<th>used MB</th>
 			<th>free MB</th>
@@ -73,18 +103,6 @@
 		</tr>
 	</thead>
 	<tbody>
-		<c:forEach items="${list}" var="dto">
-			<tr>
-				<td><input type = "radio" id = "ts_radio" name = "tablespace" value = "${dto.getTablespaceName()}"></td>
-				<td>${dto.getTablespaceName()}</td>
-				<td>${dto.getStatus()}</td>
-				<td>${dto.getContents()}</td>
-				<td>${dto.getTotal()}</td>
-				<td>${dto.getUsed()}</td>
-				<td>${dto.getFree()}</td>
-				<td>${dto.getUsedPer()} %</td>
-			</tr>
-		</c:forEach>
 	</tbody>
 	</table>
 	<input id = "updbtn" type = "button" value = "수정">
