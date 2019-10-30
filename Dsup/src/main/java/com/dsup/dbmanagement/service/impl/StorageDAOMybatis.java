@@ -16,7 +16,7 @@ public class StorageDAOMybatis {
 	
 	@Resource(name="sqlSessionTemplate") SqlSessionTemplate mybatis;
 	
-	// 1022 테이블스페이스 리스트 조회
+	// 1022 테이블스페이스 이름 조회
 	public List<TablespaceVO> getStorageList(String tablespaceName) {
 		List<TablespaceVO> list = mybatis.selectList("StorageDAO.getTablespaceList", tablespaceName);
 		return list;
@@ -34,5 +34,10 @@ public class StorageDAOMybatis {
 	// [윤정1030] 테이블스페이스 생성 후, user_tbspc_tb에 데이터 삽입
 	public void insertUserTbspcTb(UserTbspcTbVO userTbspcTb) {
 		mybatis.insert("StorageDAO.insertUserTbspcTb", userTbspcTb);
+	}
+	
+	// [윤정1030] 테이블스페이스 상세 조회 (사용량 등등)
+	public List<TablespaceVO> getStorage(UserTbspcTbVO userTbspcTb) {
+		return mybatis.selectList("StorageDAO.getStorage", userTbspcTb);
 	}
 }

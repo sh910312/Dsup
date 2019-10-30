@@ -31,4 +31,10 @@ public class StorageServiceImpl implements StorageService {
 		dao.insertUserTbspcTb(vo);
 	}
 
+	// [윤정 1030] 테이블스페이스 리스트 상세 조회
+	@Override
+	public List<TablespaceVO> getStorage(UserTbspcTbVO vo) {
+		return dao.getStorage(vo);
+	}
+
 }

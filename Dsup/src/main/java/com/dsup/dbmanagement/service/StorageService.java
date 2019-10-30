@@ -9,4 +9,5 @@ public interface StorageService {
 	List<TablespaceVO> getStorageList(String tablespaceName);
 	void deleteStorage(String tablespaceName);
 	void createStorage(String sql, UserTbspcTbVO vo);
+	List<TablespaceVO> getStorage(UserTbspcTbVO vo);
 }
