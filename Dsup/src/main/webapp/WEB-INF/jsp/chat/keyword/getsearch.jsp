@@ -22,9 +22,6 @@
 
 
 
-
-
-
 <div class="container">
 		<div>
 			<div class="row">
@@ -38,6 +35,7 @@
 							</div>
 							<div class="portlet-title pull-right">
 								<h3>
+								<form action="insertRe" method="POST">
 									<i class="fa fa-circle text-green"></i> ${search.userId } <fmt:formatDate value="${search.writeDate }" pattern="yyyy-MM-dd"/>
 								</h3>
 							</div>
@@ -54,7 +52,7 @@
 										<button class="btn btn-default" style="height:40px; width:100px;">검&nbsp;&nbsp;색</button>
 									</form>  -->
 								</div>
-								<form action="deleteSearchList">
+								<input type="hidden" name="searchId" value="${search.searchId }"/>
 								<div class="row">	
 									<br>
 									<div id="text" class="form-group col-xs-12">
@@ -65,11 +63,30 @@
 									<br>
 									<hr>
 									<br>
+									<hr>
+									<div class="form-group col-xs-12">
+									<div class="form-group col-xs-12">
+										
+										<c:forEach items="${reList }" var="re">
+										${re.userId }  :
+										${re.contents } 
+									<div class="form-group col-xs-1 pull-right">
+										${re.writeDate } 
+									</div>
+										<%-- <input name="reList" type="checkbox" value="${re.reId }"/> --%>
+										<button type="button" class="btn btn-default btn-xs">신고</button>
+										<br><br>
+										</c:forEach>
+									
+									
+									</div>
 									<div class="form-group col-xs-11">
-										<input style="height: 40px;" name="title" id="title" class="form-control" placeholder="댓글을 입력하세요." maxlength="20">
+										<input style="height: 40px;" name="contents" id="contents" class="form-control" placeholder="댓글을 입력하세요." maxlength="20">
 									</div>
 									<div class="form-group col-xs-1 pull-right">
 										<button class="btn btn-default" style= "height:40px;">등&nbsp;&nbsp;록</button>
+									</div>
+								</form>
 									</div>
 								</div>
 								<div align="center"> <!-- 검색 완료시 (등록/수정) 버튼이 보이게 조건 추가.   -->
@@ -80,9 +97,8 @@
  									<button type="button" class="btn btn-default" style="height:40px; width:100px;" onclick="javascript:openButton(0);">신&nbsp;&nbsp;고</button>
 									<button type="button" class="btn btn-default" style="height:40px; width:100px;" onclick="javascript:openButton(1);">수&nbsp;&nbsp;정</button>
 								</c:if>
-									<button class="btn btn-default" style="height:40px; width:100px;" action="dddd">돌아가기</button>
+									<button class="btn btn-default" style="height:40px; width:100px;">돌아가기</button>
 								</div>
-								</form>
 							</div>
 					</div>
 				</div>
