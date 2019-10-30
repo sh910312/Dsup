@@ -7,11 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	${member.userId }<br>
-	${member.password }<br>
-	${member.nickname }<br>
-	${member.eMail }<br>
-	${member.userDate }<br>
-	${member.userType }<br>
+
 </body>
 </html>

@@ -10,4 +10,11 @@ public class MemberVO {
 	private String eMail;
 	private String userDate;
 	private String userType;
+	
+	public String geteMail() {
+		return eMail;
+	}
+	public void seteMail(String eMail) {
+		this.eMail = eMail;
+	}
 }
