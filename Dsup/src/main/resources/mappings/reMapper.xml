@@ -43,6 +43,9 @@
 			contents as "contents",
 			to_char(write_date, 'YY/MM/DD') as "writeDate" 
 	from re
+
+	where search_id = #{searchId}
+	
 	<choose>
 		<when test="orderby != null and orderby != ''">
 			order by #{orderby} desc

@@ -25,7 +25,7 @@ public class ReDAOMybatis {
 		return mybatis.selectList("ReDAO.reList");
 	}
 	public List<Map<String, Object>> ReMap(ReVO vo){
-		return mybatis.selectList("ReDAO.reMap");
+		return mybatis.selectList("ReDAO.reMap", vo);
 	}
 	
 	
