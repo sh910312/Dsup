@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.dsup.dbmanagement.TablespaceVO;
+import com.dsup.dbmanagement.UserTbspcTbVO;
 
 @Repository
 public class StorageDAOMybatis {
@@ -24,5 +25,14 @@ public class StorageDAOMybatis {
 	// 테이블 스페이스 삭제
 	public void deleteStorage(String tablespaceName) {
 		mybatis.delete("StorageDAO.deleteTablespace", tablespaceName);
+	}
+	
+	// [윤정1030] 테이블스페이스 생성
+	public void createStorage(String sql) {
+		mybatis.insert("StorageDAO.createTablespace", sql);
+	}
+	// [윤정1030] 테이블스페이스 생성 후, user_tbspc_tb에 데이터 삽입
+	public void insertUserTbspcTb(UserTbspcTbVO userTbspcTb) {
+		mybatis.insert("StorageDAO.insertUserTbspcTb", userTbspcTb);
 	}
 }

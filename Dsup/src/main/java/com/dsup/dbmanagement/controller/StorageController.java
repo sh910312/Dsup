@@ -49,6 +49,8 @@ public class StorageController {
 	@RequestMapping("/storageCreate")
 	public String storageCreate(@RequestParam String sql, @RequestParam String tablespaceName, @RequestParam String userId) {
 		
+		
+		//storageService.createStorage(sql);
 		return "redirect:storageList";
 	}
 }

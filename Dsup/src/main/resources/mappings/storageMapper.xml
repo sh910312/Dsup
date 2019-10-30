@@ -13,4 +13,13 @@
 	<delete id="deleteTablespace" parameterType="String">
 		DROP TABLESPACE #{tablespaceName} INCLUDING CONTENTS AND DATAFILES
 	</delete>
+	
+	<insert id="createTablespace" parameterType="String">
+		#{sql}
+	</insert>
+	
+	<insert id="insertUserTbspcTb" parameterType="userTbspcTb">
+		INSERT INTO user_tbspc_tb (tablespace_name, user_id)
+		VALUES( #{tablespaceName}, #{userId} )
+	</insert>
 </mapper>

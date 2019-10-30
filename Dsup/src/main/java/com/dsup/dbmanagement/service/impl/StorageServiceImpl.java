@@ -6,12 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dsup.dbmanagement.TablespaceVO;
+import com.dsup.dbmanagement.UserTbspcTbVO;
 import com.dsup.dbmanagement.service.StorageService;
 
-/*
- * 윤정
- * 
- */
 @Service
 public class StorageServiceImpl implements StorageService {
 	
@@ -25,6 +22,13 @@ public class StorageServiceImpl implements StorageService {
 	@Override
 	public void deleteStorage(String tablespaceName) {
 		dao.deleteStorage(tablespaceName);
+	}
+
+	// [윤정 1030] 테이블스페이스 생성
+	@Override
+	public void createStorage(String sql, UserTbspcTbVO vo) {
+		dao.createStorage(sql);
+		dao.insertUserTbspcTb(vo);
 	}
 
 }
