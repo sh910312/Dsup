@@ -60,9 +60,8 @@
 <body>
 	<form onsubmit="formCheck()" method = "post" action = "storageCreate">
 	<input type = "hidden" id = "sql" name = "sql">
-	<input type = "hidden" name = "userId" value = "${userId}">
 		<h1>테이블 스페이스</h1>
-		테이블 스페이스 이름 <input type = "text" id = "tablespaceName" required> <br>
+		테이블 스페이스 이름 <input type = "text" name = "tablespaceName" id = "tablespaceName" required> <br>
 		
 		<h1>데이터 파일</h1>
 		<table border = "1" id = "tb1">
@@ -89,7 +88,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<input type = "button" id="btn" value = "생성">
+		<input type = "submit" id="btn" value = "생성">
 	</form>
 </body>
 </html>

@@ -22,10 +22,12 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
  	<typeAlias alias="user" type="com.dsup.dbmanagement.UserVO"/> <!-- 무겸형님꺼 -->
  	<typeAlias alias="chat" type="com.dsup.chat.ChatVO"/>
  	<typeAlias alias="search" type="com.dsup.chat.SearchVO"/>
+ 	<typeAlias alias="re" type="com.dsup.chat.ReVO"/>
  	<typeAlias alias="tablespace" type="com.dsup.dbmanagement.TablespaceVO"/>
  	<typeAlias alias="backup" type="com.dsup.dbmanagement.BackupVO"/>
  	<typeAlias alias="datafile" type="com.dsup.dbmanagement.DatafileVO"/>
  	<typeAlias alias="schema" type="com.dsup.distributing.SchemaVO"/>
  	<typeAlias alias="member" type="com.dsup.member.MemberVO"/>
+ 	<typeAlias alias="userTbspcTb" type="com.dsup.dbmanagement.UserTbspcTbVO"/>
  </typeAliases>
 </configuration>

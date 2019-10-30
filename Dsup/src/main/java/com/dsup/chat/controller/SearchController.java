@@ -7,19 +7,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import com.dsup.chat.ReVO;
 import com.dsup.chat.SearchVO;
+import com.dsup.chat.service.ReService;
 import com.dsup.chat.service.SearchService;
 
 @Controller
 public class SearchController {
 
-	// 등록(inset) / 상세조회(get) / 전체조회(getList) / 검색(getMap)
 
 	@Autowired
 	SearchService searchservice;
-
+	
+	@Autowired
+	ReService reService;
+	
 	// 키워드 등록
 	@RequestMapping("/insertSearchForm")
 	public String insertSearchForm() {
@@ -31,7 +34,7 @@ public class SearchController {
 	@RequestMapping("/insertSearch")
 	public String insertSearch(SearchVO vo, HttpServletRequest request, HttpSession session) {
 
-		vo.setUserId("user"); // 로그인 세션 살려놓기 ( 1 = 관리자)
+		vo.setUserId("test"); // 로그인 세션 살려놓기 ( 1 = 관리자)
 		System.out.println(vo);
 
 		searchservice.insertSearch(vo); // 등록 실행 끝나면 아래 실행
@@ -49,14 +52,13 @@ public class SearchController {
 
 	// 상세조회
 	@RequestMapping("/getSearch")
-	public String getSearch(HttpServletRequest request, Model model, @RequestParam int searchId) {
-
-		SearchVO vo = new SearchVO();
-		vo.setSearchId(searchId);
-
-		model.addAttribute("search", searchservice.getSearch(vo));
+	public String getSearch(HttpServletRequest request, Model model, SearchVO svo, ReVO revo) {
+		
+		model.addAttribute("search", searchservice.getSearch(svo));
+		model.addAttribute("reList", reService.ReMap(revo));
 		return "chat/keyword/getsearch";
 	}
+
 
 	// 전체 조회
 	@RequestMapping("/SearchMap")
@@ -65,5 +67,8 @@ public class SearchController {
 		model.addAttribute("searchList", searchservice.SearchMap(vo));
 		return "chat/keyword/search";
 	}
+	
+	
+	
 
 }

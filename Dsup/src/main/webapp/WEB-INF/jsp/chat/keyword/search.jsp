@@ -63,11 +63,11 @@
 									</div>
 								</div>
 								<div align="center"> <!-- 검색 완료시 (등록/수정) 버튼이 보이게 조건 추가.   -->
- 								<c:if test="${userId != null}"> --%>  <!-- 삭제=관리자권한 -->
+ 								<c:if test="${usersId != null}"> --%>  <!-- 삭제=관리자권한 -->
  									<button class="btn btn-default" style="height:40px; width:100px;">삭&nbsp;&nbsp;제</button>
   								</c:if>
- 								<c:if test="${userId != null}">  <!-- 등록/수정 = 관리자/유저 권한 -->
- 									<button type="button" class="btn btn-default" style="height:40px; width:100px;" onclick="javascript:openButton(0);">등&nbsp;&nbsp;록</button>
+ 								<c:if test="${usersId == null}">  <!-- 등록/수정 = 관리자/유저 권한 -->
+ 									<button type="button" class="btn btn-default" style="height:40px; width:100px;">등&nbsp;&nbsp;록</button>
 									<button type="button" class="btn btn-default" style="height:40px; width:100px;" onclick="javascript:openButton(1);">수&nbsp;&nbsp;정</button>
 								</c:if>
 									<button type="button" class="btn btn-default" style="height:40px; width:100px;" onclick="self.close();">닫&nbsp;&nbsp;기</button>
