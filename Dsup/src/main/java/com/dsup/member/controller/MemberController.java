@@ -18,11 +18,6 @@ public class MemberController {
 
 	@Autowired MemberService memberService;
 	
-	//메인으로 이동
-	@RequestMapping("/main")
-	public String Main() {
-		return "member/main";
-	}
 	
 	//내정보로 이동
 	@RequestMapping("/myInfo")
