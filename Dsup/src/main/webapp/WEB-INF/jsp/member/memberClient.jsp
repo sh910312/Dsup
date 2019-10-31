@@ -13,7 +13,8 @@
 <script src="./resources/json.min.js"></script>
 <script>
 	$(function(){
-		memberList();		//목록조회
+		memberList();	//목록조회
+		
 		memberInsert();	//등록버튼 이벤트지정
 		
 		memberSelect();	//조회

@@ -17,8 +17,8 @@ public class StorageDAOMybatis {
 	@Resource(name="sqlSessionTemplate") SqlSessionTemplate mybatis;
 	
 	// 1022 테이블스페이스 이름 조회
-	public List<TablespaceVO> getStorageList(String tablespaceName) {
-		List<TablespaceVO> list = mybatis.selectList("StorageDAO.getTablespaceList", tablespaceName);
+	public List<TablespaceVO> getStorageList(String userId) {
+		List<TablespaceVO> list = mybatis.selectList("StorageDAO.getTablespaceList", userId);
 		return list;
 	}
 	

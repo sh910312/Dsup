@@ -47,8 +47,9 @@ public class StorageController {
 	// 테이블스페이스 리스트 (이름만) 조회 - 백업생성폼에서 쓸 것
 	@ResponseBody
 	@RequestMapping(value="/tablespaceList", method=RequestMethod.GET)
-	public List<TablespaceVO> getTablespaceList(){
-		return storageService.getStorageList("");
+	public List<TablespaceVO> getTablespaceList(HttpSession session){
+		String userId = (String)session.getAttribute("userId");
+		return storageService.getStorageList(userId);
 	}
 	
 	// [윤정 1029] 테이블스페이스 생성 페이지로 이동

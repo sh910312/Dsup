@@ -9,5 +9,12 @@ public class MemberVO {
 	private String nickname;
 	private String eMail;
 	private String userDate;
-	private String userType;
+	private String userType; //관리자(2) / 유저(1)
+	
+	public String geteMail() {
+		return eMail;
+	}
+	public void seteMail(String eMail) {
+		this.eMail = eMail;
+	}
 }

@@ -12,9 +12,40 @@
 <script>
 	$(function() {
 		userCreate(); //user등록
-
+		idCheckFunction(); //id체크 
+		tablespaceList()
 	});
-
+	//비밀번호 입력확인
+	$(function(){
+		$("#passwordcheck,#password").keyup(function(){
+			if( $("#password").val() != "" )
+				if( $("#password").val() == $("#passwordcheck").val()) { // 둘 다 똑같이 입력했으면
+					$("#passwordChkMsg").html("비밀번호가 일치합니다.").css("color", "green");
+					$("#passwordResult").val("true");
+				} else { // 다르게 입력했으면
+					$("#passwordChkMsg").html("비밀번호가 일치하지 않습니다.").css("color", "red");
+					$("#passwordResult").val("false");
+				}
+			
+		});
+	});
+	function formCheck(){
+		if($("$passwordResult").val()=="false"){
+			alert("비밀번호를 확인하세요!");
+			return false;
+		}
+	}
+	
+	//테이블 스페이스 리스트
+	function tablespaceList(){
+		$.ajax({
+			url: 'getStorage',
+			type: 'GET',
+			dataType: "json",
+			success : tablespaceListResult
+		})
+	}
+	
 	//유저생성
 	function userCreate() {
 		$("#btnIns").on("click", function() {
@@ -36,71 +67,86 @@
 			});
 		});//등록 버튼 클릭
 	}//userInsert
-
-	$(function idChk() {
-		//아이디 중복체크
-		$('#id').blur(function() {
+	
+	
+	// 아이디 유효성 검사(1 = 중복 / 0 != 중복)
+	
+	function idCheckFunction(){
+		$("#id").blur(function() {
+			// id = "id_reg" / name = "userId"
+		
+			var id = $('#id').val();
 			$.ajax({
-				type : "POST",
-				url : "checkSignup",
-				data : {
-					"id" : $('#id').val()
-				},
-				success : function(data) { //data : checkSignup에서 넘겨준 결과값
-					if ($.trim(data) == "YES") {
-						if ($('#id').val() != '') {
-							alert("사용가능한 아이디입니다.");
-						}
+				url : '${pageContext.request.contextPath}/idCheck?id='+ id,
+				type : 'get',
+				success : function(data) {
+					console.log("1 = 중복o / 0 = 중복x : "+ data);							
+					
+					if (data == 1) {
+						// 1 : 아이디가 중복되는 문구
+						$("#id_check").text("사용중인 아이디입니다 :p");
+						$("#id_check").css("color", "red");
+						$("#reg_submit").attr("disabled", true);
 					} else {
-						if ($('#id').val() != '') {
-							alert("중복된 아이디입니다.");
-							$('#id').val('');
-							$('#id').focus();
+						 if(id == ""){
+							
+							$('#id_check').text('아이디를 입력해주세요 :)');
+							$('#id_check').css('color', 'red');
+							$("#reg_submit").attr("disabled", true);				
+							
+						} else{
+							$("#id_check").text("");
+							$("#reg_submit").attr("disabled", false);
 						}
 					}
+				}, error : function() {
+						console.log("실패");
 				}
-			})
-		})
-	});
+			});
+		});
+	}
 </script>
 </head>
 <body>
+<%@include file="../../DBbar.jsp" %>
+<div class="form-group">
 	<form action="userList.jsp" id="frm">
 		<table>
 			<tr>
-				<td id="id">이름</td>
-				<td><input type="text" name="id" maxlength="50"> <input
-					type="button" value="ID 중복확인" onclick="idChk()"></td>
+				<td>이름</td>
+				<td><input type="text" class="form-control" name="id" id="id" placeholder="ID" maxlength="50" required>
+				<div class="check_font" id="id_check"></div> 
+				</td> 
 			</tr>
 
-			<tr>
-				<td id="password">비밀번호</td>
-				<td><input type="password" name="password" maxlength="50">
+		 	<tr>
+				<td>비밀번호*</td>
+				<td><input type="password" name="password" id="password" placeholder="PASSWORD" maxlength="50" required>
 				</td>
 			</tr>
 
 			<tr>
-				<td id="password">비밀번호 확인</td>
-				<td><input type="password" name="passwordcheck" maxlength="50">
+				<td>비밀번호 확인*</td>
+				<td><input type="password" name="passwordcheck" id="passwordcheck" placeholder="PASSWORD" maxlength="50" required>
+				<span id = "passwordChkMsg"> </span>
 				</td>
 			</tr>
 			<tr>
 				<td>default tablespace</td>
 				<td><select name="defaultTableSpace">
-				<option value="USERS">USERS</option>
+				<c:forEach var = "list" items="${tableSpaceList}">
+				<option value="${list.tablespaceName}">${list.tablespaceName}</option>
+				</c:forEach>
 				</select>
 			</tr>
-			
 			<tr>
-				<td>temporary tablespace</td>
-				<td><select name="temporaryTableSpace">
-				<option value="TEMP">TEMP</option>
-				</select>
+				<td><input type="radio" name="accountStatus" value="lock" checked/>lock</td>
+				<td><input type="radio" name="accountStatus" value="unlock"/>unlock</td>
 			</tr>
 		</table>
 	
 		<button type="button" id="btnIns">생성</button>
 	</form>
-
+</div>
 </body>
 </html>
