@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.dsup.chat.Paging;
 import com.dsup.chat.ReVO;
 import com.dsup.chat.SearchVO;
 import com.dsup.chat.service.ReService;
@@ -52,23 +54,44 @@ public class SearchController {
 
 	// 상세조회
 	@RequestMapping("/getSearch")
-	public String getSearch(HttpServletRequest request, Model model, SearchVO svo, ReVO revo) {
+	public String getSearch(HttpServletRequest request, Model model, SearchVO svo, ReVO revo, Paging repaging) {
 		
 		model.addAttribute("search", searchservice.getSearch(svo));
-		model.addAttribute("reList", reService.ReMap(revo));
+		model.addAttribute("reList", reService.ReMap(revo, repaging)); // 댓글 리스트 불러오기
+		model.addAttribute("repaging",repaging);
+		
 		return "chat/keyword/getsearch";
 	}
+	
+//	// 상세조회
+//	@RequestMapping("/getSearch")
+//	public String getSearch(HttpServletRequest request, Model model, SearchVO svo, ReVO revo) {
+//		
+//		model.addAttribute("search", searchservice.getSearch(svo));
+//		
+//		model.addAttribute("reList", reService.ReMap(revo)); // 댓글 리스트 불러오기
+//		return "chat/keyword/getsearch";
+//	}
 
 
+//	// 전체 조회
+//	@RequestMapping("/SearchMap")
+//	public String SearchMap(SearchVO vo, Model model) {
+//
+//		model.addAttribute("searchList", searchservice.SearchMap(vo));
+//		return "chat/keyword/search";
+//	}
+	
+	
 	// 전체 조회
 	@RequestMapping("/SearchMap")
-	public String SearchMap(SearchVO vo, Model model) {
+	public ModelAndView SearchMap(ModelAndView mv,  SearchVO vo, Paging paging) {
+		
+		mv.addObject("searchList", searchservice.SearchMap(vo,paging));
+		mv.addObject("paging", paging);
+		mv.setViewName("chat/keyword/search");
+		return mv;
 
-		model.addAttribute("searchList", searchservice.SearchMap(vo));
-		return "chat/keyword/search";
 	}
-	
-	
-	
 
 }
