@@ -207,12 +207,6 @@
 						<td>default tablespace</td>
 						<td><select name="defaultTableSpace">
 								<option value="USERS">USERS</option>
-								<option value="UNDOTBS1">UNDOTBS1</option>
-								<option value="TEMP">TEMP</option>
-								<option value="SYSTEM">SYSTEM</option>
-								<option value="SYSAUX">USESYSAUXRS</option>
-								<option value="FDA_TBS">USFDA_TBSERS</option>
-								<option value="DATA_2K_TBS">DATA_2K_TBS</option>
 						</select>
 					</tr>
 					<tr>

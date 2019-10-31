@@ -3,6 +3,8 @@ package com.dsup.dbmanagement.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +24,7 @@ public class UserController {
 
 	@Autowired UserService userService;
 	@Autowired StorageService storageService;
+	
 	//전체조회 
 	@RequestMapping("userList")
 	public String userList(UserVO vo, Model model) {
@@ -30,7 +33,9 @@ public class UserController {
 	}
 	//등록폼
 	@RequestMapping("/userCreateForm")
-	public String userCreateForm() {
+	public String userCreateForm(Model model, HttpSession session) {
+		String userId = (String)session.getAttribute("userId");
+		model.addAttribute(storageService.getStorageList(userId));
 		return "dbmanagement/user/userCreate";
 	}
 
