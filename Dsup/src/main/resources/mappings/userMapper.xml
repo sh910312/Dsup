@@ -8,18 +8,14 @@
 		{call ADD_USER (#{id}, #{password}, #{defaultTableSpace}, #{accountStatus})}
 	</insert>
 	
-	<!-- 테이블스페이스 이름만 조회 : 백업생성에서 씀 -->
-	<select id="getTablespaceList" parameterType="String" resultType="userTbspcTb">
-		SELECT tablespace_name "tablespaceName"
-		FROM user_tbspc_tb
-		WHERE user_id = #{userId}
-	</select>
 	
 	<!-- 리스트 -->
 	<select id="userList" resultType="map">
-	SELECT USERNAME, ACCOUNT_STATUS, DEFAULT_TABLESPACE 
-	FROM DBA_USERS 
-	order by USERNAME
+		SELECT USERNAME, ACCOUNT_STATUS, DEFAULT_TABLESPACE 
+		FROM DBA_USERS, USER_SCH_TB
+		where DBA_USERS.USERNAME = USER_SCH_TB.USER_SCH_NM
+		and USER_SCH_TB.USER_ID = #{id}
+		order by USERNAME
 	</select>
 	
 	<!-- 삭제 -->

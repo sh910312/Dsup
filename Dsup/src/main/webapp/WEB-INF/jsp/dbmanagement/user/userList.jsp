@@ -24,6 +24,7 @@
 		userList(); //userList조회
 		userDelete(); //user삭제
 		userUpdateForm(); //userUpdate수정팝업
+		
 	});
 	//목록조회요청
 	function userList() {
@@ -38,6 +39,16 @@
 		});
 	}
 
+	//테이블 스페이스 리스트
+	function tablespaceList(){
+		$.ajax({
+			url: 'getStorage',
+			type: 'GET',
+			dataType: "json",
+			success : tablespaceListResult
+		})
+	}
+	
 	//목록조회응답
 	function userListResult(data) {
 		$("#userList").empty();
@@ -47,6 +58,7 @@
 					$('<td>').html(item.DEFAULT_TABLESPACE)).append(
 					$('<td>').html('<button id="btnDelete">삭제')).append(
 					$('<td>').html('<button id="btnUpdate">수정')).append(
+					$('<td>').html('<button id="btnCreate">생성')).append(
 					$('<input type="hidden" id="hidden_userId">').val(item.USERNAME)).appendTo('#userList');
 
 			// <input type = "hidden" id = "hidden_userId" value="item.USERNAME">
@@ -181,9 +193,10 @@
 </script>
 </head>
 <body>
+<%@include file="../../DBbar.jsp" %>
+${tableSpaceList}
 	<div id="dialog-form">
 		<p class="validateTips"></p>
-
 		<div class="form-group row">
 		<form id="form1">
 			<table>
@@ -206,7 +219,9 @@
 					<tr>
 						<td>default tablespace</td>
 						<td><select name="defaultTableSpace">
-								<option value="USERS">USERS</option>
+						<c:forEach var="list" items="${tableSpaceList}">
+							<option value="${list.tablespaceName}">${list.tablespaceName}</option>
+						</c:forEach>
 						</select>
 					</tr>
 					<tr>
@@ -219,6 +234,7 @@
 	</div>
 
 	<div class="container">
+	<button type="button" onclick="location.href='userCreateForm' ">생성</button>
 		<h2>User 목록</h2>
 		<table class="table text-center">
 			<thead>

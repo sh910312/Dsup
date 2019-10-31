@@ -52,10 +52,4 @@ public class UserServiceImpl implements UserService{
 	}
 
 
-	@Override
-	public int insertSchemaTb(UserSchemaVO dto) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 }
