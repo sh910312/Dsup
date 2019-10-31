@@ -19,7 +19,7 @@ public class LoginController {
 	//로그인폼 이동
 	@RequestMapping(value = "login", method = RequestMethod.GET)	//@RequestMapping("loginForm")
 	public String loginForm() {
-		return "member/login";
+		return "index";
 	}
 	
 	//로그인처리
@@ -28,7 +28,7 @@ public class LoginController {
 		//model.addAttribute("userVO", vo); 를 자동으로해준다
 		MemberVO member = memberService.login(vo);
 		if(member == null) {
-			return "member/login";
+			return "index";
 		} else {
 			//세션에 저장 목록으로 페이지이동
 			session.setAttribute("member", member);
@@ -36,11 +36,21 @@ public class LoginController {
 			return "redirect:main";
 		}
 	}
+	@RequestMapping("main")
+	public String main() {
+		return "main";
+	}
+	
+	@RequestMapping("index")
+	public String index() {
+		return "index";
+	}
+	
 	
 	//로그아웃처리
 	@RequestMapping("logout")
 	public String logout(HttpSession session) {
 		session.invalidate();	//세션무효화
-		return "redirect:login";
+		return "redirect:index";
 	}
 }

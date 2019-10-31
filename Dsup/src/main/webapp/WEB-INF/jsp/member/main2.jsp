@@ -72,42 +72,48 @@
     <div id="myModal" class="modal">
       <!-- Modal content -->
       <div class="modal-content">
-        <span class="close">&times;</span>                                                               
-      	<h3>MyInfo</h3>
-		아이디: ${member.userId}<br>
-		닉네임: ${member.nickname}<br>
-		이메일: ${member.eMail}<br>
-		가입날짜: <fmt:parseDate value="${member.userDate}" var="dateFmt" pattern="yyyy-MM-dd HH:mm:ss"/>
-		<fmt:formatDate value="${dateFmt}" pattern="yyyy-MM-dd"/><br>
-		<br><br><br><br><br><br><br>
-		<button id="myBtn">정보변경</button>
+        <div id="myInfo">
+	        <span class="close">&times;</span>                                                               
+	      	<h3>MyInfo</h3>
+			아이디: ${member.userId}<br>
+			닉네임: ${member.nickname}<br>
+			이메일: ${member.eMail}<br>
+			가입날짜: <fmt:parseDate value="${member.userDate}" var="dateFmt" pattern="yyyy-MM-dd HH:mm:ss"/>
+				    <fmt:formatDate value="${dateFmt}" pattern="yyyy-MM-dd"/><br>
+			<br><br><br><br><br><br><br>
+			
+			<button id="myBtn2">정보변경</button>
+		</div>
+		<div id="modify">
+		    <span class="close">&times;</span> 
+		    <h3>Modify</h3>
+		      아이디: ${member.userId}<br>
+			닉네임: <br>
+			이메일: <br>
+		</div>
       </div>
-    </div>
+	</div>
     
-    <div id="myModal2" class="modal">
-    	<div class="modal-content">
-    		<span class="close">&times;</span> 
-    		111111
-    	</div>
-    </div>
     
 <script type="text/javascript">
-	// Get the modal
 	var modal = document.getElementById('myModal');
-	var model2 = document.getElementById('myModal2');
-	// Get the button that opens the modal
+	var myInfo = document.getElementById('myInfo');
+	var modify = document.getElementById('modify');
 	var btn = document.getElementById("myBtn");
-	// Get the <span> element that closes the modal
-	var span = document.getElementsByClassName("close")[0];                                          
-	// When the user clicks on the button, open the modal 
+	var btn2 = document.getElementById("myBtn2");
+	var close = document.getElementsByClassName("close")[0]; 
+	
+	modify.style.display = "none";
 	btn.onclick = function() {
 	    modal.style.display = "block";
 	}
-	// When the user clicks on <span> (x), close the modal
-	span.onclick = function() {
+	btn2.onclick = function(){
+		modify.style.display = "block";
+	    myInfo.style.display = "none";
+	}
+	close.onclick = function() {
 	    modal.style.display = "none";
 	}
-	// When the user clicks anywhere outside of the modal, close it
 	window.onclick = function(event) {
 	    if (event.target == modal) {
 	        modal.style.display = "none";

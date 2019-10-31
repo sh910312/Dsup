@@ -81,7 +81,12 @@
 			var $used = $("<td>").text((item.used));
 			var $free = $("<td>").text((item.free));
 			
-			$("tbody").append($("tr").append()
+			$("tbody").append($("tr").append($checkBox)
+									.append($tablespaceName)
+									.append($status)
+									.append($total)
+									.append($used)
+									.append($free)
 					);
 		});
 	}
@@ -101,7 +106,6 @@
 			<th>total MB</th>
 			<th>used MB</th>
 			<th>free MB</th>
-			<th>used percent</th>
 		</tr>
 	</thead>
 	<tbody>
