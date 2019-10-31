@@ -8,23 +8,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.dsup.chat.ReVO;
 import com.dsup.chat.SearchVO;
+import com.dsup.chat.service.ReService;
 import com.dsup.chat.service.SearchService;
 
 @Controller
 public class SearchController {
 
-	// 등록(inset) / 상세조회(get) / 전체조회(getList) / 검색(getMap)
 
 	@Autowired
 	SearchService searchservice;
-
-//	// 키워드 검색창 (메인화면)
-//	@RequestMapping("/search")
-//	public String searchform() {
-//		return "chat/keyword/search";
-//	}
-
+	
+	@Autowired
+	ReService reService;
+	
 	// 키워드 등록
 	@RequestMapping("/insertSearchForm")
 	public String insertSearchForm() {
@@ -43,22 +41,24 @@ public class SearchController {
 		// redirect: << 다시 요청하는거(재요청)
 		return "redirect:/SearchMap"; // 이쪽으로 이동 // redirech 안에는 requestmapping 내용을 넣는다
 	}
-	
+
 	// 선택 삭제
 	@RequestMapping("/deleteSearchList")
 	public String deleteSearchList(SearchVO vo) {
 		searchservice.deleteSearchList(vo);
 		return "redirect:/SearchMap";
-		
+
 	}
 
 	// 상세조회
 	@RequestMapping("/getSearch")
-	public String getSearch(SearchVO vo, Model model) {
-
-		model.addAttribute("search", searchservice.getSearch(vo));
+	public String getSearch(HttpServletRequest request, Model model, SearchVO svo, ReVO revo) {
+		
+		model.addAttribute("search", searchservice.getSearch(svo));
+		model.addAttribute("reList", reService.ReMap(revo));
 		return "chat/keyword/getsearch";
 	}
+
 
 	// 전체 조회
 	@RequestMapping("/SearchMap")
@@ -67,7 +67,8 @@ public class SearchController {
 		model.addAttribute("searchList", searchservice.SearchMap(vo));
 		return "chat/keyword/search";
 	}
+	
+	
+	
 
-	
-	
 }

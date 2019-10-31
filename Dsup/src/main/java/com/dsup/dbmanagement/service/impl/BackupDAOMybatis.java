@@ -12,7 +12,7 @@ import com.dsup.dbmanagement.DatafileVO;
 
 @Repository
 public class BackupDAOMybatis {
-	@Resource(name="DBA") SqlSessionTemplate mybatis;
+	@Resource(name="sqlSessionTemplate") SqlSessionTemplate mybatis;
 
 	// [윤정1027] 테이블스페이스 백업 시작
  	public void beginBackup(String tablespaceName) {

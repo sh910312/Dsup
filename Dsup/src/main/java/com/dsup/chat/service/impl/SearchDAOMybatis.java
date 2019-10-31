@@ -13,7 +13,6 @@ import com.dsup.chat.SearchVO;
 @Repository
 public class SearchDAOMybatis { // (p.513)
 
-	// 등록(inset) / 상세조회(get) / 전체조회(getList) / 검색(getMap)
 
 	@Resource(name="sqlSessionTemplate")
 	SqlSessionTemplate mybatis;
@@ -31,7 +30,7 @@ public class SearchDAOMybatis { // (p.513)
 	}
 	// 상세 조회
 	public SearchVO getSearch(SearchVO vo) {
-		return mybatis.selectOne("SearchDAO.getsearch", vo);
+		return mybatis.selectOne("SearchDAO.getSearch", vo);
 	}
 	
 	// 검색

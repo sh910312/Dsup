@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page session="false"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +11,13 @@
 	<P>The time on the server is ${serverTime}.</P>
 	<!-- 윤정 -->
 	<a href = "dbIndex">DB관리</a>
+	<a href = "login">로그인</a>
+	<a href = "logout">로그아웃</a>
+	<br>
+	 아이디  : ${userId}
+	
+	<hr>
+	
 	<!-- 재문 -->
 	<a href = "sqlIndex">SQL</a>
 </body>
