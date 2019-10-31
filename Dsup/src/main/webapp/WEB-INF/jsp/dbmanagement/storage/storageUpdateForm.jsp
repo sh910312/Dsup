@@ -7,6 +7,7 @@
 	<title>Update Storage</title>
 </head>
 <body>
+<%@include file="/WEB-INF/jsp/DBbar.jsp" %>
 
 </body>
 </html>

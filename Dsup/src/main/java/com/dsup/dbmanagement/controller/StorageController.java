@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.dsup.dbmanagement.TablespaceVO;
 import com.dsup.dbmanagement.UserTbspcTbVO;
@@ -27,7 +28,7 @@ public class StorageController {
 		return "dbmanagement/storage/storageList";
 	}
 	
-	// [윤정1030] 테이블스페이스 목록
+	// [윤정1030] 테이블스페이스 목록 + 사용량
 	@ResponseBody
 	@RequestMapping(value="/getStorage",  method=RequestMethod.GET)
 	public List<TablespaceVO> getStorage(HttpSession session) {
@@ -67,5 +68,32 @@ public class StorageController {
 		vo.setUserId((String)session.getAttribute("userId"));
 		storageService.createStorage(sql, vo);
 		return "redirect:storageList";
+	}
+	
+	// [윤정 1031] 데이터파일 상세보기
+	@RequestMapping("/storageShow")
+	public ModelAndView storageShow(@RequestParam String tablespaceName, HttpSession session) {
+		ModelAndView mv = new ModelAndView();
+		
+		String userId = (String)session.getAttribute("userId");
+		UserTbspcTbVO vo = new UserTbspcTbVO();
+		vo.setUserId(userId);
+		vo.setTablespaceName(tablespaceName);
+		TablespaceVO ts = new TablespaceVO();
+		ts = storageService.getStorageOne(vo);
+		
+		if(ts != null) {
+			mv.addObject("ts", ts);
+			mv.addObject("df", storageService.getDatafile(ts.getTablespaceName()));
+		}
+		mv.setViewName("dbmanagement/storage/storageShow");
+		return mv;
+	}
+	
+	// [윤정 1031] 테이블스페이스명 중복확인, 예약어 체크
+	@RequestMapping(value="/tsNameChk", method=RequestMethod.GET)
+	@ResponseBody
+	public int tsNameChk(@RequestParam String tablespaceName) {
+		return storageService.tsNameChk(tablespaceName);
 	}
 }

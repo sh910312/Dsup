@@ -7,6 +7,13 @@
 	<title>Create Storage</title>
 	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 	<script>
+	$(function(){
+		$("#btn").click(formCheck);
+		$("#addbtn").click(add);
+		tsNameChkFunction();
+	});
+	
+	// 제출 전 확인
 	function formCheck(){
 		var tsname = $("#tablespaceName").val();
 		var datafile = "";
@@ -21,7 +28,7 @@
 				return false;
 			}
 			
-			datafile += " '" + filename + ".dbf' size " + size + sizeunit + ","
+			datafile += " '" +  ${sessionScope.member.userId} + "_" + filename + ".dbf' size " + size + sizeunit + ","
 		});
 		
 		datafile = datafile.substring(0, datafile.length-1); // 맨 마지막 , 제거
@@ -51,17 +58,39 @@
 		$("#tb1").append($tr); // 테이블에 tr 추가
 	}
 	
-	$(function(){
-		$("#btn").click(formCheck);
-		$("#addbtn").click(add);
-	});
+	// [윤정 1031] 테이블스페이스명 유효성 검사 
+	function tsNameChkFunction() {
+		$("#tablespaceName").blur(function(){
+			var name = $("#tablespaceName").val();
+			name = name.toUpperCase();
+			$("#tablespaceName").val(name);
+			
+			$.ajax({
+				url : "tsNameChk?tablespaceName=" + name,
+				type : 'GET',
+				success : function(data) {
+					// 중복이면 0, 아니면 1
+					if(data == 0) { // 중복
+						
+					} else if(name == '') { // 아이디를 입력하지 않은 경우
+						
+					} else { // 중복x
+						
+					}
+				}
+			})
+		});
+	}
+	
 	</script>
 </head>
 <body>
+<%@include file="/WEB-INF/jsp/DBbar.jsp" %>
 	<form onsubmit="formCheck()" method = "post" action = "storageCreate">
 	<input type = "hidden" id = "sql" name = "sql">
 		<h1>테이블 스페이스</h1>
-		테이블 스페이스 이름 <input type = "text" name = "tablespaceName" id = "tablespaceName" required> <br>
+		테이블 스페이스 이름 <input type = "text" name = "tablespaceName" id = "tablespaceName" required> 
+		<br>
 		
 		<h1>데이터 파일</h1>
 		<table border = "1" id = "tb1">
@@ -88,6 +117,7 @@
 				</tr>
 			</tbody>
 		</table>
+		데이터파일은 ${sessionScope.member.userId}_입력한 파일명.dbf 이름으로 저장됩니다.
 		<input type = "submit" id="btn" value = "생성">
 	</form>
 </body>
