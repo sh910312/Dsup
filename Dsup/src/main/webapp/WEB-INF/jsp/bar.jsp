@@ -18,7 +18,7 @@
 프로필<select id="menu" onchange="goPage()">
 	<option value="">쪽지함</option>
 	<option value="">채팅봇</option>
-	<option value="">Q&A</option>
+	<option value="">Q &amp; A</option>
 	<option value="myInfo">정보변경</option>
 	<option value="logout">로그아웃</option>
 </select>
