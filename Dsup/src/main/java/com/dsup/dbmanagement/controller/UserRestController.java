@@ -1,14 +1,17 @@
 package com.dsup.dbmanagement.controller;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dsup.dbmanagement.UserVO;
@@ -39,6 +42,19 @@ public class UserRestController {
 	public UserVO getUser(@PathVariable String id, UserVO vo, Model model) {
 		vo.setId(id);
 		return userService.getUser(vo);
+	}
+
+	//업데이트
+	@RequestMapping(value="/users", method=RequestMethod.PUT, consumes="application/json" )
+	@ResponseBody
+	public UserVO updateUser(@RequestBody UserVO vo, Model model) {
+		
+		/*
+		 * if(vo.getDefaultTableSpace() == null || vo.getTemporaryTableSpace() == null)
+		 * { vo.setDefaultTableSpace("USERS"); vo.setTemporaryTableSpace("TEMP"); }
+		 */
+		userService.updateUser(vo);
+		return vo;
 	}
 	
 }
