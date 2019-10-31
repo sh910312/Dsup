@@ -14,8 +14,8 @@ public interface UserService {
 	public List<Map<String,Object>> userList(UserVO vo);
 	
 	//id중복체크
-	int userIdCheck(String user_id);
-
+	public int idCheck(UserVO vo);
+	
 	//삭제
 	public int deleteUser(UserVO vo);
 	

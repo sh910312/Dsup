@@ -26,11 +26,16 @@ public class UserServiceImpl implements UserService{
 		return userDAO.userList(vo);
 	}
 
-	@Override
-	public int userIdCheck(String user_id) {
+	public int idCheck(UserVO vo) {
+		UserVO user = userDAO.getUser(vo);
+		if(user == null)
+			
 		return 0;
+		else{
+			return 1;
+		}
 	}
-
+	
 	@Override
 	public int deleteUser(UserVO dto) {
 		return userDAO.deleteUser(dto);
@@ -46,27 +51,11 @@ public class UserServiceImpl implements UserService{
 		return userDAO.getUser(vo);
 	}
 
+
 	@Override
 	public int insertSchemaTb(UserSchemaVO dto) {
+		// TODO Auto-generated method stub
 		return 0;
 	}
-
-
-
-
-	
-	
-	
-	
-	
-	
-	/*
-	 * @Override public int userIdCheck(UserVO vo) { return userDAO.insertUser(vo);
-	 * }
-	 */
-
-
-	
-	
 
 }

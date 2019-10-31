@@ -45,6 +45,11 @@ public class UserDAO {
 		return mybatis.insert("UserDAO.insertinsertSchemaTb", dto);
 	}
 
+	//id중복 체크
+	public int checkOverId(String id) {
+		return 0;
+	}
+
 	
 
 }

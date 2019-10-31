@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dsup.dbmanagement.UserVO;
 import com.dsup.dbmanagement.service.StorageService;
 import com.dsup.dbmanagement.service.UserService;
+import com.dsup.dbmanagement.service.impl.UserServiceImpl;
 
 @Controller
 public class UserController {
@@ -33,30 +34,18 @@ public class UserController {
 		return "dbmanagement/user/userCreate";
 	}
 
-	//id중복체크
-	@RequestMapping(value="/checkSingup", method=RequestMethod.POST)
-	public @ResponseBody String AjaxView(  
-	        @RequestParam("id") String id){
-	String str = "";
-	int idcheck = userService.userIdCheck(id);
-	if(idcheck==1){ //이미 존재하는 계정
-		str = "NO";	
-	}else{	//사용 가능한 계정
-		str = "YES";	
-	}
-	return str;
-	}
 	//등록
 	@RequestMapping(value="/users"
 			,method=RequestMethod.POST
 			,consumes="application/json" )
 	@ResponseBody
 	public Map userCreate(@RequestBody UserVO vo, Model model) {
-		model.addAttribute("list", storageService.getStorageList(""));
-		if(vo.getDefaultTableSpace() == null || vo.getTemporaryTableSpace() == null) {
+		//model.addAttribute("list", storageService.getStorageList(""));
+		model.addAttribute("list", userService.getUser(vo));
+		if(vo.getDefaultTableSpace() == null) {
 		   vo.setDefaultTableSpace("USERS");
-		   vo.setTemporaryTableSpace("TEMP");
 		}
+		System.out.println(vo.getDefaultTableSpace());
 		userService.insertUser(vo);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("result", true);
@@ -64,5 +53,11 @@ public class UserController {
 		return map;
 	}
 	
-
+	//id 중복체크
+	@RequestMapping(value = "/idCheck", method = RequestMethod.GET)
+	@ResponseBody
+	public int idCheck(UserVO vo) {
+		return userService.idCheck(vo);
+	}
+	
 }
