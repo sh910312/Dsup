@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dsup.chat.Paging;
 import com.dsup.chat.ReVO;
 import com.dsup.chat.service.ReService;
 
@@ -28,9 +29,25 @@ public class ReServiceImpl implements ReService {
 		return reDAOMybatis.reList();
 	}
 
+	// 댓글리스트(+페이징)
 	@Override
-	public List<Map<String, Object>> ReMap(ReVO vo) {
-		// TODO Auto-generated method stub
+	public List<Map<String, Object>> ReMap(ReVO vo, Paging repaging) {
+
+		// 페이지번호 파라미터
+		if (repaging.getPage() == null) {
+			repaging.setPage(1);
+		}
+
+		repaging.setPageUnit(10); // 게시글 갯수
+		repaging.setPageSize(2); // 하단 페이지 목록 수
+
+		// 전체 건수
+		repaging.setTotalRecord(reDAOMybatis.RePagingList(vo));
+
+		// 시작/마지막 레코드 번호
+		vo.setFirst(repaging.getFirst());
+		vo.setLast(repaging.getLast());
+
 		return reDAOMybatis.ReMap(vo);
 	}
 

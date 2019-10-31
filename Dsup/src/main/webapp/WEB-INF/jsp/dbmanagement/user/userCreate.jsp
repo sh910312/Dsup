@@ -13,7 +13,7 @@
 	$(function() {
 		userCreate(); //user등록
 		idCheckFunction(); //id체크 
-
+		tablespaceList()
 	});
 	//비밀번호 입력확인
 	$(function(){
@@ -35,6 +35,17 @@
 			return false;
 		}
 	}
+	
+	//테이블 스페이스 리스트
+	function tablespaceList(){
+		$.ajax({
+			url: 'getStorage',
+			type: 'GET',
+			dataType: "json",
+			success : tablespaceListResult
+		})
+	}
+	
 	//유저생성
 	function userCreate() {
 		$("#btnIns").on("click", function() {
@@ -97,6 +108,7 @@
 </script>
 </head>
 <body>
+<%@include file="../../DBbar.jsp" %>
 <div class="form-group">
 	<form action="userList.jsp" id="frm">
 		<table>
@@ -122,13 +134,9 @@
 			<tr>
 				<td>default tablespace</td>
 				<td><select name="defaultTableSpace">
-				<option value="USERS">USERS</option>
-				<option value="UNDOTBS1">UNDOTBS1</option>
-				<option value="TEMP">TEMP</option>
-				<option value="SYSTEM">SYSTEM</option>
-				<option value="SYSAUX">SYSAUX</option>
-				<option value="FDA_TBS">FDA_TBS</option>
-				<option value="DATA_2K_TBS">DATA_2K_TBS</option>
+				<c:forEach var = "list" items="${tableSpaceList}">
+				<option value="${list.tablespaceName}">${list.tablespaceName}</option>
+				</c:forEach>
 				</select>
 			</tr>
 			<tr>

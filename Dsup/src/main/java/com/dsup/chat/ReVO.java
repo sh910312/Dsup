@@ -14,5 +14,10 @@ public class ReVO {
 	Date writeDate;		// 댓글시간
 	
 	String orderby; // 정렬순서
+
+	// pageing
+	
+	int first;
+	int last;
 	
 }

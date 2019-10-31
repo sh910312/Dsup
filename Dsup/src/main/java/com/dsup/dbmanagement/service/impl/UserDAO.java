@@ -28,6 +28,7 @@ public class UserDAO {
 	}
 	//리스트
 	public List<Map<String, Object>> userList(UserVO vo) {
+		System.out.println(vo);
 		return mybatis.selectList("UserDAO.userList", vo);
 	}
 	//수정
