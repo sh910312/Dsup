@@ -13,9 +13,9 @@ public class SchemaController {
 
 	@Autowired SchemaService schemaService;
 	
-	@RequestMapping("/serviceSchemaList")
+	@RequestMapping("/distributingMain")
 	public String serviceSchemaList(SchemaVO vo, Model model) {
 		model.addAttribute("schemaUse", schemaService.serviceSchemaList(vo));
-		return "distributing/distributingMainTest";
+		return "distributing/distributingMain";
 	}
 }

@@ -11,14 +11,13 @@
 <div>
 <%@include file="bar.jsp" %>
 </div>    
- 	${sessionScope.member.nickname} 님 안녕하세요!
- 	<a href="logout">로그아웃</a>
+ 	
  	
 	<br><br><br><br><br><br><br><br><br>
 	
-	<button>SQL</button><br>
+	<button onclick="location.href='./sqlIndex'">SQL</button><br>
 	<button onclick="location.href='./dbIndex'">DB</button><br>
-	<button>종량제</button>
+	<button onclick="location.href='./distributingMain'">종량제</button>
 	
 </body>
 </html>
