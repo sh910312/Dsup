@@ -16,8 +16,9 @@
 	$(document).ready(function(){
 		tablespaceList();
 		
-		$('input:radio[name=tablespace]').eq(0).attr("checked", true);
+		$('input:radio[name="tablespaceName"]').eq(0).attr("checked", true);
 		// 첫 번째 라디오 자동 체크
+		// ☆ 왜 안되지????
 		
 		$("#updbtn").click(function(){
 			$("#frm").attr("action", "TSupdateForm.do");
@@ -49,11 +50,9 @@
 		$("<tr>").each(function(){
 			$(this).click(function(){
 				$(this).find("input[type='radio']").attr("checked", true);
-				$("#frm").attr("action", "TSshow.do");
-				$("#frm").submit();
 			});
 		});
-		// 테이블 행 클릭하면 조회하게 ☆☆☆☆수정 필요!!!
+		// 테이블 행 클릭하면 라디오 체크
 		
 		$("#showbtn").click(function(){
 			$("#frm").attr("action", "TSshow.do");
@@ -74,14 +73,15 @@
 	// [윤정 1030] 테이블스페이스 리스트 출력
 	function tablespaceListResult(list){
 		$.each(list, function(idx, item){
-			var $radio = $("<td>").append($("<input>").attr("type","radio").val((item.tablespaceName)).attr("name", "tablespaceName"));
+			var $radio = $("<td>").html("<input type = 'radio' name = 'tablespaceName' value = '" + (item.tablespaceName) + "'>");
+			//var $radio = $("<td>").append( $("<input>").attr("type","radio").val((item.tablespaceName)).attr("name", "tablespaceName") );
 			var $tablespaceName = $("<td>").text((item.tablespaceName));
 			var $status = $("<td>").text((item.status));
 			var $total = $("<td>").text((item.total));
 			var $used = $("<td>").text((item.used));
 			var $free = $("<td>").text((item.free));
 			
-			$("tbody").append($("tr").append($radio)
+			$("tbody").append($("<tr>").append($radio)
 									.append($tablespaceName)
 									.append($status)
 									.append($total)
