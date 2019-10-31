@@ -13,7 +13,7 @@ public class SchemaController {
 
 	@Autowired SchemaService schemaService;
 	
-	@RequestMapping("/distributingMain")
+	@RequestMapping("/serviceSchemaList")
 	public String serviceSchemaList(SchemaVO vo, Model model) {
 		model.addAttribute("schemaUse", schemaService.serviceSchemaList(vo));
 		return "distributing/distributingMain";

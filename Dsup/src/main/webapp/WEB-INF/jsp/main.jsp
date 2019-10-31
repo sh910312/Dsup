@@ -17,7 +17,7 @@
 	
 	<button onclick="location.href='./sqlIndex'">SQL</button><br>
 	<button onclick="location.href='./dbIndex'">DB</button><br>
-	<button onclick="location.href='./distributingMain'">종량제</button>
+	<button onclick="location.href='./serviceSchemaList'">종량제</button>
 	
 </body>
 </html>
