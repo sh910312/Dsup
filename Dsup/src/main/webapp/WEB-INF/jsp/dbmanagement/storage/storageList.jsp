@@ -74,12 +74,14 @@
 	// [윤정 1030] 테이블스페이스 리스트 출력
 	function tablespaceListResult(list){
 		$.each(list, function(idx, item){
-			$("tbody").append($("tr").append( $("td").append($("<input>")).attr("type", "radio").val((item.tablespaceName)).attr("name","tablespaceName") )
-									.append( $("td").text((item.tablespaceName)) )
-									.append( $("td").text((item.status)) )
-									.append( $("td").text((item.total)) )
-									.append( $("td").text((item.used)) )
-									.append( $("td").text((item.free)) )
+			var $checkBox = $("<td>").append($("<input>").attr("type","checkbox").val((item.tablespaceName)).attr("name", "tablespaceName"));
+			var $tablespaceName = $("<td>").text((item.tablespaceName));
+			var $status = $("<td>").text((item.status));
+			var $total = $("<td>").text((item.total));
+			var $used = $("<td>").text((item.used));
+			var $free = $("<td>").text((item.free));
+			
+			$("tbody").append($("tr").append()
 					);
 		});
 	}

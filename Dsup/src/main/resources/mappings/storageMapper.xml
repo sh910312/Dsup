@@ -4,9 +4,10 @@
 <mapper namespace="StorageDAO">
 	
 	<!-- [윤정] 테이블스페이스 이름만 조회 : 백업생성에서 씀 -->
-	<select id="getTablespaceList" parameterType="String" resultType="tablespace">
+	<select id="getTablespaceList" parameterType="String" resultType="userTbspcTb">
 		SELECT tablespace_name "tablespaceName"
-		FROM dba_tablespaces
+		FROM user_tbspc_tb
+		WHERE user_id = #{userId}
 	</select>
 	
 	<delete id="deleteTablespace" parameterType="String">

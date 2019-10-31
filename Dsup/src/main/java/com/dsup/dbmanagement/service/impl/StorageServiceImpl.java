@@ -15,8 +15,8 @@ public class StorageServiceImpl implements StorageService {
 	@Autowired StorageDAOMybatis dao;
 
 	@Override
-	public List<TablespaceVO> getStorageList(String tablespaceName) {
-		return dao.getStorageList(tablespaceName);
+	public List<TablespaceVO> getStorageList(String userId) {
+		return dao.getStorageList(userId);
 	}
 
 	@Override
