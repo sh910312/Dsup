@@ -5,27 +5,32 @@
 	
 	<!-- 생성 -->
 	<insert id="createUser" parameterType="user" >
-		{call ADD_USER (#{id}, #{password}, #{defaultTableSpace}, #{temporaryTableSpace})}
+		{call ADD_USER (#{id}, #{password}, #{defaultTableSpace}, #{accountStatus})}
 	</insert>
 	
 	<!-- 리스트 -->
 	<select id="userList" resultType="map">
-	SELECT username, LOCK_DATE, DEFAULT_TABLESPACE, TEMPORARY_TABLESPACE 
+	SELECT USERNAME, ACCOUNT_STATUS, DEFAULT_TABLESPACE 
 	FROM DBA_USERS 
-	order by username
+	order by USERNAME
 	</select>
 	
 	<!-- 삭제 -->
 	<delete id="deleteUser" parameterType="user">
 		drop user ${id} 
 	</delete>
-
+ 	<!-- 단건조회 -->
+ 	<select id="getUser" parameterType="user" resultType="user">
+ 		select USERNAME id,  ACCOUNT_STATUS, DEFAULT_TABLESPACE
+ 		from DBA_USERS
+ 		where lower(USERNAME)=#{id}
+ 	</select>
+ 	
 	<!-- 수정 -->
 	<update id="updateUser" parameterType="user">
 		alter user ${id} 
 			  identified by ${password} 
 			  default TableSpace ${defaultTableSpace}
-			  temporary TableSpace ${temporaryTableSpace} 
-			  account ${lock}
+			  account ${accountStatus}
 	</update>
 </mapper>

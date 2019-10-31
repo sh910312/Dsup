@@ -12,6 +12,13 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="./resources/json.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+	<!-- 부트스트랩 -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+
 <script>
 	$(function() {
 		userList(); //userList조회
@@ -36,9 +43,8 @@
 		$("#userList").empty();
 		$.each(data, function(idx, item) {
 			$('<tr>').append($('<td>').html(item.USERNAME)).append(
-					$('<td>').html(item.LOCK_DATE)).append(
+					$('<td>').html(item.ACCOUNT_STATUS)).append(
 					$('<td>').html(item.DEFAULT_TABLESPACE)).append(
-					$('<td>').html(item.TEMPORARY_TABLESPACE)).append(
 					$('<td>').html('<button id="btnDelete">삭제')).append(
 					$('<td>').html('<button id="btnUpdate">수정')).append(
 					$('<input type="hidden" id="hidden_userId">').val(item.USERNAME)).appendTo('#userList');
@@ -76,11 +82,9 @@
 		id = $("#id"), 
 		password = $("#password"),
 		defaultTableSpace = $("#defaultTableSpace"),
-		temporaryTableSpace = $("#temporaryTableSpace"), 
 		allFields = $([]).add(id)
 						 .add(password)
-						 .add(defaultTableSpace)
-						 .add(temporaryTableSpace),
+						 .add(defaultTableSpace),
 		tips = $(".validateTips");
 
 		function updateTips(t) {
@@ -203,18 +207,17 @@
 						<td>default tablespace</td>
 						<td><select name="defaultTableSpace">
 								<option value="USERS">USERS</option>
-						</select>
-					</tr>
-
-					<tr>
-						<td>temporary tablespace</td>
-						<td><select name="temporaryTableSpace">
+								<option value="UNDOTBS1">UNDOTBS1</option>
 								<option value="TEMP">TEMP</option>
+								<option value="SYSTEM">SYSTEM</option>
+								<option value="SYSAUX">USESYSAUXRS</option>
+								<option value="FDA_TBS">USFDA_TBSERS</option>
+								<option value="DATA_2K_TBS">DATA_2K_TBS</option>
 						</select>
 					</tr>
 					<tr>
-						<td><input type="radio" name="lock" value="lock" checked/>lock</td>
-						<td><input type="radio" name="lock" value="unlock"/>unlock</td>
+						<td><input type="radio" name="accountStatus" value="lock" checked/>lock</td>
+						<td><input type="radio" name="accountStatus" value="unlock"/>unlock</td>
 					</tr>
 			</table>
 		</form>
@@ -226,7 +229,9 @@
 		<table class="table text-center">
 			<thead>
 				<tr>
-					<th>아이디</th><th>Lock</th><th>DEFAULTTABLESPACE</th><th>TEMPORARYTABLESPACE</th>
+					<th>아이디</th>
+					<th>ACCOUNTSTATUS</th>
+					<th>DEFAULTTABLESPACE</th>
 				</tr>
 			</thead>
 			<tbody id="userList">
