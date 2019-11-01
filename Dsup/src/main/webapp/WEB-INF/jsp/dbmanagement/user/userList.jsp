@@ -8,8 +8,7 @@
 <title>Insert title here</title>
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="./resources/json.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -24,6 +23,7 @@
 		userList(); //userList조회
 		userDelete(); //user삭제
 		userUpdateForm(); //userUpdate수정팝업
+		$("#form1").hide();
 		
 	});
 	//목록조회요청
@@ -53,13 +53,13 @@
 	function userListResult(data) {
 		$("#userList").empty();
 		$.each(data, function(idx, item) {
-			$('<tr>').append( $('<td>').html((item.USERNAME)) )
-					.append( $('<td>').html((item.ACCOUNT_STATUS)) )
-					.append( $('<td>').html((item.DEFAULT_TABLESPACE)) )
-					.append( $('<td>').html('<button id="btnDelete">삭제') )
-					.append( $('<td>').html('<button id="btnUpdate">수정') )
+			$('<tr>').append( $('<td>').html((item.USERNAME)))
+					.append( $('<td>').html((item.ACCOUNT_STATUS)))
+					.append( $('<td>').html((item.DEFAULT_TABLESPACE)))
+					.append( $('<td>').html('<button id="btnDelete">삭제'))
+					.append( $('<td>').html('<button id="btnUpdate">수정'))
 					//.append( $('<td>').append( $("<input>").attr("type", "button").val("생성").attr("onclick", "location.href='userCreateForm'") ) )
-					.append( $('<input type="hidden" id="hidden_userId">').val(item.USERNAME) )
+					.append( $('<input type="hidden" id="hidden_userId">').val(item.USERNAME))
 					.appendTo($('#userList'))
 					;
 

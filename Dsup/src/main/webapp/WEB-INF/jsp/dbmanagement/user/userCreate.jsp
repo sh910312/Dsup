@@ -49,7 +49,7 @@
 	//유저생성
 	function userCreate() {
 		$("#btnIns").on("click", function() {
-			var param = JSON.stringify($('#frm').serializeObject());
+			var param = JSON.stringify($('#frm').serializeObject()); 
 			$.ajax({
 				url : "users",
 				type : 'POST',
