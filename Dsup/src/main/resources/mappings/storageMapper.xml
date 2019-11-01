@@ -39,6 +39,7 @@
 		AND d.tablespace_name = df.tablespace_name
 		AND df.file_id = fs.file_id
 		GROUP BY d.tablespace_name, d.status
+		ORDER BY 1
 	</select>
 	
 	<!-- [윤정1031] 데이터파일 정보  -->

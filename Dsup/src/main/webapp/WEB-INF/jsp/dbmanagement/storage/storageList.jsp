@@ -18,7 +18,7 @@
 		radioCheck();
 		
 		$("#updbtn").click(function(){
-			$("#frm").attr("action", "TSupdateForm.do");
+			$("#frm").attr("action", "storageUpdateForm");
 			$("#frm").submit();
 		});
 		// 수정 버튼 클릭
@@ -37,12 +37,6 @@
 			$("#frm").submit();
 		});
 		// 생성 버튼 클릭
-		
-		$("#searchbtn").click(function(){
-			$("#keyword").val($("#search").val());
-			$("#frm").attr("action", "storageList");
-		});
-		// 검색 버튼 클릭
 		
 		$("#showbtn").click(function(){
 			$("#frm").attr("action", "storageShow");
@@ -86,19 +80,35 @@
 	
 	// [윤정1031] tr 클릭시 라디오 체크
 	function radioCheck(){
-		$("tr").click(function(){
-			$(this).find("input:radio[name='tablespaceName']").attr("checked", true);
-		})
+		$("tr").each(function(){
+			$(this).click(function(){
+				console.log("클릭");
+				$(this).find("input:radio[name='tablespaceName']").attr("checked", true);
+			});
+		});
 	}
 	</script>
 </head>
 <body>
 <%@include file="/WEB-INF/jsp/DBbar.jsp" %>
+<div class = "container">
 	<form id = "frm" method = "post">
-	<input type = "hidden" name = "keyword" id = "keyword">
-	<input type = "text" id = "search" placeholder = "검색할 테이블 스페이스의 이름 입력">
-	<input type = "submit" id = "searchbtn" value = "검색">
-	<table border = "1" class = "table">
+	
+	<div class = "row">
+		<input id = "updbtn" type = "button" value = "수정"
+			class = "btn btn-outline-info">
+		<input id = "delbtn" type = "button" value = "삭제"
+			class = "btn btn-outline-info">
+		<input id = "crebtn" type = "button" value = "생성"
+			class = "btn btn-outline-info">
+		<input id = "showbtn" type = "button" value = "조회"
+			class = "btn btn-outline-info">
+	</div>
+	
+	<hr>
+	
+	<div class = "row">
+	<table class = "table table-bordered table-hover">
 		<thead>
 		<tr>
 			<th></th>
@@ -112,11 +122,12 @@
 		<tbody>
 		</tbody>
 	</table>
-	<input id = "updbtn" type = "button" value = "수정">
-	<input id = "delbtn" type = "button" value = "삭제">
-	<input id = "crebtn" type = "button" value = "생성">
-	<input id = "showbtn" type = "button" value = "조회">
-	<div id = "show"></div>
+	</div>
+	
+	<div id = "show">
+	</div>
+	
 	</form>
+</div>
 </body>
 </html>
