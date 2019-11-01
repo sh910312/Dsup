@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,56 +20,32 @@
 
 $(function() {
 
-	insertBoard();
-
-
+	edit();
 });
 
+// 수정
+function edit() {
+	$("#editbtn").click(function() { // 버튼 id 값이 edit인놈을 클릭 이벤트 실행하였을때
 
+		console.log("무사히 실행 되었다."); // 여기까지왔는지 로그확인
+	
+		$("#frm").submit();
+	})
+}
 
 </script>
 
 
 
 
-<div class="container">
-		<div>
-			<div class="row">
-				<div class="col-xs-13">
-					<div class="portlet portlet-default">
-						<div class="portlet-heading">
-							<div class="portlet-title">
-								<h3>
-									<i class="fa fa-circle text-green"></i>D-sup 수정하기
-								</h3>
-							</div>
-							<div class="clearfix">
-							</div>
-						</div>
-							<!-- 대화입력창  -->
-							<form action="insertSearch" method="post">
-							<div class="portlet-footer">
-								<div class="row" >
-									<div class="form-group col-xs-10">
-										<input id="title" name="title" class="form-control" placeholder="등록할 키워드를 입력하세요. 10자 이내로 작성하세요." maxlength="10">
-									</div>
-								</div>
-								<div class="row">
-									<div id="text" class="form-group col-xs-12">
-										<textarea style="height: 150px;" id="contents" name="contents" class="form-control" placeholder="등록할 내용" maxlength="500"></textarea>
-									</div>
-								</div>
-								<div align="center">
-									<button class="btn btn-default" style="height:40px; width:100px;">등&nbsp;&nbsp;록</button>
-									<button type="button" class="btn btn-default" style="height:40px; width:100px;" onclick="self.close();">닫&nbsp;&nbsp;기</button>
-								</div>
-							</div>
-							</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+
+<form id="frm" action="updateSearch">
+제목<input type="text" name="title" placeholder="${search.title}">
+내용<input type="text" name="contents" value="${search.contents }">
+<input type="hidden" name="searchId" value="${search.searchId }"/>
+<button type="button" id="editbtn">수정하기</button>
+</form>
+<button type="button" id="backbtn" class="btn btn-default" onclick="history.go(-1)">돌아가기</button>
 
 
 

@@ -38,7 +38,7 @@ public class ReServiceImpl implements ReService {
 			repaging.setPage(1);
 		}
 
-		repaging.setPageUnit(10); // 게시글 갯수
+		repaging.setPageUnit(5); // 게시글 갯수
 		repaging.setPageSize(2); // 하단 페이지 목록 수
 
 		// 전체 건수
