@@ -11,6 +11,10 @@ var Common = (function () {
         		let today = new Date();
         		
         		return today.toLocaleString();
+        	},
+        	errorMessage : function(err){
+        		$('.error').fadeIn(400).delay(3000).fadeOut(400);
+        		$('.error').html(err);
         	}
         };
     }

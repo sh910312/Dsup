@@ -1,5 +1,7 @@
 package com.dsup.sql.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +33,6 @@ public class SQLController {
 	@ResponseBody
 	public LinkedHashMap<String, Object> Addition(HttpServletRequest request) {
 		LinkedHashMap<String, Object> result = sqlService.addition(request);
-		return result;
-	}
-	@RequestMapping("/DBinsert.do")
-	@ResponseBody
-	public LinkedHashMap<String, Object> DBinsert(HttpServletRequest request) {
-		LinkedHashMap<String, Object> result = sqlService.dbInsert(request);
 		return result;
 	}
 	@RequestMapping("/Filter.do")
@@ -74,5 +70,32 @@ public class SQLController {
 	public LinkedHashMap<String, Object> Union(HttpServletRequest request) {
 		LinkedHashMap<String, Object> result = sqlService.union(request);
 		return result;
+	}
+	@RequestMapping("/TargetTableList.do")
+	@ResponseBody
+	public ArrayList<String> TargetTableList(HttpServletRequest request) {
+		ArrayList<String> result = sqlService.targetTableList(request);
+		return result;
+	}
+	@RequestMapping("/TargetTableInfo.do")
+	@ResponseBody
+	public ArrayList<HashMap<String, String>> TargetTableInfo(HttpServletRequest request) {
+		ArrayList<HashMap<String, String>> result = sqlService.targetTableInfo(request);
+		return result;
+	}
+	@RequestMapping("/DBinsert.do")
+	@ResponseBody
+	public void DBinsert(HttpServletRequest request) {
+		 sqlService.dbInsert(request);
+	}
+	@RequestMapping("/DBupdate.do")
+	@ResponseBody
+	public void DBupdate(HttpServletRequest request) {
+		 sqlService.dbUpdate(request);
+	}
+	@RequestMapping("/DBdelete.do")
+	@ResponseBody
+	public void DBdelete(HttpServletRequest request) {
+		 sqlService.dbDelete(request);
 	}
 }

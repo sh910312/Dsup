@@ -9,7 +9,7 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
 <script src="./resources/js/sql/etc/jquery.dragtable.js"></script>
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-<!-- <link rel="stylesheet" type="text/css" href="./resources/css/etc/dragtable.css" /> -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <title>Insert title here</title>
 <script>
   	$(document).ready(function() {
@@ -32,7 +32,7 @@
 </script>
 </head>
 <body>
-	<table id="dataTable" border="1">
+	<table id="dataTable" class="table table-hover" border="1">
 
 	</table>
 	
