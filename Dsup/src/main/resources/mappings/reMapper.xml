@@ -28,6 +28,13 @@
 	</insert>
 	
 	
+	<!-- paging 리스트 -->
+	<select id="repageList" resultType="int">
+		select count(*) from re
+	</select>
+	
+	
+	
 <!-- 	전체조회 -->
  	
 	<select id ="reList" resultType="re">
@@ -38,6 +45,8 @@
 <!-- 전체조회2 -->
 
 	<select id="reMap" resultType="map">
+	
+	SELECT b.* FROM ( SELECT rownum no, a.* FROM (
 	select re_id as "reId",
 			user_id as "userId",
 			contents as "contents",
@@ -54,6 +63,7 @@
 			order by re_id desc
 		</otherwise>
 	</choose>
+	) a ) b WHERE no BETWEEN #{first} AND #{last}
 	</select>
 		
 

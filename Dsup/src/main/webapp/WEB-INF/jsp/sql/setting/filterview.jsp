@@ -23,11 +23,16 @@
 			<div id="filter-table-name"></div>
 		</div>
 		<div class="child-data-table-div">
-			<table id="filter-table-list" border=1></table>
+			<table id="filter-table-list" border=1>
+				<tr>
+					<th>Column Name</th>
+					<th>Type</th>
+				</tr>
+			</table>
 		</div>
 	</div>
 	<div style="border: 1px solid black">
-		<div>Expression</div>
+		<div style="font-weight: bold;">Expression</div>
 		<div>
 			<textarea id="fiter-expression"></textarea>
 		</div>

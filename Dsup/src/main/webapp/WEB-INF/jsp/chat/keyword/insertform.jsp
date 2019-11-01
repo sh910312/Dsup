@@ -59,7 +59,7 @@ $(function() {
 									</div>
 								</div>
 								<div align="center">
-									<button id="btnIns" class="btn btn-default" style="height:40px; width:100px;">등&nbsp;&nbsp;록</button>
+									<button class="btn btn-default" style="height:40px; width:100px;">등&nbsp;&nbsp;록</button>
 									<button type="button" class="btn btn-default" style="height:40px; width:100px;" onclick="self.close();">닫&nbsp;&nbsp;기</button>
 								</div>
 							</div>

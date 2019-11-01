@@ -59,6 +59,21 @@ $(function() {
 		$("#data").append("연결 끊김");
     }
 
+    
+    
+
+    function openButton(menu){ /*  버튼 새창 */
+    	
+    	var popupX = (document.body.offsetWidth / 2) - (100/2);
+    	var popupY = (document.body.offsetHeight / 2) - (200/2);
+
+    	if (menu == 0){
+    		window.open("SearchMap","검색하기",'width=800px, height=300px, left='+ popupX + ', top='+ popupY);
+    	}
+    }
+    
+    
+    
 </script>
 </head>
 <body>
@@ -81,7 +96,7 @@ $(function() {
 									<button type="button" class="btn btn-default"
 										onclick="openButton(2);">등록</button>
 									<button type="button" class="btn btn-default"
-										onclick="openButton(1);">검색</button>
+										onclick="openButton(0);">검색</button>
 									<%-- </c:if> --%>
 								</h3>
 							</div>

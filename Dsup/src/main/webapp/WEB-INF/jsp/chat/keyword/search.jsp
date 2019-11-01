@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="my" tagdir="/WEB-INF/tags" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +13,8 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="./resources/js/bootstrap.js"></script>
 <script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+
+
 </head>
 <body>
 <div class="container">
@@ -31,11 +34,12 @@
 							<!-- 대화입력창  -->
 							<div class="portlet-footer">
 								<div class="row" >
-									<form>
-									<div class="form-group col-xs-10">
+									<form name="frm">
+									<div class="form-group col-xs-9">
 										<input style="height: 40px;" name="title" id="title" class="form-control" placeholder="검색할 내용을 입력하세요." maxlength="20">
 									</div>
 										<button class="btn btn-default" style="height:40px; width:100px;">검&nbsp;&nbsp;색</button>
+										<input type="hidden" name="page" value="1"/>
 									</form>
 								</div>
 								<form action="deleteSearchList">
@@ -44,13 +48,13 @@
 									<div id="text" class="form-group col-xs-12"> <!-- 검색 완료 후 결과보이게 조건 추가  -->
 
 										<c:forEach items="${searchList }" var="search">
-										<div class="form-group col-xs-3">
+										<div class="form-group col-xs-4">
 										
 										
 										<!-- 삭제권한은 관리자만 -->
-<%-- 										<c:if test="${userId != null}"> --%>
+ 										<c:if test="${usersId != null}">
 										<input name="searchList" type="checkbox" value="${search.searchId }"/>
-<%-- 										</c:if> --%>
+										</c:if> 
 										
 										<a href="getSearch?searchId=${search.searchId }"> ${search.title }</a>
 										${search.userId }
@@ -58,17 +62,20 @@
 										</div>
 										</c:forEach>
 
-
+									<div class="form-group col-xs-12" align="center">
+									
+									<my:paging paging="${paging}" jsFunc="go_page" />
+									
+									</div>
 									
 									</div>
 								</div>
 								<div align="center"> <!-- 검색 완료시 (등록/수정) 버튼이 보이게 조건 추가.   -->
- 								<c:if test="${usersId != null}"> --%>  <!-- 삭제=관리자권한 -->
- 									<button class="btn btn-default" style="height:40px; width:100px;">삭&nbsp;&nbsp;제</button>
+ 								<c:if test="${usersId != null}">  <!-- 삭제=관리자권한 -->
+ 									 <button class="btn btn-default" style="height:40px; width:100px;">삭&nbsp;&nbsp;제</button> 
   								</c:if>
  								<c:if test="${usersId == null}">  <!-- 등록/수정 = 관리자/유저 권한 -->
  									<button type="button" class="btn btn-default" style="height:40px; width:100px;">등&nbsp;&nbsp;록</button>
-									<button type="button" class="btn btn-default" style="height:40px; width:100px;" onclick="javascript:openButton(1);">수&nbsp;&nbsp;정</button>
 								</c:if>
 									<button type="button" class="btn btn-default" style="height:40px; width:100px;" onclick="self.close();">닫&nbsp;&nbsp;기</button>
 								</div>
@@ -82,7 +89,13 @@
 
 
 
+<script type="text/javascript">
 
+function go_page(p){
+	document.frm.page.value= p;
+	document.frm.submit();
+}
+</script>
 
 
 

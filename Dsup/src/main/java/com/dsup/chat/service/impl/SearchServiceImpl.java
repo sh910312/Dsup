@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dsup.chat.Paging;
 import com.dsup.chat.SearchVO;
 import com.dsup.chat.service.SearchService;
 
@@ -38,17 +39,34 @@ public class SearchServiceImpl implements SearchService {
 
 	// 검색
 	@Override
-	public List<Map<String, Object>> SearchMap(SearchVO vo) {
+	public List<Map<String, Object>> SearchMap(SearchVO vo, Paging paging) {
 		// TODO Auto-generated method stub
+
+		// 페이지번호 파라미터
+		if (paging.getPage() == null) {
+			paging.setPage(1);
+		}
+
+		paging.setPageUnit(9); // 게시글 갯수
+		paging.setPageSize(2); // 하단 페이지 목록 수
+
+		// 전체 건수
+		paging.setTotalRecord(searchDAOMybatis.PagingList(vo));
+
+		// 시작/마지막 레코드 번호
+		vo.setFirst(paging.getFirst()); 
+		vo.setLast(paging.getLast());
+
 		return searchDAOMybatis.SearchMap(vo);
 	}
-	
+
 	// 삭제
 	@Override
 	public void deleteSearch(SearchVO vo) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
 	// 선택 삭제
 	@Override
 	public void deleteSearchList(SearchVO vo) {

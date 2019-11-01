@@ -1,4 +1,3 @@
-
 <div style="border: black solid 1px;">
 	<div id="container-for-icon-image"
 		style="display: inline-block; border: black solid 1px;">
@@ -15,10 +14,15 @@
 		</div>
 	</div>
 </div>
-<div>Columns</div>
-<div style="font-weight: bold; border: black solid 1px;">
+<div style="font-weight: bold; ">Columns</div>
+<div style="border: black solid 1px;">
 	<div id="order-contents-container" class="child-data-table-div">
-		<table id="order-table" border="1"></table>
+		<table id="order-table" border="1">
+			<tr>
+				<th>Column Name</th>
+				<th>Type</th>
+			</tr>
+		</table>
 	</div>
 </div>
 <div>
@@ -26,13 +30,13 @@
 		<button onclick="controller.add('Order')">Add</button>
 	</div>
 </div>
-<div>Sort Order</div>
-<div style="font-weight: bold; border: black solid 1px;">
+<div style="font-weight: bold; ">Sort Order</div>
+<div style="border: black solid 1px;">
 	<div class="add-col-expression-table">
 		<table id="sort-order-table" border="1">
 			<tr>
-				<td>Column</td>
-				<td>Expression</td>
+				<th>Column</th>
+				<th>Expression</th>
 			</tr>
 		</table>
 	</div>

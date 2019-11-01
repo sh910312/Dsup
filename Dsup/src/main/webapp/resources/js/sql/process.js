@@ -10,7 +10,7 @@ var Process = (function() {
 			getData : function(momo, info) {
 				// var settingInfo = momo.getSettingInfo();
 				var result;
-				console.log("[process] : " + info);
+				//console.log("[process] : " + info);
 				switch (momo.getType()) {
 				case "DBread":
 					var sql = $('#sql-statement').val();
@@ -71,29 +71,26 @@ var Process = (function() {
 					var result;
 					var join_expression = $('#join-expression').text(); // empno=empno
 					var join_type = $('input[name=joinType]').val(); // innerLeft
-					// console.log("[Join Expression] : " + join_expression + "
-					// | " + "[Join Type] : " + join_type);
-					// var setting_map = new Map();
-					// var sql_map = new Map();
-					var sql_1;
-					var sql_2;
+				
+					var master_sql;
+					var slave_sql;
+					var list = [];
 					var join_key_1;
 					var join_key_2;
-
-					for (var i = 0; i < info.length; i++) {
-						var json = JSON.parse(info[i]);
-						for ( var key in json) {
-							var val = $('#' + key).find('tr.clicked')
-									.children().eq(0).text();
-							if (i == 0) {
-								join_key_1 = val;
-							} else {
-								join_key_2 = val;
-							}
-							// setting_map[key] = val;
-						}
+					var join_cnt=$('#join-expression li').length;
+					
+					for(var i=0; i<join_cnt; i++){
+						var map = {};
+						var master = $('.table_1_clicked_col').eq(i).text();
+						var slave = $('.table_2_clicked_col').eq(i).text();
+						map["master"] = master;
+						map["slave"] = slave;
+						list.push(map);
 					}
-
+					
+					var join_key = JSON.stringify({join_key:list});
+					
+					//자식 sql 가지고 오는 부분
 					for (var i = 0; i < info.length; i++) {
 						var json = JSON.parse(info[i]);
 						for ( var key in json) {
@@ -101,9 +98,9 @@ var Process = (function() {
 							for ( var a_key in a_json) {
 								if (a_key == "SQL") {
 									if (i == 0) {
-										sql_1 = a_json[a_key];
+										master_sql = a_json[a_key];
 									} else {
-										sql_2 = a_json[a_key];
+										slave_sql = a_json[a_key];
 									}
 									// sql_map[key] = a_json[a_key];
 								}
@@ -112,11 +109,10 @@ var Process = (function() {
 					}
 
 					request.open("Post",
-							"Join.do?sql_1=" + encodeURI(sql_1) + "&sql_2="
-									+ encodeURI(sql_2) + "&join_key_1="
-									+ encodeURI(join_key_1) + "&join_key_2="
-									+ encodeURI(join_key_2) + "&join_type="
-									+ join_type, false);
+							"Join.do?master_sql=" + encodeURI(master_sql) + 
+							"&slave_sql=" + encodeURI(slave_sql) +
+							"&join_key=" + encodeURI(join_key) + 
+							"&join_type=" + encodeURI(join_type), false);
 
 					request.onreadystatechange = function() {
 						if (request.readyState == 4 && request.status == 200) {
@@ -240,11 +236,12 @@ var Process = (function() {
 							.val();
 					var master = $('p:contains(Master)').parent().next().text();
 					var slave = $('p:contains(Slave)').parent().next().text();
-					var master_table_length = $('#union_' + master).children().length;
-					var matching_table_length = $('#union-match-table')
-							.children().length - 1;
+					//마스터 테이블의 열 갯수가 모두 매칭 테이블에 add 됐는지 판단하기 위해 각각 테이블의 열개수를 구함
+					var master_table_length = $('#union_' + master + ' tr').length-1;
+					var matching_table_length = $('#union-match-table').children().length - 1;
 					var master_sql;
 					var slaver_sql;
+					//마스터 테이블의 모든 컬럼이 매칭 되어야만 실행
 					if (master_table_length == matching_table_length) {
 						for (var i = 0; i < info.length; i++) {
 							var json = JSON.parse(info[i]);
@@ -292,7 +289,8 @@ var Process = (function() {
 						$("#state_msg_div")
 								.append("<div>" + err_msg + "</div>");
 					}
-
+					
+					break;
 				case 'Rename':
 					var result;
 					var from_table_check_cnt = $('#rename-table').find('input:checked').length;
@@ -359,6 +357,130 @@ var Process = (function() {
 						err_msg = common.getToDay() + " [Rename Error] <From Columns>에서 체크한 column들을 Add 하여주십시오.";
 						$("#state_msg_div").append("<div>" + err_msg + "</div>");
 					}
+				}
+			},
+			getDBinsertTargetTableList : function(){
+				console.log("[getDBinsertTargetTableList]");
+				var result = "";
+				request.open("Post", "TargetTableList.do", false);
+
+				request.onreadystatechange = function() {
+					if (request.readyState == 4 && request.status == 200) {
+						result = request.responseText;
+						console.log("result : " + result);
+					}
+				};
+				request.send(null);
+				//schema에 따라 보유한 테이블 list
+				return result;
+			},
+			getTargetTableInfo : function(){
+				console.log("[getTargetTableInfo]");
+				var targetTable = $('#target_table_list option:selected').val();
+				var result = "";
+				request.open("Post", "TargetTableInfo.do?targetTable=" + encodeURI(targetTable), false);
+
+				request.onreadystatechange = function() {
+					if (request.readyState == 4 && request.status == 200) {
+						result = request.responseText;
+						console.log("result : " + result);
+					}
+				};
+				request.send(null);
+				//schema에 따라 보유한 테이블 list
+				return result;
+			},
+			dbInsert : function(info){
+				var execution_mode = $('#dbinsert-mode option:selected').val();
+				//$('#dbinsert-execution-table tr').eq(1).children().eq(0).text();
+				var result = "";
+				var child_sql = "";
+				var target_table = $('#target_table_list option:selected').val();
+				
+				for (var i = 0; i < info.length; i++) {
+					var json = JSON.parse(info[i]);
+					for ( var key in json) {
+						var a_json = json[key];
+						for ( var a_key in a_json) {
+							if (a_key == "SQL") {
+								child_sql = a_json[a_key];
+								
+								break;
+							}
+						}
+					}
+				}
+				
+				if(execution_mode == "Insert"){
+					
+					request.open("Post", "DBinsert.do?target_table=" + encodeURI(target_table) +
+							"&child_sql=" + encodeURI(child_sql), false);
+
+					request.onreadystatechange = function() {
+						if (request.readyState == 4 && request.status == 200) {
+							result = request.responseText;
+							console.log("[result] DB insert Success");
+						}
+					};
+					request.send(null);
+					
+				}else if(execution_mode == 'Update'){
+					//sal<1000 and deptno<=20
+					//$('#dbinsert-execution-table tr td.target_col').eq(0).text()
+					var where_stmt = "";
+					var where_stmt_cnt = $('#dbinsert-execution-table select').length/2;
+					for(var i=0; i<where_stmt_cnt; i++){
+						var target_col = $('#where-stmt-target-select option:selected').text();
+						var input_col = $('#where-stmt-input-select option:selected').text();
+						if(i == where_stmt_cnt-1){
+							where_stmt += "a." + target_col + "= b." + input_col;
+						}else{
+							where_stmt += "a." + target_col + "= b." + input_col + ", ";
+						}
+					}
+					
+					var set_stmt = "";
+					var select_stmt = "";
+					var from_index = child_sql.indexOf('FROM');
+					//Target Table에서 add된 컬럼들의 길이 가져옴 
+					var match_table_length = $('#dbinsert-target-table tr[class*="added"]').length;
+					//child sql에서 select 컬럼들만 가져오는 부분
+					var child_sql_select = child_sql.substring(0, from_index).replace("SELECT ", "");
+					
+					for(var i=0; i<match_table_length; i++){
+						var target_col = $('#dbinsert-target-table tr[class*="added"]').eq(i).children().eq(1).text();
+						var input_col = $('#dbinsert-target-table tr[class*="added"]').eq(i).children().eq(3).text();
+						if(i == match_table_length-1){
+							set_stmt += target_col;
+							select_stmt += input_col;
+						}else{
+							set_stmt += target_col + ', ';
+							select_stmt += input_col + ', ';
+						}
+					}
+					
+					if(where_stmt != null || where_stmt != ""){
+						var sql = "UPDATE " + target_table + " a SET (" + set_stmt + ") =" +
+				          "(SELECT " + select_stmt + " " +
+				           "FROM (" + child_sql + ") b " + 
+				           "WHERE " + where_stmt + ") ";
+					}else{
+						var sql = "UPDATE " + target_table + " " +
+				          "SET (" + set_stmt + ")=" +
+				          "(SELECT " + select_stmt + " " +
+				           "FROM (" + child_sql + "))";
+					}
+					
+					request.open("Post", "DBupdate.do?sql=" + encodeURI(sql), false);
+
+					request.onreadystatechange = function() {
+						if (request.readyState == 4 && request.status == 200) {
+							result = request.responseText;
+							console.log("[result] DB insert Success");
+						}
+					};
+					
+					request.send(null);
 				}
 			}
 		};

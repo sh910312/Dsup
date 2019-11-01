@@ -20,7 +20,12 @@
 			<div class="container-for-addition-setting" style="margin-right: 20px">
 				<div style="font-weight: bold;">Columns</div>
 				<div class="child-data-table-div">
-					<table id="additon-table" border="1"></table>
+					<table id="additon-table" border="1">
+						<tr>
+							<th>Column Name</th>
+							<th>Type</th>
+						</tr>
+					</table>
 				</div>
 			</div>
 			<div class="container-for-addition-setting">
@@ -60,8 +65,8 @@
 			<div class="expression-result-table-div">
 				<table id="add-col-expression-table" border="1">
 					<tr>
-						<td>Column</td>
-						<td>Expression</td>
+						<th>Column</th>
+						<th>Expression</th>
 					</tr>
 				</table>
 			</div>

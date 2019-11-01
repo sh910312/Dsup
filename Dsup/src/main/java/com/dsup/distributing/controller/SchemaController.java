@@ -16,6 +16,6 @@ public class SchemaController {
 	@RequestMapping("/serviceSchemaList")
 	public String serviceSchemaList(SchemaVO vo, Model model) {
 		model.addAttribute("schemaUse", schemaService.serviceSchemaList(vo));
-		return "distributing/distributingMainTest";
+		return "distributing/distributingMain";
 	}
 }

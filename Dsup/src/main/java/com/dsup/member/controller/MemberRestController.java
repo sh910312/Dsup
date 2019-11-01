@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,8 +64,12 @@ public class MemberRestController {
 	//수정
 	@RequestMapping(value="/members", method=RequestMethod.PUT
 					,consumes="application/json")	//consumes 파라미터 받을거있을때
-	public MemberVO updateUser(@RequestBody MemberVO vo, Model model) {
+	public MemberVO updateUser(@RequestBody MemberVO vo, Model model, HttpSession session) {
+		vo.setUserId((String)session.getAttribute("userId"));
 		memberService.updateMember(vo);
+		MemberVO member = memberService.getMember(vo);
+		session.setAttribute("member", member);
+		session.setAttribute("userId", member.getUserId());
 		return vo;
 	}
 	

@@ -1,5 +1,7 @@
 package com.dsup.sql.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +22,7 @@ public class SQLServiceImpl implements SQLService{
 		System.out.println("\n--- DBread.java ---");
 		String sql = (String)request.getParameter("sql").toUpperCase().replaceAll("\n", " ");
 		System.out.println("sql : " + sql);
-		
+		System.out.println("---------------\n");
 		return getData(sql);
 	}
 	
@@ -57,7 +59,7 @@ public class SQLServiceImpl implements SQLService{
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
-	      
+	      System.out.println("---------------\n");
 	      return getData(sql);  	
 	}
 
@@ -105,21 +107,15 @@ public class SQLServiceImpl implements SQLService{
 			}
 		}
 		System.out.println("[Maked SQL For Addition] : \n" + sql);
-		
+		System.out.println("---------------\n");
 		return getData(sql);
-	}
-
-	@Override
-	public LinkedHashMap<String, Object> dbInsert(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
 	public LinkedHashMap<String, Object> filter(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 		System.out.println("\n--- Filter.java ---");
-		String child_sql = request.getParameter("sql");
+		String child_sql = request.getParameter("sql").toUpperCase().replaceAll("\n", " ");
 		String expression = request.getParameter("expression");
 		
 		//System.out.println("sql = " + child_sql);
@@ -129,13 +125,14 @@ public class SQLServiceImpl implements SQLService{
 			  		 "FROM (" + child_sql + ") " +
 			  		 "WHERE " + expression;
 		System.out.println("[Maked SQL For Filter] : \n" + sql);
-		
+		System.out.println("---------------\n");
 		return getData(sql);
 	}
 
 	@Override
 	public LinkedHashMap<String, Object> group(HttpServletRequest request) {
 		// TODO Auto-generated method stub
+		System.out.println("---------------\n");
 		return null;
 	}
 
@@ -143,25 +140,42 @@ public class SQLServiceImpl implements SQLService{
 	public LinkedHashMap<String, Object> join(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 		System.out.println("\n--- Join.java ---");
-		String sql_1 = request.getParameter("sql_1");
-		String sql_2 = request.getParameter("sql_2");
-		String join_key_1 = request.getParameter("join_key_1");
-		String join_key_2 = request.getParameter("join_key_2");
-		String join_type = request.getParameter("join_type");
-		System.out.println("1. SQL1 : " + sql_1);
-		System.out.println("2. SQL2 : " + sql_2);
-		System.out.println("3. Join Key 1 : " + join_key_1);
-		System.out.println("4. Join Key 2 : " + join_key_2);
-		System.out.println("5. Join Type : " + join_type);
-//		System.out.println("sql_1 : " + sql_1 + " | " + "sql_2 : " + sql_2 + " | " + 
-//		                   "join_key_1 : " + join_key_1 + " | " + "join_key_2 : " + join_key_2 + " | " +
-//		                   "join_type : " + join_type);
+		String master_sql = request.getParameter("master_sql").toUpperCase().replaceAll("\n", " ");
+		String slave_sql = request.getParameter("slave_sql").toUpperCase().replaceAll("\n", " ");
+		String join_type = request.getParameter("join_type").toUpperCase().replaceAll("\n", " ");
+		String join = "";
+		System.out.println("1. SQL1 : " + master_sql);
+		System.out.println("2. SQL2 : " + slave_sql);
+		System.out.println("3. Join Type : " + join_type);
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			Map<String, Object> join_key = mapper.readValue(request.getParameter("join_key"), Map.class);
+			System.out.println("4. Join Key List : " + join_key.get("join_key"));
+			List<Map<String, String>> list = (List)join_key.get("join_key");
+			int listLength = list.size();
+			for(int i=0; i<listLength; i++) {
+				String master = list.get(i).get("master");
+				String slave = list.get(i).get("slave");
+				if(listLength-1 != i) {
+					join += "a." + master + "=b." + slave + " AND ";
+				}else {
+					join += "a." + master + "=b." + slave;
+				}
+				System.out.println("5. Join Statement : " + join);
+			}
+			
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 		
 		String sql = "SELECT * " +
-		             "FROM (" + sql_1 +") a " + join_type + " (" + sql_2 + ") b " +
-				     "ON a." + join_key_1 + "=b." + join_key_2;
-		System.out.println("[Maked SQL For Join] : " + sql );
+		             "FROM (" + master_sql +") a " + join_type + " (" + slave_sql + ") b " +
+				     "ON " + join;
 		
+		
+		System.out.println("[Maked SQL For Join] : " + sql );
+		System.out.println("---------------\n");
 		return getData(sql);
 	}
 
@@ -169,10 +183,10 @@ public class SQLServiceImpl implements SQLService{
 	public LinkedHashMap<String, Object> rename(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 		System.out.println("\n--- Rename.java ---");
-		String sql = request.getParameter("param");
+		String sql = request.getParameter("param").toUpperCase().replaceAll("\n", " ");
 		
 		System.out.println("[Maked SQL For Rename] : \n" + sql);
-		
+		System.out.println("---------------\n");
 		return getData(sql);
 	}
 
@@ -180,17 +194,41 @@ public class SQLServiceImpl implements SQLService{
 	public LinkedHashMap<String, Object> union(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 		System.out.println("\n--- Union.java ---");
-		String master_sql = request.getParameter("master_sql");
-		String slaver_sql = request.getParameter("slaver_sql");
-		String union_type = request.getParameter("union_type");
+		String master_sql = request.getParameter("master_sql").toUpperCase().replaceAll("\n", " ");
+		String slave_sql = request.getParameter("slaver_sql").toUpperCase().replaceAll("\n", " ");
+		String union_type = request.getParameter("union_type").toUpperCase().replaceAll("\n", " ");
 		String sql = "";
-		
-		sql = master_sql +
-			 " " + union_type + " " +
-			  slaver_sql;
+		System.out.println("1. master_sql : " + master_sql);
+		System.out.println("2. slave_sql : " + slave_sql);
+		System.out.println("3. union_type : " + union_type);
+		sql = "(" + master_sql + ") "
+			  + union_type + " " +
+			  "(" + slave_sql  + ")";
 		System.out.println("[Maked SQL For Union] : \n" + sql );
-		
+		System.out.println("---------------\n");
 		return getData(sql);
+	}
+	
+	@Override
+	public ArrayList<String> targetTableList(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		System.out.println("\n--- TargetTableList.java ---");
+		ArrayList<String> data = dao.getTargetTableList();
+		System.out.println("[TargetTableTList : ]" + data.toString());
+		System.out.println("---------------\n");
+		return data;
+	}
+	
+	@Override
+	public ArrayList<HashMap<String, String>> targetTableInfo(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		System.out.println("\n--- TargetTableInfo.java ---");
+		String targetTable = request.getParameter("targetTable").toUpperCase().replaceAll("\n", " ");
+		System.out.println("1. get targetTable : " + targetTable);
+		ArrayList<HashMap<String, String>> data = dao.getTargetTableInfo(targetTable);
+		System.out.println("[TargetTableInfo : ]" + data.toString());
+		System.out.println("---------------\n");
+		return data;
 	}
 	
 	private LinkedHashMap<String, Object> getData(String sql) {
@@ -199,4 +237,34 @@ public class SQLServiceImpl implements SQLService{
 		
 		return data;
 	}
+
+	@Override
+	public void dbInsert(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		System.out.println("\n--- DBinsert.java ---");
+		String targetTable = request.getParameter("target_table").toUpperCase().replaceAll("\n", " ");
+		String child_sql = request.getParameter("child_sql").toUpperCase().replaceAll("\n", " ");
+		String sql = "INSERT INTO " + targetTable + " " + child_sql;
+		
+		dao.dbInsert(sql);
+		System.out.println("---------------\n");
+	}
+
+	@Override
+	public void dbUpdate(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		System.out.println("\n--- DBinsert.java ---");
+		String sql = request.getParameter("sql");
+		System.out.println("1. sql : " + sql);
+		dao.dbUpdate(sql);
+		System.out.println("---------------\n");
+	}
+
+	@Override
+	public void dbDelete(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 }

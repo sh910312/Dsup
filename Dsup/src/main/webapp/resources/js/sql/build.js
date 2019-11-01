@@ -2,10 +2,7 @@ var myDiagram;
 var controller;
 $(function() {
 	var height = window.innerHeight || document.body.clientHeight;
-	//jQuery('#full_screen').css("height", height);
-	jQuery('#sub-contents').css("height", height*(4/10));
-	jQuery('#myPaletteDiv').css("height", height*(4/10));
-	jQuery('#myDiagramDiv').css("height", height*(4/10));
+	jQuery('body, html').css("height", "100%");
 	if (window.goSamples)
 		goSamples(); // init for these samples -- you don't need to call this
 	var $ = go.GraphObject.make; // for conciseness in defining templates
@@ -17,9 +14,12 @@ $(function() {
 			controller.selectChanged(obj.currentTarget);
 		});
 	});
-	jQuery(document).on("change",".order_type",function(obj){
+	jQuery(document).on("change", ".order_type, .dbinsert-select, .dbinsert-add-type, .union-add-type, .where-stmt-select", function(obj){
 		controller.selectChanged(obj.currentTarget);
-		});
+	});
+	jQuery(document).on("change","#target_table_list", function(obj){
+		controller.getTargetTableInfo();
+	});
 	//동적으로 생성된 태그에 이벤트를 걸려면 어떻게 해야할까??
 	//출처: https://rongscodinghistory.tistory.com/41 [악덕고용주의 개발 일기]
 	jQuery.singleDoubleClick = function(singleClk, doubleClk) {

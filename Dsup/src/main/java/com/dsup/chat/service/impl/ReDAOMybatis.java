@@ -28,5 +28,9 @@ public class ReDAOMybatis {
 		return mybatis.selectList("ReDAO.reMap", vo);
 	}
 	
+	// 페이징 전체검색
+	public int RePagingList(ReVO vo) {
+		return mybatis.selectOne("ReDAO.repageList", vo);
+	}
 	
 }
