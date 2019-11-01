@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import org.springframework.stereotype.Repository;
@@ -19,8 +20,8 @@ public class DAO {
 
 	public DAO() {
 		try {
-            String user = "scott"; 
-            String pw = "tiger";
+            String user = "hr"; 
+            String pw = "hr";
             String url = "jdbc:oracle:thin:@localhost:1521:xe";
             
             Class.forName("oracle.jdbc.driver.OracleDriver");        
@@ -123,13 +124,95 @@ public class DAO {
 			hash.put("DATA", innerHash);
 			
 			//outerList.add(hash);
-			System.out.println("\n---------------");
+			
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}finally {
-			close();
+			//close();
 		}
 		
 		return hash;
+	}
+
+	public ArrayList<String> getTargetTableList() {
+		// TODO Auto-generated method stub
+		ArrayList<String> targetTableList = new ArrayList<String>();
+		
+		try {
+			String sql = "SELECT table_name FROM user_tables";
+			String table_name = "";
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				table_name = rs.getString("table_name");
+				targetTableList.add(table_name);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return targetTableList;
+	}
+
+	public ArrayList<HashMap<String, String>> getTargetTableInfo(String targetTable) {
+		// TODO Auto-generated method stub
+		ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+		HashMap<String, String> map = null;
+		try {
+			String sql = "SELECT column_name, data_type FROM all_tab_columns WHERE table_name=?";
+			String colName = "";
+			String dataType = "";
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, targetTable);
+			rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				map = new HashMap<String, String>();
+				colName = rs.getString("column_name");
+				dataType = rs.getString("data_type");
+				map.put("colName", colName);
+				map.put("dataType", dataType);
+				System.out.println(list.toString());
+				//list.add(map);
+				//테이블의 마지막 컬럼부터 가져와서 배열에 넣길레 새로운 컬럼은 제일 처음에 끼워 넣기 식으로 하고 있음 
+				list.add(0, map);
+			}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			//close();
+		}
+		
+		return list;
+	}
+
+	public void dbInsert(String sql) {
+		// TODO Auto-generated method stub
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			//close();
+		}
+	}
+
+	public void dbUpdate(String sql) {
+		// TODO Auto-generated method stub
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			//close();
+		}
+		
 	}
 }

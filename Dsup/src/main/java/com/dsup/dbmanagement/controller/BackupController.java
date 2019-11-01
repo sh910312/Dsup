@@ -73,7 +73,8 @@ public class BackupController {
 	
 	// [윤정1029] 백업파일 삭제
 	@RequestMapping("/backupDelete")
-	public void backupDelete(@RequestParam(value="deleteFiles") String[] deleteFiles) {
+	public String backupDelete(@RequestParam(value="deleteFiles") String[] deleteFiles) {
 		backupService.backupDelete(deleteFiles);
+		return "redirect:backupList";
 	}
 }

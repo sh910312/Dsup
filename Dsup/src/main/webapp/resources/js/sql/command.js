@@ -61,7 +61,7 @@ var Command = (function() {
 								
 								setting.clean(momo.getType())
 								var info = storage.getLocalStorage(k, "SETTING");
-								console.log("[momo set info] : " + info);
+								//console.log("[momo set info] : " + info);
 								setting.decorate(k, t, info, "old");
 								momo.replace(k, t, c)
 								
@@ -69,9 +69,12 @@ var Command = (function() {
 								// 타입 같고 새로운 모모 클릭
 								console.log("--- New and Same Type! ---");
 								setting.clean(momo.getType())
-								if(t != "DBread")
+								if(t != "DBread"){
 									var info = storage.getChildInfo(k, c);
-								console.log("[child info] : " + info);
+								}else if(t == "DBinsert"){
+									process.getDBinsertTargetTableList();
+								}
+								//console.log("[child info] : " + info);
 								setting.decorate(k, t, info, "new");
 								momo.replace(k, t, c);
 							}
@@ -83,7 +86,7 @@ var Command = (function() {
 								setting.clean(momo.getType());
 								setting.close(momo.getKey(), momo.getType());
 								var info = storage.getLocalStorage(k, "SETTING");
-								console.log("[momo set info] : " + info);
+								//console.log("[momo set info] : " + info);
 								setting.decorate(k, t, info, "old");
 								setting.open(k, t);
 								
@@ -94,9 +97,16 @@ var Command = (function() {
 								 
 								setting.clean(momo.getType());
 								setting.close(momo.getKey(), momo.getType());
-								if(t != "DBread")
+								if(t != "DBread"){
 									var info = storage.getChildInfo(k, c);
-								console.log("[child info] : " + info);
+								}
+								
+								//DBinsert인 경우 schema에 따라 보유한 테이블들의 list를 보여줘야된다.
+								if(t == "DBinsert"){
+									var list = process.getDBinsertTargetTableList();
+									setting.decorateTargetTableList(list);
+								}
+								//console.log("[child info] : " + info);
 								setting.decorate(k, t, info, "new");
 								setting.open(k, t);
 								
@@ -107,15 +117,22 @@ var Command = (function() {
 				}
 			},
 			apply : function(t){
-				if(t != "DBread")
+				if(t != "DBinsert"){
+					if(t != "DBread")
+						var info = storage.getChildInfo(momo.getKey(), momo.getChildsInfo());
+					//console.log("child info : " + info);
+					result = process.getData(momo, info);
+					if(result != "{}"){
+						momo.setMoMo(result);
+						storage.setLocalStorage(momo);
+					}else{
+						common.errorMessage("설정 조건이 잘못되었습니다.");
+					}
+					//console.log("momo.getSettingInfo() : " + momo.getSettingInfo());
+				}else{
 					var info = storage.getChildInfo(momo.getKey(), momo.getChildsInfo());
-				//console.log("child info : " + info);
-				result = process.getData(momo, info);
-				//console.log("[apply result] : " + result);
-				//console.log(momo.getKey());
-				momo.setMoMo(result);
-				//console.log("momo.getSettingInfo() : " + momo.getSettingInfo());
-				storage.setLocalStorage(momo);
+					process.dbInsert(info);
+				}
 
 			},
 			add : function(t){
@@ -154,6 +171,12 @@ var Command = (function() {
 			},
 			selectChanged : function(obj){
 				setting.selectChanged(obj);
+			},
+			getTargetTableInfo : function(){
+				var targetTableInfo = process.getTargetTableInfo();
+				setting.decoTargetTable(targetTableInfo);
+				//setting.selectChanged('dbinsert-target-table-changed');
+				setting.selectChanged('#target_table_list');
 			}
 		};
 	}

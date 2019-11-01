@@ -39,7 +39,7 @@
 			
 			var $checkBox = $("<td>").append($("<input>").attr("type","checkbox").val((item.backupFileNm)).attr("name", "deleteFiles"));
 			var $backupFileNm = $("<td>").html("<a href = './download/" + fileName + "'>" + (item.backupFileNm) + "</a>");
-			var $backupDate = $("<td>").text((item.backupDate));
+			var $backupDate = $("<td>").text((item.backupDate).substr(0,10));
 			var $backupComment = $("<td>").text((item.backupComment));
 			//var $delBtn = $("<td>").append($("<input>").attr("type", "button").attr("class", "delBtn").val("삭제"));
 			
@@ -99,6 +99,7 @@
 	</script>
 </head>
 <body>
+<%@include file="/WEB-INF/jsp/DBbar.jsp" %>
 	<a href = "backupCreateForm" >백업하기</a>
 	<form action="backupDelete" id = "frm">
 	<div class = ".table-responsive">

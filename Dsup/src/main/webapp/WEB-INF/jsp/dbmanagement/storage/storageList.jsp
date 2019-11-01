@@ -15,10 +15,7 @@
 	<script>
 	$(document).ready(function(){
 		tablespaceList();
-		
-		$('input:radio[name="tablespaceName"]').eq(0).attr("checked", true);
-		// 첫 번째 라디오 자동 체크
-		// ☆ 왜 안되지????
+		radioCheck();
 		
 		$("#updbtn").click(function(){
 			$("#frm").attr("action", "TSupdateForm.do");
@@ -47,17 +44,11 @@
 		});
 		// 검색 버튼 클릭
 		
-		$("<tr>").each(function(){
-			$(this).click(function(){
-				$(this).find("input[type='radio']").attr("checked", true);
-			});
-		});
-		// 테이블 행 클릭하면 라디오 체크
-		
 		$("#showbtn").click(function(){
-			$("#frm").attr("action", "TSshow.do");
+			$("#frm").attr("action", "storageShow");
 			$("#frm").submit();
 		});
+		//조회 버튼 클릭
 	});
 	
 	// [윤정 1030] 테이블스페이스 리스트 조회 요청
@@ -75,7 +66,7 @@
 		$.each(list, function(idx, item){
 			var $radio = $("<td>").html("<input type = 'radio' name = 'tablespaceName' value = '" + (item.tablespaceName) + "'>");
 			//var $radio = $("<td>").append( $("<input>").attr("type","radio").val((item.tablespaceName)).attr("name", "tablespaceName") );
-			var $tablespaceName = $("<td>").text((item.tablespaceName));
+			var $tablespaceName = $("<td>").html("<a href = 'storageShow?tablespaceName=" + (item.tablespaceName) + "'>" + (item.tablespaceName) + "</a>");
 			var $status = $("<td>").text((item.status));
 			var $total = $("<td>").text((item.total));
 			var $used = $("<td>").text((item.used));
@@ -88,11 +79,21 @@
 									.append($used)
 									.append($free)
 					);
+			$('input:radio[name="tablespaceName"]').eq(0).attr("checked", true);
+			// 첫 번째 라디오 자동 체크
 		});
+	}
+	
+	// [윤정1031] tr 클릭시 라디오 체크
+	function radioCheck(){
+		$("tr").click(function(){
+			$(this).find("input:radio[name='tablespaceName']").attr("checked", true);
+		})
 	}
 	</script>
 </head>
 <body>
+<%@include file="/WEB-INF/jsp/DBbar.jsp" %>
 	<form id = "frm" method = "post">
 	<input type = "hidden" name = "keyword" id = "keyword">
 	<input type = "text" id = "search" placeholder = "검색할 테이블 스페이스의 이름 입력">
