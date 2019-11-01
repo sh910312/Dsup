@@ -6,11 +6,18 @@
 	<meta charset="UTF-8">
 	<title>Create Storage</title>
 	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+	
+	<!-- 부트스트랩 -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+	
 	<script>
 	$(function(){
 		$("#btn").click(formCheck);
 		$("#addbtn").click(add);
 		tsNameChkFunction();
+		$("#alert").hide();
 	});
 	
 	// 제출 전 확인
@@ -71,29 +78,34 @@
 				success : function(data) {
 					// 중복이면 0, 아니면 1
 					if(data == 0) { // 중복
-						
+						$("#alert").show();
 					} else if(name == '') { // 아이디를 입력하지 않은 경우
-						
+						$("#alert").show();
 					} else { // 중복x
-						
+						$("#alert").hide();
 					}
 				}
-			})
-		});
-	}
+			}) // ajax
+		}); // .blur(function)
+	} // tsNameChkFunction
 	
 	</script>
 </head>
 <body>
 <%@include file="/WEB-INF/jsp/DBbar.jsp" %>
+<div class = "container">
 	<form onsubmit="formCheck()" method = "post" action = "storageCreate">
 	<input type = "hidden" id = "sql" name = "sql">
 		<h1>테이블 스페이스</h1>
-		테이블 스페이스 이름 <input type = "text" name = "tablespaceName" id = "tablespaceName" required> 
+		테이블 스페이스 이름
+		<input type = "text" name = "tablespaceName" id = "tablespaceName" required
+			class = "form-control"> 
+		<br>
+		<div class = "alert alert-info" role="alert" id = "alert">사용할 수 없는 이름입니다</div>
 		<br>
 		
 		<h1>데이터 파일</h1>
-		<table border = "1" id = "tb1">
+		<table border = "1" id = "tb1" class = "table table-hover">
 			<thead>
 				<tr>
 					<th>이름</th>
@@ -103,10 +115,10 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td><input type = "text" id = "filename" required></td>
+					<td><input type = "text" id = "filename" required class = "form-control"></td>
 					<td>
-						<input type = "text" id = "size" required>
-						<select id = "sizeunit">
+						<input type = "text" id = "size" required class = "form-control">
+						<select id = "sizeunit" class = "form-control">
 							<option value = "M">MB</option>
 							<option value = "K">KB</option>
 							<option value = "G">GB</option>
@@ -117,8 +129,8 @@
 				</tr>
 			</tbody>
 		</table>
-		데이터파일은 ${sessionScope.member.userId}_입력한 파일명.dbf 이름으로 저장됩니다.
 		<input type = "submit" id="btn" value = "생성">
 	</form>
+</div>
 </body>
 </html>
