@@ -30,13 +30,23 @@
 		<div class="container-for-join-setting"> 
 			<div id="join-dataTableName-1" class="join-dataTableName" style="font-weight: bold; margin-right: 20px;"></div>
 			<div class="child-data-table-div">
-				<table id="join-dataTable-1" border="1"></table>
+				<table id="join-dataTable-1" border="1">
+					<tr>
+						<th>Column Name</th>
+						<th>Type</th>
+					</tr>
+				</table>
 			</div>
 		</div>
 		<div class="container-for-join-setting"> 
 			<div id="join-dataTableName-2" class="join-dataTableName" style="font-weight: bold;"></div>
 			<div class="child-data-table-div">
-				<table id="join-dataTable-2" border="1"></table>
+				<table id="join-dataTable-2" border="1">
+					<tr>
+						<th>Column Name</th>
+						<th>Type</th>
+					</tr>
+				</table>
 			</div>
 		</div>
 	</div>

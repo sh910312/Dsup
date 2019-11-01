@@ -23,7 +23,7 @@ var Controller = (function () {
             
             apply : function(t){
             	//console.log("apply type : " + t)
-            	command.apply();
+            	command.apply(t);
             },
             add : function(t){
             	command.add(t);
@@ -48,6 +48,9 @@ var Controller = (function () {
             },
             selectChanged : function(obj){
             	command.selectChanged(obj);
+            },
+            getTargetTableInfo : function(){
+            	command.getTargetTableInfo();
             }
         };
     }

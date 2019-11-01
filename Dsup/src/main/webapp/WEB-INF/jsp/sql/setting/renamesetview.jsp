@@ -38,6 +38,10 @@
 	<div>
 		<div>
 			<table id="rename-add-table" border="1">
+				<tr>
+					<th>Column Name</th>
+					<th>Type</th>
+				</tr>
 			</table>
 		</div>
 	</div>

@@ -53,13 +53,15 @@
 	function userListResult(data) {
 		$("#userList").empty();
 		$.each(data, function(idx, item) {
-			$('<tr>').append($('<td>').html(item.USERNAME)).append(
-					$('<td>').html(item.ACCOUNT_STATUS)).append(
-					$('<td>').html(item.DEFAULT_TABLESPACE)).append(
-					$('<td>').html('<button id="btnDelete">삭제')).append(
-					$('<td>').html('<button id="btnUpdate">수정')).append(
-					$('<td>').html('<button id="btnCreate">생성')).append(
-					$('<input type="hidden" id="hidden_userId">').val(item.USERNAME)).appendTo('#userList');
+			$('<tr>').append( $('<td>').html((item.USERNAME)) )
+					.append( $('<td>').html((item.ACCOUNT_STATUS)) )
+					.append( $('<td>').html((item.DEFAULT_TABLESPACE)) )
+					.append( $('<td>').html('<button id="btnDelete">삭제') )
+					.append( $('<td>').html('<button id="btnUpdate">수정') )
+					//.append( $('<td>').append( $("<input>").attr("type", "button").val("생성").attr("onclick", "location.href='userCreateForm'") ) )
+					.append( $('<input type="hidden" id="hidden_userId">').val(item.USERNAME) )
+					.appendTo($('#userList'))
+					;
 
 			// <input type = "hidden" id = "hidden_userId" value="item.USERNAME">
 		});
@@ -194,7 +196,6 @@
 </head>
 <body>
 <%@include file="../../DBbar.jsp" %>
-${tableSpaceList}
 	<div id="dialog-form">
 		<p class="validateTips"></p>
 		<div class="form-group row">
