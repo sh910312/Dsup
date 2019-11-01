@@ -8,7 +8,8 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
 		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd"
+	>
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing 
 		infrastructure -->
@@ -40,8 +41,26 @@
 			<beans:value>/WEB-INF/tiles.xml</beans:value>
 		</beans:property>
 	</beans:bean>
+	
+	<beans:bean id="LoginInterceptor" class="com.dsup.common.LoginInterceptor"/>
+	<!-- locale change interceptor  -->
+	<interceptors>
+		<beans:bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<beans:property name="paramName" value="lang"/>
+		</beans:bean>	
+		<interceptor>
+            <mapping path="/*"/>
+            <!-- <mapping path="/user/*"/> -->
+            <exclude-mapping path="/login"/>
+            <beans:ref bean="LoginInterceptor"/>
+        </interceptor>
+	</interceptors>
 
-	<context:component-scan base-package="com.dsup" />
+	<context:component-scan base-package="com.dsup" >
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository" />
+	</context:component-scan>
 
 
 	<beans:bean id="soketHandler" class="com.dsup.chat.controller.SoketHandler" />

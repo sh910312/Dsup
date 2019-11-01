@@ -6,6 +6,11 @@
 	<meta charset="UTF-8">
 	<title>Create Backup</title>
 	
+	<!-- 부트스트랩 -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+	
 	<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script>
 	$(function(){
@@ -58,12 +63,13 @@
 	</script>
 </head>
 <body>
+<%@include file="/WEB-INF/jsp/DBbar.jsp" %>
 	<h1>테이블스페이스 선택</h1>
 	<form id="frm" method="post" action="backupCreate">
 		<table border = "1" id = "tb">
 			<tbody></tbody>
 		</table>
-		아이디<input type = "text" name = "userId">
+		<input type = "hidden" name = "userId" value="${userId}">
 		코멘트<input type = "text" name = "backupComment">
 		<input type = "submit" id = "backupBtn" value = "백업하기">
 	</form>

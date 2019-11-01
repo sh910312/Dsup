@@ -6,10 +6,16 @@
 	<meta charset="UTF-8">
 	<title>Storage List</title>
 	<script src = "https://code.jquery.com/jquery-3.4.1.js"></script>
+	
+	<!-- 부트스트랩 -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+	
 	<script>
 	$(document).ready(function(){
-		$('input:radio[name=tablespace]').eq(0).attr("checked", true);
-		// 첫 번째 라디오 자동 체크
+		tablespaceList();
+		radioCheck();
 		
 		$("#updbtn").click(function(){
 			$("#frm").attr("action", "TSupdateForm.do");
@@ -27,7 +33,7 @@
 		// 삭제 버튼 클릭
 		
 		$("#crebtn").click(function(){
-			$("#frm").attr("action", "TScreateForm.do");
+			$("#frm").attr("action", "storageCreateForm");
 			$("#frm").submit();
 		});
 		// 생성 버튼 클릭
@@ -38,54 +44,73 @@
 		});
 		// 검색 버튼 클릭
 		
-		$("<tr>").each(function(){
-			$(this).click(function(){
-				$(this).find("input[type='radio']").attr("checked", true);
-				$("#frm").attr("action", "TSshow.do");
-				$("#frm").submit();
-			});
-		});
-		// 테이블 행 클릭하면 조회하게 ☆☆☆☆수정 필요!!!
-		
 		$("#showbtn").click(function(){
-			$("#frm").attr("action", "TSshow.do");
+			$("#frm").attr("action", "storageShow");
 			$("#frm").submit();
 		});
+		//조회 버튼 클릭
 	});
+	
+	// [윤정 1030] 테이블스페이스 리스트 조회 요청
+	function tablespaceList(){
+		$.ajax({
+			url: 'getStorage',
+			type: 'GET',
+			dataType: "json",
+			success : tablespaceListResult
+		})
+	}
+	
+	// [윤정 1030] 테이블스페이스 리스트 출력
+	function tablespaceListResult(list){
+		$.each(list, function(idx, item){
+			var $radio = $("<td>").html("<input type = 'radio' name = 'tablespaceName' value = '" + (item.tablespaceName) + "'>");
+			//var $radio = $("<td>").append( $("<input>").attr("type","radio").val((item.tablespaceName)).attr("name", "tablespaceName") );
+			var $tablespaceName = $("<td>").html("<a href = 'storageShow?tablespaceName=" + (item.tablespaceName) + "'>" + (item.tablespaceName) + "</a>");
+			var $status = $("<td>").text((item.status));
+			var $total = $("<td>").text((item.total));
+			var $used = $("<td>").text((item.used));
+			var $free = $("<td>").text((item.free));
+			
+			$("tbody").append($("<tr>").append($radio)
+									.append($tablespaceName)
+									.append($status)
+									.append($total)
+									.append($used)
+									.append($free)
+					);
+			$('input:radio[name="tablespaceName"]').eq(0).attr("checked", true);
+			// 첫 번째 라디오 자동 체크
+		});
+	}
+	
+	// [윤정1031] tr 클릭시 라디오 체크
+	function radioCheck(){
+		$("tr").click(function(){
+			$(this).find("input:radio[name='tablespaceName']").attr("checked", true);
+		})
+	}
 	</script>
 </head>
 <body>
+<%@include file="/WEB-INF/jsp/DBbar.jsp" %>
 	<form id = "frm" method = "post">
 	<input type = "hidden" name = "keyword" id = "keyword">
 	<input type = "text" id = "search" placeholder = "검색할 테이블 스페이스의 이름 입력">
 	<input type = "submit" id = "searchbtn" value = "검색">
-	<table border = "1">
-	<thead>
+	<table border = "1" class = "table">
+		<thead>
 		<tr>
 			<th></th>
 			<th>tablespace name</th>
 			<th>status</th>
-			<th>contents</th>
 			<th>total MB</th>
 			<th>used MB</th>
 			<th>free MB</th>
-			<th>used percent</th>
 		</tr>
-	</thead>
-	<tbody>
-		<c:forEach items="${list}" var="dto">
-			<tr>
-				<td><input type = "radio" id = "ts_radio" name = "tablespace" value = "${dto.getTablespaceName()}"></td>
-				<td>${dto.getTablespaceName()}</td>
-				<td>${dto.getStatus()}</td>
-				<td>${dto.getContents()}</td>
-				<td>${dto.getTotal()}</td>
-				<td>${dto.getUsed()}</td>
-				<td>${dto.getFree()}</td>
-				<td>${dto.getUsedPer()} %</td>
-			</tr>
-		</c:forEach>
-	</tbody>
+		</thead>
+		<tbody>
+		</tbody>
 	</table>
 	<input id = "updbtn" type = "button" value = "수정">
 	<input id = "delbtn" type = "button" value = "삭제">

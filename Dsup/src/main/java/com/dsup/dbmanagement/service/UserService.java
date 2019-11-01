@@ -14,8 +14,8 @@ public interface UserService {
 	public List<Map<String,Object>> userList(UserVO vo);
 	
 	//id중복체크
-	int userIdCheck(String user_id);
-
+	public int idCheck(UserVO vo);
+	
 	//삭제
 	public int deleteUser(UserVO vo);
 	
@@ -25,8 +25,6 @@ public interface UserService {
 	//단건조회
 	public UserVO getUser(UserVO vo);
 
-	//스키마 생성
-	public int insertSchemaTb(UserSchemaVO dto);
 	
 	
 }

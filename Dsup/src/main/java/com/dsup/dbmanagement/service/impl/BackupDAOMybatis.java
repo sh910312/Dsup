@@ -38,4 +38,9 @@ public class BackupDAOMybatis {
  	public List<BackupVO> getBackupList(String userId) {
  		return mybatis.selectList("BackupDAO.getBackupList", userId);
  	}
+ 	
+ 	// [윤정1029] 백업테이블 자료 삭제
+ 	public void BackupDelete(String backupFileNm) {
+ 		mybatis.delete("BackupDAO.deleteBackupList", backupFileNm);
+ 	}
 }

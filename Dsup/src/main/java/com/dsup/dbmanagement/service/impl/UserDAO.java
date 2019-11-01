@@ -28,6 +28,7 @@ public class UserDAO {
 	}
 	//리스트
 	public List<Map<String, Object>> userList(UserVO vo) {
+		System.out.println(vo);
 		return mybatis.selectList("UserDAO.userList", vo);
 	}
 	//수정
@@ -43,6 +44,11 @@ public class UserDAO {
 	//스키마 생성
 	public int insertSchemaTb(UserSchemaVO dto) {
 		return mybatis.insert("UserDAO.insertinsertSchemaTb", dto);
+	}
+
+	//id중복 체크
+	public int checkOverId(String id) {
+		return 0;
 	}
 
 	
