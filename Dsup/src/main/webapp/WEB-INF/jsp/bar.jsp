@@ -51,6 +51,8 @@
         }
 </style>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script type="text/javascript">
 	function goPage(){
 		var value = document.getElementById("menu").value;
@@ -73,7 +75,7 @@
 프로필<select id="menu" onchange="goPage()">
 	<option value="">선택</option>
 	<option value="">쪽지함</option>
-	<option value="">채팅봇</option>
+	<option value="chatMain">채팅봇</option>
 	<option value="">Q &amp; A</option>
 	<option value="myInfo">정보변경</option>
 	<option value="logout">로그아웃</option>

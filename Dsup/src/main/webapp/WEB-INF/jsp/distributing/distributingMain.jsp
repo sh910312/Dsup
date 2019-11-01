@@ -5,30 +5,142 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-	crossorigin="anonymous">
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-	crossorigin="anonymous"></script>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author"
+	content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+<meta name="generator" content="Jekyll v3.8.5">
+<title>Pricing</title>
+
+<!-- <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/pricing/"> -->
+<!-- <link href="/docs/4.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+
+<style>
+.bd-placeholder-img {
+	font-size: 1.125rem;
+	text-anchor: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+@media ( min-width : 768px) {
+	.bd-placeholder-img-lg {
+		font-size: 3.5rem;
+	}
+}
+</style>
+<!-- <link href="pricing.css" rel="stylesheet"> -->
 </head>
 <body>
 	<div>
 		<%@include file="../bar.jsp"%>
 	</div>
-	${member.nickname}님, 안녕하세요!
-	<br>
+	
+	<div
+		class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+		<h1 class="display-4">가격</h1>
+		<p class="lead">저장공간이 필요한가요?</p>
+	</div>
+	<div class="container">
+		<div class="card-deck mb-3 text-center">
+			<div class="card mb-4 shadow-sm">
+				<div class="card-header">
+					<h4 class="my-0 font-weight-normal">10GB</h4>
+				</div>
+				<div class="card-body">
+					<h1 class="card-title pricing-card-title">
+						<span class="paymoney">10</span>원 <small class="text-muted">/ 월</small>
+					</h1>
+					<ul class="list-unstyled mt-3 mb-4">
+						<li>10GB의 저장용량</li><br>
+						<li>지금 계정을 업그레이드하여</li>
+						<li>10GB 저장공간을 사용해보세요.</li>
+					</ul>
+					<button type="button" class="paybtn btn btn-lg btn-block btn-primary">업그레이드</button>
+				</div>
+			</div>
+			<div class="card mb-4 shadow-sm">
+				<div class="card-header">
+					<h4 class="my-0 font-weight-normal">20GB</h4>
+				</div>
+				<div class="card-body">
+					<h1 class="card-title pricing-card-title">
+						<span class="paymoney">200</span>원 <small class="text-muted">/ 월</small>
+					</h1>
+					<ul class="list-unstyled mt-3 mb-4">
+						<li>20GB의 저장용량</li><br>
+						<li>지금 계정을 업그레이드하여</li>
+						<li>20GB 저장공간을 사용해보세요.</li>
+					</ul>
+					<button type="button" class="paybtn btn btn-lg btn-block btn-primary">업그레이드</button>
+				</div>
+			</div>
+			<div class="card mb-4 shadow-sm">
+				<div class="card-header">
+					<h4 class="my-0 font-weight-normal">30GB</h4>
+				</div>
+				<div class="card-body">
+					<h1 class="card-title pricing-card-title">
+						<span class="paymoney">300</span>원 <small class="text-muted">/ 월</small>
+					</h1>
+					<ul class="list-unstyled mt-3 mb-4">
+						<li>30GB의 저장용량</li><br>
+						<li>지금 계정을 업그레이드하여</li>
+						<li>30GB 저장공간을 사용해보세요.</li>
+					</ul>
+					<button type="button" class="paybtn btn btn-lg btn-block btn-primary">업그레이드</button>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- 결제 api -->
+
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+<script type="text/javascript">
+	var IMP = window.IMP; // 생략가능
+	IMP.init('imp51227222'); // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
+	$('.paybtn').click(function(){
+	var amount = $(this).closest(".card-body").find(".paymoney").text()
+	
+		IMP.request_pay({
+		    pg : 'html5_inicis', // version 1.1.0부터 지원.
+		    pay_method : 'card',
+		    merchant_uid : 'merchant_' + new Date().getTime(),
+		    name : '종량제 결제',
+		    amount : amount,
+		    buyer_name : '${member.userId}',
+		    buyer_nickname : '${member.nickname}',
+		    buyer_email : '${member.eMail}',
+		    m_redirect_url : 'http://localhost/dsup/distributingMain'
+		}, function(rsp) {
+		    if ( rsp.success ) {
+		        var msg = '결제가 완료되었습니다.';
+		        msg += '고유ID : ' + rsp.imp_uid;
+		        msg += '상점 거래ID : ' + rsp.merchant_uid;
+		        msg += '결제 금액 : ' + rsp.paid_amount;
+		        msg += '카드 승인번호 : ' + rsp.apply_num;
+		        
+		        
+		        
+		    } else {
+		        var msg = '결제에 실패하였습니다.';
+		        msg += '에러내용 : ' + rsp.error_msg;
+		    }
+		    alert(msg);
+		});
+	});
+</script>
+	<%-- ${member.nickname}님, 안녕하세요! --%>
+	
 	<%-- 전체용량 ${schemaUse.maxBytes} 중에서 사용량은 ${schemaUse.bytes} 입니다.
-<div class="progress" style="width:50%; align:center;">
-  <div class="progress-bar" role="progressbar" style="width:${schemaUse.usepct}%;" aria-valuenow="${schemaUse.usepct}" aria-valuemin="0" aria-valuemax="100">${schemaUse.usepct}%</div>
-</div> --%>
-
-	<form>
-		<button>신청하기</button>
+	<div class="progress" style="width:50%; align:center;">
+ 	<div class="progress-bar" role="progressbar" style="width:${schemaUse.usepct}%;" aria-valuenow="${schemaUse.usepct}" aria-valuemin="0" aria-valuemax="100">${schemaUse.usepct}%</div>
+	</div> --%>
+	
+	<form action="">
+		
 	</form>
-
 </body>
 </html>
