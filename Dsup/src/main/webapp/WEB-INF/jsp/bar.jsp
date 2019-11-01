@@ -102,7 +102,6 @@
 		    <form name="frm" action="">
 		      아이디: ${member.userId}<br>
 		      비밀번호 : <input name="password"><br>
-		      비밀번호 확인 : <input name="password"><br>
 			닉네임: <input name="nickname"><br>
 			이메일: <input name="eMail"><br>
 			<button type="button" id="btnUpdate" >수정</button>
