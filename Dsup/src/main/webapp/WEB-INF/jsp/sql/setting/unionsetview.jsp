@@ -34,28 +34,42 @@
 			</div>
 		</div>
 	</div>
-	<div id="union-contents-container" style="border: black solid 1px;">
-		<div class="container-for-union-setting" style="display:inline-block;" >
-			<div id="union-master-mark-div-1" style="font-weight: bold;"><p>Master</p></div>
-			<div id="union-dataTableName-1" class="union-dataTableName"></div>
+	<div id="union-contents-container" style="border: black solid 1px; display:flex">
+		<div class="container-for-union-setting" >
+			<div style="display:flex">
+				<div id="union-master-mark-div-1" style="font-weight: bold;"><p style="margin:0px 10px 0px 10px;">Master</p></div>
+				<div id="union-dataTableName-1" class="union-dataTableName"></div>
+			</div>
 			<div class="child-data-table-div">
-				<table id="union-dataTable-1" border="1"></table>
+				<table id="union-dataTable-1" border="1">
+					<tr>
+						<th>Columns</th>
+						<th>Data Type</th>
+					</tr>				
+				</table>
 			</div>
 		</div>
-		<div class="container-for-union-setting" style="display:inline-block;">
-			<div id="union-master-mark-div-2" style="font-weight: bold;"><p>Slave</p></div>
-			<div id="union-dataTableName-2" class="union-dataTableName"></div>
+		<div class="container-for-union-setting">
+			<div style="display:flex">
+				<div id="union-master-mark-div-2" style="font-weight: bold;"><p style="margin:0px 10px 0px 10px;">Slave</p></div>
+				<div id="union-dataTableName-2" class="union-dataTableName"></div>
+			</div>
 			<div class="child-data-table-div">
-				<table id="union-dataTable-2" border="1"></table>
+				<table id="union-dataTable-2" border="1">
+					<tr>
+						<th>Columns</th>
+						<th>Data Type</th>
+					</tr>		
+				</table>
 			</div>
 		</div>
 	</div>
 	<div>
 		<div style="display:inline-block;">
-			<input type="radio" name="union-add-type" value="Manual" checked="checked">Manual
+			<input type="radio" name="union-add-type" class="union-add-type" value="Manual" checked="checked">Manual
 		</div>
 		<div style="display:inline-block;">
-			<input type="radio" name="union-add-type" value="Auto">Auto
+			<input type="radio" name="union-add-type" class="union-add-type" value="Auto">Auto
 		</div>
 		<div style="display:inline-block;">
 			<button onclick="controller.add('Union')">Add</button>
