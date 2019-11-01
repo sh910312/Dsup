@@ -5,17 +5,17 @@
 	
 	<!-- 생성 -->
 	<insert id="createUser" parameterType="user" >
-		{call ADD_USER (#{id}, #{password}, #{defaultTableSpace}, #{accountStatus})}
+		{call ADD_USER (#{user}, #{id}, #{password}, #{defaultTableSpace}, #{accountStatus})}
 	</insert>
 	
 	
 	<!-- 리스트 -->
 	<select id="userList" resultType="map">
-		SELECT USERNAME, ACCOUNT_STATUS, DEFAULT_TABLESPACE 
-		FROM DBA_USERS, USER_SCH_TB
-		where DBA_USERS.USERNAME = USER_SCH_TB.USER_SCH_NM
-		and USER_SCH_TB.USER_ID = #{id}
-		order by USERNAME
+SELECT USERNAME, ACCOUNT_STATUS, DEFAULT_TABLESPACE 
+FROM DBA_USERS, USER_SCH_TB
+where DBA_USERS.USERNAME = upper(USER_SCH_TB.USER_SCH_NM)
+and USER_SCH_TB.USER_ID = 'test'
+order by USERNAME
 	</select>
 	
 	<!-- 삭제 -->
