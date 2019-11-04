@@ -15,6 +15,11 @@
 
 <!-- <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/pricing/"> -->
 <!-- <link href="/docs/4.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="./resources/json.min.js"></script>
 
 <style>
 .bd-placeholder-img {
@@ -103,7 +108,6 @@
 	IMP.init('imp51227222'); // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
 	$('.paybtn').click(function(){
 	var amount = $(this).closest(".card-body").find(".paymoney").text()
-	
 		IMP.request_pay({
 		    pg : 'html5_inicis', // version 1.1.0부터 지원.
 		    pay_method : 'card',
@@ -122,7 +126,15 @@
 		        msg += '결제 금액 : ' + rsp.paid_amount;
 		        msg += '카드 승인번호 : ' + rsp.apply_num;
 		        
-		        
+		         $.ajax({
+		        	url:"pays",
+		        	type:"POST",
+		        	contentType:'application/json;charset=utf-8',
+		        	data:{"userId":"test1234", "price":1000, "item":"10GB", "type":"card"},
+		        	success: function(data) {
+		        		console.log(data);
+		        	}
+		        }); 
 		        
 		    } else {
 		        var msg = '결제에 실패하였습니다.';
@@ -130,6 +142,7 @@
 		    }
 		    alert(msg);
 		});
+	
 	});
 </script>
 	<%-- ${member.nickname}님, 안녕하세요! --%>
