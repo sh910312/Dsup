@@ -23,7 +23,7 @@ public class PayRestController {
 	// 등록
 	@ResponseBody
 	@RequestMapping(value = "/pays", method = RequestMethod.POST, consumes = "application/json")
-	public Map insertPay(PayVO vo, Model model) {
+	public Map insertPay(@RequestBody PayVO vo, Model model) {
 		System.out.println("start");
 		System.out.println(vo);
 		payService.insertPay(vo);
