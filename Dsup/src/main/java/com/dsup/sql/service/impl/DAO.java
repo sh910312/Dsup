@@ -20,8 +20,8 @@ public class DAO {
 
 	public DAO() {
 		try {
-            String user = "hr"; 
-            String pw = "hr";
+            String user = "scott"; 
+            String pw = "tigers";
             String url = "jdbc:oracle:thin:@localhost:1521:xe";
             
             Class.forName("oracle.jdbc.driver.OracleDriver");        

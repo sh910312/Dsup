@@ -12,6 +12,7 @@ var Setting = (function() {
 		var unionTag = $('#union-setting-bar').html();
 		var renameTag = $('#rename-setting-bar').html();
 		var dbInsertTag = $('#dbinsert-setting-bar').html();
+		var startTag = $('#start-setting-bar').html();
 
 		function click(obj) {
 			var tbody = obj.parentNode;
@@ -194,6 +195,13 @@ var Setting = (function() {
 			},
 			open : function(key, type) {
 				switch (type) {
+				case 'Start' :
+					console.log("DBread On");
+					$('#start-setting-bar').css({
+						'display' : 'block'
+					});
+					
+					break;
 				case 'DBread':
 					console.log("DBread On");
 					$('#dbread-setting-bar').css({
@@ -257,19 +265,26 @@ var Setting = (function() {
 			},
 			close : function(key, type) {
 				switch (type) {
+				case 'Start' :
+					console.log("Start Off");
+					$('#start-setting-bar').css({
+						'display' : 'none'
+						//'width' : '50%'
+					});
+					break;
 				case 'DBread':
 					console.log("DBread Off");
 					$('#dbread-setting-bar').css({
-						'display' : 'none',
-						'width' : '50%'
+						'display' : 'none'
+						//'width' : '50%'
 					});
 					break;
 
 				case "Filter":
 					console.log("Filter off");
 					$('#filter-setting-bar').css({
-						'display' : 'none',
-						'width' : '19%'
+						'display' : 'none'
+						//'width' : '19%'
 					});
 
 					break;
@@ -277,43 +292,43 @@ var Setting = (function() {
 				case 'Join':
 					console.log("Join off");
 					$('#join-setting-bar').css({
-						'display' : 'none',
-						'width' : '19%'
+						'display' : 'none'
+						//'width' : '19%'
 					});
 					break;
 				case 'Addition':
 					console.log("Addition off");
 					$('#addition-setting-bar').css({
-						'display' : 'none',
-						'width' : '19%'
+						'display' : 'none'
+						//'width' : '19%'
 					});
 					break;
 				case 'Order':
 					console.log("Order off");
 					$('#order-setting-bar').css({
-						'display' : 'none',
-						'width' : '19%'
+						'display' : 'none'
+						//'width' : '19%'
 					});
 					break;
 				case 'Union':
 					console.log("Union off");
 					$('#union-setting-bar').css({
-						'display' : 'none',
-						'width' : '19%'
+						'display' : 'none'
+						//'width' : '19%'
 					});
 					break;
 				case 'Rename':
 					console.log("Rename off");
 					$('#rename-setting-bar').css({
-						'display' : 'none',
-						'width' : '19%'
+						'display' : 'none'
+						//'width' : '19%'
 					});
 					break;
 				case 'DBinsert':
 					console.log("Rename off");
 					$('#dbinsert-setting-bar').css({
-						'display' : 'none',
-						'width' : '19%'
+						'display' : 'none'
+						//'width' : '19%'
 					});
 					break;
 				}
@@ -368,6 +383,10 @@ var Setting = (function() {
 			decorate : function(k, t, info, n) {
 				// console.log(k);
 				switch (t) {
+				case 'Start' : 
+					
+					
+					break;
 				case "DBread":
 					if (n == "new") {
 						$('#dbread-name').html(t);
@@ -679,15 +698,19 @@ var Setting = (function() {
 					return map;
 				}
 			},
-			decorateTargetTableList : function(list) {
-				var tag = "";
-				var json = JSON.parse(list);
-				$('#target_table_list').html("<option>Choice Table</option>");
-				for (var i = 0; i < json.length; i++) {
-					tag += "<option id='" + json[i] + "' class='targetlist''>"
-							+ json[i] + "</option>";
+			decorateTargetTableList : function(t, list) {
+				if(t=='DBinsert'){
+					var tag = "";
+					var json = JSON.parse(list);
+					$('#target_table_list').html("<option>Choice Table</option>");
+					for (var i = 0; i < json.length; i++) {
+						tag += "<option id='" + json[i] + "' class='targetlist''>"
+						+ json[i] + "</option>";
+					}
+					$('#target_table_list').append(tag);
+				}else{
+					
 				}
-				$('#target_table_list').append(tag);
 			},
 			add : function(t) {
 

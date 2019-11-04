@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -16,7 +17,9 @@ public class SQLController {
 	@Autowired SQLService sqlService;
 	
 	@RequestMapping("/sqlIndex")
-	public String sqlIndex() {
+	public String sqlIndex(Model model) {
+		//ArrayList<String> val = sqlService.getUserSchemaName();
+		//model.addAttribute("test", val);
 		return "sql/sql_index";
 	}
 	@RequestMapping("/ShowData.do")

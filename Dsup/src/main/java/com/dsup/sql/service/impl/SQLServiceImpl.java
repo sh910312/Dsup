@@ -230,14 +230,14 @@ public class SQLServiceImpl implements SQLService{
 		System.out.println("---------------\n");
 		return data;
 	}
-	
+///////////////////////////////////////////////////////////////////////////////////////////////////////	
 	private LinkedHashMap<String, Object> getData(String sql) {
 		DAO dao = new DAO();
 		LinkedHashMap<String, Object> data = dao.getData(sql);
 		
 		return data;
 	}
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void dbInsert(HttpServletRequest request) {
 		// TODO Auto-generated method stub
@@ -265,6 +265,12 @@ public class SQLServiceImpl implements SQLService{
 		// TODO Auto-generated method stub
 		
 	}
+
+//	@Override
+//	public ArrayList<String> getUserSchemaName() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 
 }
