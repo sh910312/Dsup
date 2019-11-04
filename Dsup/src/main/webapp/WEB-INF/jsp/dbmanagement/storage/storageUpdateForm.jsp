@@ -61,6 +61,9 @@
 			</tbody>
 		</table>
 	</div>
+	<div class = "row">
+		<input type = "button" id = "updbtn" value = "수정">
+	</div>
 </div>
 </body>
 </html>
