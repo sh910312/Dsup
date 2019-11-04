@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,19 +17,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class SQLServiceImpl implements SQLService{
-	@Autowired DAO dao;
-	public LinkedHashMap<String, Object> dbRead(HttpServletRequest request) {
+	//@Autowired DAO dao;
+	public LinkedHashMap<String, Object> dbRead(HttpServletRequest request, HttpSession session) {
 		// TODO Auto-generated method stub
-		
+//		String schemaName = (String)session.getAttribute("schemaName");
 		System.out.println("\n--- DBread.java ---");
 		String sql = (String)request.getParameter("sql").toUpperCase().replaceAll("\n", " ");
 		System.out.println("sql : " + sql);
 		System.out.println("---------------\n");
-		return getData(sql);
+		return getData(sql, session);
 	}
 	
 	@Override
-	public LinkedHashMap<String, Object> order(HttpServletRequest request) {
+	public LinkedHashMap<String, Object> order(HttpServletRequest request, HttpSession session) {
 		System.out.println("\n--- Order.java ---");
 		ObjectMapper mapper = new ObjectMapper();
 		String sql = "";
@@ -60,11 +62,11 @@ public class SQLServiceImpl implements SQLService{
 			e.printStackTrace();
 		} 
 	      System.out.println("---------------\n");
-	      return getData(sql);  	
+	      return getData(sql, session);  	
 	}
 
 	@Override
-	public LinkedHashMap<String, Object> addition(HttpServletRequest request) {
+	public LinkedHashMap<String, Object> addition(HttpServletRequest request, HttpSession session) {
 		// TODO Auto-generated method stub
 		System.out.println("\n--- Addition.java ---");
 		String child_sql = request.getParameter("sql").toUpperCase();
@@ -108,11 +110,11 @@ public class SQLServiceImpl implements SQLService{
 		}
 		System.out.println("[Maked SQL For Addition] : \n" + sql);
 		System.out.println("---------------\n");
-		return getData(sql);
+		return getData(sql, session);
 	}
 
 	@Override
-	public LinkedHashMap<String, Object> filter(HttpServletRequest request) {
+	public LinkedHashMap<String, Object> filter(HttpServletRequest request, HttpSession session) {
 		// TODO Auto-generated method stub
 		System.out.println("\n--- Filter.java ---");
 		String child_sql = request.getParameter("sql").toUpperCase().replaceAll("\n", " ");
@@ -126,18 +128,18 @@ public class SQLServiceImpl implements SQLService{
 			  		 "WHERE " + expression;
 		System.out.println("[Maked SQL For Filter] : \n" + sql);
 		System.out.println("---------------\n");
-		return getData(sql);
+		return getData(sql, session);
 	}
 
 	@Override
-	public LinkedHashMap<String, Object> group(HttpServletRequest request) {
+	public LinkedHashMap<String, Object> group(HttpServletRequest request, HttpSession session) {
 		// TODO Auto-generated method stub
 		System.out.println("---------------\n");
 		return null;
 	}
 
 	@Override
-	public LinkedHashMap<String, Object> join(HttpServletRequest request) {
+	public LinkedHashMap<String, Object> join(HttpServletRequest request, HttpSession session) {
 		// TODO Auto-generated method stub
 		System.out.println("\n--- Join.java ---");
 		String master_sql = request.getParameter("master_sql").toUpperCase().replaceAll("\n", " ");
@@ -176,22 +178,22 @@ public class SQLServiceImpl implements SQLService{
 		
 		System.out.println("[Maked SQL For Join] : " + sql );
 		System.out.println("---------------\n");
-		return getData(sql);
+		return getData(sql, session);
 	}
 
 	@Override
-	public LinkedHashMap<String, Object> rename(HttpServletRequest request) {
+	public LinkedHashMap<String, Object> rename(HttpServletRequest request, HttpSession session) {
 		// TODO Auto-generated method stub
 		System.out.println("\n--- Rename.java ---");
 		String sql = request.getParameter("param").toUpperCase().replaceAll("\n", " ");
 		
 		System.out.println("[Maked SQL For Rename] : \n" + sql);
 		System.out.println("---------------\n");
-		return getData(sql);
+		return getData(sql, session);
 	}
 
 	@Override
-	public LinkedHashMap<String, Object> union(HttpServletRequest request) {
+	public LinkedHashMap<String, Object> union(HttpServletRequest request, HttpSession session) {
 		// TODO Auto-generated method stub
 		System.out.println("\n--- Union.java ---");
 		String master_sql = request.getParameter("master_sql").toUpperCase().replaceAll("\n", " ");
@@ -206,13 +208,23 @@ public class SQLServiceImpl implements SQLService{
 			  "(" + slave_sql  + ")";
 		System.out.println("[Maked SQL For Union] : \n" + sql );
 		System.out.println("---------------\n");
-		return getData(sql);
+		return getData(sql, session);
 	}
 	
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////	
+	private LinkedHashMap<String, Object> getData(String sql, HttpSession session) {
+		DAO dao = new DAO(session);
+		LinkedHashMap<String, Object> data = dao.getData(sql);
+		
+		return data;
+	}
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public ArrayList<String> targetTableList(HttpServletRequest request) {
+	public ArrayList<String> targetTableList(HttpServletRequest request, HttpSession session) {
 		// TODO Auto-generated method stub
 		System.out.println("\n--- TargetTableList.java ---");
+		DAO dao = new DAO(session);
 		ArrayList<String> data = dao.getTargetTableList();
 		System.out.println("[TargetTableTList : ]" + data.toString());
 		System.out.println("---------------\n");
@@ -220,57 +232,77 @@ public class SQLServiceImpl implements SQLService{
 	}
 	
 	@Override
-	public ArrayList<HashMap<String, String>> targetTableInfo(HttpServletRequest request) {
+	public ArrayList<HashMap<String, String>> targetTableInfo(HttpServletRequest request, HttpSession session) {
 		// TODO Auto-generated method stub
 		System.out.println("\n--- TargetTableInfo.java ---");
 		String targetTable = request.getParameter("targetTable").toUpperCase().replaceAll("\n", " ");
 		System.out.println("1. get targetTable : " + targetTable);
+		DAO dao = new DAO(session);
 		ArrayList<HashMap<String, String>> data = dao.getTargetTableInfo(targetTable);
 		System.out.println("[TargetTableInfo : ]" + data.toString());
 		System.out.println("---------------\n");
 		return data;
 	}
-///////////////////////////////////////////////////////////////////////////////////////////////////////	
-	private LinkedHashMap<String, Object> getData(String sql) {
-		DAO dao = new DAO();
-		LinkedHashMap<String, Object> data = dao.getData(sql);
-		
-		return data;
-	}
-////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	@Override
-	public void dbInsert(HttpServletRequest request) {
+	public void dbInsert(HttpServletRequest request, HttpSession session) {
 		// TODO Auto-generated method stub
 		System.out.println("\n--- DBinsert.java ---");
 		String targetTable = request.getParameter("target_table").toUpperCase().replaceAll("\n", " ");
 		String child_sql = request.getParameter("child_sql").toUpperCase().replaceAll("\n", " ");
 		String sql = "INSERT INTO " + targetTable + " " + child_sql;
-		
+		DAO dao = new DAO(session);
 		dao.dbInsert(sql);
 		System.out.println("---------------\n");
 	}
 
 	@Override
-	public void dbUpdate(HttpServletRequest request) {
+	public void dbUpdate(HttpServletRequest request, HttpSession session) {
 		// TODO Auto-generated method stub
 		System.out.println("\n--- DBinsert.java ---");
 		String sql = request.getParameter("sql");
 		System.out.println("1. sql : " + sql);
+		DAO dao = new DAO(session);
 		dao.dbUpdate(sql);
 		System.out.println("---------------\n");
 	}
 
 	@Override
-	public void dbDelete(HttpServletRequest request) {
+	public void dbDelete(HttpServletRequest request, HttpSession session) {
 		// TODO Auto-generated method stub
 		
 	}
 
-//	@Override
-//	public ArrayList<String> getUserSchemaName() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	@Override
+	public ArrayList<String> getUserSchemaName(HttpSession session) {
+		// TODO Auto-generated method stub
+		System.out.println("\n--- UserSchemaList.java ---");
+		String user_id = (String)session.getAttribute("userId");
+		//System.out.println("user_id : " + user_id);
+		DAO dao = new DAO(session);
+		ArrayList<String> list = dao.getUserSchemaList(user_id);
+		System.out.println("---------------\n");
+		return list;
+	}
+
+	@Override
+	public String schemaLogin(String id, String pwd, HttpSession session) {
+		// TODO Auto-generated method stub
+		
+		System.out.println("\n--- schemaLogin.java ---");
+		System.out.println("1. Schema ID : " + id);
+		System.out.println("2. Schema PWD : " + pwd);
+		DAO dao = new DAO(session);
+		String loginSuccess = dao.schemaLogin(id, pwd);
+		System.out.println("3. LoginSuccess : " + loginSuccess);
+		System.out.println("---------------\n");
+		if(loginSuccess.equals("success")) {
+			session.setAttribute("schemaid", id);
+			session.setAttribute("schemapwd", pwd);
+		}
+		
+		return loginSuccess;
+	}
 
 
 }

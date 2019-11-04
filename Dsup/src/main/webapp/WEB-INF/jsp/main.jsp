@@ -23,7 +23,6 @@
 </style>
 </head>
 <body>
-<<<<<<< HEAD
 	<div>
 		<%@include file="bar.jsp"%>
 	</div>
