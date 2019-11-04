@@ -117,4 +117,11 @@ public class StorageController {
 		mv.setViewName("dbmanagement/storage/storageUpdateForm");
 		return mv;
 	}
+	
+	// [윤정 1104] 테이블스페이스 수정 완료
+	@RequestMapping("/sotrageUpdate")
+	public String storageUpdate(@RequestParam String sql) {
+		storageService.storageUpdate(sql);
+		return "redirect:storageList";
+	}
 }

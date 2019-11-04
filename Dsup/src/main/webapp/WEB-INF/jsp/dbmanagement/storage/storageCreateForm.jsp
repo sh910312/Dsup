@@ -163,7 +163,6 @@
 			</div>
 		</div>
 		<div class = "alert alert-info" role="alert" id = "alert"></div>
-
 		
 		<div class = "row">
 			<h1>데이터 파일</h1>
