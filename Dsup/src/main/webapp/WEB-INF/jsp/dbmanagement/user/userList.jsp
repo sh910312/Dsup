@@ -6,17 +6,18 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+</head>
+<body>
+<%@include file="../../DBbar.jsp" %>
+<link rel="stylesheet"	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="./resources/json.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-	<!-- 부트스트랩 -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<!-- 부트스트랩 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
 
 <script>
@@ -39,31 +40,21 @@
 		});
 	}
 
-	//테이블 스페이스 리스트
-	function tablespaceList(){
-		$.ajax({
-			url: 'getStorage',
-			type: 'GET',
-			dataType: "json",
-			success : tablespaceListResult
-		})
-	}
 	
 	//목록조회응답
 	function userListResult(data) {
 		$("#userList").empty();
 		$.each(data, function(idx, item) {
-			$('<tr>').append( $('<td>').html((item.USERNAME)) )
-					.append( $('<td>').html((item.ACCOUNT_STATUS)) )
-					.append( $('<td>').html((item.DEFAULT_TABLESPACE)) )
-					.append( $('<td>').html('<button id="btnDelete">삭제') )
-					.append( $('<td>').html('<button id="btnUpdate">수정') )
+			$('<tr>').append( $('<td>').html((item.USERNAME)))
+					.append( $('<td>').html((item.ACCOUNT_STATUS)))
+					.append( $('<td>').html((item.DEFAULT_TABLESPACE)))
+					.append( $('<td>').html('<button id="btnDelete">삭제'))
+					.append( $('<td>').html('<button id="btnUpdate">수정'))
 					//.append( $('<td>').append( $("<input>").attr("type", "button").val("생성").attr("onclick", "location.href='userCreateForm'") ) )
-					.append( $('<input type="hidden" id="hidden_userId">').val(item.USERNAME) )
+					.append( $('<input type="hidden" id="hidden_userId">').val(item.USERNAME))
 					.appendTo($('#userList'))
 					;
 
-			// <input type = "hidden" id = "hidden_userId" value="item.USERNAME">
 		});
 	}
 
@@ -152,8 +143,9 @@
 					data : JSON.stringify($("#form1").serializeObject()),
 					contentType : 'application/json',
 					success : function(data) {
-						//userList();
+						userList();
 						dialog.dialog("close");
+						
 					},	error : function(xhr, status, message) {
 						alert(" status: " + status + "er:" + message);
 					}
@@ -193,9 +185,6 @@
 		});
 	}
 </script>
-</head>
-<body>
-<%@include file="../../DBbar.jsp" %>
 	<div id="dialog-form">
 		<p class="validateTips"></p>
 		<div class="form-group row">
@@ -203,7 +192,7 @@
 			<table>
 					<tr>
 						<td id="id">이름</td>
-						<td><input type="text" name="id" id="name" class="text ui-widget-content ui-corner-all">
+						<td><input readonly type="text" name="id" id="name" class="text ui-widget-content ui-corner-all">
 						</td>
 					</tr>
 					<tr>
@@ -235,7 +224,7 @@
 	</div>
 
 	<div class="container">
-	<button type="button" onclick="location.href='userCreateForm' ">생성</button>
+	 <button type="button" onclick="location.href='userCreateForm' ">생성</button> 
 		<h2>User 목록</h2>
 		<table class="table text-center">
 			<thead>

@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,13 +42,14 @@ public class BackupController {
 	@RequestMapping("/backupCreate")
 	public String backupCreate(@RequestParam String tablespaceName, BackupVO vo) {
 		backupService.BackupCreate(vo, tablespaceName);
-		return "dbmanagement/backup/backupCreateForm";
+		return "redirect:backupList";
 	}
 	
 	// [윤정1028] 백업 목록 출력 json
 	@ResponseBody
 	@RequestMapping(value="/backup", method=RequestMethod.GET)
-	public List<BackupVO> getBackupList(String userId){
+	public List<BackupVO> getBackupList(HttpSession session){
+		String userId = (String) session.getAttribute("userId");
 		return backupService.getBackupList(userId);
 	}
 	

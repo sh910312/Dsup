@@ -20,7 +20,6 @@ import com.dsup.dbmanagement.service.StorageService;
 @Controller
 public class StorageController {
 	@Autowired StorageService storageService;
-
 	
 	// [윤정1022] 테이블스페이스 리스트 페이지로 이동
 	@RequestMapping("/storageList")
@@ -55,8 +54,10 @@ public class StorageController {
 	
 	// [윤정 1029] 테이블스페이스 생성 페이지로 이동
 	@RequestMapping("/storageCreateForm")
-	public String storageCreateForm() {
-		return "dbmanagement/storage/storageCreateForm";
+	public ModelAndView storageCreateForm() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("dbmanagement/storage/storageCreateForm");
+		return mv;
 	}
 	
 	// [윤정 1029] 테이블스페이스 생성
@@ -95,5 +96,32 @@ public class StorageController {
 	@ResponseBody
 	public int tsNameChk(@RequestParam String tablespaceName) {
 		return storageService.tsNameChk(tablespaceName);
+	}
+	
+	// [윤정 1101] 테이블스페이스 수정 폼으로 이동
+	@RequestMapping("/storageUpdateForm")
+	public ModelAndView storageUpdateForm(@RequestParam String tablespaceName, HttpSession session) {
+		ModelAndView mv = new ModelAndView();
+		
+		String userId = (String)session.getAttribute("userId");
+		UserTbspcTbVO vo = new UserTbspcTbVO();
+		vo.setUserId(userId);
+		vo.setTablespaceName(tablespaceName);
+		TablespaceVO ts = new TablespaceVO();
+		ts = storageService.getStorageOne(vo);
+		
+		if(ts != null) {
+			mv.addObject("ts", ts);
+			mv.addObject("df", storageService.getDatafile(ts.getTablespaceName()));
+		}
+		mv.setViewName("dbmanagement/storage/storageUpdateForm");
+		return mv;
+	}
+	
+	// [윤정 1104] 테이블스페이스 수정 완료
+	@RequestMapping("/sotrageUpdate")
+	public String storageUpdate(@RequestParam String sql) {
+		storageService.storageUpdate(sql);
+		return "redirect:storageList";
 	}
 }
