@@ -77,7 +77,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="main-menu col-md-4" onclick="location.href='./serviceSchemaList'">
+					<div class="main-menu col-md-4" onclick="location.href='./distributingMain'">
 						<div class="card mb-4 box-shadow">
 							<img class="card-img-top"
 								data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail"
