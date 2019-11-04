@@ -33,15 +33,5 @@ public class ReController {
 	}
 	
 	
-	/*
-	 * //전체 조회
-	 * 
-	 * @RequestMapping("/ReMap") public String ReMap(ReVO vo, Model model) {
-	 * 
-	 * model.addAttribute("reList", reService.ReMap(vo));
-	 * 
-	 * return "chat/keyword/getsearch"; }
-	 */
-	
 	
 }
