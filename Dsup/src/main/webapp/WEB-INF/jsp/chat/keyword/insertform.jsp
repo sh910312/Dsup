@@ -55,7 +55,7 @@ $(function() {
 								</div>
 								<div class="row">
 									<div id="text" class="form-group col-xs-12">
-										<textarea style="height: 150px;" id="contents" name="contents" class="form-control" placeholder="등록할 내용" maxlength="500"></textarea>
+										<textarea style="height: 150px;" id="contents" name="contents" class="form-control" placeholder="등록할 내용"></textarea>
 									</div>
 								</div>
 								<div align="center">

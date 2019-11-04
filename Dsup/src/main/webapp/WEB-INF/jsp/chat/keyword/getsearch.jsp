@@ -33,30 +33,97 @@ function openButton(menu){ /*  버튼 새창 */
 
 <script>
 
+
+
+
 $(function() {
 	
 	del();
 	update();
 	
+	
+	insertRe();
+	updateRe();
+
+	
+	
 });
 
+function insertRe() {
+	$("#insertbtn").click(function() {
 
+		$("#frm2").attr("action", "insertRe");
+		$("#frm2").attr("method", "post");
+		$("#frm2").submit();
+		
+	})
+}
 
-function del() {
+function updateRe() { // 댓글 업데이트
+
+	$("[name='updateReOk']").hide(); // 댓글 수정완료 버튼 숨기기
+		
+		
+	$("#updateRe").click(function() {
+		
+		$("#updateRe").hide();		// 댓글 수정버튼 숨기기
+		$("#updateReOk").show(); // 댓글 수정완료 버튼 보이기
+		$("#deleteRe").hide();		// 댓글 삭제버튼 숨기기
+			
+	})
+	
+	$("#updateReOk").click(function() {
+		
+		//수정 완료
+		$("#frm3").attr("action", "컨트롤러에 있는 댓글수정완료");
+		$("#frm3").submit();
+		
+		
+	})
+	
+}
+
+function del() { // 게시글 삭제
 	$("#delbtn").click(function() {
-		console.log("safdsadf");
 		$("#frm1").attr("action", "deleteSearch");
 		$("#frm1").submit();
 		
 	})
 }
-function update() {
+function update() { // 게시글 수정
+	
+	$("#updatebtnOk").hide(); 		// 수정완료 버튼 숨기기
+	
+	
 	$("#updatebtn").click(function() {
-		$("#frm1").attr("action", "editSearch");
+		
+		$("#updatecotents").attr("readonly", false);
+		$("#updatecotents").focus();
+		$("#updatebtnOk").show(); 	// 수정완료 버튼 보여주기
+		$("#updatebtn").hide();   	// 수정 버튼 숨기기
+		$("#delbtn").hide();		// 삭제버튼 숨기기
+
+
+	})
+	
+	$("#updatebtnOk").click(function() {
+	
+		$("#frm1").attr("action", "updateSearch");
 		$("#frm1").submit();
 		
 	})
-}
+} 
+
+
+ window.onload = function(){		//db읽어온 텍스트 \n  -> <br> 바꿈
+	var text = document.getElementById("updatecotents");
+	var result = text.value.replace(/(\n|\r\n)/g, '<br>');
+	document.getElementById("test").innerHTML = result;
+}; 
+ 
+
+
+
 
 </script>
 
@@ -72,6 +139,7 @@ function update() {
 			<div class="row">
 				<div class="col-xs-13">
 					<div class="portlet portlet-default">
+					
 						<div class="portlet-heading">
 							<div class="portlet-title">
 								<h3>${search.title }</h3>
@@ -86,42 +154,42 @@ function update() {
 						<!-- 대화입력창  -->
 						<div class="portlet-footer">
 							
-							
-							
 							<!-- Search내용 시작 -->
 							<div class="row">
-								<div class="portlet-body chat-widget" style="overflow-y: auto; width: auto; height: 200px;">
-									${search.contents }
-								<br>
-								</div>
-								<div class="col-xs-3 pull-right"><a href="#">게시글 신고하기</a></div>
-							</div>
-							<!-- Search내용 끝 -->
-								
-								
-								
-								
-							<div align="center">
 								<form id="frm1">
+								<br>
+									<div id="test"></div>
+									<%-- <input type="text" id="updatecotents" style="width:100%; height:200px; overflow:auto;"  readonly value="${search.contents }"> --%>
+									<input id="updatecotents" type="hidden" value="${search.contents }">
+								<br>
+								<div class="pull-right"><a href="#">게시글 신고하기</a></div>
+								<div align="center">
+								<br>
+							
+							<!-- Search내용 끝 -->
 								<input type="hidden" name="searchId" value="${search.searchId }" />
-								<button type="button" id="delbtn" name="delbtn" class="btn btn-default">삭제</button>
-								<button type="button" id="updatebtn" name="updatebtn" class="btn btn-default">수정</button>
-								<button type="button" id="ddd" name="bb" class="btn btn-default" onclick="history.go(-1)">돌아가기</button>
+									<button type="button" id="delbtn" name="delbtn" class="btn btn-default">삭제</button>
+									<button type="button" id="updatebtn" name="updatebtn" class="btn btn-default">수정</button>
+									<button type="button" id="updatebtnOk" name="updatebtnOk" class="btn btn-default">수정완료</button>
+									<button type="button" id="back" name="back" class="btn btn-default" onclick="history.go(-1)">돌아가기</button>
+								</div>
 								</form>
 							</div>
 							
 							
-							
-							
 							<!-- 댓글 목록 시작  -->
 							<div class="row">
+								<form id="frm3">
 								<hr>
 								<div class="form-group col-xs-12">
 									<c:forEach items="${reList }" var="re">
 										${re.userId }  :
 										${re.contents } 
 										${re.writeDate }
-									<button type="button" class="btn btn-default btn-xs">신고</button>
+									<button type="button" id="reportRe" name="reportRe" class="btn btn-default btn-xs">신고</button>
+									<button type="button" id="deleteRe" name="deleteRe" class="btn btn-default btn-xs pull-right">삭제</button>
+									<button type="button" id="updateReOk" name="updateReOk" class="btn btn-default btn-xs pull-right">수정완료</button>
+									<button type="button" id="updateRe" name="updateRe" class="btn btn-default btn-xs pull-right">수정</button>
 										<br>
 										<br>
 									</c:forEach>
@@ -129,17 +197,17 @@ function update() {
 									<my:paging paging="${paging}" jsFunc="go_page"/>
 									</div>
 								</div>
+								</form>
 							</div>
+							
 							<!-- 댓글목록 끝 -->
 								
 							<!-- 등록 폼 시작 -->
 							<div class="row">
-								<form action="insertRe" method="POST">
-								<input type="hidden" name="searchId" value="${search.searchId }" />
-								<div class="form-group col-xs-9">
-									<input style="height: 40px;" name="contents" id="contents" class="form-control" placeholder="댓글을 입력하세요." maxlength="20">
-								</div>
-									<button class="btn btn-default" style="width:100px;height:40px;">등&nbsp;&nbsp;록</button>
+								<form id="frm2">
+								<input type="hidden" name="searchId" value="${search.searchId }">
+									<input style="width:80%; height: 40px;" name="contents" id="contents" class="form-control" placeholder="댓글을 입력하세요." maxlength="20">
+									<button type="button" id="insertbtn" name="insertbtn" class="btn btn-default" style="height:40px;">등록 </button>
 								</form>									
 							<!-- 등록 폼 끝 -->
 								
@@ -154,8 +222,7 @@ function update() {
 					</div>
 				</div>
 			</div>
-	</div>
-
+		</div>
 
 <script type="text/javascript">
 

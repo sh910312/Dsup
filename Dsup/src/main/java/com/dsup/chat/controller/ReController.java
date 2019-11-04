@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.dsup.chat.ReVO;
 import com.dsup.chat.service.ReService;
+import com.dsup.member.MemberVO;
 
 @Controller
 public class ReController {
@@ -25,9 +26,8 @@ public class ReController {
 	// 등록처리
 	@RequestMapping("/insertRe")
 	public String insertRe(ReVO vo, HttpServletRequest request, HttpSession session) {
-	
-		vo.setUserId("test"); // 로그인 세션 살려놓기 ( 1 = 관리자)
-		
+		MemberVO member = (MemberVO) session.getAttribute("member");
+		vo.setUserId(member.getUserId()); // 로그인 세션 살려놓기 ( 1 = 관리자)
 		reService.insertRe(vo);
 		return "redirect:/getSearch?searchId="+ vo.getSearchId(); // 이쪽으로 이동 // redirech 안에는 requestmapping 내용을 넣는다
 	}
