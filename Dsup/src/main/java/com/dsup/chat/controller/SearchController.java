@@ -18,13 +18,12 @@ import com.dsup.chat.service.SearchService;
 @Controller
 public class SearchController {
 
-
 	@Autowired
 	SearchService searchservice;
-	
+
 	@Autowired
 	ReService reService;
-	
+
 	// 키워드 등록
 	@RequestMapping("/insertSearchForm")
 	public String insertSearchForm() {
@@ -52,17 +51,42 @@ public class SearchController {
 
 	}
 
+	// 수정 폼
+	@RequestMapping("/editSearch")
+	public String updateSearchForm(SearchVO vo, Model model) {
+		
+		model.addAttribute("search", searchservice.getSearch(vo));
+		
+		return "chat/keyword/edit";
+	}
+	
+	// 수정 처리
+	@RequestMapping("updateSearch")
+	public String updateSearch(SearchVO vo) {
+		searchservice.updateSearch(vo);
+		return "redirect:getSearch?searchId="+ vo.getSearchId();
+	}
+	
+	
+
+	// 삭제
+	@RequestMapping("/deleteSearch")
+	public String deleteSearch(SearchVO vo) {
+		searchservice.deleteSearch(vo);
+		return "redirect:SearchMap";
+	}
+
 	// 상세조회
 	@RequestMapping("/getSearch")
 	public String getSearch(HttpServletRequest request, Model model, SearchVO svo, ReVO revo, Paging repaging) {
-		
+
 		model.addAttribute("search", searchservice.getSearch(svo));
 		model.addAttribute("reList", reService.ReMap(revo, repaging)); // 댓글 리스트 불러오기
-		model.addAttribute("repaging",repaging);
-		
+		model.addAttribute("repaging", repaging);
+
 		return "chat/keyword/getsearch";
 	}
-	
+
 //	// 상세조회
 //	@RequestMapping("/getSearch")
 //	public String getSearch(HttpServletRequest request, Model model, SearchVO svo, ReVO revo) {
@@ -73,7 +97,6 @@ public class SearchController {
 //		return "chat/keyword/getsearch";
 //	}
 
-
 //	// 전체 조회
 //	@RequestMapping("/SearchMap")
 //	public String SearchMap(SearchVO vo, Model model) {
@@ -81,13 +104,12 @@ public class SearchController {
 //		model.addAttribute("searchList", searchservice.SearchMap(vo));
 //		return "chat/keyword/search";
 //	}
-	
-	
+
 	// 전체 조회
 	@RequestMapping("/SearchMap")
-	public ModelAndView SearchMap(ModelAndView mv,  SearchVO vo, Paging paging) {
-		
-		mv.addObject("searchList", searchservice.SearchMap(vo,paging));
+	public ModelAndView SearchMap(ModelAndView mv, SearchVO vo, Paging paging) {
+
+		mv.addObject("searchList", searchservice.SearchMap(vo, paging));
 		mv.addObject("paging", paging);
 		mv.setViewName("chat/keyword/search");
 		return mv;
