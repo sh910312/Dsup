@@ -14,6 +14,7 @@ import com.dsup.chat.ReVO;
 import com.dsup.chat.SearchVO;
 import com.dsup.chat.service.ReService;
 import com.dsup.chat.service.SearchService;
+import com.dsup.member.MemberVO;
 
 @Controller
 public class SearchController {
@@ -35,7 +36,10 @@ public class SearchController {
 	@RequestMapping("/insertSearch")
 	public String insertSearch(SearchVO vo, HttpServletRequest request, HttpSession session) {
 
-		vo.setUserId("test"); // 로그인 세션 살려놓기 ( 1 = 관리자)
+		MemberVO member = (MemberVO) session.getAttribute("member");
+		
+		vo.setUserId(member.getUserId()); // 로그인세션
+
 		System.out.println(vo);
 
 		searchservice.insertSearch(vo); // 등록 실행 끝나면 아래 실행

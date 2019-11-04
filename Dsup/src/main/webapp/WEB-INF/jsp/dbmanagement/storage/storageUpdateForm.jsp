@@ -12,33 +12,263 @@
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+	<script>
+	var sql = "";
+	var oldName = "${ts.tablespaceName}";
+	
+	$(function(){
+		startChk();
+		$("#updbtn").click(submit);
+		$("#alert").hide();
+		tsNameChkFunction();
+		$("input:radio").change(statusChk);
+		statusSql();
+		$("#addbtn").click(trAdd); // 데이터파일 추가 버튼 클릭
+		$("#yj_sizeAlert").hide();
+	});
+	
+	// [윤정 1104] 온라인/오프라인/리드온리 상태 체크
+	function startChk(){
+		if("${ts.status}" == "READ ONLY")
+			$("#readonly").attr("checked", true);
+		else
+			$("#readwrite").attr("checked", true);
+		
+		if("${ts.total}" == 0)
+			$("#offline").attr("checked", true);
+		else
+			$("#online").attr("checked", true);
+			
+		statusChk();
+	} // startChk()
+	
+	// [윤정 1104] 상태에 따라 수정가능한 값 제한
+	function statusChk() {
+		var status1 = $("input[name='status1']:checked").val(); // online offline
+		var status2 = $("input[name='status2']:checked").val(); // read write, read only
+		
+		if (status1 == "OFFLINE") { // ---- offline
+			$("#newName").attr("readonly", true); // 테이블스페이스 이름 수정 불가
+			$("#addbtn").attr("disabled", true) // 데이터파일 추가 불가
+			$(".yj_trupd").attr("disabled", true) // 데이터파일 수정 불가
+			$("input[name='status2']").attr("disabled", true); // read write, read only 수정 불가
+		} else { // ---- online
+			$("input[name='status2']").attr("disabled", false); // read write, read only 수정 가능
+			$("#newName").attr("readonly", false); // 테이블스페이스 이름 수정 가능
+			if(status2 == "READ ONLY") { // ---- read only
+				$("#addbtn").attr("disabled", true) // 데이터파일 추가 불가
+				$(".yj_trupd").attr("disabled", true) // 데이터파일 수정 불가
+			} else { // ---- read write
+				$("#addbtn").attr("disabled", false) // 데이터파일 추가 가능
+				$(".yj_trupd").attr("disabled", false) // 데이터파일 수정 가능
+			}
+		}
+	}
+	
+	// [윤정 1104] 상태수정 -> sql 추가
+	function statusSql() {
+		$("input[name='status1']").change(function(){
+			sql += "ALTER TABLESPACE " + oldName + " " + $("input[name='status1']:checked").val() + ";";
+		});
+		$("input[name='status2']").change(function(){
+			sql += "ALTER TABLESPACE " + oldName + " " + $("input[name='status2']:checked").val() + ";";
+		});
+	}
+	
+	// [윤정 1104] 데이터파일 추가
+	function trAdd(){
+		var lastName = $("tr:last-of-type").find("td:eq(0)").text();
+		var temp = lastName.split("\\");
+		lastName = temp[temp.length-1]; // : userId_tablespaceName_numbering.DBF
+		
+		var temp2 = lastName.split("_"); // _numbering.DBF
+		num = temp2[temp2.length-1];
+		num = num.split(".DBF")[0];
+		num = parseInt(num) + 1; // 다음 데이터파일 넘버
+
+		var fileName = temp2[0] + "_" + temp2[1] + "_" + num + ".DBF";
+		// ↑ 파일 이름
+		
+		var file = "<input type = 'text' id = 'newFilename' readonly value = '" + fileName + "' >";
+		var size = "<input type = 'text' id = 'newSize' required>";
+		var $sizeunit = $("<select>").attr("id","newSizeunit")
+									.append($("<option>").val("M").text("MB"))
+									.append($("<option>").val("K").text("KB"))
+									.append($("<option>").val("G").text("GB"))
+									.append($("<option>").val("T").text("TB")); // 용량 단위
+		var $okbtn = $("<input>").attr("type","button").attr("id","okbtn").val("추가완료").click(trAddOk);
+		var $canbtn = $("<input>").attr("type","button").attr("id","canbtn").val("취소").click(trAddCan);
+		
+		$("tbody").append($("<tr>").append( $("<td>").html(file) )
+									.append( $("<td>").html(size) )
+									.append( $("<td>").append($sizeunit) )
+									.append( $("<td>").append($okbtn).append($canbtn) )
+						)
+		// ↑ 테이블에 행 추가
+		
+		$("#addbtn").attr("disabled", true); // 행추가 못하게
+	}
+	
+	// [윤정 1104] 데이터파일 추가 - 취소 버튼 클릭
+	function trAddCan(){
+		$("tr:last").remove();
+		$("#addbtn").attr("disabled", false);
+	}
+	
+	// [윤정 1104] 데이터파일 추가 - 추가 완료
+	function trAddOk(){
+		var filename = $("#newFilename").val();
+		var size = $("#newSize").val();
+		var sizeunit = $("#newSizeunit").val();
+		
+		// ↓ 용량 제대로 입력했는지 확인
+		if(isNaN(size) || size.length == 0) {
+			$('.alert').alert()
+			//$("#yj_sizeAlert").show();
+			return;
+		}
+		
+		$("#addbtn").attr("disabled",false); // tr 추가 버튼 활성화
+		
+		sql += "ALTER TABLESPACE " + oldName + " ADD DATAFILE '" + filename + "' SIZE " + size + sizeunit + ";";
+		// ↓ 테이블 원래 모양대로
+		$("tr:last").remove();
+		var $tr = $("<tr>").append( $("<td>").text(filename) )
+							.append( $("<td>").text(size) )
+							.append( $("<td>").text(sizeunit) )
+							.append( $("<td>").append( $("<input>").attr("type", "button").attr("class", "yj_trupd btn btn-info").val("용량수정") ) );
+		$("tbody").append($tr);
+	}
+	
+	// [윤정 1104] 수정하기 버튼 클릭
+	function submit(){
+		
+		var newName = $("#newName").val();
+		if (newName != oldName) { // 이름 변경 
+			sql += "ALTER TABLESPACE " + oldName + " RENAME TO " + newName + ";";
+			sql += "UPDATE user_tbspc_tb SET tablespace_name = '" + newName + "' WHERE tablespace_name = '" + oldName + "';";
+		}
+		
+		$("#sql").val(sql);
+		$("#frm").submit();
+	}
+	
+	// [윤정 1031] 테이블스페이스명 유효성 검사 
+	function tsNameChkFunction() {
+		$("#newName").blur(function(){
+			var name = $("#newName").val().toUpperCase();
+			$("#newName").val(name);
+			
+			// [윤정 1104] 기존의 네임과 같은 경우
+			if(name == oldName) {
+				$("#alert").hide();
+				$("#updbtn").attr("disabled", false);
+				return;
+			}
+			
+			// 아이디를 입력하지 않은 경우
+			if(name == '') { 
+				$("#alert").show().text("이름을 입력해주세요");
+				$("#updbtn").attr("disabled", true);
+				return;
+			}
+			
+			// [윤정1101] 이름 첫 글자 영어만
+			if(!name.substr(0,1).match(/[A-Z]/)) {
+				$("#alert").show().text("이름 첫 글자는 영어만 입력할 수 있습니다");
+				$("#updbtn").attr("disabled", true);
+				return;
+			}
+			
+			// [윤정 1101] 이름에 A-Z, 0-9, _ 만 쓸 수 있도록
+			var err = 0;
+			var cnt = name.length;
+			for(i = 0; i < cnt; i ++) {
+				var chk = name.substr(i, i+1);
+				if (!chk.match(/[0-9]/) && !chk.match(/[A-Z]/) && chk != '_'){
+					err = err + 1;
+				}
+				if(err > 0) {
+					$("#alert").show().text("영어, 숫자, _만 입력할 수 있습니다");
+					$("#updbtn").attr("disabled", true);
+					return;
+				}
+			}
+		
+			$.ajax({
+				url : "tsNameChk?tablespaceName=" + name,
+				type : 'GET',
+				success : function(data) {
+					// 중복이면 0, 아니면 1
+					if(data == 0) { // 중복
+						$("#alert").show().text("사용할 수 없는 이름입니다");
+						$("#updbtn").attr("disabled", true);
+					} else { // 중복x
+						$("#alert").hide();
+						$("#updbtn").attr("disabled", false);
+					}
+				}
+			}) // ajax
+		}); // .blur(function)
+	} // tsNameChkFunction
+	</script>
 </head>
 <body>
 <%@include file="/WEB-INF/jsp/DBbar.jsp" %>
 <div class = "container">
+<form id = "frm" method = "post" action = "sotrageUpdate">
+	<input type = "hidden" id = "oldName" name = "oldName" value = "${ts.tablespaceName}">
+	<input type = "hidden" id = "sql" name = "sql">
 	<div class = "row">
 		<h1>테이블 스페이스</h1>
 	</div>
 	<div class = "row">
-		이름 <input type = "text" value = "${ts.tablespaceName}">
+		<div class = "col-2">
+			이름
+		</div>
+		<div class = "col-10">
+			<input type = "text" value = "${ts.tablespaceName}" class = "form-control" name = "newName" id = "newName">
+		</div>
+	</div>
+	<div class = "alert alert-info" role="alert" id = "alert"></div>
+	<div class = "row">
+		<div class = "col-2">
+			상태
+		</div>
+		<div class = "col-2">
+			<input type = "radio" name = "status1" id = "online" value = "ONLINE" class = "form-check-input">
+				<label for = "online">online</label>
+		</div>
+		<div class = "col-2">
+			<input type = "radio" name = "status1" id = "offline" value = "OFFLINE" class = "form-check-input">
+				<label for = "offline">offline</label>
+		</div>
 	</div>
 	<div class = "row">
-		상태
-			<input type = "radio" name = "status" id = "online" value = "read write">
-				<label for = "online">read write</label>
-			<input type = "radio" name = "status" id = "readonly" value = "read only">
+		<div class = "col-2"></div>
+		<div class = "col-2">
+			<input type = "radio" name = "status2" id = "readwrite" value = "READ WRITE" class = "form-check-input">
+				<label for = "readwrite">read write</label>
+		</div>
+		<div class = "col-2">
+			<input type = "radio" name = "status2" id = "readonly" value = "READ ONLY" class = "form-check-input">
 				<label for = "readonly">read only</label>
-			<input type = "radio" name = "status" id = "offline" value = "offline normal">
-				<label for = "offline">offline</label>
+		</div>
 	</div>
-	
 	<br><br><br>
 	
 	<div class = "row">
-		<h1>데이터파일</h1>
+		<div class = "col">
+			<h1>데이터파일</h1>
+		</div>
+		<div class = "col">
+			<input type = "button" id = "addbtn"
+					class = "btn btn-info" value = "추가">
+		</div>
 	</div>
 	<div class = "row">
-		<table class = "table">
+		<table class = "table table-hover">
 			<thead>
 				<tr>
 					<th>이름</th>
@@ -54,16 +284,25 @@
 					<td id = "sizetd">${df.total}</td>
 					<td>M</td>
 					<td id = "btntd">
-						<input class = "yj_trupd" type = "button" value = "용량수정">
+						<input type = "button" value = "용량수정" class = "yj_trupd btn btn-info" >
 					</td>
 				</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 	</div>
+	
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+	
 	<div class = "row">
-		<input type = "button" id = "updbtn" value = "수정">
+		<input type = "button" id = "updbtn" value = "수정하기" class = "btn btn-info">
 	</div>
+</form>
 </div>
 </body>
 </html>

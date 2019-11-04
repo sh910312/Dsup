@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dsup.dbmanagement.DatafileVO;
 import com.dsup.dbmanagement.TablespaceVO;
 import com.dsup.dbmanagement.UserTbspcTbVO;
 import com.dsup.dbmanagement.service.StorageService;
@@ -116,5 +117,12 @@ public class StorageController {
 		}
 		mv.setViewName("dbmanagement/storage/storageUpdateForm");
 		return mv;
+	}
+	
+	// [윤정 1104] 테이블스페이스 수정 완료
+	@RequestMapping("/sotrageUpdate")
+	public String storageUpdate(@RequestParam String sql) {
+		storageService.storageUpdate(sql);
+		return "redirect:storageList";
 	}
 }

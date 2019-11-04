@@ -52,6 +52,7 @@ $(function() {
     function onMessage(msg) {
 		var data = msg.data;
 		$("#chatList").append(data + "<br/>");
+		$('#chatList').scrollTop($('#chatList')[0].scrollHeight); // 채팅 최신 상태 유지
 	}
     
     // 서버와 연결을 끊었을 때
@@ -112,22 +113,18 @@ function openButton(menu){ /*  버튼 새창 */
 						<div id="chat" class="panel-collapse collapse in">
 							<div id="chatList" class="portlet-body chat-widget"
 								style="overflow-y: auto; width: auto; height: 600px;"></div>
-							<!-- 대화입력창  -->
+					
+							<!-- 대화입력창 시작  -->
 							<div class="portlet-footer">
+							
+								<!-- 회원아이디 부분 시작  -->
 								<div class="row">
 									<div class="form-group col-xs-4">
 										<!-- 로그인을 하면 회원아이디로 대체 -->
-										<input style="height: 40px;" type="text" name="nickname" id="nickname" 
-										class="form-control" placeholder="이름" maxlength="8" value="${nickname }">
+										<input type="hidden" id="nick" name="nick" value="${member.nickname }">
+										<input style="height: 40px;" type="button" name="nickname" id="nickname" 
+										class="form-control" placeholder="이름" maxlength="8" value="${member.nickname }님 환영합니다.">
 									</div>
-
-									<!-- 회원이면 로그인 버튼은 사라진다 -->
-									<c:if test="${empty userid}">
-										<div class="form-group col-xs-2">
-											<button type="button" class="btn btn-default pull-right" onclick="openButton(4)"
-											style="height: 40px; width: 100px;">로그인</button>
-										</div>
-									</c:if>
 
 									<div class="form-group col-xs-2 pull-right">
 										<!-- 현재 접속자 표시  -->
@@ -135,7 +132,9 @@ function openButton(menu){ /*  버튼 새창 */
 										style="height: 40px; width: 100px;">현재	접속자</button>
 									</div>
 								</div>
-								<div class="row" style="height: 90px">
+								<!-- 회원 아이디 끝 -->
+								<!-- 메세지 입력창 시작  -->
+								<div class="row">
 									<div id="text" class="form-group col-xs-10">
 										<textarea style="height: 80px;" id="contents" name="contents" class="form-control"
 										 placeholder="메세지를 입력하세요." maxlength="100"></textarea>
@@ -143,11 +142,11 @@ function openButton(menu){ /*  버튼 새창 */
 									<div class="form-group col-xs-2">
 										<button type="button" id="sendBtn" class="btn btn-default pull-right"
 										style="height: 80px; width: 100px;">전&nbsp;&nbsp;송</button>
-										 
-										<div class="clearfix"></div>
 									</div>
 								</div>
+								<!-- 메세지 입력창 끝 -->
 							</div>
+							<!-- 대화입력창 끝  -->
 						</div>
 					</div>
 				</div>

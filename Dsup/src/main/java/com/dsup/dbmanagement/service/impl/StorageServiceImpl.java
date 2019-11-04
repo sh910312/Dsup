@@ -62,4 +62,11 @@ public class StorageServiceImpl implements StorageService {
 			return 0;
 	}
 
+	// [윤정 1104] 테이블스페이스 업데이트
+	@Override
+	public void storageUpdate(String sql) {
+		StorageDAO storageDAO = new StorageDAO();
+		storageDAO.storageUpdate(sql);
+	}
+
 }
