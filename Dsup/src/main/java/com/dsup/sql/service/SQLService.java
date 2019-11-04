@@ -20,4 +20,5 @@ public interface SQLService {
 	public void dbInsert(HttpServletRequest request);
 	public void dbUpdate(HttpServletRequest request);
 	public void dbDelete(HttpServletRequest request);
+	//public ArrayList<String > getUserSchemaName();
 }
