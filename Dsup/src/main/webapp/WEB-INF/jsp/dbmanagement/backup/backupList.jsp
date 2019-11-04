@@ -77,10 +77,8 @@
             $("td input").each(function(i, o){ 
                 if($(this).is(":checked")){
                     $(this).closest("tr").addClass('info');
-                    console.log("췍")
                 } else {
                     $(this).closest("tr").removeClass('info');
-                    console.log("언췍")
                 }
             })
         })
@@ -103,7 +101,7 @@
 	<a href = "backupCreateForm" >백업하기</a>
 	<form action="backupDelete" id = "frm">
 	<div class = ".table-responsive">
-	<table border = "1" id = "table"  class="table table-hover">
+	<table id = "table"  class="table table-hover">
 		<thead>
 			<tr>
 				<th><input type = "checkbox" id="checkAll"></th>

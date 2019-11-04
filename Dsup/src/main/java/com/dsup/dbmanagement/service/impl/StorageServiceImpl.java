@@ -1,5 +1,6 @@
 package com.dsup.dbmanagement.service.impl;
 
+import java.io.File;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class StorageServiceImpl implements StorageService {
 	// [윤정 1030] 테이블스페이스 생성
 	@Override
 	public void createStorage(String sql, UserTbspcTbVO vo) {
+		File directory = new File("D:\\dsup\\datafiles");
+		if(!directory.exists()) directory.mkdirs();
 		dao.createStorage(sql);
 		dao.insertUserTbspcTb(vo);
 	}

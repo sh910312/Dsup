@@ -6,14 +6,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+</head>
+<body>
+<%@include file="../../DBbar.jsp" %>
 <script src="./resources/json.min.js"></script>
 <script>
 	$(function() {
 		userCreate(); //user등록
 		idCheckFunction(); //id체크 
-		tablespaceList()
 	});
 	//비밀번호 입력확인
 	$(function(){
@@ -36,20 +37,12 @@
 		}
 	}
 	
-	//테이블 스페이스 리스트
-	function tablespaceList(){
-		$.ajax({
-			url: 'getStorage',
-			type: 'GET',
-			dataType: "json",
-			success : tablespaceListResult
-		})
-	}
+	
 	
 	//유저생성
 	function userCreate() {
 		$("#btnIns").on("click", function() {
-			var param = JSON.stringify($('#frm').serializeObject());
+			var param = JSON.stringify($('#frm2').serializeObject()); 
 			$.ajax({
 				url : "users",
 				type : 'POST',
@@ -106,11 +99,8 @@
 		});
 	}
 </script>
-</head>
-<body>
-<%@include file="../../DBbar.jsp" %>
 <div class="form-group">
-	<form action="userList.jsp" id="frm">
+	<form action="userList.jsp" id="frm2">
 		<table>
 			<tr>
 				<td>이름</td>

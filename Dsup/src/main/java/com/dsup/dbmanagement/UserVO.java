@@ -8,4 +8,5 @@ public class UserVO {
 	private String password;
 	private String defaultTableSpace;
 	private String accountStatus;
+	private String user;
 }

@@ -54,7 +54,7 @@ public class SearchServiceImpl implements SearchService {
 		paging.setTotalRecord(searchDAOMybatis.PagingList(vo));
 
 		// 시작/마지막 레코드 번호
-		vo.setFirst(paging.getFirst()); 
+		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
 
 		return searchDAOMybatis.SearchMap(vo);
@@ -63,15 +63,19 @@ public class SearchServiceImpl implements SearchService {
 	// 삭제
 	@Override
 	public void deleteSearch(SearchVO vo) {
-		// TODO Auto-generated method stub
-
+		searchDAOMybatis.deleteSearch(vo);
 	}
 
 	// 선택 삭제
 	@Override
 	public void deleteSearchList(SearchVO vo) {
-		// TODO Auto-generated method stub
 		searchDAOMybatis.deleteSearchList(vo);
+	}
+
+	// 수정
+	@Override
+	public void updateSearch(SearchVO vo) {
+		searchDAOMybatis.updateSearch(vo);
 	}
 
 }

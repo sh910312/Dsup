@@ -37,16 +37,15 @@ public class UserController {
 	//목록조회
 	@RequestMapping(value="/users", method=RequestMethod.GET)
 	@ResponseBody
-	public List<Map<String, Object>> userList(Model model, UserVO vo){
-		//vo.setId((String)session.getAttribute("userId")); //나중에 주석풀어야함  
-		vo.setId("test");  //임시로 test 쓰고있음
+	public List<Map<String, Object>> userList(HttpSession session, Model model, UserVO vo){
+		vo.setUser((String)session.getAttribute("userId")); //나중에 주석풀어야함  
 		return userService.userList(vo);
 	}
 	
 	//등록페이지 
 	@RequestMapping("/userCreateForm")
 	public String userCreateForm(Model model, HttpSession session) {
-		String userId ="test"; //(String)session.getAttribute("userId"); //임시로 test 쓰고있음 나중에 주석 풀어야함
+		String userId = (String)session.getAttribute("userId"); //임시로 test 쓰고있음 나중에 주석 풀어야함
 		model.addAttribute("tableSpaceList",storageService.getStorageList(userId));
 		return "dbmanagement/user/userCreate";
 	}
@@ -57,8 +56,8 @@ public class UserController {
 			,consumes="application/json" )
 	@ResponseBody
 	public Map userCreate(@RequestBody UserVO vo, Model model) {
-		//model.addAttribute("list", storageService.getStorageList(""));
-		model.addAttribute("list", userService.getUser(vo));
+		//vo.setUser((String)session.getAttribute("userId")); //나중에 주석풀어야함  
+		vo.setUser("test");  //임시로 test 쓰고있음
 		if(vo.getDefaultTableSpace() == null) {
 		   vo.setDefaultTableSpace("USERS");
 		}
