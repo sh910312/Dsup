@@ -12,6 +12,9 @@ import java.util.LinkedHashMap;
 
 import javax.servlet.http.HttpSession;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+
 
 //@Repository
 public class DAO {
@@ -24,16 +27,19 @@ public class DAO {
 		String schemapwd = (String)session.getAttribute("schemapwd");
         String user = "sys as sysdba"; 
         String pw = "oracle";
+//		String user = "hr";
+//        String pw = "hr";
 		if(schemaid==null || schemaid.equals("")){      
 			
 		}else {
 			user = schemaid;
-	        pw = schemapwd;
+	        pw = schemapwd;	
 		}
 		
 		try {
 			System.out.println("DB Connection ID : " + user);
 			System.out.println("DB Connection PWD : " + pw);
+//			String url = "jdbc:oracle:thin:@localhost:1521:xe";
             String url = "jdbc:oracle:thin:@192.168.0.108:1521:xe";
             Class.forName("oracle.jdbc.driver.OracleDriver");        
             conn = DriverManager.getConnection(url, user, pw);
@@ -42,8 +48,10 @@ public class DAO {
         } catch (SQLException sqle) {
             System.out.println("DB ���ӽ��� : "+sqle.toString());
         } catch (Exception e) {
-            System.out.println("Unkonwn error");
-            e.printStackTrace();
+    		if(schemaid==null || schemaid.equals("")){
+    			System.out.println("Unkonwn error");
+    			e.printStackTrace();
+    		}
         }
 	}
 	
@@ -76,23 +84,47 @@ public class DAO {
 			rs = psmt.executeQuery();
 			ResultSetMetaData meta = rs.getMetaData();
 			int columnCnt = meta.getColumnCount(); //�÷��� ��
-			//System.out.println("colnumCnt = " + columnCnt);
+			System.out.println("==================> colnumCnt : " + columnCnt);
 			
-			LinkedHashMap<String, String> inner_hash = new LinkedHashMap<String, String>();
-			//hash = new LinkedHashMap<String, Object>();
-			for(int i=1 ; i<=columnCnt ; i++) {
-				key = meta.getColumnName(i);
-				value = meta.getColumnTypeName(i);
-				//System.out.println(meta.getc());
-				inner_hash.put(key, value);
-				//col_typ_list.add(COL_TYP);
-			}
-			hash.put("COL_NM_TYPE", inner_hash);
+			
+			////////////////////////////////////////////////////////////////////////////
+			
+			  LinkedHashMap<String, String> inner_hash = null;
+			  ArrayList<Object> temp = new ArrayList<Object>();
+			  for(int i=1 ; i<=columnCnt ; i++) { 
+				  inner_hash = new LinkedHashMap<String, String>();
+				  key = meta.getColumnName(i);
+				  value = meta.getColumnTypeName(i);
+				  inner_hash.put("key", key);
+				  inner_hash.put("value", value);
+				  temp.add(inner_hash);
+			  } 
+			  System.out.println(">>> " +  inner_hash.toString()); hash.put("COL_NM_TYPE", temp);
+			 
+			////////////////////////////////////////////////////////////////////////////
+			
+			/*
+			 * LinkedHashMap<String, String> inner_hash = new LinkedHashMap<String, String>(); 
+			 * for(int i=1 ; i<=columnCnt ; i++) { key = meta.getColumnName(i);
+			 * value = meta.getColumnTypeName(i);
+			 * //System.out.println("=============> key : " + key);
+			 * //System.out.println("1. is there? : " + inner_hash.containsKey(key));
+			 * if(inner_hash.containsKey(key)) { //key = key + "_1";
+			 * //System.out.println("2. changed key : " + key); inner_hash.put(key, value);
+			 * }else { inner_hash.put(key, value); } } System.out.println(">>> " +
+			 * inner_hash.toString()); hash.put("COL_NM_TYPE", inner_hash);
+			 */
 			
 			innerList = new ArrayList<Object>();
 			for(int i=1 ; i<=columnCnt ; i++) {
 				value = meta.getColumnName(i);
-				innerList.add(value);
+				if(innerList.contains(value)) {
+					//value = value + "_1";
+					innerList.add(value);
+				}else {
+					innerList.add(value);
+				}
+				
 				if(i == columnCnt) {
 					select = select + value;
 				}else {
@@ -225,31 +257,6 @@ public class DAO {
 			//close();
 		}
 		
-	}
-
-	public ArrayList<String> getUserSchemaList(String user_id) {
-		// TODO Auto-generated method stub
-		ArrayList<String> list = new ArrayList<String>();
-		String sql = "select user_sch_nm from user_sch_tb where user_id=?";
-		String schemaNm = "";
-		
-		try {
-			psmt = conn.prepareStatement(sql);
-			psmt.setString(1, user_id);
-			rs = psmt.executeQuery();
-			
-			while(rs.next()) {
-				schemaNm = rs.getString("user_sch_nm");
-				list.add(schemaNm);
-			}
-		} catch (SQLException e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}finally {
-			//close();
-		}
-		
-		return list;
 	}
 
 	public String schemaLogin(String id, String pwd) {

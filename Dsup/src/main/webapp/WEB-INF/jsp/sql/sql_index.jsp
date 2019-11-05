@@ -17,7 +17,6 @@
 	<div class="row">
 	    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
     		<div class="sidebar-sticky">
-	        	<div>
 				<div id="start-setting-bar">
 					<jsp:include page="setting/startsetview.jsp"></jsp:include>
 				</div>
@@ -48,7 +47,6 @@
 				<div id="dbinsert-setting-bar" style="display: none;">
 					<jsp:include page="setting/dbinsertsetview.jsp"></jsp:include>
 				</div>
-			</div>
        	 	</div>
 	    </nav>
     	<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-2">

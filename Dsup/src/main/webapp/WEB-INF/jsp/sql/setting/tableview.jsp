@@ -32,7 +32,7 @@
 </script>
 </head>
 <body>
-	<table id="dataTable" class="table table-hover" border="1">
+	<table id="dataTable" class="table table-hover">
 
 	</table>
 	

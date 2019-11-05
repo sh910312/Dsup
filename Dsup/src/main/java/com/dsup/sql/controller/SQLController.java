@@ -34,6 +34,7 @@ public class SQLController {
 	
 	@RequestMapping("/sqlIndex")
 	public String sqlIndex(Model model, HttpSession session) {
+		String schemaid = (String)session.getAttribute("schemaid");
 		ArrayList<String> schemaList = sqlService.getUserSchemaName(session);
 		model.addAttribute("schemaList", schemaList);
 		return "sql/sql_index";
