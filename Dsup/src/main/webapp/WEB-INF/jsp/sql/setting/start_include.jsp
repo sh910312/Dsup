@@ -116,5 +116,5 @@
     animation-delay:.6s;
     -webkit-animation-delay:.6s
 }
-
+select:focus {outline:none;}
 </style>

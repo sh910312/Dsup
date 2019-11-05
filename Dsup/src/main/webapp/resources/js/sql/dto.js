@@ -74,7 +74,7 @@ var MoMo = (function() {
 				
 				for(var key in json){
 					if(key == "COL_NM_TYPE"){
-						//console.log(json[key]);
+						console.log(json[key]);
 						colTypePair = json[key];
 					}else if(key == "SQL"){
 						//console.log(json[key]);

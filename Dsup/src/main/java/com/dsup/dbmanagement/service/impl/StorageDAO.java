@@ -39,10 +39,12 @@ public class StorageDAO {
 
 		System.out.println("--- tablespace update ---");
 		try {
-			for (int i = 0; i < num; i++) {
-				System.out.println(sqls[i]);
-				psmt = conn.prepareStatement(sqls[i]);
-				psmt.execute();
+			if(num > 0) {
+				for (int i = 0; i < num; i++) {
+					System.out.println(sqls[i]);
+					psmt = conn.prepareStatement(sqls[i]);
+					psmt.execute();
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
