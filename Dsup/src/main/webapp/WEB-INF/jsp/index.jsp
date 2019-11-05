@@ -75,9 +75,5 @@
       </form>
 
     </div>
-    <% 
-    session.setAttribute("userId", "ljm089");
-    %>
-    <a href="login">sql</a>
 </body>
 </html>

@@ -10,20 +10,31 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-import org.springframework.stereotype.Repository;
+import javax.servlet.http.HttpSession;
 
-@Repository
+
+//@Repository
 public class DAO {
     Connection conn = null; // DB����� ����(����)�� ���� ��ü
     PreparedStatement psmt = null;  // SQL ���� ��Ÿ���� ��ü
     ResultSet rs = null;  // �������� �����Ϳ� ���� ��ȯ���� ���� ��ü
 
-	public DAO() {
+	public DAO(HttpSession session) {
+		String schemaid = (String)session.getAttribute("schemaid");
+		String schemapwd = (String)session.getAttribute("schemapwd");
+        String user = "sys as sysdba"; 
+        String pw = "oracle";
+		if(schemaid==null || schemaid.equals("")){      
+			
+		}else {
+			user = schemaid;
+	        pw = schemapwd;
+		}
+		
 		try {
-            String user = "scott"; 
-            String pw = "tigers";
-            String url = "jdbc:oracle:thin:@localhost:1521:xe";
-            
+			System.out.println("DB Connection ID : " + user);
+			System.out.println("DB Connection PWD : " + pw);
+            String url = "jdbc:oracle:thin:@192.168.0.108:1521:xe";
             Class.forName("oracle.jdbc.driver.OracleDriver");        
             conn = DriverManager.getConnection(url, user, pw);
         } catch (ClassNotFoundException cnfe) {
@@ -214,5 +225,55 @@ public class DAO {
 			//close();
 		}
 		
+	}
+
+	public ArrayList<String> getUserSchemaList(String user_id) {
+		// TODO Auto-generated method stub
+		ArrayList<String> list = new ArrayList<String>();
+		String sql = "select user_sch_nm from user_sch_tb where user_id=?";
+		String schemaNm = "";
+		
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, user_id);
+			rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				schemaNm = rs.getString("user_sch_nm");
+				list.add(schemaNm);
+			}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			//close();
+		}
+		
+		return list;
+	}
+
+	public String schemaLogin(String id, String pwd) {
+		// TODO Auto-generated method stub
+		String loginSuccess = "";
+		String sql = "select * from user_sch_tb where user_sch_nm = ? and user_sch_pw = ?";
+		
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, id);
+			psmt.setString(2, pwd);
+			rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				loginSuccess = "success";
+			}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			loginSuccess = "fail";
+		}finally {
+			//close();
+		}
+		
+		return loginSuccess;
 	}
 }
