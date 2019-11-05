@@ -23,13 +23,12 @@
 	$(function(){
 		startChk();
 		$("#updbtn").click(submit);
-		$(".alert").hide();
 		tsNameChkFunction();
 		$("input:radio").change(statusChk);
 		statusSql();
 		$("#addbtn").click(trAdd); // 데이터파일 추가 버튼 클릭
 		$(".yj_trupd").click(trEdit); // 용량수정
-		$(".yj_drop").click(drop); // 데이터파일 삭제
+		$("#nameMsg").hide(); // 이름 유효성검사 경고 메시지
 	});
 	
 	// [윤정 1104] 온라인/오프라인/리드온리 상태 체크
@@ -56,7 +55,6 @@
 			$("#newName").attr("readonly", true); // 테이블스페이스 이름 수정 불가
 			$("#addbtn").attr("disabled", true) // 데이터파일 추가 불가
 			$(".yj_trupd").attr("disabled", true) // 데이터파일 수정 불가
-			$(".yj_drop").attr("disabled", true) // 데이터파일 삭제 불가
 			$("input[name='status2']").attr("disabled", true); // read write, read only 수정 불가
 		} else { // ---- online
 			$("input[name='status2']").attr("disabled", false); // read write, read only 수정 가능
@@ -64,11 +62,9 @@
 			if(status2 == "READ ONLY") { // ---- read only
 				$("#addbtn").attr("disabled", true) // 데이터파일 추가 불가
 				$(".yj_trupd").attr("disabled", true) // 데이터파일 수정 불가
-				$(".yj_drop").attr("disabled", true) // 데이터파일 삭제 불가
 			} else { // ---- read write
 				$("#addbtn").attr("disabled", false) // 데이터파일 추가 가능
 				$(".yj_trupd").attr("disabled", false) // 데이터파일 수정 가능
-				$(".yj_drop").attr("disabled", false) // 데이터파일 삭제 가능
 			}
 		}
 	}
@@ -97,14 +93,14 @@
 		var fileName = temp2[0] + "_" + temp2[1] + "_" + num + ".DBF";
 		// ↑ 파일 이름
 		
-		var file = "<input type = 'text' id = 'newFilename' readonly value = '" + fileName + "' >";
-		var size = "<input type = 'text' id = 'newSize' required>";
-		var $sizeunit = $("<select>").attr("id","newSizeunit")
+		var file = "<input type = 'text' id = 'newFilename' readonly value = '" + fileName + "' class='form-control'>";
+		var size = "<input type = 'text' id = 'newSize' required class = 'form-control'>";
+		var $sizeunit = $("<select>").attr("id","newSizeunit").addClass("form-control")
 									.append($("<option>").val("M").text("MB"))
 									.append($("<option>").val("G").text("GB"))
 									.append($("<option>").val("T").text("TB")); // 용량 단위
-		var $okbtn = $("<input>").attr("type","button").attr("id","addOk").val("추가완료").click(trAddOk);
-		var $canbtn = $("<input>").attr("type","button").attr("id","addCancel").val("취소").click(trAddCan);
+		var $okbtn = $("<input>").attr("type","button").attr("id","addOk").val("추가완료").click(trAddOk).addClass("btn btn-outline-info");
+		var $canbtn = $("<input>").attr("type","button").attr("id","addCancel").val("취소").click(trAddCan).addClass("btn btn-outline-secondary");
 		
 		// ↓ 테이블에 행 추가
 		$("tbody").append($("<tr>").append( $("<td>").html(file) )
@@ -131,7 +127,7 @@
 		var sizeunit = $("#newSizeunit").val();
 		
 		// ↓ 용량 제대로 입력했는지 확인
-		if(isNaN(size) || size.length == 0) {
+		if(isNaN(size) || size.length == 0 || size == 0) {
 			$('#sizeError').fadeIn(400).delay(1000).fadeOut(400);
 			return;
 		}
@@ -145,8 +141,7 @@
 		var $tr = $("<tr>").append( $("<td>").text(filename) )
 							.append( $("<td>").text(size) )
 							.append( $("<td>").text(sizeunit) )
-							.append( $("<td>").append( $("<input>").attr("type", "button").val("용량수정").attr("class", "yj_trupd btn btn-info").click(trEdit) ) 
-												.append( $("<input>").attr("type", "button").val("삭제").attr("class", "yj_drop btn btn-info").click(drop) ) 
+							.append( $("<td>").append( $("<input>").attr("type", "button").val("용량수정").addClass("yj_trupd btn btn-outline-info").click(trEdit) ) 
 										);
 		$("tbody").append($tr);
 	}
@@ -158,20 +153,20 @@
 
 		var $tr = $(this).closest("tr");
 		var oldValue = $tr.find("td:eq(1)").text(); // 기존 용량
-		var oldUnit = $tr.find("te:eq(2)").text(); // 기존 용량단위
+		var oldUnit = $tr.find("td:eq(2)").text(); // 기존 용량단위
 		
-		var $sizeunit = $("<select>").attr("id","sizeunit")
+		var $sizeunit = $("<select>").attr("id","sizeunit").addClass("form-control")
 									.append($("<option>").val("M").text("MB"))
 									.append($("<option>").val("G").text("GB"))
 									.append($("<option>").val("T").text("TB")); // 용량 단위
 		// ↓ 테이블 내용 수정
 		$tr.find("td:eq(1)").empty()
-							.append( $("<input>").attr("type","text").attr("id","size").val(oldValue) );
+							.append( $("<input>").attr("type","text").attr("id","size").val(oldValue).addClass("form-control") );
 		$tr.find("td:eq(2)").empty()
 							.append( $sizeunit );
 		$tr.find("td:eq(3)").empty()
-							.append( $("<input>").attr("type","button").attr("id","updOk").val("수정완료") )
-							.append( $("<input>").attr("type","button").attr("id","updCancel").val("취소하기") );
+							.append( $("<input>").attr("type","button").attr("id","updOk").val("수정완료").addClass("btn btn-outline-info") )
+							.append( $("<input>").attr("type","button").attr("id","updCancel").val("취소하기").addClass("btn btn-outline-secondary") );
 
 		$("#updOk").click(trEditOk); // 수정 완료
 		// ↓ 수정 취소
@@ -179,8 +174,7 @@
 			$tr.find("td:eq(1)").empty().text(oldValue);
 			$tr.find("td:eq(2)").empty().text(oldUnit);
 			$tr.find("td:eq(3)").empty()
-								.append( $("<input>").attr("type", "button").val("용량수정").attr("class", "yj_trupd btn btn-info").click(trEdit) )
-								.append( $("<input>").attr("type", "button").val("삭제").attr("class", "yj_drop btn btn-info").click(drop) );
+								.append( $("<input>").attr("type", "button").val("용량수정").attr("class", "yj_trupd btn btn-outline-info").click(trEdit) );
 			
 			$(".yj_trupd").attr("disabled", false); // 다른 행의 '용량수정' 버튼 활성화
 			$("input:radio").attr("disabled", false); // 상태 변경 금지
@@ -192,24 +186,23 @@
 	function trEditOk(){
 		var $tr = $(this).closest("tr");
 		var size = $tr.find("#size").val();
-		var sizeunit = $tr.find("#sizeunit").text();
-		var filename = $tr.find("#filename").text();
+		var sizeunit = $tr.find("#sizeunit").val();
+		var filename = $tr.find("td:eq(0)").text();
 		
 		// ↓ 용량 제대로 입력했는지 확인
-		if(isNaN(size) || size.length == 0) {
+		if(isNaN(size) || size.length == 0 || size == 0) {
 			$('#sizeError').fadeIn(400).delay(1000).fadeOut(400);
 			return;
 		}
 		
 		$(".yj_trupd").attr("disabled", false); // 다른 행의 '용량수정' 버튼 활성화
-		$("input:radio").attr("disabled", true); // 상태 변경 금지
+		$("input:radio").attr("disabled", false); // 상태 변경 허용
 		
 		// ↓ 테이블 원래대로
 		$tr.find("td:eq(1)").empty().text(size);
-		$tr.find("td:eq(2)").empty().text(oldUnit);
+		$tr.find("td:eq(2)").empty().text(sizeunit);
 		$tr.find("td:eq(3)").empty()
-							.append( $("<input>").attr("type", "button").val("용량수정").attr("class", "yj_trupd btn btn-info").click(trEdit) )
-							.append( $("<input>").attr("type", "button").val("용량수정").attr("class", "yj_drop btn btn-info").click(drop) );
+							.append( $("<input>").attr("type", "button").val("용량수정").attr("class", "yj_trupd btn btn-outline-info").click(trEdit) );
 		
 		sql += "ALTER DATABASE DATAFILE '" + filename + "' RESIZE " + size + sizeunit + ";";
 	}
@@ -227,39 +220,30 @@
 		$("#frm").submit();
 	}
 	
-	// [윤정 1104] 데이터파일 삭제
-	function drop(){
-		var $tr = $(this).closest("tr");
-		var filename = $tr.find("td:eq(0)").text();
-		
-		sql += "ALTER TABLESPACE " + oldName + " DROP DATAFILE '" + filename + "';";
-		
-		$tr.remove();
-	}
-	
 	// [윤정 1031] 테이블스페이스명 유효성 검사 
 	function tsNameChkFunction() {
 		$("#newName").blur(function(){
 			var name = $("#newName").val().toUpperCase();
-			$("#newName").val(name);
+			$("#newName").val(name).addClass("is-invalid");
 			
 			// [윤정 1104] 기존의 네임과 같은 경우
 			if(name == oldName) {
-				$("#alert").hide();
+				$("#nameMsg").hide();
+				$("#newName").removeClass("is-invalid");
 				$("#updbtn").attr("disabled", false);
 				return;
 			}
 			
 			// 아이디를 입력하지 않은 경우
 			if(name == '') { 
-				$("#alert").show().text("이름을 입력해주세요");
+				$("#nameMsg").show().text("이름을 입력해주세요");
 				$("#updbtn").attr("disabled", true);
 				return;
 			}
 			
 			// [윤정1101] 이름 첫 글자 영어만
 			if(!name.substr(0,1).match(/[A-Z]/)) {
-				$("#alert").show().text("이름 첫 글자는 영어만 입력할 수 있습니다");
+				$("#nameMsg").show().text("이름 첫 글자는 영어만 입력할 수 있습니다");
 				$("#updbtn").attr("disabled", true);
 				return;
 			}
@@ -268,12 +252,12 @@
 			var err = 0;
 			var cnt = name.length;
 			for(i = 0; i < cnt; i ++) {
-				var chk = name.substr(i, i+1);
+				var chk = name.charAt(i);
 				if (!chk.match(/[0-9]/) && !chk.match(/[A-Z]/) && chk != '_'){
 					err = err + 1;
 				}
 				if(err > 0) {
-					$("#alert").show().text("영어, 숫자, _만 입력할 수 있습니다");
+					$("#nameMsg").show().text("영어, 숫자, _만 입력할 수 있습니다");
 					$("#updbtn").attr("disabled", true);
 					return;
 				}
@@ -285,11 +269,12 @@
 				success : function(data) {
 					// 중복이면 0, 아니면 1
 					if(data == 0) { // 중복
-						$("#alert").show().text("사용할 수 없는 이름입니다");
+						$("#nameMsg").show().text("사용할 수 없는 이름입니다");
 						$("#updbtn").attr("disabled", true);
 					} else { // 중복x
-						$("#alert").hide();
+						$("#nameMsg").hide();
 						$("#updbtn").attr("disabled", false);
+						$("#newName").removeClass("is-invalid");
 					}
 				}
 			}) // ajax
@@ -303,18 +288,21 @@
 <form id = "frm" method = "post" action = "sotrageUpdate">
 	<input type = "hidden" id = "oldName" name = "oldName" value = "${ts.tablespaceName}">
 	<input type = "hidden" id = "sql" name = "sql">
+	
 	<div class = "row">
 		<h1>테이블 스페이스</h1>
 	</div>
+	
 	<div class = "row">
 		<div class = "col-2">
 			이름
 		</div>
 		<div class = "col-10">
 			<input type = "text" value = "${ts.tablespaceName}" class = "form-control" name = "newName" id = "newName">
+			<div class="invalid-feedback" id = "nameMsg"></div>
 		</div>
 	</div>
-	<div class = "alert alert-info" role="alert" id = "alert"></div>
+	
 	<div class = "row">
 		<div class = "col-2">
 			상태
@@ -328,6 +316,7 @@
 				<label for = "offline">offline</label>
 		</div>
 	</div>
+	
 	<div class = "row">
 		<div class = "col-2"></div>
 		<div class = "col-2">
@@ -339,15 +328,25 @@
 				<label for = "readonly">read only</label>
 		</div>
 	</div>
+	
+	<div class = "row">
+		<div class = "col-2">안내사항</div>
+		<div class = "col-10">
+			offline 상태는 데이터파일 용량 조회가 불가능합니다. online상태로 변경 후 다시 조회해주세요.<br>
+			offline 상태에서는 테이블 스페이스 이름 수정, 데이터파일 수정 및 추가가 불가능합니다.<br>
+			read only 상태에서는 데이터파일 수정 및 추가가 불가능합니다.<br>
+		</div>
+	</div>
+	
 	<br><br><br>
 	
 	<div class = "row">
 		<div class = "col">
 			<h1>데이터파일</h1>
 		</div>
-		<div class = "col">
-			<input type = "button" id = "addbtn"
-					class = "btn btn-info" value = "추가">
+		<div class = "col-1 pull-right">
+			<input type = "button" id = "addbtn" class = "btn btn-outline-info" value = "추가"
+					 data-toggle="tooltip" data-placement="top" title="한번 만든 데이터파일은 삭제할 수 없습니다. 신중하게 만들어주세요!">
 		</div>
 	</div>
 	<div class = "row">
@@ -367,8 +366,7 @@
 					<td id = "sizetd">${df.total}</td>
 					<td>M</td>
 					<td id = "btntd">
-						<input type = "button" value = "용량수정" class = "yj_trupd btn btn-info" >
-						<input type = "button" value = "삭제" class = "yj_drop btn btn-info" >
+						<input type = "button" value = "용량수정" class = "yj_trupd btn btn-outline-info" >
 					</td>
 				</tr>
 				</c:forEach>
@@ -379,7 +377,9 @@
 <div class='yj_error' style='display:none' id="sizeError">용량은 숫자만 입력할 수 있습니다!</div>
 	
 	<div class = "row">
-		<input type = "button" id = "updbtn" value = "수정하기" class = "btn btn-info">
+		<input type = "button" id = "updbtn" value = "수정 완료" class = "btn btn-info btn-block">
+		<input type = "button" id="back" value = "목록으로 돌아가기" class = "btn btn-light btn-block"
+					onclick = 'history.back()'>
 	</div>
 </form>
 </div>

@@ -32,13 +32,15 @@
 <br><br><br>
 
 <div class="card-deck">
-  <div class="card" onclick = "location.href='./storageList'">
+
+  <div class="card" onclick = "location.href='./storageList'" >
     <img src="./resources/images/db/dbindex_storage.jpg" class="card-img-top" alt="테이블스페이스 관리 이미지">
     <div class="card-body">
       <h5 class="card-title">테이블스페이스 관리</h5>
       <p class="card-text">테이블 스페이스는 테이블이 저장되는 공간입니다. 신청한 종량제 용량만큼 테이블스페이스를 만들 수 있습니다. </p>
     </div>
   </div>
+  
   <div class="card" onclick = "location.href='./userList'">
     <img src="./resources/images/db/dbindex_user.jpg" class="card-img-top" alt="유저 관리 이미지">
     <div class="card-body">
@@ -46,6 +48,7 @@
       <p class="card-text">유저 스키마를 생성 및 관리 합니다. </p>
     </div>
   </div>
+  
   <div class="card" onclick = "location.href='./backupList'">
     <img src="./resources/images/db/dbindex_backup.jpg" class="card-img-top" alt="백업 이미지">
     <div class="card-body">
@@ -53,7 +56,9 @@
       <p class="card-text">테이블 스페이스 단위로 백업 할 수 있습니다.</p>
     </div>
   </div>
+
 </div>
+
 </div>
 </body>
 </html>
