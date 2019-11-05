@@ -55,7 +55,6 @@
 		var $size = $("<input>").attr("type","text").attr("id","size").attr("required",true).attr("class", "form-control"); // 용량 입력칸
 		var $sizeunit = $("<select>").attr("id","sizeunit").attr("class", "form-control")
 									.append($("<option>").val("M").text("MB"))
-									.append($("<option>").val("K").text("KB"))
 									.append($("<option>").val("G").text("GB"))
 									.append($("<option>").val("T").text("TB")); // 용량 단위
 		var $btn = $("<input>").attr("type","button").attr("id","delbtn").val("삭제")
