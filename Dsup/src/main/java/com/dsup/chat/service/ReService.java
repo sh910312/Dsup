@@ -15,9 +15,6 @@ public interface ReService {
 	List<Map<String, Object>>ReMap(ReVO vo, Paging rpaging);
 	
 	// 댓글 삭제
-	
-
-	// 댓글?
-	
+	void deleteRe(ReVO vo);
 	
 }

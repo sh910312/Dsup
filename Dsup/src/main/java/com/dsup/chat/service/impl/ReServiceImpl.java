@@ -51,4 +51,9 @@ public class ReServiceImpl implements ReService {
 		return reDAOMybatis.ReMap(vo);
 	}
 
+	@Override // 댓글 삭제
+	public void deleteRe(ReVO vo) {
+		reDAOMybatis.delete(vo);
+	}
+
 }

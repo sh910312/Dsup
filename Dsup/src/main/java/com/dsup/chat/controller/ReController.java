@@ -32,6 +32,13 @@ public class ReController {
 		return "redirect:/getSearch?searchId="+ vo.getSearchId(); // 이쪽으로 이동 // redirech 안에는 requestmapping 내용을 넣는다
 	}
 	
-	
+	// 삭제
+	@RequestMapping("/delRe")
+	public String deleteRe(ReVO vo) {
+		
+		reService.deleteRe(vo);
+		
+		return "redirect:getSearch?searchId="+vo.getSearchId();
+	}
 	
 }

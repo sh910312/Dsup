@@ -24,9 +24,9 @@ public class ChatServiceImpl implements ChatService {
 
 	//채팅목록
 	@Override
-	public List<Map<String, Object>> getChatMap(ChatVO vo) {
+	public List<Map<String, Object>> ChatMap(ChatVO vo) {
 		// TODO Auto-generated method stub
-		return chatDAOmybatis.getChatMap(vo);
+		return chatDAOmybatis.ChatMap(vo);
 	}
 
 

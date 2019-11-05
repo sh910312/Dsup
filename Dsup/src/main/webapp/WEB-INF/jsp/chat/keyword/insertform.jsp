@@ -19,10 +19,29 @@
 
 $(function() {
 
-	insertBoard();
-
+	insert();
+	back();
 
 });
+
+function insert() {
+	
+	$("#insertbtn").click(function() {
+		
+		$("#frm").attr("action", "insertSearch");
+		$("#frm").attr("method", "post")
+		$("#frm").submit();
+	})
+} 
+
+
+function back() {
+	
+	$("#backbtn").click(function() {
+		$("#frm").attr("action", "SearchMap");
+		$("#frm").submit();
+	})
+} 
 
 
 
@@ -46,7 +65,7 @@ $(function() {
 							</div>
 						</div>
 							<!-- 대화입력창  -->
-							<form action="insertSearch" method="post">
+							<form id="frm">
 							<div class="portlet-footer">
 								<div class="row" >
 									<div class="form-group col-xs-10">
@@ -59,8 +78,8 @@ $(function() {
 									</div>
 								</div>
 								<div align="center">
-									<button class="btn btn-default" style="height:40px; width:100px;">등&nbsp;&nbsp;록</button>
-									<button type="button" class="btn btn-default" style="height:40px; width:100px;" onclick="self.close();">닫&nbsp;&nbsp;기</button>
+									<button type="button" id="insertbtn" name="insertbtn" class="btn btn-default" style="height:40px; width:100px;">등&nbsp;&nbsp;록</button>
+									<button type="button" id="backbtn" name="backbtn" class="btn btn-default" style="height:40px; width:100px;">돌아가기</button>
 								</div>
 							</div>
 							</form>

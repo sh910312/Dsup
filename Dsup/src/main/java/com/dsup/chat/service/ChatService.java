@@ -9,8 +9,7 @@ public interface ChatService {
 	
 	// 채팅 전송
 	void insertChat(ChatVO vo);
-
 	// 채팅목록
-	List<Map<String, Object>> getChatMap(ChatVO vo);
+	List<Map<String, Object>> ChatMap(ChatVO vo);
 
 }
