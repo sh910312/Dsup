@@ -92,6 +92,8 @@ var Setting = (function() {
 			// console.log("info : " + info);
 			// var json = JSON.parse(info);
 			// console.log(json);
+			 
+			//2019-11-05 test 부분 ////////////////////////////////////
 			var tag = "";
 			var result = new Map();
 			for (var i = 0; i < info.length; i++) {
@@ -101,9 +103,9 @@ var Setting = (function() {
 					for ( var a_key in a_json) {
 						if (a_key == "COL_NM_TYPE") {
 							var b_json = a_json[a_key];
-							for (b_key in b_json) {
-								tag = tag + '<tr>' + '<td>' + b_key + '</td>'
-										+ '<td>' + b_json[b_key] + '</td>'
+							for (var j=0; j<b_json.length; j++) {
+								tag = tag + '<tr>' + '<td>' + b_json[j].key + '</td>'
+										+ '<td>' + b_json[j].value + '</td>'
 										+ '</tr>';
 							}
 							// result.set(childKey, tag);
@@ -113,6 +115,31 @@ var Setting = (function() {
 				}
 				tag = "";
 			}
+			/////////////////////////////////////////////////////////
+			
+			
+			//2019-11-05 안되면 주석 풀어야되는 부분
+//			var tag = "";
+//			var result = new Map();
+//			for (var i = 0; i < info.length; i++) {
+//				var json = JSON.parse(info[i]);
+//				for ( var childKey in json) {
+//					var a_json = json[childKey];
+//					for ( var a_key in a_json) {
+//						if (a_key == "COL_NM_TYPE") {
+//							var b_json = a_json[a_key];
+//							for (b_key in b_json) {
+//								tag = tag + '<tr>' + '<td>' + b_key + '</td>'
+//										+ '<td>' + b_json[b_key] + '</td>'
+//										+ '</tr>';
+//							}
+//							// result.set(childKey, tag);
+//							result[childKey] = tag
+//						}
+//					}
+//				}
+//				tag = "";
+//			}
 
 			return result;
 		}
@@ -151,19 +178,19 @@ var Setting = (function() {
 					for ( var a_key in a_json) {
 						if (a_key == "COL_NM_TYPE") {
 							var b_json = a_json[a_key];
-							for (b_key in b_json) {
+							for (var j=0; j<b_json.length; j++) {
 								tag = tag
 										+ '<tr>'
 										+ '<td>'
 										+ '<input type="checkbox" name="renewal-col-checkbox" value="'
-										+ b_key
+										+ b_json[j].key
 										+ '" checked onclick="controller.selectChanged(this);"/>'
 										+ '</td>'
 										+ '<td>'
-										+ b_key
+										+ b_json[j].key
 										+ '</td>'
 										+ '<td>'
-										+ b_json[b_key]
+										+ b_json[j].value
 										+ '</td>'
 										+ '<td><input type="text" class="addition-renwal-name" name="addition-renwal-name" style="border:none"/></td>'
 								'</tr>';
@@ -532,7 +559,7 @@ var Setting = (function() {
 				}
 			},
 			tableClick : function(obj) {
-				if ($(obj).parent().attr('id') != 'additon-table') {
+				if ($(obj).parents('table').attr('id') != 'additon-table') {
 					click(obj);
 				} else {
 					click(obj);

@@ -25,7 +25,6 @@ public class LoginController {
 	//로그인처리
 	@RequestMapping(value = "login", method = RequestMethod.POST)  //@RequestMapping("login")
 	public String login(@ModelAttribute("member") MemberVO vo, HttpSession session) {
-		//model.addAttribute("userVO", vo); 를 자동으로해준다
 		//로컬 사용시 주석 해야될 부분 2019.11.01 - 이재문
 		MemberVO member = memberService.login(vo);
 		if(member == null) {
@@ -36,8 +35,8 @@ public class LoginController {
 			session.setAttribute("userId", member.getUserId());
 			return "redirect:main";
 		}
-		
 //		//로컬 사용시 해야될 부분 2019.11.01 - 이재문
+//		session.setAttribute("userId", vo.getUserId());
 //		return "main";
 	}
 	@RequestMapping("main")
