@@ -101,7 +101,7 @@
 	
 	// [윤정1105] 삭제시 테이블스페이스명 다시 입력
 	function delCheck(){
-		$("#delCheck").addClass("is-invalid");
+		$("#delCheck").addClass("is-invalid").val("");
 		$("#delbtn").attr("disabled", true);
 		
 		$("#delCheck").keyup(function(){			
@@ -128,7 +128,7 @@
 
 			<div class="btn-group" role="group">
 				<input id="updbtn" type="button" value="수정" class="btn btn-outline-info">
-				<input type="button" value="삭제" class="btn btn-outline-info"  data-toggle="modal" data-target="#delModal" onclick="delCheck()">
+				<input type="button" value="삭제" class="btn btn-outline-info" data-toggle="modal" data-target="#delModal" onclick="delCheck()">
 				<input id="crebtn" type="button" value="생성" class="btn btn-outline-info">
 				<input id="showbtn" type="button" value="조회" class="btn btn-outline-info">
 			</div>

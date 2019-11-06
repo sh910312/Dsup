@@ -93,7 +93,7 @@
 		var fileName = temp2[0] + "_" + temp2[1] + "_" + num + ".DBF";
 		// ↑ 파일 이름
 		
-		var file = "<input type = 'text' id = 'newFilename' readonly value = '" + fileName + "' class='form-control'>";
+		var file = "<input type = 'text' id = 'newFilename' readonly value = '" + fileName + "' class='form-control-plaintext'>";
 		var size = "<input type = 'text' id = 'newSize' required class = 'form-control'>";
 		var $sizeunit = $("<select>").attr("id","newSizeunit").addClass("form-control")
 									.append($("<option>").val("M").text("MB"))
@@ -127,23 +127,22 @@
 		var sizeunit = $("#newSizeunit").val();
 		
 		// ↓ 용량 제대로 입력했는지 확인
-		if(isNaN(size) || size.length == 0 || size == 0) {
+		if(isNaN(size) || size <= 0) {
 			$('#sizeError').fadeIn(400).delay(1000).fadeOut(400);
-			return;
+		} else {
+			$("#addbtn").attr("disabled",false); // tr 추가 버튼 활성화
+			$("input:radio").attr("disabled", false); // 상태 변경 허용
+		
+			sql += "ALTER TABLESPACE " + oldName + " ADD DATAFILE '" + filename + "' SIZE " + size + sizeunit + ";";
+			// ↓ 테이블 원래 모양대로
+			$("tr:last").remove();
+			var $tr = $("<tr>").append( $("<td>").text(filename) )
+								.append( $("<td>").text(size) )
+								.append( $("<td>").text(sizeunit) )
+								.append( $("<td>").append( $("<input>").attr("type", "button").val("용량수정").addClass("yj_trupd btn btn-outline-info").click(trEdit) ) 
+											);
+			$("tbody").append($tr);
 		}
-		
-		$("#addbtn").attr("disabled",false); // tr 추가 버튼 활성화
-		$("input:radio").attr("disabled", false); // 상태 변경 허용
-		
-		sql += "ALTER TABLESPACE " + oldName + " ADD DATAFILE '" + filename + "' SIZE " + size + sizeunit + ";";
-		// ↓ 테이블 원래 모양대로
-		$("tr:last").remove();
-		var $tr = $("<tr>").append( $("<td>").text(filename) )
-							.append( $("<td>").text(size) )
-							.append( $("<td>").text(sizeunit) )
-							.append( $("<td>").append( $("<input>").attr("type", "button").val("용량수정").addClass("yj_trupd btn btn-outline-info").click(trEdit) ) 
-										);
-		$("tbody").append($tr);
 	}
 	
 	// [윤정 1105] 용량수정 버튼 클릭
@@ -190,21 +189,20 @@
 		var filename = $tr.find("td:eq(0)").text();
 		
 		// ↓ 용량 제대로 입력했는지 확인
-		if(isNaN(size) || size.length == 0 || size == 0) {
+		if(isNaN(size) || size <= 0) {
 			$('#sizeError').fadeIn(400).delay(1000).fadeOut(400);
-			return;
+		} else {
+			$(".yj_trupd").attr("disabled", false); // 다른 행의 '용량수정' 버튼 활성화
+			$("input:radio").attr("disabled", false); // 상태 변경 허용
+		
+			// ↓ 테이블 원래대로
+			$tr.find("td:eq(1)").empty().text(size);
+			$tr.find("td:eq(2)").empty().text(sizeunit);
+			$tr.find("td:eq(3)").empty()
+								.append( $("<input>").attr("type", "button").val("용량수정").attr("class", "yj_trupd btn btn-outline-info").click(trEdit) );
+		
+			sql += "ALTER DATABASE DATAFILE '" + filename + "' RESIZE " + size + sizeunit + ";";
 		}
-		
-		$(".yj_trupd").attr("disabled", false); // 다른 행의 '용량수정' 버튼 활성화
-		$("input:radio").attr("disabled", false); // 상태 변경 허용
-		
-		// ↓ 테이블 원래대로
-		$tr.find("td:eq(1)").empty().text(size);
-		$tr.find("td:eq(2)").empty().text(sizeunit);
-		$tr.find("td:eq(3)").empty()
-							.append( $("<input>").attr("type", "button").val("용량수정").attr("class", "yj_trupd btn btn-outline-info").click(trEdit) );
-		
-		sql += "ALTER DATABASE DATAFILE '" + filename + "' RESIZE " + size + sizeunit + ";";
 	}
 	
 	// [윤정 1104] 수정하기 버튼 클릭
@@ -374,11 +372,11 @@
 		</table>
 	</div>
 	
-<div class='yj_error' style='display:none' id="sizeError">용량은 숫자만 입력할 수 있습니다!</div>
+<div class='yj_error' style='display:none' id="sizeError">용량은 0보다 큰 숫자만 입력할 수 있습니다!</div>
 	
 	<div class = "row">
 		<input type = "button" id = "updbtn" value = "수정 완료" class = "btn btn-info btn-block">
-		<input type = "button" id="back" value = "목록으로 돌아가기" class = "btn btn-light btn-block"
+		<input type = "button" id="back" value = "목록으로 돌아가기" class = "btn btn-secondary btn-block"
 					onclick = 'history.back()'>
 	</div>
 </form>
