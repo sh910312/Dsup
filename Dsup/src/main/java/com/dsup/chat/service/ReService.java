@@ -17,4 +17,8 @@ public interface ReService {
 	// 댓글 삭제
 	void deleteRe(ReVO vo);
 	
+	// 상세보기
+	ReVO getRe(ReVO vo);
+	
+	
 }

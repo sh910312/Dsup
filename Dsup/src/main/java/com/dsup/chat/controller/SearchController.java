@@ -83,7 +83,7 @@ public class SearchController {
 	@RequestMapping("/getSearch")
 	public String getSearch(HttpServletRequest request, Model model, SearchVO svo, ReVO revo, Paging repaging) {
 
-		model.addAttribute("search", searchservice.getSearch(svo));
+		model.addAttribute("search", searchservice.getSearch(svo)); // 검색 상세보기
 		model.addAttribute("reList", reService.ReMap(revo, repaging)); // 댓글 리스트 불러오기
 		model.addAttribute("repaging", repaging);
 
