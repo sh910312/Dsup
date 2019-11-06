@@ -1,5 +1,23 @@
-<!-- css/javascript css> -->
 <%@  taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
+<%	String schemaid = (String)session.getAttribute("schemaid");
+	System.out.println("jsp | schemaid : " + schemaid);
+	if(schemaid==null || schemaid.equals("")){%>      
+		<script>
+			$(function(){
+			    var tag =  '<i class="fas fa-power-off fa-4x"></i>';
+			    $('#login-success-breath').html(tag);
+			})
+
+		</script>
+<% }else{%>
+	<script>
+		$(function(){
+			var tag =  '<i class="fas fa-power-off fa-2x ripple" style="color : #fd5581;"></i><i class="fas fa-power-off fa-2x ripple"></i>';
+		    $('#login-success-breath').append(tag);
+		    $('#connected-schema-nm').text("<%=schemaid%>");
+		})
+	</script>
+<%}%>
 <script>
 function connection(){
 	var request = new XMLHttpRequest();
@@ -57,7 +75,7 @@ function disconnection(){
 					<img src="./resources/js/sql/etc/images/avatar-01.jpg" class="ripple pinkBg"> -->
  				</span>
 			</span>
-			<span class="login100-form-title p-b-10"> Start </span>
+			<span id="connected-schema-nm"class="login100-form-title p-b-10"> Start </span>
 			<div class="wrap-input100 validate-input m-t-30 m-b-35" data-validate="Enter username">
 				<select id="schema-Name-select" class="input100" type="text" name="username" style="color: #999999; border: none;">
 					<option value="" disabled="" selected="" hidden="">Schema Name</option>
@@ -73,7 +91,7 @@ function disconnection(){
 				<button id="sch-login-btn" type = "button" class="login100-form-btn" onclick="connection()">Connect</button>
 			</div>
 			<div class="container-login100-form-btn">
-				<button id="sch-login-btn" type = "button" class="login100-form-btn" onclick="disconnection()">DisConnect</button>
+				<button id="sch-login-btn2" type = "button" class="login100-form-btn" onclick="disconnection()">DisConnect</button>
 			</div>
 		</form>
 	</div>

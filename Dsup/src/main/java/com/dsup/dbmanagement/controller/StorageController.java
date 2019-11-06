@@ -1,5 +1,6 @@
 package com.dsup.dbmanagement.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -86,7 +87,14 @@ public class StorageController {
 		
 		if(ts != null) {
 			mv.addObject("ts", ts);
-			mv.addObject("df", storageService.getDatafile(ts.getTablespaceName()));
+			
+			List<DatafileVO> list = new ArrayList<DatafileVO>();
+			list = storageService.getDatafile(ts.getTablespaceName());
+			for(DatafileVO df : list) {
+				String[] arr = df.getFileName().split("\\\\");
+				df.setFileName(arr[arr.length-1]);
+			}
+			mv.addObject("df", list);
 		}
 		mv.setViewName("dbmanagement/storage/storageShow");
 		return mv;
@@ -113,7 +121,14 @@ public class StorageController {
 		
 		if(ts != null) {
 			mv.addObject("ts", ts);
-			mv.addObject("df", storageService.getDatafile(ts.getTablespaceName()));
+			List<DatafileVO> list = new ArrayList<DatafileVO>();
+			list = storageService.getDatafile(ts.getTablespaceName());
+			for(DatafileVO df : list) {
+				String[] arr = df.getFileName().split("\\\\");
+				df.setFileName(arr[arr.length-1]);
+			}
+			mv.addObject("df", list);
+//			mv.addObject("df", storageService.getDatafile(ts.getTablespaceName()));
 		}
 		mv.setViewName("dbmanagement/storage/storageUpdateForm");
 		return mv;

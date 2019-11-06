@@ -71,7 +71,6 @@ public class SearchController {
 		return "redirect:getSearch?searchId="+ vo.getSearchId();
 	}
 	
-	
 
 	// 삭제
 	@RequestMapping("/deleteSearch")

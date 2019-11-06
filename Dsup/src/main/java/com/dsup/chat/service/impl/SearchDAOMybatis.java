@@ -8,7 +8,6 @@ import javax.annotation.Resource;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.dsup.chat.ReVO;
 import com.dsup.chat.SearchVO;
 
 @Repository

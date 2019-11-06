@@ -17,68 +17,18 @@
 <script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 
 
-<script>
-function openButton(menu){ /*  버튼 새창 */
-	
-	var popupX = (document.body.offsetWidth / 2) - (100/2);
-	var popupY = (document.body.offsetHeight / 2) - (200/2);
-
-	if (menu == "0" || menu == 0){
-		window.open("insertSearchForm","등록",'width=800px, height=300px, left='+ popupX + ', top='+ popupY);
-	}
-
-}
-
-</script>
-
-<script>
-
-
-
-
-$(function() {
-	
-	update();
-	
-	back();
-});
-
-function update() { // 게시글 수정
-	
-	$("#updatebtn").click(function() {
-		$("#frm1").attr("action", "updateSearch");
-		$("#frm1").submit();
-		alert("수정이 완료되었습니다.")
-
-	})
-}
-
-
-function back() {
-	
-	$("#backbtn").click(function() {
-		$("#frm1").attr("action", "getSearch");
-		$("#frm1").submit();
-	})
-} 
-
-
-
-
-</script>
-
 
 
 </head>
 <body>
-<form id="frm1">
+<form id="frm">
 	<div class="container">
 			<div class="row">
 				<div class="col-xs-13">
 					<div class="portlet portlet-default">
 						<div class="portlet-heading">
 							<div class="portlet-title">
-								<h3><font color="black"><input id="title" name="title" style="width:100%;" type="text" value="${search.title }"></font></h3>
+								<h3>신고하기</h3>
 							</div>
 							<div class="portlet-title pull-right">
 								<h3>${search.userId }
@@ -92,18 +42,16 @@ function back() {
 							
 							<!-- Search내용 시작 -->
 							<div class="row">
-								
+								ㅇㅇㅇㅇ
 								<br>
-									<%-- <input type="text" id="updatecotents" style="width:100%; height:200px; overflow:auto;"  readonly value="${search.contents }"> --%>
-									<input hidden="hidden"/> <!-- 엔터키 안먹게 하는방법  -->
-									<textarea style="width:100%; height:200px;" id="contents" name="contents" class="form-control" placeholder="${search.contents }"></textarea>
+									<textarea style="width:100%; height:200px;" id="contents" name="contents" class="form-control" placeholder="신고사유를 작성하세요."></textarea>
 								<br>
 								<div align="center">
 								<br>
 							
 							<!-- Search내용 끝 -->
 								<input type="hidden" name="searchId" value="${search.searchId }" />
-									<button type="button" id="updatebtn" name="updatebtn" class="btn btn-default">수정</button>
+									<button type="button" id="updatebtn" name="updatebtn" class="btn btn-default">닫기</button>
 									<button type="button" id="backbtn" name="backbtn" class="btn btn-default">돌아가기</button>
 								</div>
 								
@@ -114,16 +62,5 @@ function back() {
 			</div>
 		</div>
 	</form>
-<script type="text/javascript">
-
-function go_page(p){
-	document.frm.page.value= p;
-	document.frm.submit();
-}
-
-</script>
-
-
-
 </body>
 </html>
