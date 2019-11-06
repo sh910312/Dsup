@@ -375,8 +375,8 @@
 <div class='yj_error' style='display:none' id="sizeError">용량은 0보다 큰 숫자만 입력할 수 있습니다!</div>
 	
 	<div class = "row">
-		<input type = "button" id = "updbtn" value = "수정 완료" class = "btn btn-info btn-block">
-		<input type = "button" id="back" value = "목록으로 돌아가기" class = "btn btn-secondary btn-block"
+		<input type = "button" id = "updbtn" value = "수정 완료" class = "btn btn-outline-info btn-block">
+		<input type = "button" id="back" value = "목록으로 돌아가기" class = "btn btn-outline-secondary btn-block"
 					onclick = 'history.back()'>
 	</div>
 </form>
