@@ -74,7 +74,7 @@
 <div style="text-align: right">
 프로필<select id="menu" onchange="goPage()">
 	<option value="">선택</option>
-	<option value="">쪽지함</option>
+	<option value="messge">쪽지함</option>
 	<option value="chatMain">채팅봇</option>
 	<option value="">Q &amp; A</option>
 	<option value="myInfo">정보변경</option>
@@ -93,6 +93,7 @@
 			아이디: ${member.userId}<br>
 			닉네임: <span id="infoNickname">${member.nickname}</span><br>
 			이메일: <span id="infoEMail">${member.eMail}</span><br>
+			전화번호: <span id="infoPhonenumber">${member.phonenumber}</span><br>
 			가입날짜: <fmt:parseDate value="${member.userDate}" var="dateFmt" pattern="yyyy-MM-dd HH:mm:ss"/>
 				    <fmt:formatDate value="${dateFmt}" pattern="yyyy-MM-dd"/><br>
 			<br><br><br><br><br><br><br>
@@ -106,6 +107,7 @@
 		      비밀번호 : <input name="password"><br>
 			닉네임: <input name="nickname"><br>
 			이메일: <input name="eMail"><br>
+			전화번호: <input name="phonenumber"><br>
 			<button type="button" id="btnUpdate" >수정</button>
 			</form>
 		</div>
@@ -151,16 +153,18 @@
 		$('#btnUpdate').on('click',function(){
 			var nickname = $('input:text[name="nickname"]').val();
 			var password = $('[name="password"]').val();
-			var eMail = $('[name="eMail"]').val();	
+			var eMail = $('[name="eMail"]').val();
+			var phonenumber = $('[name="phonenumber"]').val();
 			$.ajax({ 
 			    url: "members", 
 			    type: 'PUT', 
 			    dataType: 'json', 
-			    data: JSON.stringify({ nickname: nickname,password: password, eMail: eMail }),
+			    data: JSON.stringify({ nickname: nickname,password: password, eMail: eMail, phonenumber: phonenumber }),
 			    contentType: 'application/json',
 			    success: function(data) { 
 				    infoNickname.innerHTML = document.frm.nickname.value
-				    infoEMail.innerHTML = document.frm.eMail.value 
+				    infoEMail.innerHTML = document.frm.eMail.value
+				    infoPhonenumber.innerHTML = document.frm.phonenumber.value 
 				    modify.style.display = "none";
 				    myInfo.style.display = "block";
 			    },

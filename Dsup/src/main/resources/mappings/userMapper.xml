@@ -8,6 +8,13 @@
 		{call ADD_USER (#{user}, #{id}, #{password}, #{defaultTableSpace}, #{accountStatus})}
 	</insert>
 	
+	<!-- id 예약어 -->
+	<select id="reservedWords" resultType="map">
+		select USER_id 
+ 		from users
+ 		where USER_id in(SELECT KEYWORD FROM V$RESERVED_WORDS)
+
+	</select>
 	
 	<!-- 리스트 -->
 	<select id="userList" resultType="map" parameterType = "user">
