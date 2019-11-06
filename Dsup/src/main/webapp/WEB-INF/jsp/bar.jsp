@@ -74,7 +74,7 @@
 <div style="text-align: right">
 프로필<select id="menu" onchange="goPage()">
 	<option value="">선택</option>
-	<option value="">쪽지함</option>
+	<option value="messge">쪽지함</option>
 	<option value="chatMain">채팅봇</option>
 	<option value="">Q &amp; A</option>
 	<option value="myInfo">정보변경</option>

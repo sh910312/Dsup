@@ -14,7 +14,8 @@
 <script>
 	$(function() {
 		userCreate(); //user등록
-		idCheckFunction(); //id체크 
+		idCheckFunction(); //id체크
+		formCheck(); //비밀번호체크
 	});
 	//비밀번호 입력확인
 	$(function(){
@@ -77,18 +78,19 @@
 					
 					if (data == 1) {
 						// 1 : 아이디가 중복되는 문구
-						$("#id_check").text("사용중인 아이디입니다 :p");
+						$("#id_check").text("사용중인 아이디입니다 ");
 						$("#id_check").css("color", "red");
 						$("#reg_submit").attr("disabled", true);
-					} else {
+					}else {
 						 if(id == ""){
 							
 							$('#id_check').text('아이디를 입력해주세요 :)');
 							$('#id_check').css('color', 'red');
 							$("#reg_submit").attr("disabled", true);				
-							
+						  
 						} else{
-							$("#id_check").text("");
+							$("#id_check").text("사용가능한 아이디입니다.");
+							$('#id_check').css('color', 'blue');
 							$("#reg_submit").attr("disabled", false);
 						}
 					}

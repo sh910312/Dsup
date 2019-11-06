@@ -9,4 +9,5 @@ public class UserVO {
 	private String defaultTableSpace;
 	private String accountStatus;
 	private String user;
+	private String reservedWords;
 }
