@@ -25,7 +25,7 @@
 	});
 	
 	
-	//사용자 삭제 요청
+/* 	//사용자 삭제 요청
 	function memberDelete() {
 		//삭제 버튼 클릭
 		$('body').on('click','#btnDelete',function(){
@@ -45,7 +45,7 @@
 					}
 				});      }//if
 		}); //삭제 버튼 클릭
-	}//userDelete
+	}//userDelete */
 	
 	//사용자 조회 요청
 	function memberSelect() {
@@ -72,6 +72,7 @@
 		$('input:text[name="nickname"]').val(member.nickname);
 		$('[name="password"]').val(member.password);
 		$('[name="eMail"]').val([member.eMail]);//radio checkbox는 배열로 값을 넣어야한다	//.attr("selected", "selected")
+		$('[name="phonenumber"]').val([member.phonenumber]);
 	}//userSelectResult
 	
 	//사용자 수정 요청
@@ -81,12 +82,13 @@
 			var userId = $('input:text[name="userId"]').val();
 			var nickname = $('input:text[name="nickname"]').val();
 			var password = $('[name="password"]').val();
-			var eMail = $('[name="eMail"]:checked').val();	
+			var eMail = $('[name="eMail"]:checked').val();
+			var phonenumber = $('[name="phonenumber"]:checked').val();	
 			$.ajax({ 
 			    url: "members", 
 			    type: 'PUT', 
 			    dataType: 'json', 
-			    data: JSON.stringify({ userId: userId, nickname: nickname,password: password, eMail: eMail }),
+			    data: JSON.stringify({ userId: userId, nickname: nickname,password: password, eMail: eMail, phonenumber: phonenumber }),
 			    contentType: 'application/json',
 			    success: function(data) { 
 			        memberList();
@@ -152,6 +154,7 @@
 					 .append($('<td>').html(item.nikcname))
 					 .append($('<td>').html(item.password))
 					 .append($('<td>').html(item.eMail))
+					 .append($('<td>').html(item.phonenumber))
 					 .append($('<td>').html('<button id=\'btnSelect\'>조회</button>'))
 					 .append($('<td>').html('<button id=\'btnDelete\'>삭제</button>'))
 					 .append($('<input type=\'hidden\' id=\'hidden_userId\'>').val(item.id))

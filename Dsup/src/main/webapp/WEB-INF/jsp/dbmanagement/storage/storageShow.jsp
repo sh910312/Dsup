@@ -64,8 +64,8 @@
 	</table>
 	
 	<div class ="row">
-		<input type = "button" value = "수정" id = "updgo" class = "btn btn-info" onclick = "location.href='./storageUpdateForm?tablespaceName=${ts.tablespaceName}'">
-		<input type = "button" value = "뒤로가기" class = "btn btn-secondary" onclick = "window.history.back()">	
+		<input type = "button" value = "수정" id = "updgo" class = "btn btn-outline-info btn-block" onclick = "location.href='./storageUpdateForm?tablespaceName=${ts.tablespaceName}'">
+		<input type = "button" value = "뒤로가기" class = "btn btn-outline-secondary btn-block" onclick = "window.history.back()">	
 	</div>
 </div>
 </body>
