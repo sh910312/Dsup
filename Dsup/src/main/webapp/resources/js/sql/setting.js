@@ -12,6 +12,7 @@ var Setting = (function() {
 		var unionTag = $('#union-setting-bar').html();
 		var renameTag = $('#rename-setting-bar').html();
 		var dbInsertTag = $('#dbinsert-setting-bar').html();
+		var startTag = $('#start-setting-bar').html();
 
 		function click(obj) {
 			var tbody = obj.parentNode;
@@ -91,6 +92,8 @@ var Setting = (function() {
 			// console.log("info : " + info);
 			// var json = JSON.parse(info);
 			// console.log(json);
+			 
+			//2019-11-05 test 부분 ////////////////////////////////////
 			var tag = "";
 			var result = new Map();
 			for (var i = 0; i < info.length; i++) {
@@ -100,9 +103,9 @@ var Setting = (function() {
 					for ( var a_key in a_json) {
 						if (a_key == "COL_NM_TYPE") {
 							var b_json = a_json[a_key];
-							for (b_key in b_json) {
-								tag = tag + '<tr>' + '<td>' + b_key + '</td>'
-										+ '<td>' + b_json[b_key] + '</td>'
+							for (var j=0; j<b_json.length; j++) {
+								tag = tag + '<tr>' + '<td>' + b_json[j].key + '</td>'
+										+ '<td>' + b_json[j].value + '</td>'
 										+ '</tr>';
 							}
 							// result.set(childKey, tag);
@@ -112,6 +115,31 @@ var Setting = (function() {
 				}
 				tag = "";
 			}
+			/////////////////////////////////////////////////////////
+			
+			
+			//2019-11-05 안되면 주석 풀어야되는 부분
+//			var tag = "";
+//			var result = new Map();
+//			for (var i = 0; i < info.length; i++) {
+//				var json = JSON.parse(info[i]);
+//				for ( var childKey in json) {
+//					var a_json = json[childKey];
+//					for ( var a_key in a_json) {
+//						if (a_key == "COL_NM_TYPE") {
+//							var b_json = a_json[a_key];
+//							for (b_key in b_json) {
+//								tag = tag + '<tr>' + '<td>' + b_key + '</td>'
+//										+ '<td>' + b_json[b_key] + '</td>'
+//										+ '</tr>';
+//							}
+//							// result.set(childKey, tag);
+//							result[childKey] = tag
+//						}
+//					}
+//				}
+//				tag = "";
+//			}
 
 			return result;
 		}
@@ -150,19 +178,19 @@ var Setting = (function() {
 					for ( var a_key in a_json) {
 						if (a_key == "COL_NM_TYPE") {
 							var b_json = a_json[a_key];
-							for (b_key in b_json) {
+							for (var j=0; j<b_json.length; j++) {
 								tag = tag
 										+ '<tr>'
 										+ '<td>'
 										+ '<input type="checkbox" name="renewal-col-checkbox" value="'
-										+ b_key
+										+ b_json[j].key
 										+ '" checked onclick="controller.selectChanged(this);"/>'
 										+ '</td>'
 										+ '<td>'
-										+ b_key
+										+ b_json[j].key
 										+ '</td>'
 										+ '<td>'
-										+ b_json[b_key]
+										+ b_json[j].value
 										+ '</td>'
 										+ '<td><input type="text" class="addition-renwal-name" name="addition-renwal-name" style="border:none"/></td>'
 								'</tr>';
@@ -194,6 +222,13 @@ var Setting = (function() {
 			},
 			open : function(key, type) {
 				switch (type) {
+				case 'Start' :
+					console.log("DBread On");
+					$('#start-setting-bar').css({
+						'display' : 'block'
+					});
+					
+					break;
 				case 'DBread':
 					console.log("DBread On");
 					$('#dbread-setting-bar').css({
@@ -257,19 +292,26 @@ var Setting = (function() {
 			},
 			close : function(key, type) {
 				switch (type) {
+				case 'Start' :
+					console.log("Start Off");
+					$('#start-setting-bar').css({
+						'display' : 'none'
+						//'width' : '50%'
+					});
+					break;
 				case 'DBread':
 					console.log("DBread Off");
 					$('#dbread-setting-bar').css({
-						'display' : 'none',
-						'width' : '50%'
+						'display' : 'none'
+						//'width' : '50%'
 					});
 					break;
 
 				case "Filter":
 					console.log("Filter off");
 					$('#filter-setting-bar').css({
-						'display' : 'none',
-						'width' : '19%'
+						'display' : 'none'
+						//'width' : '19%'
 					});
 
 					break;
@@ -277,43 +319,43 @@ var Setting = (function() {
 				case 'Join':
 					console.log("Join off");
 					$('#join-setting-bar').css({
-						'display' : 'none',
-						'width' : '19%'
+						'display' : 'none'
+						//'width' : '19%'
 					});
 					break;
 				case 'Addition':
 					console.log("Addition off");
 					$('#addition-setting-bar').css({
-						'display' : 'none',
-						'width' : '19%'
+						'display' : 'none'
+						//'width' : '19%'
 					});
 					break;
 				case 'Order':
 					console.log("Order off");
 					$('#order-setting-bar').css({
-						'display' : 'none',
-						'width' : '19%'
+						'display' : 'none'
+						//'width' : '19%'
 					});
 					break;
 				case 'Union':
 					console.log("Union off");
 					$('#union-setting-bar').css({
-						'display' : 'none',
-						'width' : '19%'
+						'display' : 'none'
+						//'width' : '19%'
 					});
 					break;
 				case 'Rename':
 					console.log("Rename off");
 					$('#rename-setting-bar').css({
-						'display' : 'none',
-						'width' : '19%'
+						'display' : 'none'
+						//'width' : '19%'
 					});
 					break;
 				case 'DBinsert':
 					console.log("Rename off");
 					$('#dbinsert-setting-bar').css({
-						'display' : 'none',
-						'width' : '19%'
+						'display' : 'none'
+						//'width' : '19%'
 					});
 					break;
 				}
@@ -368,6 +410,10 @@ var Setting = (function() {
 			decorate : function(k, t, info, n) {
 				// console.log(k);
 				switch (t) {
+				case 'Start' : 
+					
+					
+					break;
 				case "DBread":
 					if (n == "new") {
 						$('#dbread-name').html(t);
@@ -513,7 +559,7 @@ var Setting = (function() {
 				}
 			},
 			tableClick : function(obj) {
-				if ($(obj).parent().attr('id') != 'additon-table') {
+				if ($(obj).parents('table').attr('id') != 'additon-table') {
 					click(obj);
 				} else {
 					click(obj);
@@ -679,15 +725,19 @@ var Setting = (function() {
 					return map;
 				}
 			},
-			decorateTargetTableList : function(list) {
-				var tag = "";
-				var json = JSON.parse(list);
-				$('#target_table_list').html("<option>Choice Table</option>");
-				for (var i = 0; i < json.length; i++) {
-					tag += "<option id='" + json[i] + "' class='targetlist''>"
-							+ json[i] + "</option>";
+			decorateTargetTableList : function(t, list) {
+				if(t=='DBinsert'){
+					var tag = "";
+					var json = JSON.parse(list);
+					$('#target_table_list').html("<option>Choice Table</option>");
+					for (var i = 0; i < json.length; i++) {
+						tag += "<option id='" + json[i] + "' class='targetlist''>"
+						+ json[i] + "</option>";
+					}
+					$('#target_table_list').append(tag);
+				}else{
+					
 				}
-				$('#target_table_list').append(tag);
 			},
 			add : function(t) {
 

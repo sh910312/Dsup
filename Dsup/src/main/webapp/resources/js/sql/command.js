@@ -38,12 +38,14 @@ var Command = (function() {
 				first = b;
 			},
 			momoClick : function(k, t, c){
-				// 자식 아이콘의 설정 정보
-				//var info;
+//					setting.open("", t);
+//					setting.decorate("", t, "", "");
+//					var list = process.getDBinsertTargetTableList();
+//					setting.decorateTargetTableList(t, list);
 				if (first) {
 					// 처음 생성된 icon은 클릭시 icon 인스턴스에 바로 key 설정
 					console.log("First momo");
-					
+					setting.close("Start", "Start");
 					setting.open(k, t);
 					setting.decorate(k, t, "", "new");
 					
@@ -94,7 +96,7 @@ var Command = (function() {
 							} else {
 								// 타입 다르고 새로운 모모 클릭
 								console.log("--- New and Other Type! ---");
-								 
+								
 								setting.clean(momo.getType());
 								setting.close(momo.getKey(), momo.getType());
 								if(t != "DBread"){
@@ -104,7 +106,7 @@ var Command = (function() {
 								//DBinsert인 경우 schema에 따라 보유한 테이블들의 list를 보여줘야된다.
 								if(t == "DBinsert"){
 									var list = process.getDBinsertTargetTableList();
-									setting.decorateTargetTableList(list);
+									setting.decorateTargetTableList(t, list);
 								}
 								//console.log("[child info] : " + info);
 								setting.decorate(k, t, info, "new");

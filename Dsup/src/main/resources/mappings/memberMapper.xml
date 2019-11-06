@@ -17,24 +17,25 @@
 	</select>
 	<select id="getMember" parameterType="member" resultType="member">
 		select user_id,
-		password, nickname, e_mail, user_date, user_type
+		password, nickname, e_mail, user_date, user_type, phonenumber
 		from users
 		where user_id=#{userId}
 	</select>
 	<select id="getMemberListMap" parameterType="member" resultType="map">
-		select user_id "user_id", password "password", nickname "nickname", e_mail "e_mail", user_date "user_date", user_type "user_type"
+		select user_id "user_id", password "password", nickname "nickname", e_mail "e_mail", user_date "user_date", user_type "user_type", phonenumber "phonenumber"
 		from users
 	</select>
 
 	<!-- 등록 -->
 	<insert id="insertMember" parameterType="member">
-		insert into users (user_id, password, nickname, e_mail, user_date, user_type)
+		insert into users (user_id, password, nickname, e_mail, user_date, user_type, phonenumber)
 		values ( #{userId},
 		#{password},
 		#{nickname},
 		#{eMail},
 		#{userDate},
-		#{userType} )
+		#{userType},
+		#{phonenumber} )
 	</insert>
 
 	<!-- 수정 -->
@@ -42,7 +43,8 @@
 		update users set
 		password = #{password},
 		nickname = #{nickname},
-		e_mail = #{eMail}
+		e_mail = #{eMail},
+		phonenumber = #{phonenumber}
 		where user_id = #{userId}
 	</update>
 

@@ -1,5 +1,6 @@
 package com.dsup.dbmanagement.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dsup.dbmanagement.DatafileVO;
 import com.dsup.dbmanagement.TablespaceVO;
 import com.dsup.dbmanagement.UserTbspcTbVO;
 import com.dsup.dbmanagement.service.StorageService;
@@ -85,7 +87,14 @@ public class StorageController {
 		
 		if(ts != null) {
 			mv.addObject("ts", ts);
-			mv.addObject("df", storageService.getDatafile(ts.getTablespaceName()));
+			
+			List<DatafileVO> list = new ArrayList<DatafileVO>();
+			list = storageService.getDatafile(ts.getTablespaceName());
+			for(DatafileVO df : list) {
+				String[] arr = df.getFileName().split("\\\\");
+				df.setFileName(arr[arr.length-1]);
+			}
+			mv.addObject("df", list);
 		}
 		mv.setViewName("dbmanagement/storage/storageShow");
 		return mv;
@@ -112,9 +121,23 @@ public class StorageController {
 		
 		if(ts != null) {
 			mv.addObject("ts", ts);
-			mv.addObject("df", storageService.getDatafile(ts.getTablespaceName()));
+			List<DatafileVO> list = new ArrayList<DatafileVO>();
+			list = storageService.getDatafile(ts.getTablespaceName());
+			for(DatafileVO df : list) {
+				String[] arr = df.getFileName().split("\\\\");
+				df.setFileName(arr[arr.length-1]);
+			}
+			mv.addObject("df", list);
+//			mv.addObject("df", storageService.getDatafile(ts.getTablespaceName()));
 		}
 		mv.setViewName("dbmanagement/storage/storageUpdateForm");
 		return mv;
+	}
+	
+	// [윤정 1104] 테이블스페이스 수정 완료
+	@RequestMapping("/sotrageUpdate")
+	public String storageUpdate(@RequestParam String sql) {
+		storageService.storageUpdate(sql);
+		return "redirect:storageList";
 	}
 }

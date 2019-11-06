@@ -37,7 +37,7 @@
 		AND u.tablespace_name = #{tablespaceName}
 		</if>
 		AND d.tablespace_name = df.tablespace_name
-		AND df.file_id = fs.file_id
+		AND df.file_id = fs.file_id(+)
 		GROUP BY d.tablespace_name, d.status
 		ORDER BY 1
 	</select>
@@ -49,9 +49,10 @@
 			, sum(f.bytes)/1024/1024 "free"
 			, sum(d.bytes/1024/1024) - sum(f.bytes)/1024/1024 "used"
 		FROM dba_data_files d, dba_free_space f
-		WHERE d.file_id = f.file_id
+		WHERE d.file_id = f.file_id(+)
 		AND d.tablespace_name = #{tablespaceName}
-		group by d.file_name
+		GROUP BY d.file_name
+		ORDER BY 1
 	</select>
 	
 	<!-- [윤정1031] 테이블스페이스명 중복, 예약어 체크 -->

@@ -13,12 +13,14 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
+	<!-- 토스트 css -->
+	<link rel = "stylesheet" href="./resources/css/Toast.css">
 	<script>
 	$(function(){
 		$("#btn").click(formCheck);
 		$("#addbtn").click(add);
 		tsNameChkFunction();
-		$("#alert").hide();
+		$("#nameMsg").hide();
 		filenameInput();
 	});
 	
@@ -32,8 +34,8 @@
 			var size = $(this).find("#size").val();
 			var sizeunit = $(this).find("#sizeunit").val();
 			
-			if(isNaN(size)){
-				alert("용량은 숫자만 입력할 수 있습니다!");
+			if(isNaN(size) || size == 0){
+				$('#sizeError').fadeIn(400).delay(1000).fadeOut(400);
 				return false;
 			}
 			
@@ -55,7 +57,6 @@
 		var $size = $("<input>").attr("type","text").attr("id","size").attr("required",true).attr("class", "form-control"); // 용량 입력칸
 		var $sizeunit = $("<select>").attr("id","sizeunit").attr("class", "form-control")
 									.append($("<option>").val("M").text("MB"))
-									.append($("<option>").val("K").text("KB"))
 									.append($("<option>").val("G").text("GB"))
 									.append($("<option>").val("T").text("TB")); // 용량 단위
 		var $btn = $("<input>").attr("type","button").attr("id","delbtn").val("삭제")
@@ -84,17 +85,19 @@
 			var name = $("#tablespaceName").val();
 			name = name.toUpperCase();
 			$("#tablespaceName").val(name);
+			$("#tablespaceName").addClass("is-invalid");
 			
 			// 아이디를 입력하지 않은 경우
 			if(name == '') { 
-				$("#alert").show().text("이름을 입력해주세요");
+				$("#nameMsg").show().text("이름을 입력해주세요");
 				$("#btn").attr("disabled", true);
+				
 				return;
 			}
 			
 			// [윤정1101] 이름 첫 글자 영어만
 			if(!name.substr(0,1).match(/[A-Z]/)) {
-				$("#alert").show().text("이름 첫 글자는 영어만 입력할 수 있습니다");
+				$("#nameMsg").show().text("이름 첫 글자는 영어만 입력할 수 있습니다");
 				$("#btn").attr("disabled", true);
 				return;
 			}
@@ -102,13 +105,14 @@
 			// [윤정 1101] 이름에 A-Z, 0-9, _ 만 쓸 수 있도록
 			var err = 0;
 			var cnt = name.length;
+			console.log('---- 검사 시작');
 			for(i = 0; i < cnt; i ++) {
-				var chk = name.substr(i, i+1);
+				var chk = name.charAt(i);
 				if (!chk.match(/[0-9]/) && !chk.match(/[A-Z]/) && chk != '_'){
 					err = err + 1;
 				}
 				if(err > 0) {
-					$("#alert").show().text("영어, 숫자, _만 입력할 수 있습니다");
+					$("#nameMsg").show().text("영어, 숫자, _만 입력할 수 있습니다");
 					$("#btn").attr("disabled", true);
 					return;
 				}
@@ -121,11 +125,12 @@
 				success : function(data) {
 					// 중복이면 0, 아니면 1
 					if(data == 0) { // 중복
-						$("#alert").show().text("사용할 수 없는 이름입니다");
+						$("#nameMsg").show().text("사용할 수 없는 이름입니다");
 						$("#btn").attr("disabled", true);
 					} else { // 중복x
-						$("#alert").hide();
+						$("#nameMsg").hide();
 						$("#btn").attr("disabled", false);
+						$("#tablespaceName").removeClass("is-invalid");
 					}
 				}
 			}) // ajax
@@ -158,12 +163,10 @@
 				 이름
 			</div>
 			<div class = "col-9">
-				<input type = "text" name = "tablespaceName" id = "tablespaceName" required
-				class = "form-control"> 
+				<input type = "text" name = "tablespaceName" id = "tablespaceName" required class = "form-control"> 
+				<div class="invalid-feedback" id = "nameMsg"></div>
 			</div>
 		</div>
-		<div class = "alert alert-info" role="alert" id = "alert"></div>
-
 		
 		<div class = "row">
 			<h1>데이터 파일</h1>
@@ -199,10 +202,13 @@
 			</tbody>
 		</table>
 		<div class = "row">
-			<input type = "submit" id="btn" value = "생성" class = "btn btn-primary btn-block">
+			<input type = "submit" id="btn" value = "생성" class = "btn btn-info btn-block">
 			<input type = "button" id="back" value = "목록으로 돌아가기" class = "btn btn-light btn-block"
 					onclick = 'history.back()'>
 		</div>
+		
+		<div class='yj_error' style='display:none' id="sizeError">용량은 숫자만 입력할 수 있습니다!</div>
+		
 	</form>
 </div>
 </body>

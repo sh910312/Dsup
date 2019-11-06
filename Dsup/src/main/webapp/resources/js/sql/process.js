@@ -2,7 +2,11 @@ var Process = (function() {
 	// instance stores a reference to the Singleton
 	var instance;
 	var request;
-
+	
+    String.prototype.replaceAt=function(index, character) {
+        return this.substr(0, index) + character + this.substr(index+character.length);
+    }
+	
 	function createInstance() {
 		// private variables and methods
 
@@ -14,20 +18,25 @@ var Process = (function() {
 				switch (momo.getType()) {
 				case "DBread":
 					var sql = $('#sql-statement').val();
-					$('#sql-statement').html(sql);
-					// var sql = settingInfo["STATEMENT"];
-					momo.setTag($('#dbread-setting-bar').html());
-					request.open("GET", "DBread.do?sql=" + encodeURI(sql), false);
-
-					request.onreadystatechange = function() {
-						if (request.readyState == 4 && request.status == 200) {
-							result = request.responseText;
-							console.log("DBread Result : " + result);
-						}
-					};
-
-					request.send(null);
-					return result;
+					if(sql != null || sql != ""){
+						$('#sql-statement').html(sql);
+						// var sql = settingInfo["STATEMENT"];
+						momo.setTag($('#dbread-setting-bar').html());
+						request.open("GET", "DBread.do?sql=" + encodeURI(sql), false);
+						
+						request.onreadystatechange = function() {
+							if (request.readyState == 4 && request.status == 200) {
+								result = request.responseText;
+								console.log("DBread Result : " + result);
+							}
+						};
+						
+						request.send(null);
+						return result;
+					}else{
+						var err_msg = "[DBread Error] sql문을 입력해주십시오.";
+						common.errorMessage(err_msg);
+					}
 
 					break;
 
@@ -284,10 +293,8 @@ var Process = (function() {
 
 						break;
 					} else {
-						var err_msg = "";
-						err_mag = "[Union Apply Error] 컬럼을 모두 매칭 해주십시오.";
-						$("#state_msg_div")
-								.append("<div>" + err_msg + "</div>");
+						var err_msg = "[Union Apply Error] 컬럼을 모두 매칭 해주십시오.";
+						common.errorMessage(err_msg);
 					}
 					
 					break;
@@ -322,20 +329,28 @@ var Process = (function() {
 
 						var to_table_length = $('#rename-add-table tr').length;
 						var select = "";
+						var to_cols = "";
+						var from_cols = "";
 						for(var i=1; i<to_table_length; i++){
 							var from_col = $('#rename-add-table tr').eq(i).children().eq(0).text();
 							var to_col = $('#rename-add-table tr').eq(i).children().eq(1).text();
 							if(i != to_table_length-1){
 								select = select + from_col + " AS " + to_col + ", ";
+								to_cols += to_col + ", ";
+								from_cols += from_col + ", ";
 							}else{
 								select = select + from_col + " AS " + to_col;
+								to_cols += to_col;
+								from_cols += from_col;
 							}
 						}
 						
 						var sql = "SELECT " + select + " " +
 						          from_where;					
 
-						request.open("Post", "Rename.do?param=" + encodeURI(sql), false);
+						request.open("Post", "Rename.do?from_cols=" + encodeURI(from_cols) +
+								     "&to_cols=" + encodeURI(to_cols) +
+								     "&child_sql=" + encodeURI(child_sql), false);
 
 						request.onreadystatechange = function() {
 							if (request.readyState == 4 && request.status == 200) {
@@ -354,8 +369,8 @@ var Process = (function() {
 
 						return result;
 					}else{
-						err_msg = common.getToDay() + " [Rename Error] <From Columns>에서 체크한 column들을 Add 하여주십시오.";
-						$("#state_msg_div").append("<div>" + err_msg + "</div>");
+						var err_msg = "[Rename Error] <From Columns>에서 체크한 column들을 Add 하여주십시오.";
+						common.errorMessage(err_msg);
 					}
 				}
 			},

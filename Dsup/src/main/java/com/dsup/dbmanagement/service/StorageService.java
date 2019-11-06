@@ -14,4 +14,5 @@ public interface StorageService {
 	TablespaceVO getStorageOne(UserTbspcTbVO vo);
 	List<DatafileVO> getDatafile(String tablespaceName);
 	int tsNameChk(String tablespaceName);
+	void storageUpdate(String sql);
 }

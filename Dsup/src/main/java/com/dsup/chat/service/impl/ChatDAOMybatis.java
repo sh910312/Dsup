@@ -23,8 +23,8 @@ public class ChatDAOMybatis {
 	}
 
 	// 채팅목록
-	public List<Map<String, Object>> getChatMap(ChatVO vo) {
-		return mybatis.selectList("ChatDAO.getChatMap", vo);
+	public List<Map<String, Object>> ChatMap(ChatVO vo) {
+		return mybatis.selectList("ChatDAO.chatMap", vo);
 	}
 
 }

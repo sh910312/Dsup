@@ -20,9 +20,27 @@
 // 버튼 이벤트 기능
 $(function() {
 		
-	/* 내용 입력  */
+	sendchat(); // 채팅입력
+	
+	
 	
 });
+
+
+function sendchat() { // 채팅 입력
+	
+	$("#sendchatbtn").click(function(){
+		
+		$("#frm").attr("action", "컨트롤러 실행");
+		$("#frm").submit(); // 채팅을 입력했을때 DB로 저장한다.
+		
+	})
+	
+	
+}
+
+
+
 
 	$(document).ready(function() {
     	$("#sendBtn").click(function() {
@@ -52,6 +70,7 @@ $(function() {
     function onMessage(msg) {
 		var data = msg.data;
 		$("#chatList").append(data + "<br/>");
+		$('#chatList').scrollTop($('#chatList')[0].scrollHeight); // 채팅 최신 상태 유지
 	}
     
     // 서버와 연결을 끊었을 때
@@ -73,9 +92,9 @@ function openButton(menu){ /*  버튼 새창 */
 	var popupY = (document.body.offsetHeight / 2) - (200/2);
 
 	if (menu == "0" || menu == 0){
-		window.open("SearchMap","검색하기",'width=800px, height=300px, left='+ popupX + ', top='+ popupY);
+		window.open("SearchMap","검색하기",'width=800px, height=400px, left='+ popupX + ', top='+ popupY);
 	}else if(menu == "1" || menu == 1){
-		window.open("insertSearchForm","등록하기",'width=800px, height=300px, left='+ popupX + ', top='+ popupY )
+		window.open("insertSearchForm","등록하기",'width=800px, height=350px, left='+ popupX + ', top='+ popupY )
 	}else if(menu == "2" || menu == 2) {
 		window.open("","",'width=800px, height=300px, left='+ popupX + ', top='+ popupY )
 	}
@@ -86,6 +105,7 @@ function openButton(menu){ /*  버튼 새창 */
 
 </head>
 <body>
+<form id="frm">
 	<div class="container">
 		<div class="container bootstrap snippet">
 			<div class="row">
@@ -112,22 +132,18 @@ function openButton(menu){ /*  버튼 새창 */
 						<div id="chat" class="panel-collapse collapse in">
 							<div id="chatList" class="portlet-body chat-widget"
 								style="overflow-y: auto; width: auto; height: 600px;"></div>
-							<!-- 대화입력창  -->
+					
+							<!-- 대화입력창 시작  -->
 							<div class="portlet-footer">
+							
+								<!-- 회원아이디 부분 시작  -->
 								<div class="row">
 									<div class="form-group col-xs-4">
 										<!-- 로그인을 하면 회원아이디로 대체 -->
-										<input style="height: 40px;" type="text" name="nickname" id="nickname" 
-										class="form-control" placeholder="이름" maxlength="8" value="${nickname }">
+										<input type="hidden" id="nick" name="nick" value="${member.nickname }">
+										<input style="height: 40px;" type="button" name="nickname" id="nickname" 
+										class="form-control" placeholder="이름" maxlength="8" value="${member.nickname }님 환영합니다.">
 									</div>
-
-									<!-- 회원이면 로그인 버튼은 사라진다 -->
-									<c:if test="${empty userid}">
-										<div class="form-group col-xs-2">
-											<button type="button" class="btn btn-default pull-right" onclick="openButton(4)"
-											style="height: 40px; width: 100px;">로그인</button>
-										</div>
-									</c:if>
 
 									<div class="form-group col-xs-2 pull-right">
 										<!-- 현재 접속자 표시  -->
@@ -135,7 +151,9 @@ function openButton(menu){ /*  버튼 새창 */
 										style="height: 40px; width: 100px;">현재	접속자</button>
 									</div>
 								</div>
-								<div class="row" style="height: 90px">
+								<!-- 회원 아이디 끝 -->
+								<!-- 메세지 입력창 시작  -->
+								<div class="row">
 									<div id="text" class="form-group col-xs-10">
 										<textarea style="height: 80px;" id="contents" name="contents" class="form-control"
 										 placeholder="메세지를 입력하세요." maxlength="100"></textarea>
@@ -143,28 +161,17 @@ function openButton(menu){ /*  버튼 새창 */
 									<div class="form-group col-xs-2">
 										<button type="button" id="sendBtn" class="btn btn-default pull-right"
 										style="height: 80px; width: 100px;">전&nbsp;&nbsp;송</button>
-										 
-										<div class="clearfix"></div>
 									</div>
 								</div>
+								<!-- 메세지 입력창 끝 -->
 							</div>
+							<!-- 대화입력창 끝  -->
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-<!-- 		<div class="alert alert-success" id="successMessage"
-			style="display: none;">
-			<strong>메세지 전송에 성공하였습니다.</strong>
-		</div>
-		<div class="alert alert-danger" id="dangerMessage"
-			style="display: none;">
-			<strong>이름과 내용을 모두 입력해주세요.</strong>
-		</div>
-		<div class="alert alert-warning" id="warningMessage"
-			style="display: none;">
-			<strong>데이터베이스 오류가 발생했습니다.</strong>
-		</div> -->
 	</div>
+</form>
 </body>
 </html>

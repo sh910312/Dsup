@@ -14,8 +14,41 @@
 <script src="./resources/js/bootstrap.js"></script>
 <script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 
-
 </head>
+
+<script>
+
+$(function() {
+	
+	del();
+	insert();
+
+	
+});
+
+function del() { // 게시글 삭제
+	$("#delbtn").click(function() {
+		$("#frm").attr("action", "deleteSearchList");
+		$("#frm").submit();
+		
+	})
+}
+
+function insert() {
+	$("#insertbtn").click(function() {
+
+		$("#frm").attr("action", "insertSearchForm");
+		$("#frm").submit();
+		
+	})
+}
+
+
+
+</script>
+
+
+
 <body>
 <div class="container">
 		<div>
@@ -42,7 +75,7 @@
 										<input type="hidden" name="page" value="1"/>
 									</form>
 								</div>
-								<form action="deleteSearchList">
+								<form id="frm">
 								<div class="row">	
 			<br>
 									<div id="text" class="form-group col-xs-12"> <!-- 검색 완료 후 결과보이게 조건 추가  -->
@@ -72,10 +105,10 @@
 								</div>
 								<div align="center"> <!-- 검색 완료시 (등록/수정) 버튼이 보이게 조건 추가.   -->
  								<c:if test="${usersId != null}">  <!-- 삭제=관리자권한 -->
- 									 <button class="btn btn-default" style="height:40px; width:100px;">삭&nbsp;&nbsp;제</button> 
+ 									 <button type="button" id="delbtn" name="delbtn" class="btn btn-default" style="height:40px; width:100px;">삭&nbsp;&nbsp;제</button> 
   								</c:if>
  								<c:if test="${usersId == null}">  <!-- 등록/수정 = 관리자/유저 권한 -->
- 									<button type="button" class="btn btn-default" style="height:40px; width:100px;">등&nbsp;&nbsp;록</button>
+ 									<button type="button" id="insertbtn" name="insertbtn" class="btn btn-default" style="height:40px; width:100px;">등&nbsp;&nbsp;록</button>
 								</c:if>
 									<button type="button" class="btn btn-default" style="height:40px; width:100px;" onclick="self.close();">닫&nbsp;&nbsp;기</button>
 								</div>

@@ -290,8 +290,8 @@ $(function() {
 				fromLinkable : true,
 				toLinkable : true,
 				background : "gray",
-				width : 60,
-				height : 60,
+				width : 50,
+				height : 50,
 				cursor : "pointer"
 			}, new go.Binding("source")), $(go.TextBlock, {
 		font : "bold 7pt Helvetica, Arial, sans-serif",
@@ -391,6 +391,11 @@ $(function() {
 	myPalette = $(go.Palette, "myPaletteDiv", // must name or refer to the DIV
 	// HTML element
 	{
+		layout: $(go.GridLayout,
+				{
+					cellSize: new go.Size(100, 100),
+					wrappingColumn: 10
+				}),  
 		maxSelectionCount : 1,
 		nodeTemplateMap : myDiagram.nodeTemplateMap, // share the templates
 		// used by myDiagram
