@@ -156,7 +156,9 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						삭제한 백업파일은 복구할 수 없습니다. 삭제하려면 아이디를 입력하세요. <br>
+						삭제한 백업파일은 복구할 수 없습니다. <br>
+						삭제하려면 아이디를 입력하세요.
+						<br><br>
 						<input type = "text" id = "delCheck" class = "form-control" placeholder="아이디 입력">
 					</div>
 					<div class="modal-footer">

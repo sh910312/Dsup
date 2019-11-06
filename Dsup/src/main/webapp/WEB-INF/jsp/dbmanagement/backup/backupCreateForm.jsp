@@ -62,10 +62,10 @@
 						class = "form-control">
 			</div>
 			<div class = "col-1">
-				<input type = "submit" id = "backupBtn" value = "백업하기" class = "btn btn-info">
+				<input type = "submit" id = "backupBtn" value = "백업하기" class = "btn btn-outline-info">
 			</div>
 			<div class = "col-1">
-				<input type = "submit" id = "backupBtn" value = "뒤로가기" class = "btn btn-secondary">
+				<input type = "submit" value = "뒤로가기" class = "btn btn-outline-secondary" onclick = "history.back()">
 			</div>
 		</div>
 	</form>
