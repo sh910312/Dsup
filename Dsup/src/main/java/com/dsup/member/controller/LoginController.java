@@ -27,6 +27,7 @@ public class LoginController {
 	public String login(@ModelAttribute("member") MemberVO vo, HttpSession session) {
 		//model.addAttribute("userVO", vo); 를 자동으로해준다
 		//로컬 사용시 주석 해야될 부분 2019.11.01 - 이재문
+		System.out.println("======" + vo);
 		MemberVO member = memberService.login(vo);
 		if(member == null) {
 			return "index";
