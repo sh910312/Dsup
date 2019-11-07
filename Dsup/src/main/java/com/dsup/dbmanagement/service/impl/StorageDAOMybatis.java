@@ -1,17 +1,16 @@
 package com.dsup.dbmanagement.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.dsup.dbmanagement.DatafileVO;
 import com.dsup.dbmanagement.TablespaceVO;
 import com.dsup.dbmanagement.UserTbspcTbVO;
+import com.dsup.pay.ServiceStateTbVO;
 
 @Repository
 public class StorageDAOMybatis {
@@ -56,5 +55,15 @@ public class StorageDAOMybatis {
 	// [윤정1031] 테이블스페이스명 중복,예약어 체크
 	public String tsNameChk(String tablespaceName) {
 		return mybatis.selectOne("StorageDAO.tsNameChk", tablespaceName);
+	}
+	
+	// [윤정1107] 사용중인 종량제 조회
+	public ServiceStateTbVO serviceState(String userId) {
+		return mybatis.selectOne("StorageDAO.getServiceState", userId);
+	}
+	
+	// [윤정1107] user_tbspc_tb에 volumn 입력
+	public void recordVolumn (String tablespaceName) {
+		mybatis.insert("StorageDAO.recordVolumn", tablespaceName);
 	}
 }

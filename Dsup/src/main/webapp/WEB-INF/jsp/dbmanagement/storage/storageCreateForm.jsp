@@ -61,8 +61,7 @@
 		var $size = $("<input>").attr("type","text").attr("id","size").attr("required",true).addClass("form-control"); // 용량 입력칸
 		var $sizeunit = $("<select>").attr("id","sizeunit").attr("class", "form-control")
 									.append($("<option>").val("M").text("MB"))
-									.append($("<option>").val("G").text("GB"))
-									.append($("<option>").val("T").text("TB")); // 용량 단위
+									.append($("<option>").val("G").text("GB")); // 용량 단위
 		var $btn = $("<input>").attr("type","button").attr("id","delbtn").val("삭제")
 								.click(function(){
 												$(this).parent().parent().remove();
@@ -192,7 +191,6 @@
 						<select id = "sizeunit" class = "form-control">
 							<option value = "M">MB</option>
 							<option value = "G">GB</option>
-							<option value = "T">TB</option>
 						</select>
 						</div>
 						</div>
