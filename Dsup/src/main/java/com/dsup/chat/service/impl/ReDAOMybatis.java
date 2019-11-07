@@ -42,6 +42,11 @@ public class ReDAOMybatis {
 		return mybatis.selectOne("ReDAO.getRe",vo);
 	}
 	
+	// 수정하기
+	public void update(ReVO vo) {
+		mybatis.update("ReDAO.updateRe", vo);
+	}
+	
 	
 	
 }

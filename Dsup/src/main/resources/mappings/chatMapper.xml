@@ -21,12 +21,10 @@
 		<selectKey keyProperty="chatId" resultType="int"
 			order="BEFORE">
 			select NVL(max(chat_id),0) +1 from chat
-
-			<!-- select NVL(max(search_id),1) +1 from search -->
 		</selectKey>
 		insert into chat(chat_id
-							,user_id
-							,nickname
+							,user_id 
+							,nickname 
 							,contents
 		)
 

@@ -15,34 +15,29 @@ import com.dsup.member.MemberVO;
 @Controller
 public class ChatController {
 
-	@Autowired ChatService chatService;
-	
+	@Autowired
+	ChatService chatService;
+
 	// 채팅 메인화면
-	@RequestMapping("chatMain")
+	@RequestMapping("/chatMain")
 	public String chatList(ChatVO vo, Model model) {
+		
 		return "chat/chatMain";
 	}
-	
-	
+
 	// 채팅 등록 처리
-	@RequestMapping("inchat")
+	@RequestMapping("/inchat")
 	public String inchat(ChatVO vo, HttpServletRequest request, HttpSession session) {
-		
+
 		MemberVO member = (MemberVO) session.getAttribute("member");
 		vo.setUserId(member.getUserId());
+		vo.setNickname(member.getNickname());
+		System.out.println("chat 컨트롤러에 있는 vo 는? ===="+vo);
 
-		System.out.println(vo);
-		
 		chatService.insertChat(vo);
 		return "redirect:/chatMain";
 	}
-	
-	
-	
+
 	// 채팅 등록 처리
-	
-	
-	
-	
-	
+
 }

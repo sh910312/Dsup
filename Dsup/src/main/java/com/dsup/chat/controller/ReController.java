@@ -14,31 +14,44 @@ import com.dsup.member.MemberVO;
 @Controller
 public class ReController {
 
-	@Autowired ReService reService;
-	
+	@Autowired
+	ReService reService;
+
 	// 댓글 등록
 	@RequestMapping("/Reform")
 	public String insertReForm() {
-		
+
 		return "chat/keyword/getSearch";
 	}
-	
+
 	// 등록처리
 	@RequestMapping("/insertRe")
 	public String insertRe(ReVO vo, HttpServletRequest request, HttpSession session) {
 		MemberVO member = (MemberVO) session.getAttribute("member");
 		vo.setUserId(member.getUserId()); // 로그인 세션 살려놓기 ( 1 = 관리자)
 		reService.insertRe(vo);
-		return "redirect:/getSearch?searchId="+ vo.getSearchId(); // 이쪽으로 이동 // redirech 안에는 requestmapping 내용을 넣는다
+		return "redirect:/getSearch?searchId=" + vo.getSearchId(); // 이쪽으로 이동 // redirech 안에는 requestmapping 내용을 넣는다
 	}
-	
+
+	// 수정처리
+	@RequestMapping("/updateRe")
+	public String updateRe(ReVO vo, HttpServletRequest request, HttpSession session) {
+
+		MemberVO member = (MemberVO) session.getAttribute("member");
+		vo.setUserId(member.getUserId());
+
+		reService.updateRe(vo);
+
+		return "redirect:getSearch?searchId=" + vo.getSearchId();
+	}
+
 	// 삭제
 	@RequestMapping("/delRe")
 	public String deleteRe(ReVO vo) {
-		
+
 		reService.deleteRe(vo);
-		
-		return "redirect:getSearch?searchId="+vo.getSearchId();
+
+		return "redirect:getSearch?searchId=" + vo.getSearchId();
 	}
-	
+
 }

@@ -61,5 +61,11 @@ public class ReServiceImpl implements ReService {
 		// TODO Auto-generated method stub
 		return reDAOMybatis.getRe(vo);
 	}
+	
+	@Override // 댓글 수정
+	public void updateRe(ReVO vo) {
+		// TODO Auto-generated method stub
+		reDAOMybatis.update(vo);
+	}
 
 }

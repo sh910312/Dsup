@@ -17,31 +17,6 @@
 
 <script>
 
-// 버튼 이벤트 기능
-$(function() {
-		
-	sendchat(); // 채팅입력
-	
-	
-	
-});
-
-
-function sendchat() { // 채팅 입력
-	
-	$("#sendchatbtn").click(function(){
-		
-		$("#frm").attr("action", "컨트롤러 실행");
-		$("#frm").submit(); // 채팅을 입력했을때 DB로 저장한다.
-		
-	})
-	
-	
-}
-
-
-
-
 	$(document).ready(function() {
     	$("#sendBtn").click(function() {
  			sendMessage();
@@ -64,6 +39,7 @@ function sendchat() { // 채팅 입력
     // 메시지 전송
     function sendMessage() {
 		sock.send($("#contents").val());
+		
 	}
     
     // 서버로부터 메시지를 받았을 때
@@ -140,9 +116,10 @@ function openButton(menu){ /*  버튼 새창 */
 								<div class="row">
 									<div class="form-group col-xs-4">
 										<!-- 로그인을 하면 회원아이디로 대체 -->
-										<input type="hidden" id="nick" name="nick" value="${member.nickname }">
-										<input style="height: 40px;" type="button" name="nickname" id="nickname" 
-										class="form-control" placeholder="이름" maxlength="8" value="${member.nickname }님 환영합니다.">
+										<input id="nickname" type="hidden" value="${member.nickname }">
+										<input id="chatId" type="hidden" value="${chat.chatId }">
+										<input style="height: 40px;" name="nick" id="nick" 
+										class="form-control" placeholder="이름" maxlength="8" readonly value="${member.nickname }">
 									</div>
 
 									<div class="form-group col-xs-2 pull-right">
@@ -173,5 +150,14 @@ function openButton(menu){ /*  버튼 새창 */
 		</div>
 	</div>
 </form>
+
+
+
+
+<!-- <form id="frm2">	
+	<textarea id="contents" name="contents" placeholder="등록할 내용"></textarea>
+
+	<button type="button" id="inbtn">전송</button>
+</form>	 -->
 </body>
 </html>

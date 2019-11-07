@@ -61,6 +61,9 @@ $(function() {
 
 
 function insertRe() {
+	
+	console.log("insertRe");
+	
 	$("#insertbtn").click(function() {
 
 		$("#frm2").attr("action", "insertRe");
@@ -73,23 +76,49 @@ function insertRe() {
 
 function updateRe() { // 댓글 업데이트
 
-	$("[name='updateReOk']").hide(); // 댓글 수정완료 버튼 숨기기
+	console.log("updateRe");
+	
+	
+	$("[name='updateReOk']").hide(); 		 // 댓글 수정완료 버튼 숨기기
+	$("[name='contents']").hide();			 // 댓글 input박스 숨기기	
+	$("[name='closebtn']").hide();			 // 댓글 취소 버튼 숨기기
+	
+	
+	$("[name='updateRe']").click(function() {
+		console.log($(this).prev().prev().prev().prev().prev().prev().val());
+		$("input[name='contents']").hide();
+		
+		var reid = $(this).prev().prev().prev().prev().prev().prev().val();
+		
+		$("#"+reid).children().eq(1).hide(); // ? 뭔지 모르겠음
+		$("#"+reid).children().eq(2).hide(); // 삭제
+		$("#"+reid).children().eq(3).show(); // 취소
+		$("#"+reid).children().eq(4).show(); // 수정완료 
+		$("#"+reid).children().eq(5).show(); // contents
 		
 		
-	$("#updateRe").click(function() {
 		
-		$("#updateRe").hide();		// 댓글 수정버튼 숨기기
-		$("#updateReOk").show(); // 댓글 수정완료 버튼 보이기
-		$("#deleteRe").hide();		// 댓글 삭제버튼 숨기기
-			
+		//$("#updateReOk").show(); 		// 댓글 수정완료 버튼 보이기
+		//$("#closebtn").show();			// 댓글 취소 버튼 보이기
+		//$("#contents").show();			// 댓글 input박스 보이기	
+		//$("#updateRe").hide();			// 댓글 수정버튼 숨기기
+		//$("#delRebtn").hide();			// 댓글 삭제버튼 숨기기
 	})
 	
+										
+
+	
+	$("#closebtn").click(function() {
+		
+		return updateRe();
+	})
+	
+	
 	$("#updateReOk").click(function() {
-		
-		
+		console.log("절대 실행이 되지 말아야 하는데 되는 펑션");
 		
 		//수정 완료
-		$("#frm3").attr("action", "컨트롤러에 있는 댓글수정완료");
+		$("#frm3").attr("action", "updateRe");
 		$("#frm3").submit();
 		
 		
@@ -98,6 +127,9 @@ function updateRe() { // 댓글 업데이트
 }
 
 function del() { // 게시글 삭제
+	
+	console.log("del");
+	
 	$("#delbtn").click(function() {
 		
 		$("#frm1").attr("action", "deleteSearch");
@@ -107,6 +139,8 @@ function del() { // 게시글 삭제
 }
 
 function delRe() {
+	
+	console.log("delRe");
 	
 	$("#delRebtn").click(function() {
 		$("#frm3").attr("action", "delRe");
@@ -118,6 +152,7 @@ function delRe() {
 
 
 function update() { // 게시글 수정
+	console.log("update");
 	
 	$("#updatebtn").click(function() {
 
@@ -215,24 +250,28 @@ function back() {
 							<div class="row">
 								<form id="frm3">
 								<hr>
-								<div class="form-group col-xs-12">
+								<div id="Recontents" class="form-group col-xs-12">
 								<input type="hidden" name="searchId" value="${search.searchId }">
 
 							
 							<!-- 댓글 리스트 반복문 시작 -->
 									<c:forEach items="${reList }" var="re">
-									<input type="hidden" name="reId" value="${re.reId }">
-										${re.userId }  :
-										${re.contents } 
-										${re.writeDate }
-									<button type="button" class="btn btn-default btn-xs" onclick="openButton(1,${re.reId })">신고</button>
-									<c:if test="${userId == re.userId }">
-									<button type="button" id="delRebtn" name="delRebtn" class="btn btn-default btn-xs pull-right">삭제</button>
-									<button type="button" id="updateReOk" name="updateReOk" class="btn btn-default btn-xs pull-right">수정완료</button>
-									<button type="button" id="updateRe" name="updateRe" class="btn btn-default btn-xs pull-right">수정</button>
-									</c:if>
-										<br>
-										<br>
+									<div id="${re.reId }">
+										<input type="hidden" name="reId" value="${re.reId }" >
+											${re.userId }  :
+											${re.contents } 
+											${re.writeDate }
+										<button type="button" class="btn btn-default btn-xs" onclick="openButton(1,${re.reId })">신고</button>
+										<c:if test="${userId == re.userId }">
+											<button type="button" id="delRebtn" name="delRebtn" class="btn btn-default btn-xs pull-right">삭제</button>
+											<button type="button" id="closebtn" name="closebtn" class="btn btn-default btn-xs pull-right">취소</button>
+											<button type="button" id="updateReOk" name="updateReOk" class="btn btn-default btn-xs pull-right">수정완료</button>
+											<input name="contents" class="form-control" value="${re.contents }" maxlength="20">
+											<button type="button" name="updateRe" class="btn btn-default btn-xs pull-right">수정</button>
+										</c:if>
+											<br>
+											<br>
+									</div>
 									</c:forEach>
 							<!-- 댓글 리스트 반복문 끝 -->							
 							
@@ -255,8 +294,10 @@ function back() {
 							<div class="row">
 								<form id="frm2">
 								<input type="hidden" name="searchId" value="${search.searchId }">
+								<div>
 									<input style="width:80%; height: 40px;" name="contents" id="contents" class="form-control" placeholder="댓글을 입력하세요." maxlength="20">
 									<button type="button" id="insertbtn" name="insertbtn" class="btn btn-default" style="height:40px;">등록 </button>
+								</div>
 								</form>									
 							<!-- 등록 폼 끝 -->
 
