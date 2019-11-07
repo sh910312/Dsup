@@ -25,7 +25,7 @@
 	//비밀번호 입력확인
 	$(function(){
 		$("#passwordcheck,#password").keyup(function(){
-			if( $("#password").val() != "" )
+			if( $("#password").val() != "")
 				if( $("#password").val() == $("#passwordcheck").val()) { // 둘 다 똑같이 입력했으면
 					$("#passwordChkMsg").html("비밀번호가 일치합니다.").css("color", "green");
 					$("#passwordResult").val("true");
@@ -45,6 +45,12 @@
 	//유저생성
 	function userCreate() {
 		$("#btnIns").on("click", function() {
+		
+			
+			if( $("#password").val() != $("#passwordcheck").val()){
+				alert("비밀번호를 확인하세요!");
+				return 
+			}
 			var param = JSON.stringify($('#frm2').serializeObject()); 
 			$.ajax({
 				url : "users",

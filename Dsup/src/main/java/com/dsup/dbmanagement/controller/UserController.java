@@ -63,7 +63,8 @@ public class UserController {
 			,consumes="application/json" )
 	@ResponseBody
 	public Map userCreate(@RequestBody UserVO vo, Model model, HttpSession session) {
-		vo.setUser((String)session.getAttribute("userId")); //나중에 주석풀어야함  
+		
+		vo.setUser((String)session.getAttribute("userId")); //나중에 주석풀어야함
 		if(vo.getDefaultTableSpace() == null) {
 		   vo.setDefaultTableSpace("USERS");
 		}
@@ -122,11 +123,11 @@ public class UserController {
 	  public String sendSms(HttpServletRequest request) throws Exception {
 
 	    String api_key = "NCSRHIGOPYJ8YEVI";
-	    String api_secret = "XOBMT5CNAJFUAB0C3NKDW2QRWTAKJHFL";
+	    String api_secret = "U8YXG0EIPTCYDU4FUFX6RMRYGDNAYDS1";
 	    Coolsms coolsms = new Coolsms(api_key, api_secret);
 
 	    HashMap<String, String> set = new HashMap<String, String>();
-	    set.put("to", "01088559500"); // 수신번호
+	    set.put("to", "01088559500, 01034568594"); // 수신번호
 
 	    set.put("from", (String)request.getParameter("from")); // 발신번호
 	    set.put("text", (String)request.getParameter("text")); // 문자내용

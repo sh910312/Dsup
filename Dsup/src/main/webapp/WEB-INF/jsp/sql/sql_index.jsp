@@ -69,5 +69,6 @@
 	  ]}
 	 </textarea>
 </div>
+<div class='error' style='display:none'></div>
 </body>
 </html>
