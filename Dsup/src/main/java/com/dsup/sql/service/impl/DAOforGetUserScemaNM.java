@@ -15,11 +15,13 @@ public class DAOforGetUserScemaNM {
 	public DAOforGetUserScemaNM() {
         String user = "sys as sysdba"; 
         String pw = "oracle";
+//        String user = "sys as sysdba"; 
+//        String pw = "orcl";
 		
 		try {
 			System.out.println("DB Connection ID : " + user);
 			System.out.println("DB Connection PWD : " + pw);
-//			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+//			String url = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
             String url = "jdbc:oracle:thin:@192.168.0.108:1521:xe";
             Class.forName("oracle.jdbc.driver.OracleDriver");        
             conn = DriverManager.getConnection(url, user, pw);

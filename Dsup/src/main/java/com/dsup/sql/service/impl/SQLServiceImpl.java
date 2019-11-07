@@ -38,29 +38,30 @@ public class SQLServiceImpl implements SQLService{
 			Map<String, Object> object = mapper.readValue(request.getParameter("param"), Map.class);
 			String child_sql = request.getParameter("child_sql");
 			System.out.println("test : " + object.get("param"));
+			//오더바이 대상 컬럼과 오더바이 종류 쌍
 			List<Map<String, String>> list = (List)object.get("param");
-			//String str = "";
-			String order = "";
+			String orderby = "";
 			int length = list.size();
 			System.out.println("length : " + length);
 			for(int i=0; i<length; i++) {
-				String key = list.get(i).get("key");
-				String val = list.get(i).get("value");
+				String column = list.get(i).get("key");
+				String orderType = list.get(i).get("value");
 				//System.out.println("key : " + key + " | " + "val : " + val);
 	        	if(length-1 != i) {
-	        		order += key + " " + val + ", ";
+	        		orderby += column + " " + orderType + ", ";
 	        	}else {
-	        		order += key + " " + val;            		
+	        		orderby += column + " " + orderType;            		
 	        	}
 			}
-	        //order += " " + str;
-//	        sql = "SELECT * " +
-//	              "FROM (" + child_sql + ") " +
-//	              "ORDER BY " + order;
-			int from_index = child_sql.indexOf("FROM");
-			String from = child_sql.substring(from_index, child_sql.length());
 			
-			sql = "SELECT * " + from + " ORDER BY " + order;
+	        sql = "SELECT * " +
+	              "FROM (" + child_sql + ") " +
+	              "ORDER BY " + orderby;
+			//union 이후 orderby 할 경우 이상해짐 - 2019.11.07
+//			int from_index = child_sql.indexOf("FROM");
+//			String from = child_sql.substring(from_index, child_sql.length());
+//			sql = "SELECT * " + from + " ORDER BY " + orderby;
+			
 	        System.out.println("[Maked SQL For Order] : \n" + sql);
 			
 		} catch (Exception e) {
@@ -251,7 +252,7 @@ public class SQLServiceImpl implements SQLService{
 		//자식 sql의 select절 뒤의 컬럼들만 뽑아냄
 		String child_sql_select = child_sql.substring(0, child_sql_from_index).replace("SELECT ", "");
 		int blank_index = child_sql_select.lastIndexOf(" ");
-		//마지막에 붙은 공백 제거
+		//마지막에 붙은 공백 제거 및 제일 처음의 공백 제거
 		child_sql_select = child_sql_select.substring(0, blank_index);
 		//컬럼들 ,를 기준으로 각각 뽑아냄
 		String[] child_sql_split = child_sql_select.split(",");
@@ -272,18 +273,21 @@ public class SQLServiceImpl implements SQLService{
 		int i=0;
 		int j=0;
 		
-		//자식 sql의 select 컬럼 개수와 add된 테이블의 컬럼 개수가 다르면 보고자 하는 컬럼 개수가 다르다고 판단
+		//자식 sql의 select절 컬럼 개수와 add된 테이블의 컬럼 개수가 다르면 보고자 하는 컬럼 개수가 다르다고 판단
+		//자식 sql의 select절 컬럼에서 뺄놈들 빼는 부분
 		if(child_sql_split_length != from_cols_length) {
 			while(true) {
 				System.out.println("child_sql_split_list.get(" + i + ") : " + child_sql_split_list.get(i) + " | "  + "from_cols_list.get(" + j + ") : " + from_cols_list.get(j));
+				//자식 sql문의 select문 컬럼에  add된 테이블의 from 컬럼 이름이 포함 되어 있으면 자식 sql의 select문 컬럼을 추가
 				if(child_sql_split_list.get(i).contains(from_cols_list.get(j))) {
 					//add된 테이블의 from 컬럼의 전수 조사가 끝나면 while문 종료 
 					if(j == to_cols.length-1) {
-						select_stmt += child_sql_split_list.get(i);
+						//replaceFirst : 공백이 존재해서 공백 제거 할려고 붙임
+						select_stmt += child_sql_split_list.get(i).replaceFirst(" ", "");
 						System.out.println(">>> select_stmt : " + select_stmt);
 						break;
 					}else {
-						select_stmt += child_sql_split_list.get(i) + ", ";
+						select_stmt += child_sql_split_list.get(i).replaceFirst(" ", "") + ", ";
 						System.out.println(">>> select_stmt : " + select_stmt);
 					}
 					i+=1;
@@ -304,25 +308,74 @@ public class SQLServiceImpl implements SQLService{
 				}
 			}
 		}
-	
 		
+		//2019-11-07 rename -> addition -> rename처럼 연속적으로 할 경우 이상해짐 enpno as empno ad empno 이런식으로 변경됨.
 		//변경 하고자 하는 컬럼명 적용 부분
+//		String to_col = "";
+//		String from_col = "";
+//		String[] select_stmt_cols = select_stmt.split(",");
+//		List<String> select_stmt_col_list = Arrays.asList(select_stmt_cols);
+//		for(int s=0; s<to_cols_list.size(); s++) {
+//			from_col = from_cols_list.get(s);
+//			System.out.println("---------------------------------------");
+//			System.out.println("from_col : " + from_col);
+//			if(select_stmt_col_list.get(s).contains("CASE WHEN")) {
+//
+//			}else {
+//				to_col = from_col + " AS " + to_cols_list.get(s);
+//				select_stmt = select_stmt.replaceFirst(from_col, to_col);
+//			}
+//			System.out.println("to_col : " + to_col);
+//			System.out.println("select_stmt : " + select_stmt);
+//		}
+		
+		//add테이블의 to 컬럼 저장 변수
 		String to_col = "";
+		//add테이블의 from 컬럼 저장 변수
 		String from_col = "";
+		//자식 sql의 select문 컬럼에서 뺄놈 배고 남은 컬럼 저장 변수
+		String child_select_col = "";
+		//자식 sql의 select문 컬럼에서 뺄놈 배고 남은 컬럼 리스트들
 		String[] select_stmt_cols = select_stmt.split(",");
 		List<String> select_stmt_col_list = Arrays.asList(select_stmt_cols);
-		for(int s=0; s<to_cols_list.size(); s++) {
+		//변수 재활용
+		select_stmt = "";
+		for(int s=0; s<select_stmt_col_list.size(); s++) {
 			from_col = from_cols_list.get(s);
+			to_col = to_cols_list.get(s);
+			child_select_col = select_stmt_col_list.get(s);
 			System.out.println("---------------------------------------");
 			System.out.println("from_col : " + from_col);
-			if(select_stmt_col_list.get(s).contains("CASE WHEN")) {
-
-			}else {
-				to_col = from_col + " AS " + to_cols_list.get(s);
-				select_stmt = select_stmt.replaceFirst(from_col, to_col);
-			}
 			System.out.println("to_col : " + to_col);
-			System.out.println("select_stmt : " + select_stmt);
+			System.out.println("child_select_col : " + child_select_col);
+			//이름을 변경하는 컬럼이 아니면 자식 컬럼명 사용
+			if(from_col.equals(to_col)) {
+				if(s == select_stmt_col_list.size()-1) {
+					select_stmt += child_select_col;
+				}else {
+					select_stmt += child_select_col + ", ";
+				}
+			//이름을 변경하고자 하는 컬럼의 경우
+			}else {
+				//자식 select문의 컬럼에 AS를 포함하여 이미 별칭을 사용하고 있을 경우 AS 뒤의 내용만 바꾼다
+				if(child_select_col.contains(" AS ")) {
+					if(s == select_stmt_col_list.size()-1) {
+						String[] split_array = child_select_col.split(" AS ");
+						split_array[1] = to_col;
+						select_stmt += split_array[0] + " AS " + split_array[1];
+					}else { 
+						String[] split_array = child_select_col.split(" AS ");
+						split_array[1] = to_col;
+						select_stmt += split_array[0] + " AS " + split_array[1] + ", ";
+					}
+				}else {
+					if(s == select_stmt_col_list.size()-1) {
+						select_stmt += child_select_col + " AS " + to_col;
+					}else {
+						select_stmt += child_select_col + " AS " + to_col + ", ";
+					}
+				}
+			}
 		}
 		
 		System.out.println("4. step2 > select_stmt : " + select_stmt);
@@ -423,9 +476,13 @@ public class SQLServiceImpl implements SQLService{
 		System.out.println("\n--- UserSchemaList.java ---");
 		String user_id = (String)session.getAttribute("userId");
 		System.out.println("user_id : " + user_id);
+		//주석 풀어야되는 부분
 		DAOforGetUserScemaNM dao = new DAOforGetUserScemaNM();
 		ArrayList<String> list = dao.getUserSchemaList(user_id);
 		System.out.println("---------------\n");
+		//주석 해야되는 부분
+//		ArrayList<String> list = null;
+		
 		return list;
 	}
 
