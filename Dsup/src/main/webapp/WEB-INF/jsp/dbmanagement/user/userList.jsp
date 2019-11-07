@@ -4,26 +4,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>User List</title>
-
+	<meta charset="UTF-8">
+	<title>User List</title>
+	<link rel="stylesheet"	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	
+	
+	<!-- 부트스트랩 -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </head>
 <body>
 <%@include file="../../DBbar.jsp" %>
-<link rel="stylesheet"	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="./resources/json.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-<!-- 부트스트랩 -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-
-
 <script>
 	$(function() {
 		userList(); //userList조회
-		userDelete(); //user삭제
 		userUpdateForm(); //userUpdate수정팝업
 		
 	});
@@ -48,22 +44,25 @@
 			$('<tr>').append( $('<td>').html((item.USERNAME)))
 					.append( $('<td>').html((item.ACCOUNT_STATUS)))
 					.append( $('<td>').html((item.DEFAULT_TABLESPACE)))
-					.append( $('<td>').html('<button id="btnDelete">삭제'))
-					.append( $('<td>').html('<button id="btnUpdate">수정'))
+					.append( $('<td>').html('<button id="btnDelete" class = "_btnDelete btn btn-outline-secondary" data-toggle="modal" data-target="#delModal">삭제'))
+					.append( $('<td>').html('<button id="btnUpdate" class = "_btnUpdate btn btn-outline-secondary" data-toggle="modal" data-target="#updateModal">수정'))
 					//.append( $('<td>').append( $("<input>").attr("type", "button").val("생성").attr("onclick", "location.href='userCreateForm'") ) )
 					.append( $('<input type="hidden" id="hidden_userId">').val(item.USERNAME))
 					.appendTo($('#userList'))
 					;
 
 		});
+		
+		userDelete(); // 유저 삭제
 	}
 
 	//삭제
 	function userDelete() {
-		$('body').on('click', '#btnDelete', function() {
+		$("._btnDelete").click(function(){
 			var userId = $(this).closest('tr').find('#hidden_userId').val(); //선택한것에 val 값을 가져오겠다
-			var result = confirm(userId + "삭제하시겠습니까?");
-			if (result) {
+			console.log(userId);
+			// 모달 창에서 삭제 버튼 클릭하면
+			$("#modalDelBtn").click(function(){
 				$.ajax({
 					url : 'users/' + userId,
 					type : 'DELETE',
@@ -74,12 +73,17 @@
 					},
 					success : function(xhr) {
 						console.log(xhr.result);
+						$('#delModal').modal('hide')
 						userList();
 					}
 				});
-			}
+			})
 		});
 	}
+	
+	
+	
+	
 	var dialog, form;
 	$(function() {
 		// From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
@@ -136,6 +140,7 @@
 				var password = $('input:password[name="password"]').val();
 				var defaultTableSpace = $('select[name="defaultTableSpace"]').val();
 				var temporaryTableSpace = $('select[name="temporaryTableSpace"]').val();  */
+
 				$.ajax({
 					url : "users",
 					type : 'PUT',
@@ -175,16 +180,19 @@
 
 		form = dialog.find( "form" );
 	});
+	
 	//수정폼
 	function userUpdateForm() {
 		$('body').on('click', '#btnUpdate', function() {
 			var userId = $(this).closest('tr').find('#hidden_userId').val();
 			dialog.dialog("open");
 			$("#name").val(userId)
-
 		});
 	}
 </script>
+<div class = "container">
+
+<!-- 
 	<div id="dialog-form">
 		<p class="validateTips"></p>
 		<div class="form-group row">
@@ -222,21 +230,107 @@
 		</form>
 	</div>
 	</div>
-
-	<div class="container">
-	 <button type="button" onclick="location.href='userCreateForm' ">생성</button> 
-		<h2>User 목록</h2>
-		<table class="table text-center">
-			<thead>
-				<tr>
-					<th>아이디</th>
-					<th>ACCOUNTSTATUS</th>
-					<th>DEFAULTTABLESPACE</th>
-				</tr>
-			</thead>
-			<tbody id="userList">
-			</tbody>
-		</table>
+ -->
+	<div class = "row justify-content-between">
+		<div class = "col">
+			<h2>User 목록</h2>
+		</div>
+		<div class = "col-auto">
+			<button type="button" onclick="location.href='userCreateForm'" class = "btn btn-outline-info">생성</button>
+		</div>
 	</div>
+	
+	<table class="table text-center table-hover">
+		<thead>
+			<tr>
+				<th>아이디</th>
+				<th>ACCOUNTSTATUS</th>
+				<th>DEFAULTTABLESPACE</th>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody id="userList">
+		</tbody>
+	</table>
+	
+	<!-- 삭제시 모달 등장 -->
+	<div class="modal fade" id="delModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">경고</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					삭제하시겠습니까?
+					<br><br>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-info" id = "modalDelBtn" data-dismiss="modal">삭제</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 수정 모달 -->
+	<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">유저 스키마 수정</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id = "frm1">
+						<div class = "form-group">
+							이름:
+							<input readonly type="text" name="id" id="name" class="form-control">
+						</div>
+						<div class = "form-group">
+							비밀번호:
+							<input type="password" name="password" maxlength="50" class = "form-control">
+						</div>
+						<div class = "form-group">
+							비밀번호 체크:
+							<input type="password" name="passwordcheck"	maxlength="50" class = "form-control">
+						</div>
+						<div class = "form-group">
+							default tablespace:
+							<select name="defaultTableSpace" class = "form-control">
+							<c:forEach var="list" items="${tableSpaceList}">
+								<option value="${list.tablespaceName}">${list.tablespaceName}</option>
+							</c:forEach>
+							</select>
+						</div>
+						<div class = "form-group">
+							<div class = "row">
+								<div class = "col">
+									<input type="radio" name="accountStatus" value="lock" checked id="upd_lock"/>
+									<label for="upd_lock">lock</label>
+								</div>
+								<div class = "col">
+									<input type="radio" name="accountStatus" value="unlock" id="upd_unlock"/>
+									<label for="upd_unlock">unlock</label>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-info" data-dismiss="modal">수정 완료</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 </body>
 </html>
