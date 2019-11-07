@@ -35,14 +35,15 @@
 			var size = $(this).find("#size").val();
 			var sizeunit = $(this).find("#sizeunit").val();
 			
-			if(isNaN(size) || size <= 0){
+			if(isNaN(size) || size <= 0) {
 				console.log("error!");
 				$('#sizeError').fadeIn(400).delay(1000).fadeOut(400);
 				err = err + 1;
+			} else {
+				datafile += " '" +  "${sessionScope.member.userId}" + "_" + filename + ".dbf' size " + size + sizeunit + ","
 			}
-			
-			datafile += " '" +  "${sessionScope.member.userId}" + "_" + filename + ".dbf' size " + size + sizeunit + ","
 		});
+		
 		datafile = datafile.substring(0, datafile.length-1); // 맨 마지막 , 제거
 		// 데이터파일 입력한 값을 '데이터파일명.dbf' size 0m, ... 로 양식에 맞게 만들어 datafile의 값에 저장
 		
@@ -190,7 +191,6 @@
 						<div class = "col-3">
 						<select id = "sizeunit" class = "form-control">
 							<option value = "M">MB</option>
-							<option value = "K">KB</option>
 							<option value = "G">GB</option>
 							<option value = "T">TB</option>
 						</select>
@@ -202,8 +202,8 @@
 			</tbody>
 		</table>
 		<div class = "row">
-			<input type = "button" id="btn" value = "생성" class = "btn btn-info btn-block" onclick="formCheck()">
-			<input type = "button" id="back" value = "목록으로 돌아가기" class = "btn btn-block btn-secondary"
+			<input type = "button" id="btn" value = "생성" class = "btn btn-outline-info btn-block" onclick="formCheck()">
+			<input type = "button" id="back" value = "목록으로 돌아가기" class = "btn btn-block btn-outline-secondary"
 					onclick = 'history.back()'>
 		</div>
 		
