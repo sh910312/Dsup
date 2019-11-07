@@ -37,5 +37,11 @@ public class ReDAOMybatis {
 		mybatis.delete("ReDAO.deleteRe", vo);
 	}
 	
+	// 상세보기
+	public ReVO getRe(ReVO vo) {
+		return mybatis.selectOne("ReDAO.getRe",vo);
+	}
+	
+	
 	
 }

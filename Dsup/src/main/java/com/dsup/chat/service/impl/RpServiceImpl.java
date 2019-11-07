@@ -24,5 +24,10 @@ public class RpServiceImpl implements RpService {
 		return rpDAOMybatis.RpList();
 	}
 
+	@Override // 상세보기
+	public RpVO getRp(RpVO vo) {
+		// TODO Auto-generated method stub
+		return rpDAOMybatis.getRp(vo);
+	}
 
 }

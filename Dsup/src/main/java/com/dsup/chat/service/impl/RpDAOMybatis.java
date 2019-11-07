@@ -19,9 +19,15 @@ public class RpDAOMybatis { // (p.513)
 	public void inRp(RpVO vo) {
 		mybatis.insert("RpDAO.inRp", vo);
 	}
+
 	// 전체 검색
 	public List<RpVO> RpList() {
 		return mybatis.selectList("RpDAO.RpList");
+	}
+
+	// 상세보기
+	public RpVO getRp(RpVO vo) {
+		return mybatis.selectOne("RpDAO.getRp", vo);
 	}
 
 }

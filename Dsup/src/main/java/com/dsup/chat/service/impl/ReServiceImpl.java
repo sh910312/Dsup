@@ -56,4 +56,10 @@ public class ReServiceImpl implements ReService {
 		reDAOMybatis.delete(vo);
 	}
 
+	@Override // 상세보기
+	public ReVO getRe(ReVO vo) {
+		// TODO Auto-generated method stub
+		return reDAOMybatis.getRe(vo);
+	}
+
 }
