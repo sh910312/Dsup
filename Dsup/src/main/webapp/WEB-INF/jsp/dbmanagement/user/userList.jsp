@@ -112,7 +112,7 @@
 				
 				var formData = $("#form1").serializeObject();
 				console.log(formData);
-				
+				$("#form1")[0].reset();
 				$.ajax({
 					url : "users",
 					type : 'PUT',
