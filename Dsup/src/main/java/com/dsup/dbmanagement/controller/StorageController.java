@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -148,5 +149,13 @@ public class StorageController {
 	public ServiceStateTbVO serviceState(HttpSession session) {
 		String userId = (String) session.getAttribute("userId");
 		return storageService.serviceState(userId);
+	}
+	
+	// [윤정1107] 이용중인 용량
+	@RequestMapping(value = "/volumn", method = RequestMethod.GET)
+	@ResponseBody
+	public float getVolumn(@RequestBody UserTbspcTbVO vo) {
+		System.out.println(vo);
+		return 0;
 	}
 }

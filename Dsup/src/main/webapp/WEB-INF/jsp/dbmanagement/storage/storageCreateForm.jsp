@@ -22,6 +22,7 @@
 		tsNameChkFunction();
 		$("#nameMsg").hide();
 		filenameInput();
+		getVolumn();
 	});
 	
 	// 제출 전 확인
@@ -148,6 +149,26 @@
 		$("tbody>tr").each(function(){
 			$(this).find("#filename").val("${sessionScope.member.userId}".toUpperCase() + "_" + name + "_" + cnt);
 			cnt++;
+		});
+	}
+	
+	// [윤정1107] 남은 종량제 용량 요청
+	function getVolumn(){
+		var userId = "${sessionScope.member.userId}";
+		console.log(userId);
+		
+		$.ajax({
+			url : "volumn",
+			type : "GET",
+			dataType : "json",
+			data: JSON.stringify({ userId: userId }),
+		    contentType: 'application/json',
+			success : function(data){
+				console.log(data)
+			},
+			error : function(xhr, status, message) {
+				alert(" status: " + status + "er:" + message);
+			}
 		});
 	}
 	</script>
