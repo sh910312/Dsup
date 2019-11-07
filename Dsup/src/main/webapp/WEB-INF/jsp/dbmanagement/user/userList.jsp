@@ -25,8 +25,30 @@
 		userList(); //userList조회
 		userDelete(); //user삭제
 		userUpdateForm(); //userUpdate수정팝업
+		formCheck();
 		
 	});
+	
+	//비밀번호 입력확인
+	$(function(){
+		$("#passwordcheck,#password").keyup(function(){
+			if( $("#password").val() != "")
+				if( $("#password").val() == $("#passwordcheck").val()) { // 둘 다 똑같이 입력했으면
+					$("#passwordChkMsg").html("비밀번호가 일치합니다.").css("color", "green");
+					$("#passwordResult").val("true");
+				} else { // 다르게 입력했으면
+					$("#passwordChkMsg").html("비밀번호가 일치하지 않습니다.").css("color", "red");
+					$("#passwordResult").val("false");
+				}
+		});
+	});
+	function formCheck(){
+		if($("#passwordResult").val()=="false"){
+			alert("비밀번호를 확인하세요!");
+			return false;
+		}
+	}
+	
 	//목록조회요청
 	function userList() {
 		$.ajax({
@@ -50,7 +72,6 @@
 					.append( $('<td>').html((item.DEFAULT_TABLESPACE)))
 					.append( $('<td>').html('<button id="btnDelete">삭제'))
 					.append( $('<td>').html('<button id="btnUpdate">수정'))
-					//.append( $('<td>').append( $("<input>").attr("type", "button").val("생성").attr("onclick", "location.href='userCreateForm'") ) )
 					.append( $('<input type="hidden" id="hidden_userId">').val(item.USERNAME))
 					.appendTo($('#userList'))
 					;
@@ -82,7 +103,6 @@
 	}
 	var dialog, form;
 	$(function() {
-		// From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
 		emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
 		id = $("#id"), 
 		password = $("#password"),
@@ -123,19 +143,12 @@
 		function updateUser() {
 			var valid = true;
 			allFields.removeClass("ui-state-error");
-/* 
-			valid = valid && checkLength(id, "id", 3, 16);
-			//console.log(id);
-			valid = valid && checkLength(password, "password", 5, 16);
-			valid = valid && checkLength(defaultTableSpace, "defaultTableSpace", 6, 80);
-			valid = valid && checkLength(temporaryTableSpace, "temporaryTableSpace", 6, 80); */
-
-			//valid = valid && checkRegexp( id, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
 			if (valid) {
-		/* 	    var id = $('input:text[name="id"]').val();
-				var password = $('input:password[name="password"]').val();
-				var defaultTableSpace = $('select[name="defaultTableSpace"]').val();
-				var temporaryTableSpace = $('select[name="temporaryTableSpace"]').val();  */
+				if($("#password").val() != $("#passwordcheck").val()){
+					alert("비밀번호를 확인하세요")
+					return 
+				}
+
 				$.ajax({
 					url : "users",
 					type : 'PUT',
@@ -195,15 +208,20 @@
 						<td><input readonly type="text" name="id" id="name" class="text ui-widget-content ui-corner-all">
 						</td>
 					</tr>
-					<tr>
-						<td id="password">비밀번호</td>
-						<td><input type="password" name="password" maxlength="50">
+				 	<tr>
+						<td>비밀번호*</td>
+						<td>
+							<input type="password" name="password" id="password" placeholder="PASSWORD" maxlength="50" required
+								class = "form-control">
 						</td>
 					</tr>
-
+		
 					<tr>
-						<td id="password">비밀번호 확인</td>
-						<td><input type="password" name="passwordcheck"	maxlength="50">
+						<td>비밀번호 확인*</td>
+						<td>
+							<input type="password" name="passwordcheck" id="passwordcheck" placeholder="PASSWORD" maxlength="50" required
+								class = "form-control">
+							<span id = "passwordChkMsg"> </span>
 						</td>
 					</tr>
 					<tr>
