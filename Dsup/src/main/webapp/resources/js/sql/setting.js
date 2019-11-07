@@ -369,7 +369,7 @@ var Setting = (function() {
 
 					break;
 
-				case 'Filer':
+				case 'Filter':
 					console.log("Filer clean()");
 
 					$('#filer-setting-bar').html(filterTag);
