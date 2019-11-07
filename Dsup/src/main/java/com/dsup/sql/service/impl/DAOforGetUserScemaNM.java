@@ -50,7 +50,7 @@ public class DAOforGetUserScemaNM {
 	public ArrayList<String> getUserSchemaList(String user_id) {
 		// TODO Auto-generated method stub
 		ArrayList<String> list = new ArrayList<String>();
-		String sql = "select user_sch_nm from user_sch_tb where user_id=?";
+		String sql = "SELECT a.user_sch_nm FROM user_sch_tb a, dba_users b WHERE UPPER(a.user_sch_nm)=UPPER(b.username) AND a.user_id=? AND b.account_status='OPEN'";
 		String schemaNm = "";
 		
 		try {
