@@ -24,8 +24,11 @@
 	crossorigin="anonymous"></script>
 
 <script>
+	var totalVolumn; // 사용중인 요금제
 	$(document).ready(function() {
 		tablespaceList();
+		serviceState();
+		getVolumn();
 
 		$("#updbtn").click(function() {
 			$("#frm").attr("action", "storageUpdateForm");
@@ -68,27 +71,28 @@
 	// [윤정 1030] 테이블스페이스 리스트 출력
 	function tablespaceListResult(list) {
 		$.each(list,
-				function(idx, item) {
-					var $radio = $("<td>").html(
+			function(idx, item) {
+				var $radio = $("<td>").html(
 							"<input type = 'radio' name = 'tablespaceName' value = '"
 									+ (item.tablespaceName) + "'>");
-					var $tablespaceName = $("<td>").html(
+				var $tablespaceName = $("<td>").html(
 							"<a href = 'storageShow?tablespaceName="
 									+ (item.tablespaceName) + "'>"
 									+ (item.tablespaceName) + "</a>");
-					var $status = $("<td>").text((item.status));
-					var $total = $("<td>").text((item.total));
-					var $used = $("<td>").text((item.used));
-					var $free = $("<td>").text((item.free));
+				var $status = $("<td>").text((item.status));
+				var $total = $("<td>").text((item.total));
+				var $used = $("<td>").text((item.used));
+				var $free = $("<td>").text((item.free));
 
-					$("tbody").append(
-							$("<tr>").append($radio).append($tablespaceName)
-									.append($status).append($total).append(
-											$used).append($free));
+				$("tbody").append(
+						$("<tr>").append($radio).append($tablespaceName)
+								.append($status).append($total).append(
+										$used).append($free));
 					
-					$('input:radio[name="tablespaceName"]').eq(0).attr("checked", true);
-					// 첫 번째 라디오 자동 체크
-				});
+				$('input:radio[name="tablespaceName"]').eq(0).attr("checked", true);
+				// 첫 번째 라디오 자동 체크
+			}
+		);
 	}
 
 	// [윤정1031] tr 클릭시 라디오 체크
@@ -101,7 +105,7 @@
 	
 	// [윤정1105] 삭제시 테이블스페이스명 다시 입력
 	function delCheck(){
-		$("#delCheck").addClass("is-invalid");
+		$("#delCheck").addClass("is-invalid").val("");
 		$("#delbtn").attr("disabled", true);
 		
 		$("#delCheck").keyup(function(){			
@@ -119,16 +123,87 @@
 			}
 		})
 	}
+	
+	// [윤정1107] 이용중인 서비스 조회 요청
+	function serviceState() {
+		$.ajax({
+			url : 'serviceState',
+			type : 'GET',
+			dataType : "json",
+			success : function(data){
+				$("#service").text( (data.payItem) );
+				totalVolumn = (data.payItem).split("GB")[0];
+			}
+		})
+	}
+	
+	// [윤정1107] volumn 요청
+	function getVolumn() {
+		$.ajax({
+			url : 'tablespaceList',
+			type : 'GET',
+			dataType : "json",
+			success : volumn
+		})
+	}
+	// [윤정1107] volumn 출력
+	function volumn(list) {
+		// ↓ 차트에 넣을 데이터들은 배열로 만들어야 한다.
+		var names = new Array();
+		var values = new Array();
+		names[0] = "테이블스페이스 명";
+		values[0] = "사용량 (GB)";
+		$.each(list,
+			function(idx, item) {
+				names.push((item.tablespaceName));
+				values.push((item.volumn));
+			}
+		);
+		console.log(names);
+		console.log(values);
+		
+		google.charts.load('current', {packages: ['corechart', 'bar']});
+		google.charts.setOnLoadCallback(drawStacked);
+
+		function drawStacked() {
+		      var data = google.visualization.arrayToDataTable([
+		        names,
+		        values,
+		      ]);
+
+		      var options = {
+		        title: '종량제 사용량 (단위 GB)',
+		        chartArea: {width: '95%'},
+		        bar: { groupWidth: '70%' },
+		        isStacked: true,
+		        legend: { position: 'top' },
+		        hAxis: {
+		          minValue: 0,
+		          maxValue: totalVolumn
+		        }
+		      };
+		      var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+		      chart.draw(data, options);
+		 }
+		
+	}
 </script>
 </head>
 <body>
 	<%@include file="/WEB-INF/jsp/DBbar.jsp"%>
 	<div class="container">
+		<div class = "row">
+			<h3>이용중인 요금제 : <span id = "service"></span></h3>
+		</div>
+		
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<div id="chart_div"></div>
+	
 		<form id="frm" method="post">
 
 			<div class="btn-group" role="group">
 				<input id="updbtn" type="button" value="수정" class="btn btn-outline-info">
-				<input type="button" value="삭제" class="btn btn-outline-info"  data-toggle="modal" data-target="#delModal" onclick="delCheck()">
+				<input type="button" value="삭제" class="btn btn-outline-info" data-toggle="modal" data-target="#delModal" onclick="delCheck()">
 				<input id="crebtn" type="button" value="생성" class="btn btn-outline-info">
 				<input id="showbtn" type="button" value="조회" class="btn btn-outline-info">
 			</div>
@@ -169,7 +244,9 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						테이블 스페이스에 있는 데이터가 모두 사라집니다. 삭제하려면 테이블스페이스 이름을 입력하세요. <br>
+						테이블 스페이스에 있는 데이터가 모두 사라집니다. <br>
+						삭제하려면 테이블스페이스 이름을 입력하세요.
+						<br><br>
 						<input type = "text" id = "delCheck" class = "form-control" placeholder="테이블스페이스 이름 입력">
 					</div>
 					<div class="modal-footer">

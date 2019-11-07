@@ -25,6 +25,7 @@ public interface UserService {
 	//단건조회
 	public UserVO getUser(UserVO vo);
 
-	
+	//id 예약어
+	public UserVO reservedWords(UserVO vo);
 	
 }

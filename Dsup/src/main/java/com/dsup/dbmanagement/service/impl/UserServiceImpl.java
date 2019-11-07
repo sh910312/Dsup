@@ -51,5 +51,10 @@ public class UserServiceImpl implements UserService{
 		return userDAO.getUser(vo);
 	}
 
+	@Override
+	public UserVO reservedWords(UserVO vo) {
+		return userDAO.getUser(vo);
+	}
+
 
 }

@@ -12,5 +12,6 @@ public interface RpService {
 	// 전체조회
 	List<RpVO> RpList(RpVO vo);
 
-
+	// 상세보기
+	RpVO getRp(RpVO vo);
 }

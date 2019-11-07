@@ -38,42 +38,24 @@
 		else
 			$("#readwrite").attr("checked", true);
 		
-		if("${ts.total}" == 0)
-			$("#offline").attr("checked", true);
-		else
-			$("#online").attr("checked", true);
-			
 		statusChk();
 	} // startChk()
 	
 	// [윤정 1104] 상태에 따라 수정가능한 값 제한
 	function statusChk() {
-		var status1 = $("input[name='status1']:checked").val(); // online offline
 		var status2 = $("input[name='status2']:checked").val(); // read write, read only
 		
-		if (status1 == "OFFLINE") { // ---- offline
-			$("#newName").attr("readonly", true); // 테이블스페이스 이름 수정 불가
+		if(status2 == "READ ONLY") { // ---- read only
 			$("#addbtn").attr("disabled", true) // 데이터파일 추가 불가
 			$(".yj_trupd").attr("disabled", true) // 데이터파일 수정 불가
-			$("input[name='status2']").attr("disabled", true); // read write, read only 수정 불가
-		} else { // ---- online
-			$("input[name='status2']").attr("disabled", false); // read write, read only 수정 가능
-			$("#newName").attr("readonly", false); // 테이블스페이스 이름 수정 가능
-			if(status2 == "READ ONLY") { // ---- read only
-				$("#addbtn").attr("disabled", true) // 데이터파일 추가 불가
-				$(".yj_trupd").attr("disabled", true) // 데이터파일 수정 불가
-			} else { // ---- read write
-				$("#addbtn").attr("disabled", false) // 데이터파일 추가 가능
-				$(".yj_trupd").attr("disabled", false) // 데이터파일 수정 가능
-			}
+		} else { // ---- read write
+			$("#addbtn").attr("disabled", false) // 데이터파일 추가 가능
+			$(".yj_trupd").attr("disabled", false) // 데이터파일 수정 가능
 		}
 	}
 	
 	// [윤정 1104] 상태수정 -> sql 추가
 	function statusSql() {
-		$("input[name='status1']").change(function(){
-			sql += "ALTER TABLESPACE " + oldName + " " + $("input[name='status1']:checked").val() + ";";
-		});
 		$("input[name='status2']").change(function(){
 			sql += "ALTER TABLESPACE " + oldName + " " + $("input[name='status2']:checked").val() + ";";
 		});
@@ -93,12 +75,11 @@
 		var fileName = temp2[0] + "_" + temp2[1] + "_" + num + ".DBF";
 		// ↑ 파일 이름
 		
-		var file = "<input type = 'text' id = 'newFilename' readonly value = '" + fileName + "' class='form-control'>";
+		var file = "<input type = 'text' id = 'newFilename' readonly value = '" + fileName + "' class='form-control-plaintext'>";
 		var size = "<input type = 'text' id = 'newSize' required class = 'form-control'>";
 		var $sizeunit = $("<select>").attr("id","newSizeunit").addClass("form-control")
 									.append($("<option>").val("M").text("MB"))
-									.append($("<option>").val("G").text("GB"))
-									.append($("<option>").val("T").text("TB")); // 용량 단위
+									.append($("<option>").val("G").text("GB")); // 용량 단위
 		var $okbtn = $("<input>").attr("type","button").attr("id","addOk").val("추가완료").click(trAddOk).addClass("btn btn-outline-info");
 		var $canbtn = $("<input>").attr("type","button").attr("id","addCancel").val("취소").click(trAddCan).addClass("btn btn-outline-secondary");
 		
@@ -127,23 +108,22 @@
 		var sizeunit = $("#newSizeunit").val();
 		
 		// ↓ 용량 제대로 입력했는지 확인
-		if(isNaN(size) || size.length == 0 || size == 0) {
+		if(isNaN(size) || size <= 0) {
 			$('#sizeError').fadeIn(400).delay(1000).fadeOut(400);
-			return;
+		} else {
+			$("#addbtn").attr("disabled",false); // tr 추가 버튼 활성화
+			$("input:radio").attr("disabled", false); // 상태 변경 허용
+		
+			sql += "ALTER TABLESPACE " + oldName + " ADD DATAFILE '" + filename + "' SIZE " + size + sizeunit + ";";
+			// ↓ 테이블 원래 모양대로
+			$("tr:last").remove();
+			var $tr = $("<tr>").append( $("<td>").text(filename) )
+								.append( $("<td>").text(size) )
+								.append( $("<td>").text(sizeunit) )
+								.append( $("<td>").append( $("<input>").attr("type", "button").val("용량수정").addClass("yj_trupd btn btn-outline-info").click(trEdit) ) 
+											);
+			$("tbody").append($tr);
 		}
-		
-		$("#addbtn").attr("disabled",false); // tr 추가 버튼 활성화
-		$("input:radio").attr("disabled", false); // 상태 변경 허용
-		
-		sql += "ALTER TABLESPACE " + oldName + " ADD DATAFILE '" + filename + "' SIZE " + size + sizeunit + ";";
-		// ↓ 테이블 원래 모양대로
-		$("tr:last").remove();
-		var $tr = $("<tr>").append( $("<td>").text(filename) )
-							.append( $("<td>").text(size) )
-							.append( $("<td>").text(sizeunit) )
-							.append( $("<td>").append( $("<input>").attr("type", "button").val("용량수정").addClass("yj_trupd btn btn-outline-info").click(trEdit) ) 
-										);
-		$("tbody").append($tr);
 	}
 	
 	// [윤정 1105] 용량수정 버튼 클릭
@@ -157,8 +137,7 @@
 		
 		var $sizeunit = $("<select>").attr("id","sizeunit").addClass("form-control")
 									.append($("<option>").val("M").text("MB"))
-									.append($("<option>").val("G").text("GB"))
-									.append($("<option>").val("T").text("TB")); // 용량 단위
+									.append($("<option>").val("G").text("GB")); // 용량 단위
 		// ↓ 테이블 내용 수정
 		$tr.find("td:eq(1)").empty()
 							.append( $("<input>").attr("type","text").attr("id","size").val(oldValue).addClass("form-control") );
@@ -190,21 +169,20 @@
 		var filename = $tr.find("td:eq(0)").text();
 		
 		// ↓ 용량 제대로 입력했는지 확인
-		if(isNaN(size) || size.length == 0 || size == 0) {
+		if(isNaN(size) || size <= 0) {
 			$('#sizeError').fadeIn(400).delay(1000).fadeOut(400);
-			return;
+		} else {
+			$(".yj_trupd").attr("disabled", false); // 다른 행의 '용량수정' 버튼 활성화
+			$("input:radio").attr("disabled", false); // 상태 변경 허용
+		
+			// ↓ 테이블 원래대로
+			$tr.find("td:eq(1)").empty().text(size);
+			$tr.find("td:eq(2)").empty().text(sizeunit);
+			$tr.find("td:eq(3)").empty()
+								.append( $("<input>").attr("type", "button").val("용량수정").attr("class", "yj_trupd btn btn-outline-info").click(trEdit) );
+		
+			sql += "ALTER DATABASE DATAFILE '" + filename + "' RESIZE " + size + sizeunit + ";";
 		}
-		
-		$(".yj_trupd").attr("disabled", false); // 다른 행의 '용량수정' 버튼 활성화
-		$("input:radio").attr("disabled", false); // 상태 변경 허용
-		
-		// ↓ 테이블 원래대로
-		$tr.find("td:eq(1)").empty().text(size);
-		$tr.find("td:eq(2)").empty().text(sizeunit);
-		$tr.find("td:eq(3)").empty()
-							.append( $("<input>").attr("type", "button").val("용량수정").attr("class", "yj_trupd btn btn-outline-info").click(trEdit) );
-		
-		sql += "ALTER DATABASE DATAFILE '" + filename + "' RESIZE " + size + sizeunit + ";";
 	}
 	
 	// [윤정 1104] 수정하기 버튼 클릭
@@ -308,18 +286,6 @@
 			상태
 		</div>
 		<div class = "col-2">
-			<input type = "radio" name = "status1" id = "online" value = "ONLINE" class = "form-check-input">
-				<label for = "online">online</label>
-		</div>
-		<div class = "col-2">
-			<input type = "radio" name = "status1" id = "offline" value = "OFFLINE" class = "form-check-input">
-				<label for = "offline">offline</label>
-		</div>
-	</div>
-	
-	<div class = "row">
-		<div class = "col-2"></div>
-		<div class = "col-2">
 			<input type = "radio" name = "status2" id = "readwrite" value = "READ WRITE" class = "form-check-input">
 				<label for = "readwrite">read write</label>
 		</div>
@@ -332,8 +298,6 @@
 	<div class = "row">
 		<div class = "col-2">안내사항</div>
 		<div class = "col-10">
-			offline 상태는 데이터파일 용량 조회가 불가능합니다. online상태로 변경 후 다시 조회해주세요.<br>
-			offline 상태에서는 테이블 스페이스 이름 수정, 데이터파일 수정 및 추가가 불가능합니다.<br>
 			read only 상태에서는 데이터파일 수정 및 추가가 불가능합니다.<br>
 		</div>
 	</div>
@@ -374,11 +338,11 @@
 		</table>
 	</div>
 	
-<div class='yj_error' style='display:none' id="sizeError">용량은 숫자만 입력할 수 있습니다!</div>
+<div class='yj_error' style='display:none' id="sizeError">용량은 0보다 큰 숫자만 입력할 수 있습니다!</div>
 	
 	<div class = "row">
-		<input type = "button" id = "updbtn" value = "수정 완료" class = "btn btn-info btn-block">
-		<input type = "button" id="back" value = "목록으로 돌아가기" class = "btn btn-light btn-block"
+		<input type = "button" id = "updbtn" value = "수정 완료" class = "btn btn-outline-info btn-block">
+		<input type = "button" id="back" value = "목록으로 돌아가기" class = "btn btn-outline-secondary btn-block"
 					onclick = 'history.back()'>
 	</div>
 </form>

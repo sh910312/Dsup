@@ -27,19 +27,19 @@ public class DAO {
 		String schemapwd = (String)session.getAttribute("schemapwd");
         String user = "sys as sysdba"; 
         String pw = "oracle";
-//		String user = "hr";
-//        String pw = "hr";
+//		String user = "sys as sysdba";
+//        String pw = "orcl";
 		if(schemaid==null || schemaid.equals("")){      
 			
 		}else {
 			user = schemaid;
 	        pw = schemapwd;	
 		}
-		
+			
 		try {
 			System.out.println("DB Connection ID : " + user);
 			System.out.println("DB Connection PWD : " + pw);
-//			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+//			String url = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
             String url = "jdbc:oracle:thin:@192.168.0.108:1521:xe";
             Class.forName("oracle.jdbc.driver.OracleDriver");        
             conn = DriverManager.getConnection(url, user, pw);

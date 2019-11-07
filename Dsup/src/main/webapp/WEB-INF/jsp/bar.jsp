@@ -74,7 +74,7 @@
 <div style="text-align: right">
 프로필<select id="menu" onchange="goPage()">
 	<option value="">선택</option>
-	<option value="">쪽지함</option>
+	<option value="messge">쪽지함</option>
 	<option value="chatMain">채팅봇</option>
 	<option value="">Q &amp; A</option>
 	<option value="myInfo">정보변경</option>
@@ -116,62 +116,59 @@
 
 
 <script type="text/javascript">
-	var modal = document.getElementById('myModal');
-	var myInfo = document.getElementById('myInfo');
-	var modify = document.getElementById('modify');
-	var btn = document.getElementById("myBtn");
-	var close = document.getElementsByClassName("close")[0]; 
-	var infoNickname = document.getElementById('infoNickname');
-	var infoEMail = document.getElementById('infoEMail');
-	
-	modify.style.display = "none";
-	
-	btn.onclick = function(){
-		modify.style.display = "block";
-	    myInfo.style.display = "none";
-	    
-	    
-	}
-	close.onclick = function() {
-	    modal.style.display = "none";
-	}
-	window.onclick = function(event) {
-	    if (event.target == modal) {
-	        modal.style.display = "none";
-	    	document.frm.reset();
-	    }
-	}
-	
-	
-</script>
-<script type="text/javascript">
-	$(function(){
-		memberUpdate();
-	});
-	function memberUpdate() {
-		//수정 버튼 클릭
-		$('#btnUpdate').on('click',function(){
-			var nickname = $('input:text[name="nickname"]').val();
-			var password = $('[name="password"]').val();
-			var eMail = $('[name="eMail"]').val();
-			var phonenumber = $('[name="phonenumber"]').val();
-			$.ajax({ 
-			    url: "members", 
-			    type: 'PUT', 
-			    dataType: 'json', 
-			    data: JSON.stringify({ nickname: nickname,password: password, eMail: eMail, phonenumber: phonenumber }),
-			    contentType: 'application/json',
-			    success: function(data) { 
-				    infoNickname.innerHTML = document.frm.nickname.value
-				    infoEMail.innerHTML = document.frm.eMail.value
-				    infoPhonenumber.innerHTML = document.frm.phonenumber.value 
-				    modify.style.display = "none";
-				    myInfo.style.display = "block";
-			    },
-			    error:function(xhr, status, message) { 
-			        alert(" status: "+status+" er:"+message);
-			    }
-			});
-		});//수정 버튼 클릭
-	}//userUpdate
+var modal = document.getElementById('myModal');
+var myInfo = document.getElementById('myInfo');
+var modify = document.getElementById('modify');
+var btn = document.getElementById("myBtn");
+var close = document.getElementsByClassName("close")[0]; 
+var infoNickname = document.getElementById('infoNickname');
+var infoEMail = document.getElementById('infoEMail');
+
+modify.style.display = "none";
+
+btn.onclick = function(){
+	modify.style.display = "block";
+    myInfo.style.display = "none";
+    
+    
+}
+close.onclick = function() {
+    modal.style.display = "none";
+}
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    	document.frm.reset();
+    }
+}
+
+$(function(){
+	memberUpdate();
+});
+function memberUpdate() {
+	//수정 버튼 클릭
+	$('#btnUpdate').on('click',function(){
+		var nickname = $('input:text[name="nickname"]').val();
+		var password = $('[name="password"]').val();
+		var eMail = $('[name="eMail"]').val();
+		var phonenumber = $('[name="phonenumber"]').val();
+		$.ajax({ 
+		    url: "members", 
+		    type: 'PUT', 
+		    dataType: 'json', 
+		    data: JSON.stringify({ nickname: nickname,password: password, eMail: eMail, phonenumber: phonenumber }),
+		    contentType: 'application/json',
+		    success: function(data) { 
+			    infoNickname.innerHTML = document.frm.nickname.value
+			    infoEMail.innerHTML = document.frm.eMail.value
+			    infoPhonenumber.innerHTML = document.frm.phonenumber.value 
+			    modify.style.display = "none";
+			    myInfo.style.display = "block";
+		    },
+		    error:function(xhr, status, message) { 
+		        alert(" status: "+status+" er:"+message);
+		    }
+		});
+	});//수정 버튼 클릭
+}//userUpdate
 </script>
