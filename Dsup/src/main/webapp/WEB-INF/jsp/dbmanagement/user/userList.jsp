@@ -7,13 +7,13 @@
 	<meta charset="UTF-8">
 	<title>User List</title>
 	<link rel="stylesheet"	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	
-	
+	<script src="./resources/json.min.js"></script>
 	<!-- 부트스트랩 -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
 </head>
 <body>
 <%@include file="../../DBbar.jsp" %>
@@ -21,7 +21,23 @@
 	$(function() {
 		userList(); //userList조회
 		userUpdateForm(); //userUpdate수정팝업
-		
+
+		// serializeObject
+		$.fn.serializeObject = function() {
+			var o = {};
+			var a = this.serializeArray();
+			$.each(a, function() {
+				if (o[this.name]) {
+					if (!o[this.name].push) {
+						o[this.name] = [o[this.name]];
+					}
+					o[this.name].push(this.value || '');
+				} else {
+					o[this.name] = this.value || '';
+				}
+			});
+			return o;
+		};
 	});
 	//목록조회요청
 	function userList() {
@@ -52,8 +68,8 @@
 					;
 
 		});
-		
 		userDelete(); // 유저 삭제
+		userUpdate();
 	}
 
 	//삭제
@@ -81,9 +97,41 @@
 		});
 	}
 	
+	// ↓ 수정 모달 새로 만든것
+	function userUpdate() {
+		$("._btnUpdate").click(function(){
+			var userId = $(this).closest('tr').find('#hidden_userId').val(); //선택한것에 val 값을 가져오겠다
+			$("#name").val(userId);
+			
+			// ↓ 모달에서 수정 버튼 눌렀을 때
+			$("#modalUpdBtn").click(function(){
+				var id = $("#name").val();
+				var password = $("#modalPassword").val();
+				var defaultTableSpace = $("#modalDefault").val();
+				var accountStatus = $("input:radio[name='accountStatus']").val();
+				
+				var formData = $("#form1").serializeObject();
+				console.log(formData);
+				
+				$.ajax({
+					url : "users",
+					type : 'PUT',
+					dataType : 'JSON',
+					data : JSON.stringify( formData ),
+					//data : JSON.stringify({id: id, password:password, defaultTableSpace:defaultTableSpace, accountStatus:accountStatus}),
+					contentType : 'application/json',
+					success : function(data) {
+						userList();
+					},	error : function(xhr, status, message) {
+						alert(" status: " + status + "er:" + message);
+					}
+				}); // ajax
+			}); // modalUpdBtn click
+		}) // _btnUpdate click
+	} // userUpdate
 	
 	
-	
+	// ↓ 수정 다이얼로그
 	var dialog, form;
 	$(function() {
 		// From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
@@ -289,14 +337,14 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<form id = "frm1">
+					<form id = "form1">
 						<div class = "form-group">
 							이름:
 							<input readonly type="text" name="id" id="name" class="form-control">
 						</div>
 						<div class = "form-group">
 							비밀번호:
-							<input type="password" name="password" maxlength="50" class = "form-control">
+							<input type="password" name="password" maxlength="50" class = "form-control" id="modalPassword">
 						</div>
 						<div class = "form-group">
 							비밀번호 체크:
@@ -304,7 +352,7 @@
 						</div>
 						<div class = "form-group">
 							default tablespace:
-							<select name="defaultTableSpace" class = "form-control">
+							<select name="defaultTableSpace" class = "form-control" id="modalDefault">
 							<c:forEach var="list" items="${tableSpaceList}">
 								<option value="${list.tablespaceName}">${list.tablespaceName}</option>
 							</c:forEach>
@@ -326,7 +374,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-					<button type="button" class="btn btn-info" data-dismiss="modal">수정 완료</button>
+					<button type="button" class="btn btn-info" data-dismiss="modal" id="modalUpdBtn">수정 완료</button>
 				</div>
 			</div>
 		</div>
