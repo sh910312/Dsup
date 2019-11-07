@@ -289,7 +289,7 @@
 				<div class="modal-body">
 					<form id = "form1">
 						<div class = "form-group">
-							이름:
+							스키마아이디:
 							<input readonly type="text" name="id" id="name" class="form-control">
 						</div>
 						<div class = "form-group">
@@ -312,11 +312,11 @@
 						<div class = "form-group">
 							<div class = "row">
 								<div class = "col">
-									<input type="radio" name="accountStatus" value="lock" checked id="upd_lock"/>
+									<input type="radio" name="accountStatus" value="lock" id="upd_lock"/>
 									<label for="upd_lock">lock</label>
 								</div>
 								<div class = "col">
-									<input type="radio" name="accountStatus" value="unlock" id="upd_unlock"/>
+									<input type="radio" name="accountStatus" value="unlock" id="upd_unlock" checked/>
 									<label for="upd_unlock">unlock</label>
 								</div>
 							</div>
