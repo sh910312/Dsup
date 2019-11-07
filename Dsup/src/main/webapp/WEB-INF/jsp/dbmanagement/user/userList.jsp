@@ -21,7 +21,8 @@
 	$(function() {
 		userList(); //userList조회
 		userUpdateForm(); //userUpdate수정팝업
-		formCheck(); //비밀번호체크
+		userUpdate();
+		userDelete()
 		// serializeObject
 		$.fn.serializeObject = function() {
 			var o = {};
@@ -39,6 +40,20 @@
 			return o;
 		};
 	});
+	
+	
+	//목록조회요청
+	function userList() {
+		$.ajax({
+			url : 'users',
+			type : 'GET', //요청방식
+			dataType : 'json', //결과 데이터 타입
+			error : function(xhr, status, mag) {
+				alert("상태값:" + status + " Http에러메세지 : " + msg)
+			},
+			success : userListResult
+		});
+	}
 	//비밀번호 입력확인
 	$(function(){
 		$("#passwordcheck,#modalPassword").keyup(function(){
@@ -59,20 +74,6 @@
 		}
 	}
 	
-	//목록조회요청
-	function userList() {
-		$.ajax({
-			url : 'users',
-			type : 'GET', //요청방식
-			dataType : 'json', //결과 데이터 타입
-			error : function(xhr, status, mag) {
-				alert("상태값:" + status + " Http에러메세지 : " + msg)
-			},
-			success : userListResult
-		});
-	}
-
-	
 	//목록조회응답
 	function userListResult(data) {
 		$("#userList").empty();
@@ -82,7 +83,6 @@
 					.append( $('<td>').html((item.DEFAULT_TABLESPACE)))
 					.append( $('<td>').html('<button id="btnDelete" class = "_btnDelete btn btn-outline-secondary" data-toggle="modal" data-target="#delModal">삭제'))
 					.append( $('<td>').html('<button id="btnUpdate" class = "_btnUpdate btn btn-outline-secondary" data-toggle="modal" data-target="#updateModal">수정'))
-					//.append( $('<td>').append( $("<input>").attr("type", "button").val("생성").attr("onclick", "location.href='userCreateForm'") ) )
 					.append( $('<input type="hidden" id="hidden_userId">').val(item.USERNAME))
 					.appendTo($('#userList'))
 					;
@@ -120,12 +120,17 @@
 	// ↓ 수정 모달 새로 만든것
 	function userUpdate() {
 		$("._btnUpdate").click(function(){
-
 			var userId = $(this).closest('tr').find('#hidden_userId').val(); //선택한것에 val 값을 가져오겠다
 			$("#name").val(userId);
+			$("#modalPassword").val("");
+			$("#passwordcheck").val("");
 			
 			// ↓ 모달에서 수정 버튼 눌렀을 때
-
+			$("#modalUpdBtn").click(function(){
+				if( $("#modalPassword").val() != $("#passwordcheck").val()){
+					alert("비밀번호를 확인하세요!");
+					return false;
+				}
 				var id = $("#name").val();
 				var password = $("#modalPassword").val();
 				var defaultTableSpace = $("#modalDefault").val();
@@ -155,15 +160,10 @@
 	// ↓ 수정 다이얼로그
 	var dialog, form;
 	$(function() {
-		if (valid) {
-			if($("#password").val() != $("#passwordcheck").val()){
-				alert("비밀번호를 입력하세요!");
-				return 
-			}
 		// From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
 		emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
 		id = $("#id"), 
-		password = $("#password"),
+		password = $("#modalPassword"),
 		defaultTableSpace = $("#defaultTableSpace"),
 		allFields = $([]).add(id)
 						 .add(password)
@@ -198,42 +198,6 @@
 			}
 		}
 
-		function updateUser() {
-			var valid = true;
-			allFields.removeClass("ui-state-error");
-/* 
-			valid = valid && checkLength(id, "id", 3, 16);
-			//console.log(id);
-			valid = valid && checkLength(password, "password", 5, 16);
-			valid = valid && checkLength(defaultTableSpace, "defaultTableSpace", 6, 80);
-			valid = valid && checkLength(temporaryTableSpace, "temporaryTableSpace", 6, 80); */
-
-			//valid = valid && checkRegexp( id, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
-
-		/* 	    var id = $('input:text[name="id"]').val();
-				var password = $('input:password[name="password"]').val();
-				var defaultTableSpace = $('select[name="defaultTableSpace"]').val();
-				var temporaryTableSpace = $('select[name="temporaryTableSpace"]').val();  */
-
-				$.ajax({
-					url : "users",
-					type : 'PUT',
-					dataType : 'JSON',
-					data : JSON.stringify($("#form1").serializeObject()),
-					contentType : 'application/json',
-					success : function(data) {
-						userList();
-						dialog.dialog("close");
-						
-					},	error : function(xhr, status, message) {
-						alert(" status: " + status + "er:" + message);
-					}
-				});
-
-			}
-			return valid;
-		}
-
 		dialog = $("#dialog-form").dialog({
 			autoOpen : false,
 			height : 500,
@@ -265,46 +229,6 @@
 	}
 </script>
 <div class = "container">
-
-<!-- 
-	<div id="dialog-form">
-		<p class="validateTips"></p>
-		<div class="form-group row">
-		<form id="form1">
-			<table>
-					<tr>
-						<td id="id">이름</td>
-						<td><input readonly type="text" name="id" id="name" class="text ui-widget-content ui-corner-all">
-						</td>
-					</tr>
-					<tr>
-						<td id="password">비밀번호</td>
-						<td><input type="password" name="password" maxlength="50">
-						</td>
-					</tr>
-
-					<tr>
-						<td id="password">비밀번호 확인</td>
-						<td><input type="password" name="passwordcheck"	maxlength="50">
-						</td>
-					</tr>
-					<tr>
-						<td>default tablespace</td>
-						<td><select name="defaultTableSpace">
-						<c:forEach var="list" items="${tableSpaceList}">
-							<option value="${list.tablespaceName}">${list.tablespaceName}</option>
-						</c:forEach>
-						</select>
-					</tr>
-					<tr>
-						<td><input type="radio" name="accountStatus" value="lock" checked/>lock</td>
-						<td><input type="radio" name="accountStatus" value="unlock"/>unlock</td>
-					</tr>
-			</table>
-		</form>
-	</div>
-	</div>
- -->
 	<div class = "row justify-content-between">
 		<div class = "col">
 			<h2>User 목록</h2>
@@ -370,11 +294,11 @@
 						</div>
 						<div class = "form-group">
 							비밀번호:
-							<input type="password" name="password" id="modalPassword" placeholder="PASSWORD" maxlength="50" class = "form-control" required>
+							<input type="password" name="password" placeholder="PASSWORD" maxlength="50" class = "form-control" id="modalPassword" required>
 						</div>
 						<div class = "form-group">
 							비밀번호 체크:
-							<input type="password" name="passwordcheck" id="passwordcheck" placeholder="PASSWORD" maxlength="50" class = "form-control" required>
+							<input type="password" name="passwordcheck"	placeholder="PASSWORD" maxlength="50" class = "form-control" id="passwordcheck" required>
 							<span id = "passwordChkMsg"> </span>
 						</div>
 						<div class = "form-group">
