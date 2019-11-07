@@ -34,9 +34,16 @@ public class SQLController {
 	
 	@RequestMapping("/sqlIndex")
 	public String sqlIndex(Model model, HttpSession session) {
-		String schemaid = (String)session.getAttribute("schemaid");
 		ArrayList<String> schemaList = sqlService.getUserSchemaName(session);
 		model.addAttribute("schemaList", schemaList);
+		String schemaid = (String)session.getAttribute("schemaid");
+		
+		//localhost 사용하기 위한 부분
+//		ArrayList<String> schemaList = new ArrayList<String>();
+//		schemaList.add("hr");
+//		schemaList.add("scott");
+//		model.addAttribute("schemaList", schemaList);
+		
 		return "sql/sql_index";
 	}
 	@RequestMapping("/ShowData.do")
