@@ -112,7 +112,11 @@
 				
 				var formData = $("#form1").serializeObject();
 				console.log(formData);
+<<<<<<< HEAD
 				
+=======
+				$("#form1")[0].reset();
+>>>>>>> branch 'master' of https://github.com/sh910312/Dsup.git
 				$.ajax({
 					url : "users",
 					type : 'PUT',
