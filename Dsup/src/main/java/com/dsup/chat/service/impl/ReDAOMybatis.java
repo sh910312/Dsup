@@ -32,5 +32,16 @@ public class ReDAOMybatis {
 	public int RePagingList(ReVO vo) {
 		return mybatis.selectOne("ReDAO.repageList", vo);
 	}
+	// 댓글 삭제
+	public void delete(ReVO vo) {
+		mybatis.delete("ReDAO.deleteRe", vo);
+	}
+	
+	// 상세보기
+	public ReVO getRe(ReVO vo) {
+		return mybatis.selectOne("ReDAO.getRe",vo);
+	}
+	
+	
 	
 }

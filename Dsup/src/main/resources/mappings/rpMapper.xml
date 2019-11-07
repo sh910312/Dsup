@@ -1,65 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="ReDAO">
+<mapper namespace="RpDAO">
 	
-<!-- 상세내용  -->
-	<select id="getRe" parameterType="re" resultType="re">
-	
-		select re_id as "reId",
-				search_id as "searchId",
+<!-- 상세내용 -->
+	<select id="getRp" parameterType="rp"
+		resultType="rp">
+		select rp_id as "rpId",
 				user_id as "userId",
-				contents as "contents",
-				write_date as "writeDate"
-		from re
-		where re_id = #{reId}
-	
+				rp_user_id as "rpUserId",
+				rp_type as "rpType",
+				rp_date as "rpDate",
+				rp_contents as "rpContents"
+		from  rp
+		where rp_id = #{rpId}
 	</select>
 	
 	
-<!-- 댓글 등록  -->
-	<insert id="insertRe" parameterType="re">
-		<selectKey keyProperty="reId" resultType="int" order="BEFORE">
+	
+<!-- 신고하기  -->
+	<insert id="inRp" parameterType="rp">
+		<selectKey keyProperty="rpId" resultType="int" order="BEFORE">
 			select
-			NVL(max(re_id),0) +1 from re
+			NVL(max(rp_id),0) +1 from report
 			
 
 		</selectKey>
-		insert into re(	re_id
-						,search_id
+		insert into report(rp_id
 						,user_id
-		        		,contents
+						,rp_user_id
+						,rp_type
+		        		,rp_contents
 		)
 		
-		values( 	 #{reId}
-					,#{searchId}
+		values( 	 #{rpId}
 					,#{userId}
-					,#{contents}
+					,#{rpUserId}
+					,#{rpType}
+					,#{rpContents}
 		)
 
 	</insert>
 	
-
-<!-- 댓글 수정 -->
-<update id="updateRe" parameterType="re">
-	update re
-	<set>
-		<if test="contents != null and contents != ''">contents = #{contents</if>
-	</set>
-	where re_id = #{reId}
-</update>
-
-
-<!-- 댓글 삭제 -->
-
-<delete id="deleteRe" parameterType="re">
-	delete from re
-	where re_id = #{reId}
-</delete>
-
-
-<!-- http://egloos.zum.com/devfuner/v/4217660  삭제 할때 부모가 삭제 되면 자식들도 다 같이 삭제 할수있다.-->
-
 
 	
 <!-- paging 리스트 -->

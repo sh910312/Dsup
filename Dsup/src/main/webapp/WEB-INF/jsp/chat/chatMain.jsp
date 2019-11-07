@@ -20,9 +20,27 @@
 // 버튼 이벤트 기능
 $(function() {
 		
-	/* 내용 입력  */
+	sendchat(); // 채팅입력
+	
+	
 	
 });
+
+
+function sendchat() { // 채팅 입력
+	
+	$("#sendchatbtn").click(function(){
+		
+		$("#frm").attr("action", "컨트롤러 실행");
+		$("#frm").submit(); // 채팅을 입력했을때 DB로 저장한다.
+		
+	})
+	
+	
+}
+
+
+
 
 	$(document).ready(function() {
     	$("#sendBtn").click(function() {
@@ -74,9 +92,9 @@ function openButton(menu){ /*  버튼 새창 */
 	var popupY = (document.body.offsetHeight / 2) - (200/2);
 
 	if (menu == "0" || menu == 0){
-		window.open("SearchMap","검색하기",'width=800px, height=300px, left='+ popupX + ', top='+ popupY);
+		window.open("SearchMap","검색하기",'width=800px, height=400px, left='+ popupX + ', top='+ popupY);
 	}else if(menu == "1" || menu == 1){
-		window.open("insertSearchForm","등록하기",'width=800px, height=300px, left='+ popupX + ', top='+ popupY )
+		window.open("insertSearchForm","등록하기",'width=800px, height=350px, left='+ popupX + ', top='+ popupY )
 	}else if(menu == "2" || menu == 2) {
 		window.open("","",'width=800px, height=300px, left='+ popupX + ', top='+ popupY )
 	}
@@ -87,6 +105,7 @@ function openButton(menu){ /*  버튼 새창 */
 
 </head>
 <body>
+<form id="frm">
 	<div class="container">
 		<div class="container bootstrap snippet">
 			<div class="row">
@@ -152,18 +171,7 @@ function openButton(menu){ /*  버튼 새창 */
 				</div>
 			</div>
 		</div>
-<!-- 		<div class="alert alert-success" id="successMessage"
-			style="display: none;">
-			<strong>메세지 전송에 성공하였습니다.</strong>
-		</div>
-		<div class="alert alert-danger" id="dangerMessage"
-			style="display: none;">
-			<strong>이름과 내용을 모두 입력해주세요.</strong>
-		</div>
-		<div class="alert alert-warning" id="warningMessage"
-			style="display: none;">
-			<strong>데이터베이스 오류가 발생했습니다.</strong>
-		</div> -->
 	</div>
+</form>
 </body>
 </html>

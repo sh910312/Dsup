@@ -74,7 +74,7 @@ public class BackupServiceImpl implements BackupService {
 		String time1 = format1.format(time);
 		vo.setBackupDate(format2.format(time));
 		
-		File directory = new File("D:\\dsupBackup\\backup");
+		File directory = new File("D:\\dsup\\backup");
 		if(!directory.exists()) directory.mkdirs();
 		// 경로 없으면 생성
 		

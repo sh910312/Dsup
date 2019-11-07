@@ -58,7 +58,7 @@ public class BackupController {
 	public void downloadBackupResource(HttpServletRequest request,
             						   HttpServletResponse response,
             						   @PathVariable("backupFileNm") String fileName) {
-		Path path = Paths.get("D:\\dsupBackup",fileName);
+		Path path = Paths.get("D:\\dsup\\backup",fileName);
 		if(Files.exists(path)) {
             response.setContentType("application/octet-stream;charset=UTF-8"); // 파일의 타입
             response.addHeader("Content-Disposition", "attachment; filename="+fileName);

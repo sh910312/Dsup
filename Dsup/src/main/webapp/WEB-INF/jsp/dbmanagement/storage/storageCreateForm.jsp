@@ -13,12 +13,14 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
+	<!-- 토스트 css -->
+	<link rel = "stylesheet" href="./resources/css/Toast.css">
 	<script>
 	$(function(){
 		$("#btn").click(formCheck);
 		$("#addbtn").click(add);
 		tsNameChkFunction();
-		$("#alert").hide();
+		$("#nameMsg").hide();
 		filenameInput();
 	});
 	
@@ -26,42 +28,47 @@
 	function formCheck(){
 		var tsname = $("#tablespaceName").val();
 		var datafile = "";
+		var err = 0;
 		
 		$("tbody>tr").each(function(){
 			var filename = $(this).find("#filename").val();
 			var size = $(this).find("#size").val();
 			var sizeunit = $(this).find("#sizeunit").val();
 			
-			if(isNaN(size)){
-				alert("용량은 숫자만 입력할 수 있습니다!");
-				return false;
+			if(isNaN(size) || size <= 0) {
+				console.log("error!");
+				$('#sizeError').fadeIn(400).delay(1000).fadeOut(400);
+				err = err + 1;
+			} else {
+				datafile += " '" +  "${sessionScope.member.userId}" + "_" + filename + ".dbf' size " + size + sizeunit + ","
 			}
-			
-			datafile += " '" +  "${sessionScope.member.userId}" + "_" + filename + ".dbf' size " + size + sizeunit + ","
-			
-			console.log(datafile);
 		});
+		
 		datafile = datafile.substring(0, datafile.length-1); // 맨 마지막 , 제거
 		// 데이터파일 입력한 값을 '데이터파일명.dbf' size 0m, ... 로 양식에 맞게 만들어 datafile의 값에 저장
 		
 		var sql = "create tablespace " + tsname + " datafile " + datafile
 				+ " LOGGING EXTENT MANAGEMENT LOCAL SEGMENT SPACE MANAGEMENT AUTO";
 		$("#sql").val(sql);
+		
+		if (err == 0)
+			$("#frm").submit();
 	}
 	
 	// 데이터파일 추가
 	function add(){
-		var $filename = $("<input>").attr("type","text").attr("id","filename").attr("required",true).attr("class", "form-control").attr("readonly", true); // 이름 입력칸
-		var $size = $("<input>").attr("type","text").attr("id","size").attr("required",true).attr("class", "form-control"); // 용량 입력칸
+		var $filename = $("<input>").attr("type","text").attr("id","filename").attr("required",true).attr("class", "form-control-plaintext").attr("readonly", true); // 이름 입력칸
+		var $size = $("<input>").attr("type","text").attr("id","size").attr("required",true).addClass("form-control"); // 용량 입력칸
 		var $sizeunit = $("<select>").attr("id","sizeunit").attr("class", "form-control")
 									.append($("<option>").val("M").text("MB"))
 									.append($("<option>").val("G").text("GB"))
 									.append($("<option>").val("T").text("TB")); // 용량 단위
 		var $btn = $("<input>").attr("type","button").attr("id","delbtn").val("삭제")
-							.click(function(){	$(this).parent().parent().remove();
+								.click(function(){
+												$(this).parent().parent().remove();
 												filenameInput();
 											})
-							.attr("class", "btn btn-outline-secondary"); // 삭제 버튼
+								.attr("class", "btn btn-outline-secondary"); // 삭제 버튼
 		
 		var $tr = $("<tr>")
 						.append($("<td>").append($filename))
@@ -83,17 +90,18 @@
 			var name = $("#tablespaceName").val();
 			name = name.toUpperCase();
 			$("#tablespaceName").val(name);
+			$("#tablespaceName").addClass("is-invalid");
 			
 			// 아이디를 입력하지 않은 경우
 			if(name == '') { 
-				$("#alert").show().text("이름을 입력해주세요");
+				$("#nameMsg").show().text("이름을 입력해주세요");
 				$("#btn").attr("disabled", true);
 				return;
 			}
 			
 			// [윤정1101] 이름 첫 글자 영어만
 			if(!name.substr(0,1).match(/[A-Z]/)) {
-				$("#alert").show().text("이름 첫 글자는 영어만 입력할 수 있습니다");
+				$("#nameMsg").show().text("이름 첫 글자는 영어만 입력할 수 있습니다");
 				$("#btn").attr("disabled", true);
 				return;
 			}
@@ -102,12 +110,12 @@
 			var err = 0;
 			var cnt = name.length;
 			for(i = 0; i < cnt; i ++) {
-				var chk = name.substr(i, i+1);
+				var chk = name.charAt(i);
 				if (!chk.match(/[0-9]/) && !chk.match(/[A-Z]/) && chk != '_'){
 					err = err + 1;
 				}
 				if(err > 0) {
-					$("#alert").show().text("영어, 숫자, _만 입력할 수 있습니다");
+					$("#nameMsg").show().text("영어, 숫자, _만 입력할 수 있습니다");
 					$("#btn").attr("disabled", true);
 					return;
 				}
@@ -120,11 +128,12 @@
 				success : function(data) {
 					// 중복이면 0, 아니면 1
 					if(data == 0) { // 중복
-						$("#alert").show().text("사용할 수 없는 이름입니다");
+						$("#nameMsg").show().text("사용할 수 없는 이름입니다");
 						$("#btn").attr("disabled", true);
 					} else { // 중복x
-						$("#alert").hide();
+						$("#nameMsg").hide();
 						$("#btn").attr("disabled", false);
+						$("#tablespaceName").removeClass("is-invalid");
 					}
 				}
 			}) // ajax
@@ -138,7 +147,7 @@
 		var cnt = 1;
 		var name = $("#tablespaceName").val();
 		$("tbody>tr").each(function(){
-			$(this).find("#filename").val(name + "_" + cnt);
+			$(this).find("#filename").val("${sessionScope.member.userId}".toUpperCase() + "_" + name + "_" + cnt);
 			cnt++;
 		});
 	}
@@ -147,21 +156,18 @@
 <body>
 <%@include file="/WEB-INF/jsp/DBbar.jsp" %>
 <div class = "container">
-	<form onsubmit="return formCheck()" method = "post" action = "storageCreate">
+	<form method = "post" action = "storageCreate" id = "frm">
 	<input type = "hidden" id = "sql" name = "sql">
 		<div class ="row">
 			<h1>테이블 스페이스</h1>
 		</div>
 		<div class = "row">
-			<div class = "col-3">
-				 이름
-			</div>
+			<label for="tablespaceName" class="col-sm-3 col-form-label">이름</label>
 			<div class = "col-9">
-				<input type = "text" name = "tablespaceName" id = "tablespaceName" required
-				class = "form-control"> 
+				<input type = "text" name = "tablespaceName" id = "tablespaceName" required class = "form-control"> 
+				<div class="invalid-feedback" id = "nameMsg"></div>
 			</div>
 		</div>
-		<div class = "alert alert-info" role="alert" id = "alert"></div>
 		
 		<div class = "row">
 			<h1>데이터 파일</h1>
@@ -176,7 +182,7 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td><input type = "text" id = "filename" required class = "form-control" readonly></td>
+					<td><input type = "text" id = "filename" required class = "form-control-plaintext" readonly></td>
 					<td>
 						<div class = "row">
 						<div class = "col-9">
@@ -185,7 +191,6 @@
 						<div class = "col-3">
 						<select id = "sizeunit" class = "form-control">
 							<option value = "M">MB</option>
-							<option value = "K">KB</option>
 							<option value = "G">GB</option>
 							<option value = "T">TB</option>
 						</select>
@@ -197,10 +202,13 @@
 			</tbody>
 		</table>
 		<div class = "row">
-			<input type = "submit" id="btn" value = "생성" class = "btn btn-primary btn-block">
-			<input type = "button" id="back" value = "목록으로 돌아가기" class = "btn btn-light btn-block"
+			<input type = "button" id="btn" value = "생성" class = "btn btn-outline-info btn-block" onclick="formCheck()">
+			<input type = "button" id="back" value = "목록으로 돌아가기" class = "btn btn-block btn-outline-secondary"
 					onclick = 'history.back()'>
 		</div>
+		
+		<div class='yj_error' style='display:none' id="sizeError">용량은 0보다 큰 숫자만 입력할 수 있습니다!</div>
+		
 	</form>
 </div>
 </body>
