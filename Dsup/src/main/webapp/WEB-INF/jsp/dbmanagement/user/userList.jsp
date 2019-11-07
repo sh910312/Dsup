@@ -21,7 +21,7 @@
 	$(function() {
 		userList(); //userList조회
 		userUpdateForm(); //userUpdate수정팝업
-
+		formCheck(); //비밀번호체크
 		// serializeObject
 		$.fn.serializeObject = function() {
 			var o = {};
@@ -39,6 +39,26 @@
 			return o;
 		};
 	});
+	//비밀번호 입력확인
+	$(function(){
+		$("#passwordcheck,#modalPassword").keyup(function(){
+			if( $("#modalPassword").val() != "")
+				if( $("#modalPassword").val() == $("#passwordcheck").val()) { // 둘 다 똑같이 입력했으면
+					$("#passwordChkMsg").html("비밀번호가 일치합니다.").css("color", "green");
+					$("#passwordResult").val("true");
+				} else { // 다르게 입력했으면
+					$("#passwordChkMsg").html("비밀번호가 일치하지 않습니다.").css("color", "red");
+					$("#passwordResult").val("false");
+				}
+		});
+	});
+	function formCheck(){
+		if($("#passwordResult").val()=="false"){
+			alert("비밀번호를 확인하세요!");
+			return false;
+		}
+	}
+	
 	//목록조회요청
 	function userList() {
 		$.ajax({
@@ -100,11 +120,12 @@
 	// ↓ 수정 모달 새로 만든것
 	function userUpdate() {
 		$("._btnUpdate").click(function(){
+
 			var userId = $(this).closest('tr').find('#hidden_userId').val(); //선택한것에 val 값을 가져오겠다
 			$("#name").val(userId);
 			
 			// ↓ 모달에서 수정 버튼 눌렀을 때
-			$("#modalUpdBtn").click(function(){
+
 				var id = $("#name").val();
 				var password = $("#modalPassword").val();
 				var defaultTableSpace = $("#modalDefault").val();
@@ -112,11 +133,7 @@
 				
 				var formData = $("#form1").serializeObject();
 				console.log(formData);
-<<<<<<< HEAD
-				
-=======
 				$("#form1")[0].reset();
->>>>>>> branch 'master' of https://github.com/sh910312/Dsup.git
 				$.ajax({
 					url : "users",
 					type : 'PUT',
@@ -138,6 +155,11 @@
 	// ↓ 수정 다이얼로그
 	var dialog, form;
 	$(function() {
+		if (valid) {
+			if($("#password").val() != $("#passwordcheck").val()){
+				alert("비밀번호를 입력하세요!");
+				return 
+			}
 		// From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
 		emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
 		id = $("#id"), 
@@ -187,7 +209,7 @@
 			valid = valid && checkLength(temporaryTableSpace, "temporaryTableSpace", 6, 80); */
 
 			//valid = valid && checkRegexp( id, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
-			if (valid) {
+
 		/* 	    var id = $('input:text[name="id"]').val();
 				var password = $('input:password[name="password"]').val();
 				var defaultTableSpace = $('select[name="defaultTableSpace"]').val();
@@ -348,11 +370,12 @@
 						</div>
 						<div class = "form-group">
 							비밀번호:
-							<input type="password" name="password" maxlength="50" class = "form-control" id="modalPassword">
+							<input type="password" name="password" id="modalPassword" placeholder="PASSWORD" maxlength="50" class = "form-control" required>
 						</div>
 						<div class = "form-group">
 							비밀번호 체크:
-							<input type="password" name="passwordcheck"	maxlength="50" class = "form-control">
+							<input type="password" name="passwordcheck" id="passwordcheck" placeholder="PASSWORD" maxlength="50" class = "form-control" required>
+							<span id = "passwordChkMsg"> </span>
 						</div>
 						<div class = "form-group">
 							default tablespace:
