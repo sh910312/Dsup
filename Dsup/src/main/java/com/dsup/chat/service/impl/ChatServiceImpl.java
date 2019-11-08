@@ -12,23 +12,33 @@ import com.dsup.chat.service.ChatService;
 @Service
 public class ChatServiceImpl implements ChatService {
 
-	@Autowired ChatDAOMybatis chatDAOmybatis;
+	@Autowired
+	ChatDAOMybatis chatDAOmybatis;
+
 	
-	
-	//채팅 전송
-	@Override
-	public void insertChat(ChatVO vo) {
+	@Override // 채팅 전송
+	public int insertChat(ChatVO vo) {
 		// TODO Auto-generated method stub
-		chatDAOmybatis.insertChat(vo);
+		return chatDAOmybatis.insertChat(vo);
 	}
 
-	//채팅목록
-	@Override
+	
+	@Override // 채팅목록
 	public List<Map<String, Object>> ChatMap(ChatVO vo) {
 		// TODO Auto-generated method stub
 		return chatDAOmybatis.ChatMap(vo);
 	}
 
+	@Override // 리스트
+	public List<ChatVO> ChatList(ChatVO vo) {
+		// TODO Auto-generated method stub
+		return chatDAOmybatis.ChatList();
+	}
 
+	@Override // 상세보기
+	public ChatVO getChat(ChatVO vo) {
+		// TODO Auto-generated method stub
+		return chatDAOmybatis.getChat(vo);
+	}
 
 }

@@ -17,31 +17,6 @@
 
 <script>
 
-// 버튼 이벤트 기능
-$(function() {
-		
-	sendchat(); // 채팅입력
-	
-	
-	
-});
-
-
-function sendchat() { // 채팅 입력
-	
-	$("#sendchatbtn").click(function(){
-		
-		$("#frm").attr("action", "컨트롤러 실행");
-		$("#frm").submit(); // 채팅을 입력했을때 DB로 저장한다.
-		
-	})
-	
-	
-}
-
-
-
-
 	$(document).ready(function() {
     	$("#sendBtn").click(function() {
  			sendMessage();
@@ -64,12 +39,17 @@ function sendchat() { // 채팅 입력
     // 메시지 전송
     function sendMessage() {
 		sock.send($("#contents").val());
+		
 	}
     
     // 서버로부터 메시지를 받았을 때
     function onMessage(msg) {
 		var data = msg.data;
-		$("#chatList").append(data + "<br/>");
+		$("#chatList").append(data + "&nbsp;"
+		+ "<button type='button' class='btn btn-default btn-xs' onclick='openButton(2, this)'>" 
+		+ "신고" + "</button>"
+		+ "<hr>");
+		
 		$('#chatList').scrollTop($('#chatList')[0].scrollHeight); // 채팅 최신 상태 유지
 	}
     
@@ -86,7 +66,7 @@ function sendchat() { // 채팅 입력
 
 <script>
 
-function openButton(menu){ /*  버튼 새창 */
+function openButton(menu, a){ /*  버튼 새창 */
 	
 	var popupX = (document.body.offsetWidth / 2) - (100/2);
 	var popupY = (document.body.offsetHeight / 2) - (200/2);
@@ -96,7 +76,13 @@ function openButton(menu){ /*  버튼 새창 */
 	}else if(menu == "1" || menu == 1){
 		window.open("insertSearchForm","등록하기",'width=800px, height=350px, left='+ popupX + ', top='+ popupY )
 	}else if(menu == "2" || menu == 2) {
-		window.open("","",'width=800px, height=300px, left='+ popupX + ', top='+ popupY )
+		console.log(a)
+		var id = $(a).prev().val();
+		
+		var url = "getRp?chatId="+id;
+		var name = "채팅신고";
+		var option = 'width=800px, height=300px, left='+ popupX + ', top='+ popupY; 
+		window.open(url,name,option);
 	}
 
 }
@@ -114,7 +100,7 @@ function openButton(menu){ /*  버튼 새창 */
 						<div class="portlet-heading">
 							<div class="portlet-title">
 								<h3>
-									<i class="fa fa-circle text-green"></i>D-sup 실시간 전체채팅
+									<i class="fa fa-circle text-green"></i>D-sup 실시간 전체채팅 ${chat.chatId}
 								</h3>
 							</div>
 							<div class="portlet-title pull-right">
@@ -140,9 +126,9 @@ function openButton(menu){ /*  버튼 새창 */
 								<div class="row">
 									<div class="form-group col-xs-4">
 										<!-- 로그인을 하면 회원아이디로 대체 -->
-										<input type="hidden" id="nick" name="nick" value="${member.nickname }">
-										<input style="height: 40px;" type="button" name="nickname" id="nickname" 
-										class="form-control" placeholder="이름" maxlength="8" value="${member.nickname }님 환영합니다.">
+										<input id="nickname" type="hidden" value="${member.nickname }">
+										<input style="height: 40px;" name="nick" id="nick" 
+										class="form-control" placeholder="이름" maxlength="8" readonly value="${member.nickname }">
 									</div>
 
 									<div class="form-group col-xs-2 pull-right">
@@ -173,5 +159,15 @@ function openButton(menu){ /*  버튼 새창 */
 		</div>
 	</div>
 </form>
+
+
+<!-- <div class="pull-right"><iframe src="http://www.homejjang.com"  width="600" height="300"></iframe></div> -->
+
+
+<!-- <form id="frm2">	
+	<textarea id="contents" name="contents" placeholder="등록할 내용"></textarea>
+
+	<button type="button" id="inbtn">전송</button>
+</form>	 -->
 </body>
 </html>
