@@ -78,4 +78,8 @@ public class StorageServiceImpl implements StorageService {
 		return dao.serviceState(userId);
 	}
 
+	// [윤정 1108] 종량제 이용량 조회
+	public UserTbspcTbVO getVolumn(UserTbspcTbVO vo) {
+		return dao.getVolumn(vo);
+	}
 }

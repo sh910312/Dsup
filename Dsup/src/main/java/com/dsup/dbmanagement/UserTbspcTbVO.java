@@ -8,5 +8,5 @@ import lombok.Data;
 public class UserTbspcTbVO {
 	private String tablespaceName;
 	private String userId;
-	private float volumn;
+	private double volumn;
 }

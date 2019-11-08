@@ -17,12 +17,18 @@
 	<link rel = "stylesheet" href="./resources/css/Toast.css">
 	<script>
 	$(function(){
+		// [윤정1109] 종량제
+		var service = 0;
+		var freeVolumn = 0;
+		
 		$("#btn").click(formCheck);
 		$("#addbtn").click(add);
 		tsNameChkFunction();
 		$("#nameMsg").hide();
 		filenameInput();
 		getVolumn();
+		serviceState(); // 이용중인 종량제 서비스 조회
+		getThisVolumn();
 	});
 	
 	// 제출 전 확인
@@ -36,12 +42,12 @@
 			var size = $(this).find("#size").val();
 			var sizeunit = $(this).find("#sizeunit").val();
 			
-			if(isNaN(size) || size <= 0) {
+			if( isNaN(size) || size <= 0 || (parseInt(size)-parseFloat(size)!=0?true:false) ) {
 				console.log("error!");
 				$('#sizeError').fadeIn(400).delay(1000).fadeOut(400);
 				err = err + 1;
 			} else {
-				datafile += " '" +  "${sessionScope.member.userId}" + "_" + filename + ".dbf' size " + size + sizeunit + ","
+				datafile += " '" + filename + ".dbf' size " + size + sizeunit + ","
 			}
 		});
 		
@@ -59,7 +65,7 @@
 	// 데이터파일 추가
 	function add(){
 		var $filename = $("<input>").attr("type","text").attr("id","filename").attr("required",true).attr("class", "form-control-plaintext").attr("readonly", true); // 이름 입력칸
-		var $size = $("<input>").attr("type","text").attr("id","size").attr("required",true).addClass("form-control"); // 용량 입력칸
+		var $size = $("<input>").attr("type","text").attr("id","size").attr("required",true).addClass("yj_size form-control"); // 용량 입력칸
 		var $sizeunit = $("<select>").attr("id","sizeunit").attr("class", "form-control")
 									.append($("<option>").val("M").text("MB"))
 									.append($("<option>").val("G").text("GB")); // 용량 단위
@@ -152,22 +158,60 @@
 		});
 	}
 	
-	// [윤정1107] 남은 종량제 용량 요청
+	// [윤정1109] 이용중인 종량제 서비스 조회
+	function serviceState() {
+		$.ajax({
+			url : 'serviceState',
+			type : 'GET',
+			dataType : "json",
+			success : function(data){
+				service = (data.payItem).split("GB")[0]
+				$("#service").text( service );
+				getVolumn();
+			}
+		})
+	}
+	
+	// [윤정1108] 종량제 이용량 조회
 	function getVolumn(){
 		var userId = "${sessionScope.member.userId}";
-		console.log(userId);
-		
+		var tablespaceName = "${ts.tablespaceName}";
 		$.ajax({
-			url : "volumn",
+			url : "volumn?userId=" + userId + "&tablespaceName=" + tablespaceName,
 			type : "GET",
-			dataType : "json",
-			data: JSON.stringify({ userId: userId }),
-		    contentType: 'application/json',
 			success : function(data){
-				console.log(data)
+				$("#volumn").text((data.volumn));
+				freeVolumn = ( service - (data.volumn) ) * 1024; // 단위 MB
+				$("#freeVolumn").text(freeVolumn);
+				//getThisVolumn();
 			},
 			error : function(xhr, status, message) {
 				alert(" status: " + status + "er:" + message);
+			}
+		});
+	}
+	
+	// [윤정 1109] 이 테이블스페이스의 용량
+	function getThisVolumn(){
+		var thisVolumn = 0;
+		
+		$(".yj_size").blur(function(){
+			$("tbody>tr").each(function(){
+				var size = parseInt($(this).find("td:eq(1)").text());
+				var unit = $(this).find("td:eq(2)").text();
+				if(unit == 'G')
+					size = size * 1024;
+				thisVolumn += size;
+				});
+			if(isNaN(thisVolumn)) thisVollumn = 0;
+			$("#thisVolumn").text(thisVolumn);
+			
+			if(thisVolumn > freeVolumn) {
+				//console.log("용량 초과!!");
+				$('#volumnError').fadeIn(400).delay(1000).fadeOut(400);
+				$("#btn").attr("disabled", true);
+			} else {
+				$("#btn").attr("disabled", false);
 			}
 		});
 	}
@@ -178,6 +222,7 @@
 <div class = "container">
 	<form method = "post" action = "storageCreate" id = "frm">
 	<input type = "hidden" id = "sql" name = "sql">
+	<input type = "hidden" name = "userId" value = "${sessionScope.member.userId}">
 		<div class ="row">
 			<h1>테이블 스페이스</h1>
 		</div>
@@ -188,6 +233,13 @@
 				<div class="invalid-feedback" id = "nameMsg"></div>
 			</div>
 		</div>
+		
+		<br><br>
+		<h1>종량제 정보</h1>
+		종량제 이용량 : <span id = "volumn"></span> / <span id = "service"></span> GB <br>
+		이용가능한 용량 : <span id = "freeVolumn"></span> MB<br>
+		현제 테이블스페이스 용량 : <span id = "thisVolumn"></span> MB<br>
+		<br><br>
 		
 		<div class = "row">
 			<h1>데이터 파일</h1>
@@ -206,7 +258,7 @@
 					<td>
 						<div class = "row">
 						<div class = "col-9">
-							<input type = "text" id = "size" required class = "form-control">
+							<input type = "text" id = "size" required class = "yj_size form-control">
 						</div>
 						<div class = "col-3">
 						<select id = "sizeunit" class = "form-control">

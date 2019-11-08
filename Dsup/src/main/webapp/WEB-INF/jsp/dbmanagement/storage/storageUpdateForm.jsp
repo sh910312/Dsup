@@ -19,6 +19,9 @@
 	<script>
 	var sql = "";
 	var oldName = "${ts.tablespaceName}";
+	// [윤정1109] 종량제
+	var service = 0;
+	var freeVolumn = 0;
 	
 	$(function(){
 		startChk();
@@ -29,6 +32,7 @@
 		$("#addbtn").click(trAdd); // 데이터파일 추가 버튼 클릭
 		$(".yj_trupd").click(trEdit); // 용량수정
 		$("#nameMsg").hide(); // 이름 유효성검사 경고 메시지
+		serviceState(); // 이용중인 종량제 서비스 조회
 	});
 	
 	// [윤정 1104] 온라인/오프라인/리드온리 상태 체크
@@ -108,7 +112,7 @@
 		var sizeunit = $("#newSizeunit").val();
 		
 		// ↓ 용량 제대로 입력했는지 확인
-		if(isNaN(size) || size <= 0) {
+		if( isNaN(size) || size <= 0 || (parseInt(size)-parseFloat(size)!=0?true:false) ) {
 			$('#sizeError').fadeIn(400).delay(1000).fadeOut(400);
 		} else {
 			$("#addbtn").attr("disabled",false); // tr 추가 버튼 활성화
@@ -123,6 +127,7 @@
 								.append( $("<td>").append( $("<input>").attr("type", "button").val("용량수정").addClass("yj_trupd btn btn-outline-info").click(trEdit) ) 
 											);
 			$("tbody").append($tr);
+			getThisVolumn();
 		}
 	}
 	
@@ -145,7 +150,7 @@
 							.append( $sizeunit );
 		$tr.find("td:eq(3)").empty()
 							.append( $("<input>").attr("type","button").attr("id","updOk").val("수정완료").addClass("btn btn-outline-info") )
-							.append( $("<input>").attr("type","button").attr("id","updCancel").val("취소하기").addClass("btn btn-outline-secondary") );
+							.append( $("<input>").attr("type","button").attr("id","updCancel").val("취소").addClass("btn btn-outline-secondary") );
 
 		$("#updOk").click(trEditOk); // 수정 완료
 		// ↓ 수정 취소
@@ -169,7 +174,7 @@
 		var filename = $tr.find("td:eq(0)").text();
 		
 		// ↓ 용량 제대로 입력했는지 확인
-		if(isNaN(size) || size <= 0) {
+		if( isNaN(size) || size <= 0 || (parseInt(size)-parseFloat(size)!=0?true:false) ) {
 			$('#sizeError').fadeIn(400).delay(1000).fadeOut(400);
 		} else {
 			$(".yj_trupd").attr("disabled", false); // 다른 행의 '용량수정' 버튼 활성화
@@ -182,6 +187,7 @@
 								.append( $("<input>").attr("type", "button").val("용량수정").attr("class", "yj_trupd btn btn-outline-info").click(trEdit) );
 		
 			sql += "ALTER DATABASE DATAFILE '" + filename + "' RESIZE " + size + sizeunit + ";";
+			getThisVolumn();
 		}
 	}
 	
@@ -258,6 +264,61 @@
 			}) // ajax
 		}); // .blur(function)
 	} // tsNameChkFunction
+
+
+	// [윤정1109] 이용중인 종량제 서비스 조회
+	function serviceState() {
+		$.ajax({
+			url : 'serviceState',
+			type : 'GET',
+			dataType : "json",
+			success : function(data){
+				service = (data.payItem).split("GB")[0]
+				$("#service").text( service );
+				getVolumn();
+			}
+		})
+	}
+	
+	// [윤정1108] 종량제 이용량 조회
+	function getVolumn(){
+		var userId = "${sessionScope.member.userId}";
+		var tablespaceName = "${ts.tablespaceName}";
+		$.ajax({
+			url : "volumn?userId=" + userId + "&tablespaceName=" + tablespaceName,
+			type : "GET",
+			success : function(data){
+				$("#volumn").text((data.volumn));
+				freeVolumn = ( service - (data.volumn) ) * 1024; // 단위 MB
+				$("#freeVolumn").text(freeVolumn);
+				getThisVolumn();
+			},
+			error : function(xhr, status, message) {
+				alert(" status: " + status + "er:" + message);
+			}
+		});
+	}
+	
+	// [윤정 1109] 이 테이블스페이스의 용량
+	function getThisVolumn(){
+		var thisVolumn = 0;
+		$("tbody>tr").each(function(){
+			var size = parseInt($(this).find("td:eq(1)").text());
+			var unit = $(this).find("td:eq(2)").text();
+			if(unit == 'G')
+				size = size * 1024;
+			thisVolumn += size;
+			});
+		$("#thisVolumn").text(thisVolumn);
+		
+		if(thisVolumn > freeVolumn) {
+			console.log("용량 초과!!");
+			$('#volumnError').fadeIn(400).delay(1000).fadeOut(400);
+			$("#updbtn").attr("disabled", true);
+		} else {
+			$("#updbtn").attr("disabled", false);
+		}
+	}
 	</script>
 </head>
 <body>
@@ -302,7 +363,14 @@
 		</div>
 	</div>
 	
-	<br><br><br>
+	<br><br>
+	
+	<h1>종량제 정보</h1>
+	종량제 이용량 : <span id = "volumn"></span> / <span id = "service"></span> GB <br>
+	이용가능한 용량 : <span id = "freeVolumn"></span> MB<br>
+	현제 테이블스페이스 용량 : <span id = "thisVolumn"></span> MB<br>
+	
+	<br><br>
 	
 	<div class = "row">
 		<div class = "col">
@@ -338,7 +406,8 @@
 		</table>
 	</div>
 	
-<div class='yj_error' style='display:none' id="sizeError">용량은 0보다 큰 숫자만 입력할 수 있습니다!</div>
+<div class='yj_error' style='display:none' id="sizeError">용량은 0보다 큰 정수만 입력할 수 있습니다!</div>
+<div class='yj_error' style='display:none' id="volumnError">이용가능한 용량을 초과했습니다!</div>
 	
 	<div class = "row">
 		<input type = "button" id = "updbtn" value = "수정 완료" class = "btn btn-outline-info btn-block">

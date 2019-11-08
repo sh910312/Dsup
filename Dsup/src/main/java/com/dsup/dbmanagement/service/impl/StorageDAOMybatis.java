@@ -66,4 +66,9 @@ public class StorageDAOMybatis {
 	public void recordVolumn (String tablespaceName) {
 		mybatis.insert("StorageDAO.recordVolumn", tablespaceName);
 	}
+	
+	// [윤정 1108] 종량제 이용량(전체 테이블스페이스 용량) 조회
+	public UserTbspcTbVO getVolumn(UserTbspcTbVO vo) {
+		return mybatis.selectOne("StorageDAO.getVolumn", vo);
+	}
 }

@@ -154,8 +154,7 @@ public class StorageController {
 	// [윤정1107] 이용중인 용량
 	@RequestMapping(value = "/volumn", method = RequestMethod.GET)
 	@ResponseBody
-	public float getVolumn(@RequestBody UserTbspcTbVO vo) {
-		System.out.println(vo);
-		return 0;
+	public UserTbspcTbVO getVolumn(UserTbspcTbVO vo) {
+		return storageService.getVolumn(vo);
 	}
 }

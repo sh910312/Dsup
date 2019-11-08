@@ -105,7 +105,7 @@
 	
 	// [윤정1105] 삭제시 테이블스페이스명 다시 입력
 	function delCheck(){
-		$("#delCheck").addClass("is-invalid").val("");
+		$("#delCheck").addClass("is-invalid").val("").focus();
 		$("#delbtn").attr("disabled", true);
 		
 		$("#delCheck").keyup(function(){			
