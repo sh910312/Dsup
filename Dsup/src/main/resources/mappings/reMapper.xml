@@ -44,7 +44,7 @@
 <update id="updateRe" parameterType="re">
 	update re
 	<set>
-		<if test="contents != null and contents != ''">contents = #{contents</if>
+		<if test="contents != null and contents != ''">contents = #{contents}</if>
 	</set>
 	where re_id = #{reId}
 </update>

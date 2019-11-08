@@ -15,5 +15,9 @@ public class SchemaServiceImpl implements SchemaService{
 	public SchemaVO serviceSchemaList(SchemaVO vo) {
 		return schemaDAO.serviceSchemaList(vo);
 	}
+	@Override
+	public SchemaVO serviceSchemaList2(SchemaVO vo) {
+		return schemaDAO.serviceSchemaList2(vo);
+	}
 	
 }

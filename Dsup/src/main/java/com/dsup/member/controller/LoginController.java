@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.dsup.member.MemberVO;
 import com.dsup.member.service.MemberService;
+import com.dsup.pay.PayVO;
+import com.dsup.pay.service.PayService;
 
 @Controller
 public class LoginController {
@@ -33,6 +35,7 @@ public class LoginController {
 			//세션에 저장 목록으로 페이지이동
 			session.setAttribute("member", member);
 			session.setAttribute("userId", member.getUserId());
+			session.setAttribute("payService", member.getPayService());
 			return "redirect:main";
 		}
 		//로컬 사용시 해야될 부분 2019.11.01 - 이재문

@@ -16,4 +16,7 @@ public class SchemaDAOMybatis {
 	public SchemaVO serviceSchemaList(SchemaVO vo) {
 		return mybatis.selectOne("SchemaDAO.serviceSchemaList", vo);
 	}
+	public SchemaVO serviceSchemaList2(SchemaVO vo) {
+		return mybatis.selectOne("SchemaDAO.serviceSchemaList2", vo);
+	}
 }

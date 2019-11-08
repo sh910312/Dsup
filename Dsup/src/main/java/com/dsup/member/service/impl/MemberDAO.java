@@ -31,7 +31,10 @@ public class MemberDAO {
 	public MemberVO getUserId(MemberVO member) {
 		return mybatis.selectOne("MemberDAO.getUserId", member);
 	}
-
+	
+	public MemberVO getPayService(MemberVO member) {
+		return mybatis.selectOne("MemberDAO.getPayService", member);
+	}
 	// 등록
 	public int insertMember(MemberVO dto) {
 		System.out.println("mybatis 사용자 등록");

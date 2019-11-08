@@ -16,4 +16,12 @@ public class PayDAO {
 		System.out.println("mybatis 결제 등록");
 		return mybatis.insert("PayDAO.insertPay", dto);
 	} 
+	
+	public PayVO getCancelYn(PayVO pay) {
+		return mybatis.selectOne("PayDAO.getCancelYn", pay);
+	}
+	
+	public PayVO getPay(PayVO pay) {
+		return mybatis.selectOne("PayDAO.getPay", pay);
+	}
 }

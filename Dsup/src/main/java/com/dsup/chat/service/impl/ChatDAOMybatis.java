@@ -13,18 +13,26 @@ import com.dsup.chat.ChatVO;
 @Repository
 public class ChatDAOMybatis {
 
-	@Resource(name="sqlSessionTemplate")
+	@Resource(name = "sqlSessionTemplate")
 	SqlSessionTemplate mybatis;
 
 	// 채팅전송
-	public void insertChat(ChatVO vo) {
-		System.out.println("mybatis Proc 채팅전송 실행");
-		mybatis.insert("ChatDAO.insertChatProc", vo);
+	public int insertChat(ChatVO vo) {
+		return mybatis.insert("ChatDAO.insertChat", vo);
+	}
+
+	// 상세보기
+	public ChatVO getChat(ChatVO vo) {
+		return mybatis.selectOne("ChatDAO.getChat", vo);
 	}
 
 	// 채팅목록
 	public List<Map<String, Object>> ChatMap(ChatVO vo) {
 		return mybatis.selectList("ChatDAO.chatMap", vo);
+	}
+	// 채팅목록2
+	public List<ChatVO> ChatList() {
+		return mybatis.selectList("ChatDAO.ChatList");
 	}
 
 }

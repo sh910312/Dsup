@@ -90,8 +90,6 @@ function insert() {
 										</c:if> 
 										
 										<a href="getSearch?searchId=${search.searchId }"> ${search.title }</a>
-										${search.userId }
-										${search.writeDate }
 										</div>
 										</c:forEach>
 

@@ -20,5 +20,7 @@ public interface ReService {
 	// 상세보기
 	ReVO getRe(ReVO vo);
 	
+	// 댓글 수정 
+	void updateRe(ReVO vo);
 	
 }

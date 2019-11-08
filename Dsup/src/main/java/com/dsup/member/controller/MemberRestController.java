@@ -29,7 +29,6 @@ public class MemberRestController {
 			,method = RequestMethod.POST		
 			,consumes="application/json"	)	//넘겨받는모든값이 제이슨	//제이슨들어가면 반드시@RequestBody써줘야함
 	public Map insertMember(@RequestBody MemberVO vo, Model model) {
-		
 		System.out.println(vo.getUserId());
 		System.out.println(vo.getPassword());
 		

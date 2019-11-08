@@ -26,11 +26,13 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
 
 		// HttpSession에 저장된 이용자의 닉네임을 추출하는경우
 		String id = (String)req.getSession().getAttribute("userId");
+
+		
 		attributes.put("userId", id);
 		
 		
 		System.out.println("httpSession에 저장된 ID : "+ id);
-
+		
 		return super.beforeHandshake(request, response, wsHandler, attributes);
 	}
 

@@ -18,7 +18,8 @@ public class PayServiceImpl implements PayService {
 
 	@Override
 	public PayVO getPay(PayVO vo) {
-		// TODO Auto-generated method stub
-		return null;
+		return PayDAO.getPay(vo);
 	}
+	
+	
 }
