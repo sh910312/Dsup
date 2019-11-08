@@ -20,7 +20,7 @@
 	var sql = "";
 	var oldName = "${ts.tablespaceName}";
 	// [윤정1109] 종량제
-	var service = 0;
+	var service = "${member.payItem}".split("GB")[0];
 	var freeVolumn = 0;
 	
 	$(function(){
@@ -32,7 +32,7 @@
 		$("#addbtn").click(trAdd); // 데이터파일 추가 버튼 클릭
 		$(".yj_trupd").click(trEdit); // 용량수정
 		$("#nameMsg").hide(); // 이름 유효성검사 경고 메시지
-		serviceState(); // 이용중인 종량제 서비스 조회
+		getVolumn(); // 이용가능한 용량 조회
 	});
 	
 	// [윤정 1104] 온라인/오프라인/리드온리 상태 체크
@@ -264,21 +264,6 @@
 			}) // ajax
 		}); // .blur(function)
 	} // tsNameChkFunction
-
-
-	// [윤정1109] 이용중인 종량제 서비스 조회
-	function serviceState() {
-		$.ajax({
-			url : 'serviceState',
-			type : 'GET',
-			dataType : "json",
-			success : function(data){
-				service = (data.payItem).split("GB")[0]
-				$("#service").text( service );
-				getVolumn();
-			}
-		})
-	}
 	
 	// [윤정1108] 종량제 이용량 조회
 	function getVolumn(){
@@ -289,6 +274,7 @@
 			type : "GET",
 			success : function(data){
 				$("#volumn").text((data.volumn));
+				console.log(service);
 				freeVolumn = ( service - (data.volumn) ) * 1024; // 단위 MB
 				$("#freeVolumn").text(freeVolumn);
 				getThisVolumn();
@@ -366,7 +352,7 @@
 	<br><br>
 	
 	<h1>종량제 정보</h1>
-	종량제 이용량 : <span id = "volumn"></span> / <span id = "service"></span> GB <br>
+	종량제 이용량 : <span id = "volumn"></span> / ${member.payItem} <br>
 	이용가능한 용량 : <span id = "freeVolumn"></span> MB<br>
 	현제 테이블스페이스 용량 : <span id = "thisVolumn"></span> MB<br>
 	
@@ -412,7 +398,8 @@
 	<div class = "row">
 		<input type = "button" id = "updbtn" value = "수정 완료" class = "btn btn-outline-info btn-block">
 		<input type = "button" id="back" value = "목록으로 돌아가기" class = "btn btn-outline-secondary btn-block"
-					onclick = 'history.back()'>
+				onclick = "location.href='./storageList'">
+	
 	</div>
 </form>
 </div>

@@ -16,18 +16,16 @@
 	<!-- 토스트 css -->
 	<link rel = "stylesheet" href="./resources/css/Toast.css">
 	<script>
+	// [윤정1109] 종량제
+	var service = "${member.payItem}".split("GB")[0];
+	var freeVolumn = 0;
 	$(function(){
-		// [윤정1109] 종량제
-		var service = 0;
-		var freeVolumn = 0;
-		
 		$("#btn").click(formCheck);
 		$("#addbtn").click(add);
 		tsNameChkFunction();
 		$("#nameMsg").hide();
 		filenameInput();
 		getVolumn();
-		serviceState(); // 이용중인 종량제 서비스 조회
 		getThisVolumn();
 	});
 	
@@ -36,6 +34,11 @@
 		var tsname = $("#tablespaceName").val();
 		var datafile = "";
 		var err = 0;
+		
+		if(tsname == "") {
+			$('#tsnameError').fadeIn(400).delay(1000).fadeOut(400);
+			return false;
+		}
 		
 		$("tbody>tr").each(function(){
 			var filename = $(this).find("#filename").val();
@@ -66,7 +69,7 @@
 	function add(){
 		var $filename = $("<input>").attr("type","text").attr("id","filename").attr("required",true).attr("class", "form-control-plaintext").attr("readonly", true); // 이름 입력칸
 		var $size = $("<input>").attr("type","text").attr("id","size").attr("required",true).addClass("yj_size form-control"); // 용량 입력칸
-		var $sizeunit = $("<select>").attr("id","sizeunit").attr("class", "form-control")
+		var $sizeunit = $("<select>").attr("id","sizeunit").attr("class", "form-control yj_size")
 									.append($("<option>").val("M").text("MB"))
 									.append($("<option>").val("G").text("GB")); // 용량 단위
 		var $btn = $("<input>").attr("type","button").attr("id","delbtn").val("삭제")
@@ -158,20 +161,6 @@
 		});
 	}
 	
-	// [윤정1109] 이용중인 종량제 서비스 조회
-	function serviceState() {
-		$.ajax({
-			url : 'serviceState',
-			type : 'GET',
-			dataType : "json",
-			success : function(data){
-				service = (data.payItem).split("GB")[0]
-				$("#service").text( service );
-				getVolumn();
-			}
-		})
-	}
-	
 	// [윤정1108] 종량제 이용량 조회
 	function getVolumn(){
 		var userId = "${sessionScope.member.userId}";
@@ -193,17 +182,17 @@
 	
 	// [윤정 1109] 이 테이블스페이스의 용량
 	function getThisVolumn(){
-		var thisVolumn = 0;
-		
-		$(".yj_size").blur(function(){
+		$(".yj_size").change(function(){
+			var thisVolumn = 0;
 			$("tbody>tr").each(function(){
-				var size = parseInt($(this).find("td:eq(1)").text());
-				var unit = $(this).find("td:eq(2)").text();
+				var size = parseInt( $(this).find("#size").val() );
+				var unit = $(this).find("#sizeunit").val();
+				console.log(unit);
 				if(unit == 'G')
 					size = size * 1024;
 				thisVolumn += size;
-				});
-			if(isNaN(thisVolumn)) thisVollumn = 0;
+				}); // tbody>tr
+			console.log(thisVolumn);
 			$("#thisVolumn").text(thisVolumn);
 			
 			if(thisVolumn > freeVolumn) {
@@ -213,7 +202,7 @@
 			} else {
 				$("#btn").attr("disabled", false);
 			}
-		});
+		}); // yj_size
 	}
 	</script>
 </head>
@@ -236,9 +225,9 @@
 		
 		<br><br>
 		<h1>종량제 정보</h1>
-		종량제 이용량 : <span id = "volumn"></span> / <span id = "service"></span> GB <br>
+		종량제 이용량 : <span id = "volumn"></span> / ${member.payItem} <br>
 		이용가능한 용량 : <span id = "freeVolumn"></span> MB<br>
-		현제 테이블스페이스 용량 : <span id = "thisVolumn"></span> MB<br>
+		현제 테이블스페이스 용량 : <span id = "thisVolumn">0</span> MB<br>
 		<br><br>
 		
 		<div class = "row">
@@ -261,7 +250,7 @@
 							<input type = "text" id = "size" required class = "yj_size form-control">
 						</div>
 						<div class = "col-3">
-						<select id = "sizeunit" class = "form-control">
+						<select id = "sizeunit" class = "yj_size form-control">
 							<option value = "M">MB</option>
 							<option value = "G">GB</option>
 						</select>
@@ -279,6 +268,7 @@
 		</div>
 		
 		<div class='yj_error' style='display:none' id="sizeError">용량은 0보다 큰 숫자만 입력할 수 있습니다!</div>
+		<div class='yj_error' style='display:none' id="tsnameError">테이블스페이스 이름을 입력하세요!</div>
 		
 	</form>
 </div>
