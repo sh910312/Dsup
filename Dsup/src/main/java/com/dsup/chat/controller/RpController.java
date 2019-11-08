@@ -54,15 +54,11 @@ public class RpController {
 			System.out.println(revo);
 			model.addAttribute("re",reService.getRe(revo));
 		// 2번 채팅신고	
+		}else if(cvo.getChatId() != 0) {
+			model.addAttribute("rpType", 2);
+			System.out.println(cvo);
+			model.addAttribute("chat",chatService.getChat(cvo));
 		}
-		
-//		else {
-//			model.addAttribute("rpType", 2);
-//			System.out.println(cvo);
-//			model.addAttribute("chat",chatService.getChat(cvo));
-//		}
-		
-		
 		
 		
 		return "chat/report/inRp";

@@ -80,7 +80,8 @@ function updateRe() { // 댓글 업데이트
 	
 	
 	$("[name='updateReOk']").hide(); 		 // 댓글 수정완료 버튼 숨기기
-	$("[name='contents']").hide();			 // 댓글 input박스 숨기기	
+	$("[name='contents']").show();			 // 댓글 input박스 숨기기	
+	$("[name='recontents']").hide();
 	$("[name='closebtn']").hide();			 // 댓글 취소 버튼 숨기기
 	
 	
@@ -90,7 +91,7 @@ function updateRe() { // 댓글 업데이트
 		
 		var reid = $(this).prev().prev().prev().prev().prev().prev().val();
 		
-		$("#"+reid).children().eq(1).hide(); // ? 뭔지 모르겠음
+		$("#"+reid).children().eq(1).show(); // ? 뭔지 모르겠음
 		$("#"+reid).children().eq(2).hide(); // 삭제
 		$("#"+reid).children().eq(3).show(); // 취소
 		$("#"+reid).children().eq(4).show(); // 수정완료 

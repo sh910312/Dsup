@@ -17,9 +17,9 @@ public class ChatServiceImpl implements ChatService {
 
 	
 	@Override // 채팅 전송
-	public void insertChat(ChatVO vo) {
+	public int insertChat(ChatVO vo) {
 		// TODO Auto-generated method stub
-		chatDAOmybatis.insertChat(vo);
+		return chatDAOmybatis.insertChat(vo);
 	}
 
 	

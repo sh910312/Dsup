@@ -17,8 +17,8 @@ public class ChatDAOMybatis {
 	SqlSessionTemplate mybatis;
 
 	// 채팅전송
-	public void insertChat(ChatVO vo) {
-		mybatis.insert("ChatDAO.insertChat", vo);
+	public int insertChat(ChatVO vo) {
+		return mybatis.insert("ChatDAO.insertChat", vo);
 	}
 
 	// 상세보기

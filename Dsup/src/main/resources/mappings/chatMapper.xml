@@ -5,35 +5,63 @@
 
 
 <!-- 상세내용 -->
-	<select id="getSearch" parameterType="chat"
-		resultType="search">
-		select search_id as "searchId",
+	<select id="getChat" parameterType="chat"
+		resultType="chat">
+		select chat_id as "chatId",
 				user_id as "userId",
-				title as "title",
+				nickname as "nickname",
 				contents as "contents",
 				write_date as "writeDate"
-		from  search
-		where search_id = #{searchId}
+		from  chat
+		where chat_id = #{chatId}
 	</select>
 
 <!-- 키워드 등록 -->
-	<insert id="insertChat" parameterType="chat">
+	<insert id="insertChat" parameterType="chat"
+	useGeneratedKeys="true" keyProperty="chat_id">
 		<selectKey keyProperty="chatId" resultType="int"
 			order="BEFORE">
-			select NVL(max(chat_id),0) +1 from chat
+			select chatseq.nextval from dual
 		</selectKey>
+		
 		insert into chat(chat_id
 							,user_id 
 							,nickname 
 							,contents
+							,write_date
 		)
 
 		values(  #{chatId}
 				,#{userId}
 				,#{nickname}
 				,#{contents}
+				,SYSDATE
 		)
 	</insert>
+
+ <!-- 키워드 등록 -->
+<!--	<insert id="insertChat" parameterType="chat"
+	useGeneratedKeys="true" keyProperty="chat_id">
+		<selectKey keyProperty="chatId,writeDate" resultType="int"
+			order="BEFORE">
+			select chatseq.nextval, wirte_date from dual
+		</selectKey>
+		insert into chat(chat_id
+							,user_id 
+							,nickname 
+							,contents
+							,write_date
+		)
+
+		values(  #{chatId}
+				,#{userId}
+				,#{nickname}
+				,#{contents}
+				,SYSDATE
+		)
+	</insert>
+ -->
+
 
 <!-- 전체조회 -->
 	<select id="chatList" resultType="chat">
