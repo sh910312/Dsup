@@ -27,14 +27,14 @@
         <!-- 로그인 폼 -->
         <form class="form panel__login-form" id="login-form" method="post" action="login">
           <div class="form__row">
-            <input type="text" id="userId" class="form__input" name="userId" data-validation="userId" 
+            <input type="text" id="login-userId" class="form__input" name="userId" data-validation="userId" 
             	   data-error="아이디를 입력하세요." required>
             <span class="form__bar"></span>
             <label for="userId" class="form__label">아이디</label>
             <span class="form__error"></span>
           </div>
           <div class="form__row">
-            <input type="password" id="password" class="form__input" name="password" data-validation="password" 
+            <input type="password" id="login-password" class="form__input" name="password" data-validation="password" 
             	   data-error="비밀번호를 입력하세요." required>
             <span class="form__bar"></span>
             <label for="password" class="form__label">비밀번호</label>
@@ -85,8 +85,9 @@
             <span class="form__error"></span>
           </div>
           <div class="form__row">
-            <input type="submit" class="form__submit" value="회원가입" id="btnInsert">
+            <!-- <input type="submit" class="form__submit" value="회원가입" id="btnInsert"> -->
           </div>
+          	<button id="btnInsert">회원가입</button>
         </form>
 
         <!-- 비밀번호 찾기 폼 -->
@@ -117,6 +118,7 @@
 			var password = $('[name="password"]').val();
 			var role = $('[name="role"]:checked').val(); */		// $('[name="role"]').val(); 첫번째radio 가져옴	// :checked해야 선택한애가져옴
 			var param = JSON.stringify($("#register-form").serializeObject());	//단건일때 //다건일땐 변환애줘야됨
+			console.log(param);
 			$.ajax({
 				url: "members",
 				type: 'POST',

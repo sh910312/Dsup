@@ -16,6 +16,9 @@
 	<!-- 토스트 css -->
 	<link rel = "stylesheet" href="./resources/css/Toast.css">
 	<script>
+	// [윤정1109] 종량제
+	var service = "${member.payItem}".split("GB")[0];
+	var freeVolumn = 0;
 	$(function(){
 		$("#btn").click(formCheck);
 		$("#addbtn").click(add);
@@ -23,6 +26,7 @@
 		$("#nameMsg").hide();
 		filenameInput();
 		getVolumn();
+		getThisVolumn();
 	});
 	
 	// 제출 전 확인
@@ -31,17 +35,22 @@
 		var datafile = "";
 		var err = 0;
 		
+		if(tsname == "") {
+			$('#tsnameError').fadeIn(400).delay(1000).fadeOut(400);
+			return false;
+		}
+		
 		$("tbody>tr").each(function(){
 			var filename = $(this).find("#filename").val();
 			var size = $(this).find("#size").val();
 			var sizeunit = $(this).find("#sizeunit").val();
 			
-			if(isNaN(size) || size <= 0) {
+			if( isNaN(size) || size <= 0 || (parseInt(size)-parseFloat(size)!=0?true:false) ) {
 				console.log("error!");
 				$('#sizeError').fadeIn(400).delay(1000).fadeOut(400);
 				err = err + 1;
 			} else {
-				datafile += " '" +  "${sessionScope.member.userId}" + "_" + filename + ".dbf' size " + size + sizeunit + ","
+				datafile += " '" + filename + ".dbf' size " + size + sizeunit + ","
 			}
 		});
 		
@@ -59,8 +68,8 @@
 	// 데이터파일 추가
 	function add(){
 		var $filename = $("<input>").attr("type","text").attr("id","filename").attr("required",true).attr("class", "form-control-plaintext").attr("readonly", true); // 이름 입력칸
-		var $size = $("<input>").attr("type","text").attr("id","size").attr("required",true).addClass("form-control"); // 용량 입력칸
-		var $sizeunit = $("<select>").attr("id","sizeunit").attr("class", "form-control")
+		var $size = $("<input>").attr("type","text").attr("id","size").attr("required",true).addClass("yj_size form-control"); // 용량 입력칸
+		var $sizeunit = $("<select>").attr("id","sizeunit").attr("class", "form-control yj_size")
 									.append($("<option>").val("M").text("MB"))
 									.append($("<option>").val("G").text("GB")); // 용량 단위
 		var $btn = $("<input>").attr("type","button").attr("id","delbtn").val("삭제")
@@ -152,24 +161,48 @@
 		});
 	}
 	
-	// [윤정1107] 남은 종량제 용량 요청
+	// [윤정1108] 종량제 이용량 조회
 	function getVolumn(){
 		var userId = "${sessionScope.member.userId}";
-		console.log(userId);
-		
+		var tablespaceName = "${ts.tablespaceName}";
 		$.ajax({
-			url : "volumn",
+			url : "volumn?userId=" + userId + "&tablespaceName=" + tablespaceName,
 			type : "GET",
-			dataType : "json",
-			data: JSON.stringify({ userId: userId }),
-		    contentType: 'application/json',
 			success : function(data){
-				console.log(data)
+				$("#volumn").text((data.volumn));
+				freeVolumn = ( service - (data.volumn) ) * 1024; // 단위 MB
+				$("#freeVolumn").text(freeVolumn);
+				//getThisVolumn();
 			},
 			error : function(xhr, status, message) {
 				alert(" status: " + status + "er:" + message);
 			}
 		});
+	}
+	
+	// [윤정 1109] 이 테이블스페이스의 용량
+	function getThisVolumn(){
+		$(".yj_size").change(function(){
+			var thisVolumn = 0;
+			$("tbody>tr").each(function(){
+				var size = parseInt( $(this).find("#size").val() );
+				var unit = $(this).find("#sizeunit").val();
+				console.log(unit);
+				if(unit == 'G')
+					size = size * 1024;
+				thisVolumn += size;
+				}); // tbody>tr
+			console.log(thisVolumn);
+			$("#thisVolumn").text(thisVolumn);
+			
+			if(thisVolumn > freeVolumn) {
+				//console.log("용량 초과!!");
+				$('#volumnError').fadeIn(400).delay(1000).fadeOut(400);
+				$("#btn").attr("disabled", true);
+			} else {
+				$("#btn").attr("disabled", false);
+			}
+		}); // yj_size
 	}
 	</script>
 </head>
@@ -178,6 +211,7 @@
 <div class = "container">
 	<form method = "post" action = "storageCreate" id = "frm">
 	<input type = "hidden" id = "sql" name = "sql">
+	<input type = "hidden" name = "userId" value = "${sessionScope.member.userId}">
 		<div class ="row">
 			<h1>테이블 스페이스</h1>
 		</div>
@@ -188,6 +222,13 @@
 				<div class="invalid-feedback" id = "nameMsg"></div>
 			</div>
 		</div>
+		
+		<br><br>
+		<h1>종량제 정보</h1>
+		종량제 이용량 : <span id = "volumn"></span> / ${member.payItem} <br>
+		이용가능한 용량 : <span id = "freeVolumn"></span> MB<br>
+		현제 테이블스페이스 용량 : <span id = "thisVolumn">0</span> MB<br>
+		<br><br>
 		
 		<div class = "row">
 			<h1>데이터 파일</h1>
@@ -206,10 +247,10 @@
 					<td>
 						<div class = "row">
 						<div class = "col-9">
-							<input type = "text" id = "size" required class = "form-control">
+							<input type = "text" id = "size" required class = "yj_size form-control">
 						</div>
 						<div class = "col-3">
-						<select id = "sizeunit" class = "form-control">
+						<select id = "sizeunit" class = "yj_size form-control">
 							<option value = "M">MB</option>
 							<option value = "G">GB</option>
 						</select>
@@ -227,6 +268,7 @@
 		</div>
 		
 		<div class='yj_error' style='display:none' id="sizeError">용량은 0보다 큰 숫자만 입력할 수 있습니다!</div>
+		<div class='yj_error' style='display:none' id="tsnameError">테이블스페이스 이름을 입력하세요!</div>
 		
 	</form>
 </div>

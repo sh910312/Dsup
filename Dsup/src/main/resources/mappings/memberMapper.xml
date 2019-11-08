@@ -17,7 +17,7 @@
 	</select>
 	<select id="getMember" parameterType="member" resultType="member">
 		select user_id,
-		password, nickname, e_mail, user_date, user_type, phonenumber
+		password, nickname, e_mail, user_date, user_type, phonenumber, pay_item ,pay_service
 		from users
 		where user_id=#{userId}
 	</select>

@@ -11,6 +11,8 @@ public class MemberVO {
 	private String userDate;
 	private String userType; //관리자(2) / 유저(1)
 	private String phonenumber;
+	private String payItem;
+	private String payService;
 	
 	public String geteMail() {
 		return eMail;

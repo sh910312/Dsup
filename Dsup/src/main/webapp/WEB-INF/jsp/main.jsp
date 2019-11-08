@@ -77,7 +77,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="main-menu col-md-4" onclick="location.href='./distributingMain'">
+					<div class="main-menu col-md-4" onclick="disClick()">
 						<div class="card mb-4 box-shadow">
 							<img class="card-img-top"
 								data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail"
@@ -101,5 +101,16 @@
 			</div>
 		</div>
 	</main>
+<script type="text/javascript">
+function disClick(){
+	if("${payService}" == "Y"){
+		location.href='./distributingMain2'
+	}else{
+		location.href='./distributingMain'	
+		
+	}
+}
+
+</script>
 </body>
 </html>

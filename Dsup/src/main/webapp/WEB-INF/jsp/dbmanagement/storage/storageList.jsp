@@ -24,10 +24,8 @@
 	crossorigin="anonymous"></script>
 
 <script>
-	var totalVolumn; // 사용중인 요금제
 	$(document).ready(function() {
 		tablespaceList();
-		serviceState();
 		getVolumn();
 
 		$("#updbtn").click(function() {
@@ -105,7 +103,7 @@
 	
 	// [윤정1105] 삭제시 테이블스페이스명 다시 입력
 	function delCheck(){
-		$("#delCheck").addClass("is-invalid").val("");
+		$("#delCheck").addClass("is-invalid").val("").focus();
 		$("#delbtn").attr("disabled", true);
 		
 		$("#delCheck").keyup(function(){			
@@ -120,19 +118,6 @@
 				$("#delCheck").addClass("is-invalid");
 				$("#delCheck").removeClass("is-valid");
 				$("#delbtn").attr("disabled", true);
-			}
-		})
-	}
-	
-	// [윤정1107] 이용중인 서비스 조회 요청
-	function serviceState() {
-		$.ajax({
-			url : 'serviceState',
-			type : 'GET',
-			dataType : "json",
-			success : function(data){
-				$("#service").text( (data.payItem) );
-				totalVolumn = (data.payItem).split("GB")[0];
 			}
 		})
 	}
@@ -179,7 +164,7 @@
 		        legend: { position: 'top' },
 		        hAxis: {
 		          minValue: 0,
-		          maxValue: totalVolumn
+		          maxValue: "${member.payItem}".split("GB")[0]
 		        }
 		      };
 		      var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
@@ -193,7 +178,7 @@
 	<%@include file="/WEB-INF/jsp/DBbar.jsp"%>
 	<div class="container">
 		<div class = "row">
-			<h3>이용중인 요금제 : <span id = "service"></span></h3>
+			<h3>이용중인 요금제 : <span id = "service">${member.getPayItem()}</span></h3>
 		</div>
 		
 		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
