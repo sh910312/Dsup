@@ -10,6 +10,7 @@ import com.dsup.dbmanagement.DatafileVO;
 import com.dsup.dbmanagement.TablespaceVO;
 import com.dsup.dbmanagement.UserTbspcTbVO;
 import com.dsup.dbmanagement.service.StorageService;
+import com.dsup.pay.ServiceStateTbVO;
 
 @Service
 public class StorageServiceImpl implements StorageService {
@@ -33,6 +34,7 @@ public class StorageServiceImpl implements StorageService {
 		if(!directory.exists()) directory.mkdirs();
 		dao.createStorage(sql);
 		dao.insertUserTbspcTb(vo);
+		dao.recordVolumn(vo.getTablespaceName());
 	}
 
 	// [윤정 1030] 테이블스페이스 리스트 상세 조회
@@ -64,9 +66,16 @@ public class StorageServiceImpl implements StorageService {
 
 	// [윤정 1104] 테이블스페이스 업데이트
 	@Override
-	public void storageUpdate(String sql) {
+	public void storageUpdate(String sql, String newName) {
 		StorageDAO storageDAO = new StorageDAO();
 		storageDAO.storageUpdate(sql);
+		dao.recordVolumn(newName);
+	}
+
+	// [윤정 1107] 이용중인 종량제 조회
+	@Override
+	public ServiceStateTbVO serviceState(String userId) {
+		return dao.serviceState(userId);
 	}
 
 }

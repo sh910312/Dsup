@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dsup.member.MemberVO;
@@ -23,18 +24,15 @@ public class MemberRestController {
 	
 	@Autowired MemberService memberService;
 	
-	//목록
-	@RequestMapping(value="/members", method=RequestMethod.GET)
-	public List<MemberVO> getUser(MemberVO vo, Model model) {
-		//model.addAttribute("user", userService.getUser(vo));
-		return memberService.getMemberList(vo);
-	}
-	
 	//등록
 	@RequestMapping(value="/members"
-				,method = RequestMethod.POST		
-				,consumes="application/json"	)	//넘겨받는모든값이 제이슨	//제이슨들어가면 반드시@RequestBody써줘야함
+			,method = RequestMethod.POST		
+			,consumes="application/json"	)	//넘겨받는모든값이 제이슨	//제이슨들어가면 반드시@RequestBody써줘야함
 	public Map insertMember(@RequestBody MemberVO vo, Model model) {
+		
+		System.out.println(vo.getUserId());
+		System.out.println(vo.getPassword());
+		
 		memberService.insertMember(vo);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("result", true);
@@ -42,6 +40,21 @@ public class MemberRestController {
 		return map;
 	}
 	
+	//목록
+	@RequestMapping(value="/members", method=RequestMethod.GET)
+	public List<MemberVO> getUser(MemberVO vo, Model model) {
+		//model.addAttribute("user", userService.getUser(vo));
+		return memberService.getMemberList(vo);
+	}
+	
+	
+	/*
+	 * //아이디중복체크
+	 * 
+	 * @RequestMapping(value="/members/{userId}", method=RequestMethod.POST) public
+	 * int checkUserId(@RequestBody MemberVO vo, Model model) { int checkResult =
+	 * memberService.getMember(vo) }
+	 */
 	//조회
 	@RequestMapping(value="/members/{userId}", method=RequestMethod.GET)
 	public MemberVO getUser(@PathVariable String userId, MemberVO vo, Model model ) {

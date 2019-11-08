@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,7 @@ import com.dsup.dbmanagement.DatafileVO;
 import com.dsup.dbmanagement.TablespaceVO;
 import com.dsup.dbmanagement.UserTbspcTbVO;
 import com.dsup.dbmanagement.service.StorageService;
+import com.dsup.pay.ServiceStateTbVO;
 
 @Controller
 public class StorageController {
@@ -46,7 +48,7 @@ public class StorageController {
 		return "redirect:storageList";
 	}
 	
-	// 테이블스페이스 리스트 (이름만) 조회 - 백업생성폼에서 쓸 것
+	// user_tbspc_tb 조회 - (테이블스페이스 이름, volumn만 있음)
 	@ResponseBody
 	@RequestMapping(value="/tablespaceList", method=RequestMethod.GET)
 	public List<TablespaceVO> getTablespaceList(HttpSession session){
@@ -136,8 +138,24 @@ public class StorageController {
 	
 	// [윤정 1104] 테이블스페이스 수정 완료
 	@RequestMapping("/sotrageUpdate")
-	public String storageUpdate(@RequestParam String sql) {
-		storageService.storageUpdate(sql);
+	public String storageUpdate(@RequestParam String sql, @RequestParam String newName) {
+		storageService.storageUpdate(sql, newName);
 		return "redirect:storageList";
+	}
+	
+	// [윤정 1107] 이용중인 종량제 조회
+	@RequestMapping(value = "/serviceState", method=RequestMethod.GET)
+	@ResponseBody
+	public ServiceStateTbVO serviceState(HttpSession session) {
+		String userId = (String) session.getAttribute("userId");
+		return storageService.serviceState(userId);
+	}
+	
+	// [윤정1107] 이용중인 용량
+	@RequestMapping(value = "/volumn", method = RequestMethod.GET)
+	@ResponseBody
+	public float getVolumn(@RequestBody UserTbspcTbVO vo) {
+		System.out.println(vo);
+		return 0;
 	}
 }

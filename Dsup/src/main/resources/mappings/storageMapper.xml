@@ -6,8 +6,10 @@
 	<!-- [윤정] 테이블스페이스 이름만 조회 : 백업생성에서 씀 -->
 	<select id="getTablespaceList" parameterType="String" resultType="userTbspcTb">
 		SELECT tablespace_name "tablespaceName"
+			, volumn "volumn"
 		FROM user_tbspc_tb
 		WHERE user_id = #{userId}
+		ORDER BY 1
 	</select>
 	
 	<delete id="deleteTablespace" parameterType="String">
@@ -59,5 +61,33 @@
 	<select id = "tsNameChk" parameterType="String" resultType="String">
 		SELECT ts_name_chk( #{tablespaceName} ) 
 		FROM dual
+	</select>
+	
+	<!-- [윤정1107] user_tbspc_tb에 용량 입력 -->
+	<insert id = "recordVolumn" parameterType="String">
+		{ call record_volumn (#{tablespaceName}) }
+	</insert>
+	
+	<!-- [윤정1107] 이용중인 종량제 조회 -->
+	<select id = "getServiceState" parameterType="String" resultType="serviceStateTb">
+		SELECT
+			user_id "userId"
+			, pay_date "payDate"
+			, pay_item "payItem"
+			, pay_type "payType"
+			, cancel_yn "cancelYn"
+		FROM service_state_tb
+		WHERE user_id = #{userId}
+	</select>
+	
+	<!-- [윤정1107] 남은 사용량 조회 -->
+	<select id = "getVolumn" parameterType = "userTbspcTb" resultType = "float">
+		SELECT sum(volumn) "volumn"
+		FROM user_tbspc_tb
+		WHERE user_id = #{userId}
+		<if test="tablespaceName != null and tablespaceName!= ''">
+		AND tablespace_name != #{tablespaceName}
+		</if>
+		GROUP BY user_id;
 	</select>
 </mapper>

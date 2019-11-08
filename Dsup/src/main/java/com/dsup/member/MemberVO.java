@@ -10,7 +10,7 @@ public class MemberVO {
 	private String eMail;
 	private String userDate;
 	private String userType; //관리자(2) / 유저(1)
-	private long phonenumber;
+	private String phonenumber;
 	
 	public String geteMail() {
 		return eMail;

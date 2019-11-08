@@ -5,6 +5,7 @@ import java.util.List;
 import com.dsup.dbmanagement.DatafileVO;
 import com.dsup.dbmanagement.TablespaceVO;
 import com.dsup.dbmanagement.UserTbspcTbVO;
+import com.dsup.pay.ServiceStateTbVO;
 
 public interface StorageService {
 	List<TablespaceVO> getStorageList(String userId);
@@ -14,5 +15,6 @@ public interface StorageService {
 	TablespaceVO getStorageOne(UserTbspcTbVO vo);
 	List<DatafileVO> getDatafile(String tablespaceName);
 	int tsNameChk(String tablespaceName);
-	void storageUpdate(String sql);
+	void storageUpdate(String sql, String newName);
+	ServiceStateTbVO serviceState(String userId);
 }

@@ -13,7 +13,7 @@ import com.dsup.member.MemberVO;
 
 @Repository
 public class MemberDAO {
-	@Resource(name="sqlSessionTemplate")
+	@Resource(name = "sqlSessionTemplate")
 	private SqlSessionTemplate mybatis;
 
 	public List<MemberVO> getMemberList(MemberVO member) {
@@ -26,6 +26,10 @@ public class MemberDAO {
 
 	public List<Map> getMemberListMap(MemberVO member) {
 		return mybatis.selectList("MemberDAO.getMemberListMap", member);
+	}
+	
+	public MemberVO getUserId(MemberVO member) {
+		return mybatis.selectOne("MemberDAO.getUserId", member);
 	}
 
 	// 등록
