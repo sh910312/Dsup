@@ -41,8 +41,21 @@ function openButton(menu,a){ /*  버튼 새창 */ // menu,a >> 첫번째와 두�
 
 </script>
 
+
+
 <script>
 
+
+//ENTER 안먹게 하는것
+
+</script>
+
+
+
+
+
+
+<script>
 
 
 
@@ -64,38 +77,39 @@ function insertRe() {
 	
 	console.log("insertRe");
 	
-	$("#insertbtn").click(function() {
-
+ 	$("#insertbtn").click(function() {
+		
 		$("#frm2").attr("action", "insertRe");
 		$("#frm2").attr("method", "post");
 		$("#frm2").submit();
 		alert("댓글이 등록 되었습니다.");
 		
-	})
+	}) 
+
 }
+
+
 
 function updateRe() { // 댓글 업데이트
 
 	console.log("updateRe");
 	
+/* 	$("[name='updateReOk']").hide(); 		 // 댓글 수정완료 버튼 숨기기 */
+/* 	$("[name='contents']").show();			 // 댓글 input박스 숨기기	 */
+/* 	$("[name='recontents']").hide();		 // 댓글 등록? */
+/* 	$("[name='closebtn']").hide();			 // 댓글 취소 버튼 숨기기 */
 	
-	$("[name='updateReOk']").hide(); 		 // 댓글 수정완료 버튼 숨기기
-	$("[name='contents']").show();			 // 댓글 input박스 숨기기	
-	$("[name='recontents']").hide();
-	$("[name='closebtn']").hide();			 // 댓글 취소 버튼 숨기기
 	
-	
-	$("[name='updateRe']").click(function() {
-		console.log($(this).prev().prev().prev().prev().prev().prev().val());
-		$("input[name='contents']").hide();
+/* 	$("[name='updateRe']").click(function() {
+		console.log($(this).prev().prev().prev().prev().prev().prev().val()); */
 		
-		var reid = $(this).prev().prev().prev().prev().prev().prev().val();
+/* 		var reid = $(this).prev().prev().prev().prev().prev().prev().val(); */
 		
-		$("#"+reid).children().eq(1).show(); // ? 뭔지 모르겠음
-		$("#"+reid).children().eq(2).hide(); // 삭제
-		$("#"+reid).children().eq(3).show(); // 취소
-		$("#"+reid).children().eq(4).show(); // 수정완료 
-		$("#"+reid).children().eq(5).show(); // contents
+/* 		$("#"+reid).children().eq(1).show(); // ? 뭔지 모르겠음 */
+/* 		$("#"+reid).children().eq(2).hide(); // 삭제 */
+/* 		$("#"+reid).children().eq(3).show(); // 취소 */
+/* 		$("#"+reid).children().eq(4).show(); // 수정완료 */ 
+/* 		$("#"+reid).children().eq(5).hide(); // contents */
 		
 		
 		
@@ -104,19 +118,19 @@ function updateRe() { // 댓글 업데이트
 		//$("#contents").show();			// 댓글 input박스 보이기	
 		//$("#updateRe").hide();			// 댓글 수정버튼 숨기기
 		//$("#delRebtn").hide();			// 댓글 삭제버튼 숨기기
-	})
+/* 	}) */
 	
 										
 
 	
-	$("#closebtn").click(function() {
+/* 	$("#closebtn").click(function() {
 		
-		return updateRe();
-	})
+		$("[name='updateRe']").unbind('click');
+	}) */
 	
 	
-	$("#updateReOk").click(function() {
-		console.log("절대 실행이 되지 말아야 하는데 되는 펑션");
+	$("#updateRe").click(function() {
+		console.log("실행이 되지 말아야 하는데 되는 펑션");
 		
 		//수정 완료
 		$("#frm3").attr("action", "updateRe");
@@ -265,14 +279,15 @@ function back() {
 										<button type="button" class="btn btn-default btn-xs" onclick="openButton(1,${re.reId })">신고</button>
 										<c:if test="${userId == re.userId }">
 											<button type="button" id="delRebtn" name="delRebtn" class="btn btn-default btn-xs pull-right">삭제</button>
-											<button type="button" id="closebtn" name="closebtn" class="btn btn-default btn-xs pull-right">취소</button>
-											<button type="button" id="updateReOk" name="updateReOk" class="btn btn-default btn-xs pull-right">수정완료</button>
-											<input name="contents" class="form-control" value="${re.contents }" maxlength="20">
+											<!-- <button type="button" id="closebtn" name="closebtn" class="btn btn-default btn-xs pull-right">취소</button> -->
+											<!-- <button type="button" id="updateReOk" name="updateReOk" class="btn btn-default btn-xs pull-right">수정완료</button> -->
+											<%-- <input name="contents" class="form-control" value="${re.contents }" maxlength="20"> --%>
 											<button type="button" name="updateRe" class="btn btn-default btn-xs pull-right">수정</button>
 										</c:if>
 											<br>
 											<br>
 									</div>
+									<input type="hidden" name="page" value="1"/>
 									</c:forEach>
 							<!-- 댓글 리스트 반복문 끝 -->							
 							
@@ -293,19 +308,14 @@ function back() {
 								
 							<!-- 등록 폼 시작 -->
 							<div class="row">
-								<form id="frm2">
+								<div class="form-group col-lg-12" align="center">
+								<form id="frm2" class="form-inline" action="insertRe" method="POST">
 								<input type="hidden" name="searchId" value="${search.searchId }">
-								<div>
-									<input style="width:80%; height: 40px;" name="contents" id="contents" class="form-control" placeholder="댓글을 입력하세요." maxlength="20">
-									<button type="button" id="insertbtn" name="insertbtn" class="btn btn-default" style="height:40px;">등록 </button>
-								</div>
+									<input type="text" style="width: 80%; height: 40px;" name="contents" id="contents" class="form-control" placeholder="댓글을 입력하세요." maxlength="20">
+									<button type="button" id="insertbtn" name="insertbtn" class="btn btn-default" style="width: 100px; height:40px;">등록 </button>
 								</form>									
+								</div>
 							<!-- 등록 폼 끝 -->
-
-
-
-
-
 								
 							<!-- 댓글 조회 폼 -->
 								<form name="frm">
@@ -313,15 +323,15 @@ function back() {
 									<input type="hidden" name="page" value="1"/> <!-- 페이징 -->
 								</form>
 							<!-- 댓글 조회 폼 끝 -->
-
-
-
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+
+
+
 
 <script type="text/javascript">
 
@@ -331,7 +341,6 @@ function go_page(p){
 }
 
 </script>
-
 
 
 </body>

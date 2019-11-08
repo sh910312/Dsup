@@ -48,7 +48,8 @@
 		$("#chatList").append(data + "&nbsp;"
 		+ "<button type='button' class='btn btn-default btn-xs' onclick='openButton(2, this)'>" 
 		+ "신고" + "</button>"
-		+ "<hr>");
+		+ "<hr>"
+		);
 		
 		$('#chatList').scrollTop($('#chatList')[0].scrollHeight); // 채팅 최신 상태 유지
 	}
@@ -77,7 +78,7 @@ function openButton(menu, a){ /*  버튼 새창 */
 		window.open("insertSearchForm","등록하기",'width=800px, height=350px, left='+ popupX + ', top='+ popupY )
 	}else if(menu == "2" || menu == 2) {
 		console.log(a)
-		var id = $(a).prev().val();
+		var id = $(a).prev().children().eq(0).val();
 		
 		var url = "getRp?chatId="+id;
 		var name = "채팅신고";

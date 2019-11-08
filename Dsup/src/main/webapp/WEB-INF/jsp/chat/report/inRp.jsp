@@ -74,30 +74,32 @@ function okbtn() {
 							
 							<!-- 신고타입 0번 = 게시글신고 // 1번은 = 댓글신고 // 2번 = 채팅신고 -->
 							<h4><c:choose>
-								<c:when test="${rpType == 0}">							
+								<c:when test="${rpType == 0}">
+								신고번호			 : ${search.searchId}<br>							
+								신고대상  		 : ${search.userId }<br>
 								게시글 등록날짜 	 : <fmt:formatDate value="${search.writeDate }" pattern="yy-MM-dd" /><br>
-								신고받는ID  		 : ${search.userId }<br><br><br>
-								
-								신고 내용			 : ${search.contents }<br>
+								신고 내용			 : ${search.contents }<br><br><br>
 								<br>
 								<input type="hidden" name="rpUserId" value="${search.userId }" />
 								</c:when>
 														 
 								<c:when test="${rpType == 1 }">
+								신고번호			 : ${re.reId}<br>
+								신고대상  		 : ${re.userId }<br>
 								댓글 등록날짜 		 : <fmt:formatDate value="${re.writeDate }" pattern="yy-MM-dd" /><br>
-								신고받는ID  		 : ${re.userId }<br><br><br>
 								
-								신고 내용			 : ${re.contents }<br>
+								신고 내용			 : ${re.contents }<br><br><br>
 								<br>
 								<input type="hidden" name="rpUserId" value="${re.userId }" />
 								</c:when>
 							
 							
 								<c:when test="${rpType == 2 }">
+								신고번호			 : ${chat.chatId}<br>
+								신고대상자 		 : ${chat.userId }<br>
 								채팅 입력날짜	 	 : <fmt:formatDate value="${chat.writeDate }" pattern="yy-MM-dd" /><br>
-								신고받는ID 		 : ${chat.userId }<br><br><br>
 								
-								신고 내용			 : ${chat.contents }<br>
+								신고 내용			 : ${chat.contents }<br><br><br>
 								<br>
 								<input type="hidden" name="rpUserId" value="${chat.userId }" />
 								</c:when>
