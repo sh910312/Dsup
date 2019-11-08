@@ -143,19 +143,10 @@ public class StorageController {
 		return "redirect:storageList";
 	}
 	
-	// [윤정 1107] 이용중인 종량제 조회
-	@RequestMapping(value = "/serviceState", method=RequestMethod.GET)
-	@ResponseBody
-	public ServiceStateTbVO serviceState(HttpSession session) {
-		String userId = (String) session.getAttribute("userId");
-		return storageService.serviceState(userId);
-	}
-	
 	// [윤정1107] 이용중인 용량
 	@RequestMapping(value = "/volumn", method = RequestMethod.GET)
 	@ResponseBody
-	public float getVolumn(@RequestBody UserTbspcTbVO vo) {
-		System.out.println(vo);
-		return 0;
+	public UserTbspcTbVO getVolumn(UserTbspcTbVO vo) {
+		return storageService.getVolumn(vo);
 	}
 }

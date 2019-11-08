@@ -72,10 +72,8 @@ public class StorageServiceImpl implements StorageService {
 		dao.recordVolumn(newName);
 	}
 
-	// [윤정 1107] 이용중인 종량제 조회
-	@Override
-	public ServiceStateTbVO serviceState(String userId) {
-		return dao.serviceState(userId);
+	// [윤정 1108] 종량제 이용량 조회
+	public UserTbspcTbVO getVolumn(UserTbspcTbVO vo) {
+		return dao.getVolumn(vo);
 	}
-
 }

@@ -57,13 +57,13 @@ public class StorageDAOMybatis {
 		return mybatis.selectOne("StorageDAO.tsNameChk", tablespaceName);
 	}
 	
-	// [윤정1107] 사용중인 종량제 조회
-	public ServiceStateTbVO serviceState(String userId) {
-		return mybatis.selectOne("StorageDAO.getServiceState", userId);
-	}
-	
 	// [윤정1107] user_tbspc_tb에 volumn 입력
 	public void recordVolumn (String tablespaceName) {
 		mybatis.insert("StorageDAO.recordVolumn", tablespaceName);
+	}
+	
+	// [윤정 1108] 종량제 이용량(전체 테이블스페이스 용량) 조회
+	public UserTbspcTbVO getVolumn(UserTbspcTbVO vo) {
+		return mybatis.selectOne("StorageDAO.getVolumn", vo);
 	}
 }
