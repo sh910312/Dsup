@@ -1,5 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<script>
+$(function(){
+	getUserSchema();
+});
+
+// [윤정1111] 조회 요청
+function getUserSchema() {
+	$.ajax({
+		url : 'userSchema',
+		type : 'GET',
+		dataType : 'json',
+		success : printTsTable
+	});
+}
+</script>
+    
 <!-- DataTables Example -->
 <div class="card mb-3">
 	<div class="card-header">

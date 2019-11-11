@@ -2,16 +2,45 @@
 
 <script>
 	$(function(){
-		
+		getTsTable();
 	});
 	
 	// [윤정1111] 조회 요청
+	function getTsTable() {
+		$.ajax({
+			url : 'getAdminStorage',
+			type : 'GET',
+			dataType : 'json',
+			success : printTsTable
+		});
+	}
+	
+	function printTsTable(data) {
+		$.each(data, function(idx, item) {
+			var userId = $("<td>").text((item.userId));
+			var tablesapceName = $("<td>").text((item.tablespaceName));
+			var status = $("<td>").text((item.status));
+			var total = $("<td>").text((item.total));
+			var used = $("<td>").text((item.used));
+			var free = $("<td>").text((item.free));
+			
+			$("#tsTableTbody").append( $("<tr>").append(userId)
+												.append(tablesapceName)
+												.append(status)
+												.append(total)
+												.append(used)
+												.append(free)
+					);
+		});
+		
+		$('#tsTable').DataTable();
+	}
 </script>
 
 <!-- DataTables Example -->
 <div class="card mb-3">
 	<div class="card-header">
-		<i class="fas fa-table"></i> 결제 이력
+		<i class="fas fa-table"></i> 테이블스페이스
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">

@@ -9,6 +9,7 @@ import lombok.Data;
  */
 @Data 
 public class TablespaceVO {
+	private String userId; // 1111추가 : 관리자모드에서 아이디도 조회하기 위해
 	private String tablespaceName;
 	private String status; // online, offline, read only
 	
