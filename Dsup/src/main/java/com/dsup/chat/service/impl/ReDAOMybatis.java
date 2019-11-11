@@ -24,6 +24,7 @@ public class ReDAOMybatis {
 	public List<ReVO> reList() {
 		return mybatis.selectList("ReDAO.reList");
 	}
+	// 댓글 페이징
 	public List<Map<String, Object>> ReMap(ReVO vo){
 		return mybatis.selectList("ReDAO.reMap", vo);
 	}

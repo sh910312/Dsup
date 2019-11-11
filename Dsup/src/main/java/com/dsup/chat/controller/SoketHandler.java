@@ -1,6 +1,8 @@
 package com.dsup.chat.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -64,11 +66,16 @@ public class SoketHandler extends TextWebSocketHandler implements WebSocketHandl
 		
 		int a = chatService.insertChat(cvo);
 		System.out.println(cvo+",,,,"+a);
+		SimpleDateFormat date =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
 		for (WebSocketSession sess : sessionList) {
 			System.out.println("채팅 세션 리스트 작동중?");
-			sess.sendMessage(new TextMessage(cvo.getNickname()+ " : " + message.getPayload()+" "
-			+ "<input type='hidden' value='" + cvo.getChatId()+ "'>"));
+			sess.sendMessage(new TextMessage("<h4>" + cvo.getNickname() + "</h4>"
+			+ "<div class='pull-right'>" + date.format(new Date())
+			+ "</div>" + " <span> " + message.getPayload()+" "
+			+ "<input type='hidden' value='" + cvo.getChatId()+ "'>" 
+			+ "</span>" ));
+			 
 		}
 		
 		

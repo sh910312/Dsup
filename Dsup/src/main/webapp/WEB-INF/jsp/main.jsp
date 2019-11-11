@@ -103,7 +103,7 @@
 	</main>
 <script type="text/javascript">
 function disClick(){
-	if("${payService}" == "N"){
+	if("${payService}" == "Y"){
 		location.href='./distributingMain2'
 	}else{
 		location.href='./distributingMain'	

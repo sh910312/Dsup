@@ -17,11 +17,9 @@
 	</select>
 
 <!-- 키워드 등록 -->
-	<insert id="insertChat" parameterType="chat"
-	useGeneratedKeys="true" keyProperty="chat_id">
-		<selectKey keyProperty="chatId" resultType="int"
-			order="BEFORE">
-			select chatseq.nextval from dual
+	<insert id="insertChat" parameterType="chat">
+		<selectKey keyProperty="chatId" resultType="int" order="BEFORE">
+			select chatseq.nextval as chatId, SYSDATE as writeDate from dual
 		</selectKey>
 		
 		insert into chat(chat_id
