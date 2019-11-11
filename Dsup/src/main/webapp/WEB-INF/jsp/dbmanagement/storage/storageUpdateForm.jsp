@@ -22,6 +22,7 @@
 	// [윤정1109] 종량제
 	var service = "${member.payItem}".split("GB")[0];
 	var freeVolumn = 0;
+	var thisVolumn = 0;
 	
 	$(function(){
 		startChk();
@@ -193,15 +194,27 @@
 	
 	// [윤정 1104] 수정하기 버튼 클릭
 	function submit(){
+		var err = 0;
 		
-		var newName = $("#newName").val();
-		if (newName != oldName) { // 이름 변경 
-			sql += "ALTER TABLESPACE " + oldName + " RENAME TO " + newName + ";";
-			sql += "UPDATE user_tbspc_tb SET tablespace_name = '" + newName + "' WHERE tablespace_name = '" + oldName + "';";
+		if( $("#newName").hasClass("is-invalid") )
+			err += 1;
+
+		if(thisVolumn > freeVolumn) {
+			$('#volumnError').fadeIn(400).delay(1000).fadeOut(400);
+			err += 1;
+		}
+		console.log(err);
+		if (err == 0) {
+			var newName = $("#newName").val();
+			if (newName != oldName) { // 이름 변경 
+				sql += "ALTER TABLESPACE " + oldName + " RENAME TO " + newName + ";";
+				sql += "UPDATE user_tbspc_tb SET tablespace_name = '" + newName + "' WHERE tablespace_name = '" + oldName + "';";
+			}
+			
+			$("#sql").val(sql);
+			$("#frm").submit();
 		}
 		
-		$("#sql").val(sql);
-		$("#frm").submit();
 	}
 	
 	// [윤정 1031] 테이블스페이스명 유효성 검사 
@@ -214,21 +227,18 @@
 			if(name == oldName) {
 				$("#nameMsg").hide();
 				$("#newName").removeClass("is-invalid");
-				$("#updbtn").attr("disabled", false);
 				return;
 			}
 			
 			// 아이디를 입력하지 않은 경우
 			if(name == '') { 
 				$("#nameMsg").show().text("이름을 입력해주세요");
-				$("#updbtn").attr("disabled", true);
 				return;
 			}
 			
 			// [윤정1101] 이름 첫 글자 영어만
 			if(!name.substr(0,1).match(/[A-Z]/)) {
 				$("#nameMsg").show().text("이름 첫 글자는 영어만 입력할 수 있습니다");
-				$("#updbtn").attr("disabled", true);
 				return;
 			}
 			
@@ -242,7 +252,6 @@
 				}
 				if(err > 0) {
 					$("#nameMsg").show().text("영어, 숫자, _만 입력할 수 있습니다");
-					$("#updbtn").attr("disabled", true);
 					return;
 				}
 			}
@@ -254,10 +263,8 @@
 					// 중복이면 0, 아니면 1
 					if(data == 0) { // 중복
 						$("#nameMsg").show().text("사용할 수 없는 이름입니다");
-						$("#updbtn").attr("disabled", true);
 					} else { // 중복x
 						$("#nameMsg").hide();
-						$("#updbtn").attr("disabled", false);
 						$("#newName").removeClass("is-invalid");
 					}
 				}
@@ -274,7 +281,6 @@
 			type : "GET",
 			success : function(data){
 				$("#volumn").text((data.volumn));
-				console.log(service);
 				freeVolumn = ( service - (data.volumn) ) * 1024; // 단위 MB
 				$("#freeVolumn").text(freeVolumn);
 				getThisVolumn();
@@ -287,7 +293,7 @@
 	
 	// [윤정 1109] 이 테이블스페이스의 용량
 	function getThisVolumn(){
-		var thisVolumn = 0;
+		thisVolumn = 0;
 		$("tbody>tr").each(function(){
 			var size = parseInt($(this).find("td:eq(1)").text());
 			var unit = $(this).find("td:eq(2)").text();
@@ -296,14 +302,6 @@
 			thisVolumn += size;
 			});
 		$("#thisVolumn").text(thisVolumn);
-		
-		if(thisVolumn > freeVolumn) {
-			console.log("용량 초과!!");
-			$('#volumnError').fadeIn(400).delay(1000).fadeOut(400);
-			$("#updbtn").attr("disabled", true);
-		} else {
-			$("#updbtn").attr("disabled", false);
-		}
 	}
 	</script>
 </head>

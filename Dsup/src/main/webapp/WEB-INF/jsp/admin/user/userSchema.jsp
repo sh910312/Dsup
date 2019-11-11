@@ -3,29 +3,25 @@
 <!-- DataTables Example -->
 <div class="card mb-3">
 	<div class="card-header">
-		<i class="fas fa-table"></i> 결제 이력
+		<i class="fas fa-table"></i> 유저 스키마
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table table-bordered" id="userSchemaTable" width="100%" cellspacing="0">
 				<thead>
 					<tr>
-						<th>결제번호</th>
 						<th>사용자 아이디</th>
-						<th>결제일자</th>
-						<th>결제수단</th>
-						<th>결제수단</th>
-						<th>가격</th>
+						<th>유저 스키마 아이디</th>
+						<th>상태</th>
+						<th>디폴트 테이블스페이스</th>
 					</tr>
 				</thead>
 				<tfoot>
 					<tr>
-						<th>결제번호</th>
 						<th>사용자 아이디</th>
-						<th>결제일자</th>
-						<th>결제수단</th>
-						<th>결제수단</th>
-						<th>가격</th>
+						<th>유저 스키마 아이디</th>
+						<th>상태</th>
+						<th>디폴트 테이블스페이스</th>
 					</tr>
 				</tfoot>
 				<tbody>

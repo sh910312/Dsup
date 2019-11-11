@@ -10,5 +10,6 @@
 		  , pay_type "payType"
 		  , pay_price "payPrice"
 	FROM pay_his_if_tb
+	ORDER BY 3 desc
 	</select>
 </mapper>

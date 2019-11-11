@@ -70,7 +70,7 @@
 	
 	<!-- [윤정1107] 남은 사용량 조회 -->
 	<select id = "getVolumn" parameterType = "userTbspcTb" resultType = "userTbspcTb">
-		SELECT sum(volumn) "volumn"
+		SELECT NVL(sum(volumn),0) "volumn"
 		FROM user_tbspc_tb
 		WHERE user_id = #{userId}
 		<if test="tablespaceName != null and tablespaceName!= ''">

@@ -1,5 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<script>
+	$(function(){
+		
+	});
+	
+	// [윤정1111] 조회 요청
+</script>
+
 <!-- DataTables Example -->
 <div class="card mb-3">
 	<div class="card-header">
@@ -10,25 +18,25 @@
 			<table class="table table-bordered" id="tsTable" width="100%" cellspacing="0">
 				<thead>
 					<tr>
-						<th>결제번호</th>
 						<th>사용자 아이디</th>
-						<th>결제일자</th>
-						<th>결제수단</th>
-						<th>결제수단</th>
-						<th>가격</th>
+						<th>테이블스페이스 명</th>
+						<th>상태</th>
+						<th>전체 용량</th>
+						<th>사용중인 용량</th>
+						<th>빈 용량</th>
 					</tr>
 				</thead>
 				<tfoot>
 					<tr>
-						<th>결제번호</th>
 						<th>사용자 아이디</th>
-						<th>결제일자</th>
-						<th>결제수단</th>
-						<th>결제수단</th>
-						<th>가격</th>
+						<th>테이블스페이스 명</th>
+						<th>상태</th>
+						<th>전체 용량</th>
+						<th>사용중인 용량</th>
+						<th>빈 용량</th>
 					</tr>
 				</tfoot>
-				<tbody>
+				<tbody id = "tsTableTbody">
 				</tbody>
 			</table>
 		</div>

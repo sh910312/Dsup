@@ -4,7 +4,7 @@
 <!-- users_mapper.xml -->
 <mapper namespace="MemberDAO">
 	<select id="getMemberList" resultType="member" parameterType="member">
-		select user_id, password, nickname, e_mail, user_date, user_type
+		select user_id, password, nickname, e_mail "eMail", user_date, user_type, phonenumber, pay_item, pay_service
 		from users
 		<where>
 			<if test="userId != null and userId != '' ">

@@ -51,6 +51,7 @@ public class StorageController {
 	@RequestMapping(value="/tablespaceList", method=RequestMethod.GET)
 	public List<TablespaceVO> getTablespaceList(HttpSession session){
 		String userId = (String)session.getAttribute("userId");
+		
 		return storageService.getStorageList(userId);
 	}
 	
