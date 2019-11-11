@@ -14,6 +14,24 @@ function getUserSchema() {
 		success : printTsTable
 	});
 }
+
+function printUserSchema(userSchema) {
+	$.each(userSchema, function(idx, item) {
+		var id = $("<td>").text((item.id));
+		var user = $("<td>").text((item.user));
+		var status = $("<td>").text((item.accountStatus));
+		var ts = $("<td>").text((item.defaultTableSpace));
+		
+		$("#userSchemaTableTbody").append( $("<tr>")
+											.append(id)
+											.append(user)
+											.append(status)
+											.append(ts)
+				);
+		
+		$('#userSchemaTable').DataTable();
+	});
+}
 </script>
     
 <!-- DataTables Example -->
@@ -40,7 +58,7 @@ function getUserSchema() {
 						<th>디폴트 테이블스페이스</th>
 					</tr>
 				</tfoot>
-				<tbody>
+				<tbody id = "userSchemaTableTbody">
 				</tbody>
 			</table>
 		</div>
