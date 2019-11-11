@@ -1,6 +1,9 @@
 <%@  taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%	String schemaid = (String)session.getAttribute("schemaid");
-	System.out.println("jsp | schemaid : " + schemaid);
+	System.out.println("-------------->" + schemaid);
+	if(schemaid != null){
+		schemaid = schemaid.toUpperCase();
+	}
 	if(schemaid==null || schemaid.equals("")){%>      
 		<script>
 			$(function(){
@@ -30,12 +33,13 @@ function connection(){
 		if (request.readyState == 4 && request.status == 200) {
 			result = request.responseText;
 			console.log("Result : " + result);
-			if(result = 'success'){
-			    var tag =  '<i class="fas fa-power-off fa-2x ripple" style="color : #fd5581;"></i><i class="fas fa-power-off fa-2x ripple"></i>';
-			    $('#login-success-breath').append(tag);
-			}else{
+			if(result == null){
 			    var tag =  '<i class="fas fa-power-off fa-4x"></i>';
 			    $('#login-success-breath').html(tag);
+			}else{
+			    var tag =  '<i class="fas fa-power-off fa-2x ripple" style="color : #fd5581;"></i><i class="fas fa-power-off fa-2x ripple"></i>';
+			    $('#connected-schema-nm').text(result.toUpperCase());
+			    $('#login-success-breath').append(tag);
 			}
 		}else{
 			var tag =  '<i class="fas fa-power-off fa-4x"></i>';
@@ -55,6 +59,7 @@ function disconnection(){
 		if (request.readyState == 4 && request.status == 200) {
 			var tag =  '<i class="fas fa-power-off fa-4x"></i>';
 		    $('#login-success-breath').html(tag);
+		    $('#connected-schema-nm').text("START");
 		    console.log("Schema Disconnection");
 		}
 	};
@@ -75,7 +80,7 @@ function disconnection(){
 					<img src="./resources/js/sql/etc/images/avatar-01.jpg" class="ripple pinkBg"> -->
  				</span>
 			</span>
-			<span id="connected-schema-nm"class="login100-form-title p-b-10"> Start </span>
+			<span id="connected-schema-nm"class="login100-form-title p-b-10"> START </span>
 			<div class="wrap-input100 validate-input m-t-30 m-b-35" data-validate="Enter username">
 				<select id="schema-Name-select" class="input100" type="text" name="username" style="color: #999999; border: none;">
 					<option value="" disabled="" selected="" hidden="">Schema Name</option>

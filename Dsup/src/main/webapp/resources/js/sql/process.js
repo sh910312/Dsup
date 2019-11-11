@@ -80,7 +80,7 @@ var Process = (function() {
 					var result;
 					var join_expression = $('#join-expression').text(); // empno=empno
 					var join_type = $('input[name=joinType]').val(); // innerLeft
-				
+					
 					var master_sql;
 					var slave_sql;
 					var list = [];
@@ -98,7 +98,8 @@ var Process = (function() {
 					}
 					
 					var join_key = JSON.stringify({join_key:list});
-					
+					var maset_key = "";
+					var slave_key = "";
 					//자식 sql 가지고 오는 부분
 					for (var i = 0; i < info.length; i++) {
 						var json = JSON.parse(info[i]);
@@ -107,8 +108,10 @@ var Process = (function() {
 							for ( var a_key in a_json) {
 								if (a_key == "SQL") {
 									if (i == 0) {
+										maset_key = key;
 										master_sql = a_json[a_key];
 									} else {
+										slave_key = key;
 										slave_sql = a_json[a_key];
 									}
 									// sql_map[key] = a_json[a_key];
@@ -121,7 +124,9 @@ var Process = (function() {
 							"Join.do?master_sql=" + encodeURI(master_sql) + 
 							"&slave_sql=" + encodeURI(slave_sql) +
 							"&join_key=" + encodeURI(join_key) + 
-							"&join_type=" + encodeURI(join_type), false);
+							"&join_type=" + encodeURI(join_type) +
+							"&maset_key=" + encodeURI(maset_key) +
+							"&slave_key=" + encodeURI(slave_key), false);
 
 					request.onreadystatechange = function() {
 						if (request.readyState == 4 && request.status == 200) {
@@ -144,11 +149,20 @@ var Process = (function() {
 				case "Addition":
 					var result;
 					var child_sql;
-					var colName = $("#add-col-expression-table tr").eq(1)
-							.children().eq(0).text();
-					var expression = $("#add-col-expression-table tr").eq(1)
-							.children().eq(1).text();
-
+					var colName = "";
+					var expression = "";
+					var expression_list = [];
+					var expression_tb_length = $("#add-col-expression-table tr").length;
+					for(var j=1; j<expression_tb_length-1; j++){
+						var map = {};
+						colName = $("#add-col-expression-table tr").eq(j).children().eq(0).text();
+						expression = $("#add-col-expression-table tr").eq(j).children().eq(1).text();
+						map["colName"] = colName;
+						map["expression"] = expression;
+						expression_list.push(map);
+					}
+					var param = JSON.stringify({param:expression_list});
+					
 					for (var i = 0; i < info.length; i++) {
 						var json = JSON.parse(info[i]);
 						for ( var key in json) {
@@ -163,10 +177,8 @@ var Process = (function() {
 						}
 					}
 
-					request.open("Post", "Addition.do?sql="
-							+ encodeURI(child_sql) + "&colName="
-							+ encodeURI(colName) + "&expression="
-							+ encodeURI(expression), false);
+					request.open("Post", "Addition.do?sql=" + encodeURI(child_sql) + 
+							"&param=" + encodeURI(param), false);
 
 					request.onreadystatechange = function() {
 						if (request.readyState == 4 && request.status == 200) {
