@@ -66,7 +66,7 @@ public class SoketHandler extends TextWebSocketHandler implements WebSocketHandl
 		
 		int a = chatService.insertChat(cvo);
 		System.out.println(cvo+",,,,"+a);
-		SimpleDateFormat date =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat date =  new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		
 		for (WebSocketSession sess : sessionList) {
 			System.out.println("채팅 세션 리스트 작동중?");

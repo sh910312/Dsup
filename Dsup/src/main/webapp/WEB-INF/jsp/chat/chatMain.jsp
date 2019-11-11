@@ -93,10 +93,10 @@ function openButton(menu, a){ /*  버튼 새창 */
 </head>
 <body>
 <form id="frm">
-	<div class="container">
-		<div class="container bootstrap snippet">
+	 <div class="container"> 
+		<div class="container bootstrap snippet col-xs-4">
 			<div class="row">
-				<div class="col-xs-7">
+				<div class="">
 					<div class="portlet portlet-default">
 						<div class="portlet-heading">
 							<div class="portlet-title">
@@ -128,21 +128,21 @@ function openButton(menu, a){ /*  버튼 새창 */
 									<div class="form-group col-xs-4">
 										<!-- 로그인을 하면 회원아이디로 대체 -->
 										<input id="nickname" type="hidden" value="${member.nickname }">
-										<input style="height: 40px;" name="nick" id="nick" 
+										<input style="width:100px; height: 40px;" name="nick" id="nick" 
 										class="form-control" placeholder="이름" maxlength="8" readonly value="${member.nickname }">
 									</div>
 
-									<div class="form-group col-xs-2 pull-right">
-										<!-- 현재 접속자 표시  -->
+								<!-- 	<div class="form-group col-xs-2 pull-right">
+										현재 접속자 표시 
 										<button type="button" class="btn btn-default pull-right" onclick="openButton(3)"
 										style="height: 40px; width: 100px;">현재	접속자</button>
-									</div>
+									</div> -->
 								</div>
 								<!-- 회원 아이디 끝 -->
 								<!-- 메세지 입력창 시작  -->
 								<div class="row">
 									<div id="text" class="form-group col-xs-10">
-										<textarea style="height: 80px;" id="contents" name="contents" class="form-control"
+										<textarea style="width:200px; height: 80px;" id="contents" name="contents" class="form-control"
 										 placeholder="메세지를 입력하세요." maxlength="100"></textarea>
 									</div>
 									<div class="form-group col-xs-2">
@@ -158,17 +158,7 @@ function openButton(menu, a){ /*  버튼 새창 */
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> 
 </form>
-
-
-<!-- <div class="pull-right"><iframe src="http://www.homejjang.com"  width="600" height="300"></iframe></div> -->
-
-
-<!-- <form id="frm2">	
-	<textarea id="contents" name="contents" placeholder="등록할 내용"></textarea>
-
-	<button type="button" id="inbtn">전송</button>
-</form>	 -->
 </body>
 </html>
