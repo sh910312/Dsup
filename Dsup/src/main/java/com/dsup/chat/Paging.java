@@ -82,4 +82,14 @@ public class Paging {
 	public void setEndPage(int endPage) {
 		this.endPage = endPage;
 	}
+
+	@Override
+	public String toString() {
+		return "Paging [pageUnit=" + pageUnit + ", pageSize=" + pageSize + ", lastPage=" + getLastPage() + ", totalRecord="
+				+ totalRecord + ", page=" + page + ", startPage=" + getStartPage() + ", endPage=" + getEndPage() + ", first="
+				+ first + ", last=" + last + "]";
+	}
+	
+	
+	
 }

@@ -99,6 +99,7 @@ function insert() {
 									
 									</div>
 									
+									
 									</div>
 								</div>
 								<div align="center"> <!-- 검색 완료시 (등록/수정) 버튼이 보이게 조건 추가.   -->
