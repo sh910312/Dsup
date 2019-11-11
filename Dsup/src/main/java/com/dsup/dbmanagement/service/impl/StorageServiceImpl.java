@@ -10,7 +10,6 @@ import com.dsup.dbmanagement.DatafileVO;
 import com.dsup.dbmanagement.TablespaceVO;
 import com.dsup.dbmanagement.UserTbspcTbVO;
 import com.dsup.dbmanagement.service.StorageService;
-import com.dsup.pay.ServiceStateTbVO;
 
 @Service
 public class StorageServiceImpl implements StorageService {

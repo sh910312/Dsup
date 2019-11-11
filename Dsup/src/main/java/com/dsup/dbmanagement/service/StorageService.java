@@ -5,7 +5,6 @@ import java.util.List;
 import com.dsup.dbmanagement.DatafileVO;
 import com.dsup.dbmanagement.TablespaceVO;
 import com.dsup.dbmanagement.UserTbspcTbVO;
-import com.dsup.pay.ServiceStateTbVO;
 
 public interface StorageService {
 	List<TablespaceVO> getStorageList(String userId);

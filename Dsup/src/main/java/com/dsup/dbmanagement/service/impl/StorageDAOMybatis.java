@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import com.dsup.dbmanagement.DatafileVO;
 import com.dsup.dbmanagement.TablespaceVO;
 import com.dsup.dbmanagement.UserTbspcTbVO;
-import com.dsup.pay.ServiceStateTbVO;
 
 @Repository
 public class StorageDAOMybatis {
