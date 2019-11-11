@@ -40,7 +40,6 @@ public class LoginController {
 		}
 		//로컬 사용시 해야될 부분 2019.11.01 - 이재문
 //		session.setAttribute("userId", vo.getUserId());
-//		System.out.println("vo.getUserId() : " + vo.getUserId());
 //		return "main";
 	}
 	@RequestMapping("main")

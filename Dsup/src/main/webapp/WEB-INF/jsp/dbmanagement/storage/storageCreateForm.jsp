@@ -61,8 +61,9 @@
 				+ " LOGGING EXTENT MANAGEMENT LOCAL SEGMENT SPACE MANAGEMENT AUTO";
 		$("#sql").val(sql);
 		
-		if (err == 0)
+		if (err == 0) {
 			$("#frm").submit();
+		}
 	}
 	
 	// 데이터파일 추가
