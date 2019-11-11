@@ -77,7 +77,7 @@ function insert() {
 								</div>
 								<form id="frm">
 								<div class="row">	
-			<br>
+									<br>
 									<div id="text" class="form-group col-xs-12"> <!-- 검색 완료 후 결과보이게 조건 추가  -->
 
 										<c:forEach items="${searchList }" var="search">
@@ -90,8 +90,6 @@ function insert() {
 										</c:if> 
 										
 										<a href="getSearch?searchId=${search.searchId }"> ${search.title }</a>
-										${search.userId }
-										${search.writeDate }
 										</div>
 										</c:forEach>
 

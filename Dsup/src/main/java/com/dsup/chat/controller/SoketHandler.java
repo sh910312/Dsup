@@ -1,18 +1,30 @@
 package com.dsup.chat.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import com.dsup.chat.ChatVO;
+import com.dsup.chat.service.ChatService;
+import com.dsup.chat.service.SearchService;
 import com.dsup.member.MemberVO;
 
 public class SoketHandler extends TextWebSocketHandler implements WebSocketHandler {
+	
+	@Autowired
+	SearchService searchservice;
+	
+	@Autowired
+	ChatService chatService;
 
 //	private static Logger logger = LoggerFactory.getLogger(SoketHandler.class);
 	private List<WebSocketSession> sessionList = new ArrayList<WebSocketSession>();
@@ -28,6 +40,7 @@ public class SoketHandler extends TextWebSocketHandler implements WebSocketHandl
 		MemberVO vo = (MemberVO) map.get("member");
 		
 		sessionList.add(session);
+		
 		System.out.println(vo.getNickname()+"님이 접속됨");
 	}
 
@@ -40,11 +53,33 @@ public class SoketHandler extends TextWebSocketHandler implements WebSocketHandl
 		Map<String, Object> map = session.getAttributes();
 		MemberVO vo = (MemberVO) map.get("member");
 		
-		System.out.println(vo.getNickname() + "으로부터 " + message.getPayload() + "받음");
+		ChatVO cvo = new ChatVO();
+		
+		cvo.setUserId(vo.getUserId());
+		cvo.setNickname(vo.getNickname());
+		cvo.setContents(message.getPayload());
+		
+		
+		
+//		System.out.println(vo.getNickname() + "으로부터 " + message.getPayload() + "받음" + cvo.getWriteDate());
+		System.out.println(vo.getUserId() + "으로부터 " + message.getPayload() + "받음" + cvo.getWriteDate());
+		
+		int a = chatService.insertChat(cvo);
+		System.out.println(cvo+",,,,"+a);
+		SimpleDateFormat date =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
 		for (WebSocketSession sess : sessionList) {
-			sess.sendMessage(new TextMessage(vo.getNickname()+ " : " + message.getPayload()));
+			System.out.println("채팅 세션 리스트 작동중?");
+			sess.sendMessage(new TextMessage("<h4>" + cvo.getNickname() + "</h4>"
+			+ "<div class='pull-right'>" + date.format(new Date())
+			+ "</div>" + " <span> " + message.getPayload()+" "
+			+ "<input type='hidden' value='" + cvo.getChatId()+ "'>" 
+			+ "</span>" ));
+			 
 		}
+		
+		
+		
 	}
 
 	// 클라이언트와 연결을 끊었을 때 실행되는 메소드

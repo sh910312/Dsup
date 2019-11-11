@@ -36,6 +36,7 @@ public class MemberServiceImpl implements MemberService{
 	public int deleteMember(MemberVO dto) {
 		return MemberDAO.deleteMember(dto);
 	}
+	
 	@Override
 	public MemberVO login(MemberVO vo) {
 		//id로 조회 하고
