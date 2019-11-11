@@ -23,7 +23,8 @@
 
 <!-- Custom styles for this template-->
 <link href="${pageContext.request.contextPath }/resources/js/admin/css/sb-admin.css" rel="stylesheet">
-
+<!-- Google Chart-->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <style type="text/css">/* Chart.js */
 @
 keyframes chartjs-render-animation {
@@ -86,7 +87,7 @@ function pageChange(type){
 </head>
 <body id="page-top">
 	<nav class="navbar navbar-expand navbar-dark bg-dark static-top">
-		<a class="navbar-brand mr-1" href="index.html">Start Bootstrap</a>
+		<a class="navbar-brand mr-1" href="./main">DBhelper</a>
 		<button class="btn btn-link btn-sm text-white order-1 order-sm-0"
 			id="sidebarToggle" href="#">
 			<i class="fas fa-bars"></i>

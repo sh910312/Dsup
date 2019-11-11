@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//src/main/webapp/WEB-INF/jsp/admin/volume/volume.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/index.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/sql/setting/dbinsertsetview.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/sql/setting/start_include.jsp=UTF-8
