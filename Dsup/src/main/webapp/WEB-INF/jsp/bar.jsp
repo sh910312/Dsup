@@ -116,6 +116,9 @@
 	</div>
 
 
+
+
+
 <script type="text/javascript">
 var modal = document.getElementById('myModal');
 var myInfo = document.getElementById('myInfo');
@@ -173,3 +176,9 @@ function memberUpdate() {
 	});//수정 버튼 클릭
 }//userUpdate
 </script>
+
+<!-- 채팅 영역 시작 -->
+	<div class="col-lg-3">
+		<%@include file="./chat/chatMain.jsp"%>
+	</div>
+<!-- 채팅 영역 끝 -->

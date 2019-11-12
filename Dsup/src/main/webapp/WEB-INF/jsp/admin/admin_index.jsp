@@ -107,25 +107,6 @@ function pageChange(type){
 	</nav>
 	<div id="wrapper">
 		<!-- Sidebar -->
-		<ul class="sidebar navbar-nav">
-			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" href="#" id="pagesDropdown"
-					role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
-					<i class="fas fa-fw fa-folder"></i> 
-					<span>Admin</span>
-				</a>
-				<div class="dropdown-menu" aria-labelledby="pagesDropdown">
-					<h6 class="dropdown-header">Main:</h6>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" onclick="pageChange('Volume')">Volume</a> 
-					<a class="dropdown-item" onclick="pageChange('User')">User</a>
-					<div class="dropdown-divider"></div>
-					<h6 class="dropdown-header">Part :</h6>
-					<a class="dropdown-item" href="#">Page</a> 
-					<a class="dropdown-item" href="#">Page</a>
-				</div>
-			</li>
-		</ul>
 		<div id="content-wrapper">
 			<div id="volume-jsp-div" style="display:block;">
 				<jsp:include page="volume/volume.jsp"></jsp:include>
@@ -145,6 +126,27 @@ function pageChange(type){
 			</footer>
 
 		</div>
+<!-- 		로그인 정보와 채팅창 넣을공간 -->
+		<ul class="sidebar navbar-nav col-lg-3">
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="pagesDropdown"
+					role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+					<i class="fas fa-fw fa-folder"></i> 
+					<span>Admin</span>
+				</a>
+				<div class="dropdown-menu" aria-labelledby="pagesDropdown">
+					<h6 class="dropdown-header">Main:</h6>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" onclick="pageChange('Volume')">Volume</a> 
+					<a class="dropdown-item" onclick="pageChange('User')">User</a>
+					<div class="dropdown-divider"></div>
+					<h6 class="dropdown-header">Part :</h6>
+					<a class="dropdown-item" href="#">Page</a> 
+					<a class="dropdown-item" href="#">Page</a>
+				</div>
+			</li>
+		</ul>
+		
 		<!-- /.content-wrapper -->
 
 	</div>

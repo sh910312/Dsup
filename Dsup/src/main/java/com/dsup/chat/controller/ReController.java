@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.dsup.chat.ReVO;
 import com.dsup.chat.service.ReService;
+import com.dsup.chat.service.SearchService;
 import com.dsup.member.MemberVO;
 
 @Controller
@@ -16,7 +17,10 @@ public class ReController {
 
 	@Autowired
 	ReService reService;
-
+	
+	@Autowired
+	SearchService searchService;
+	
 	// 댓글 등록
 	@RequestMapping("/Reform")
 	public String insertReForm() {
@@ -35,14 +39,17 @@ public class ReController {
 
 	// 수정처리
 	@RequestMapping("/updateRe")
-	public String updateRe(ReVO vo, HttpServletRequest request, HttpSession session) {
+	public String updateRe(ReVO rvo, HttpServletRequest request, HttpSession session) {
 
 		MemberVO member = (MemberVO) session.getAttribute("member");
-		vo.setUserId(member.getUserId());
+		rvo.setUserId(member.getUserId());
 
-		reService.updateRe(vo);
 
-		return "redirect:getSearch?searchId=" + vo.getSearchId();
+		reService.updateRe(rvo);
+		System.out.println(rvo);
+		
+		
+		return "redirect:getSearch?searchId=" + rvo.getSearchId();
 	}
 
 	// 삭제

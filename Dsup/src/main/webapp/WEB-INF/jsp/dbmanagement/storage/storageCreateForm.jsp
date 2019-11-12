@@ -19,6 +19,7 @@
 	// [윤정1109] 종량제
 	var service = "${member.payItem}".split("GB")[0];
 	var freeVolumn = 0;
+	var thisVolumn = 0;
 	$(function(){
 		$("#btn").click(formCheck);
 		$("#addbtn").click(add);
@@ -27,6 +28,7 @@
 		filenameInput();
 		getVolumn();
 		getThisVolumn();
+		$("#tablespaceName").blur(tsNameChkFunction);
 	});
 	
 	// 제출 전 확인
@@ -35,11 +37,17 @@
 		var datafile = "";
 		var err = 0;
 		
-		if(tsname == "") {
-			$('#tsnameError').fadeIn(400).delay(1000).fadeOut(400);
-			return false;
+		if( thisVolumn > freeVolumn ) {
+			$('#volumnError').fadeIn(400).delay(1000).fadeOut(400);
+			return;
 		}
 		
+		if(tsname == '') err += 1;
+		
+		if( $("#tablespaceName").hasClass("is-invalid") ) 
+			err += 1;
+		
+		// 데이터파일 입력한 값 확인
 		$("tbody>tr").each(function(){
 			var filename = $(this).find("#filename").val();
 			var size = $(this).find("#size").val();
@@ -96,60 +104,51 @@
 	
 	// [윤정 1031] 테이블스페이스명 유효성 검사 
 	function tsNameChkFunction() {
-		$("#tablespaceName").blur(function(){
-			var name = $("#tablespaceName").val();
-			name = name.toUpperCase();
-			$("#tablespaceName").val(name);
-			$("#tablespaceName").addClass("is-invalid");
+		var name = $("#tablespaceName").val();
+		name = name.toUpperCase();
+		$("#tablespaceName").val(name);
+		$("#tablespaceName").addClass("is-invalid");
 			
-			// 아이디를 입력하지 않은 경우
-			if(name == '') { 
-				$("#nameMsg").show().text("이름을 입력해주세요");
-				$("#btn").attr("disabled", true);
-				return;
-			}
-			
-			// [윤정1101] 이름 첫 글자 영어만
-			if(!name.substr(0,1).match(/[A-Z]/)) {
-				$("#nameMsg").show().text("이름 첫 글자는 영어만 입력할 수 있습니다");
-				$("#btn").attr("disabled", true);
-				return;
-			}
-			
-			// [윤정 1101] 이름에 A-Z, 0-9, _ 만 쓸 수 있도록
-			var err = 0;
-			var cnt = name.length;
-			for(i = 0; i < cnt; i ++) {
-				var chk = name.charAt(i);
-				if (!chk.match(/[0-9]/) && !chk.match(/[A-Z]/) && chk != '_'){
-					err = err + 1;
-				}
-				if(err > 0) {
-					$("#nameMsg").show().text("영어, 숫자, _만 입력할 수 있습니다");
-					$("#btn").attr("disabled", true);
-					return;
-				}
-			}
-			// end [윤정 1101] 이름에 A-Z, 0-9, _ 만 쓸 수 있도록
+		// 아이디를 입력하지 않은 경우
+		if(name == '') { 
+			$("#nameMsg").show().text("이름을 입력해주세요");
+			return 1;
+		}
 		
-			$.ajax({
-				url : "tsNameChk?tablespaceName=" + name,
-				type : 'GET',
-				success : function(data) {
-					// 중복이면 0, 아니면 1
-					if(data == 0) { // 중복
-						$("#nameMsg").show().text("사용할 수 없는 이름입니다");
-						$("#btn").attr("disabled", true);
-					} else { // 중복x
-						$("#nameMsg").hide();
-						$("#btn").attr("disabled", false);
-						$("#tablespaceName").removeClass("is-invalid");
-					}
+		// [윤정1101] 이름 첫 글자 영어만
+		if(!name.substr(0,1).match(/[A-Z]/)) {
+			$("#nameMsg").show().text("이름 첫 글자는 영어만 입력할 수 있습니다");
+			return 1;
+		}
+		
+		// [윤정 1101] 이름에 A-Z, 0-9, _ 만 쓸 수 있도록
+		var err2 = 0;
+		var cnt = name.length;
+		for(i = 0; i < cnt; i ++) {
+			var chk = name.charAt(i);
+			if (!chk.match(/[0-9]/) && !chk.match(/[A-Z]/) && chk != '_'){
+				err2 = err2 + 1;
+			}
+			if(err2 > 0) {
+				$("#nameMsg").show().text("영어, 숫자, _만 입력할 수 있습니다");
+				return 1;
+			}
+		}
+		// end [윤정 1101] 이름에 A-Z, 0-9, _ 만 쓸 수 있도록
+		$.ajax({
+			url : "tsNameChk?tablespaceName=" + name,
+			type : 'GET',
+			success : function(data) {
+				// 중복이면 0, 아니면 1
+				if(data == 0) { // 중복
+					$("#nameMsg").show().text("사용할 수 없는 이름입니다");
+				} else { // 중복x
+					$("#nameMsg").hide();
+					$("#tablespaceName").removeClass("is-invalid");
 				}
-			}) // ajax
-			
-			filenameInput();
-		}); // .blur(function)
+			}
+		}) // ajax
+		filenameInput();
 	} // tsNameChkFunction
 	
 	// [윤정1101] 데이터파일명 지정
@@ -184,25 +183,15 @@
 	// [윤정 1109] 이 테이블스페이스의 용량
 	function getThisVolumn(){
 		$(".yj_size").change(function(){
-			var thisVolumn = 0;
+			thisVolumn = 0;
 			$("tbody>tr").each(function(){
 				var size = parseInt( $(this).find("#size").val() );
 				var unit = $(this).find("#sizeunit").val();
-				console.log(unit);
 				if(unit == 'G')
 					size = size * 1024;
 				thisVolumn += size;
 				}); // tbody>tr
-			console.log(thisVolumn);
 			$("#thisVolumn").text(thisVolumn);
-			
-			if(thisVolumn > freeVolumn) {
-				//console.log("용량 초과!!");
-				$('#volumnError').fadeIn(400).delay(1000).fadeOut(400);
-				$("#btn").attr("disabled", true);
-			} else {
-				$("#btn").attr("disabled", false);
-			}
 		}); // yj_size
 	}
 	</script>
@@ -270,6 +259,7 @@
 		
 		<div class='yj_error' style='display:none' id="sizeError">용량은 0보다 큰 숫자만 입력할 수 있습니다!</div>
 		<div class='yj_error' style='display:none' id="tsnameError">테이블스페이스 이름을 입력하세요!</div>
+		<div class='yj_error' style='display:none' id="volumnError">이용가능한 용량을 초과했습니다!</div>
 		
 	</form>
 </div>

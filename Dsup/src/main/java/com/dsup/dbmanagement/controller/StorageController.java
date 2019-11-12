@@ -18,6 +18,7 @@ import com.dsup.dbmanagement.DatafileVO;
 import com.dsup.dbmanagement.TablespaceVO;
 import com.dsup.dbmanagement.UserTbspcTbVO;
 import com.dsup.dbmanagement.service.StorageService;
+import com.dsup.member.MemberVO;
 
 @Controller
 public class StorageController {
@@ -51,6 +52,7 @@ public class StorageController {
 	@RequestMapping(value="/tablespaceList", method=RequestMethod.GET)
 	public List<TablespaceVO> getTablespaceList(HttpSession session){
 		String userId = (String)session.getAttribute("userId");
+		
 		return storageService.getStorageList(userId);
 	}
 	

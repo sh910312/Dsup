@@ -75,4 +75,5 @@ public class StorageServiceImpl implements StorageService {
 	public UserTbspcTbVO getVolumn(UserTbspcTbVO vo) {
 		return dao.getVolumn(vo);
 	}
+	
 }

@@ -36,6 +36,7 @@ public class LoginController {
 			session.setAttribute("member", member);
 			session.setAttribute("userId", member.getUserId());
 			session.setAttribute("payService", member.getPayService());
+			session.setAttribute("userType", member.getUserType());
 			return "redirect:main";
 		}
 		//로컬 사용시 해야될 부분 2019.11.01 - 이재문
