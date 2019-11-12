@@ -22,31 +22,31 @@ public class ReServiceImpl implements ReService {
 		reDAOMybatis.insert(vo);
 	}
 
-	// 댓글 리스트
+	// 댓글 전체 조회
 	@Override
 	public List<ReVO> ReList(ReVO vo) {
 		// TODO Auto-generated method stub
 		return reDAOMybatis.reList();
 	}
 
-	// 댓글리스트(+페이징)
+	// 댓글 페이징
 	@Override
-	public List<Map<String, Object>> ReMap(ReVO vo, Paging repaging) {
+	public List<Map<String, Object>> ReMap(ReVO vo, Paging paging) {
 
 		// 페이지번호 파라미터
-		if (repaging.getPage() == null) {
-			repaging.setPage(1);
+		if (paging.getPage() == null) {
+			paging.setPage(1);
 		}
 
-		repaging.setPageUnit(5); // 게시글 갯수
-		repaging.setPageSize(2); // 하단 페이지 목록 수
+		paging.setPageUnit(5); // 게시글 갯수
+		paging.setPageSize(2); // 하단 페이지 목록 수
 
 		// 전체 건수
-		repaging.setTotalRecord(reDAOMybatis.RePagingList(vo));
+		paging.setTotalRecord(reDAOMybatis.RePagingList(vo));
 
 		// 시작/마지막 레코드 번호
-		vo.setFirst(repaging.getFirst());
-		vo.setLast(repaging.getLast());
+		vo.setFirst(paging.getFirst());
+		vo.setLast(paging.getLast());
 
 		return reDAOMybatis.ReMap(vo);
 	}
@@ -60,6 +60,12 @@ public class ReServiceImpl implements ReService {
 	public ReVO getRe(ReVO vo) {
 		// TODO Auto-generated method stub
 		return reDAOMybatis.getRe(vo);
+	}
+	
+	@Override // 댓글 수정
+	public void updateRe(ReVO vo) {
+		// TODO Auto-generated method stub
+		reDAOMybatis.update(vo);
 	}
 
 }

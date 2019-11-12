@@ -76,8 +76,10 @@
 	function idCheckFunction(){
 		$("#id").blur(function() {
 			// id = "id_reg" / name = "userId"
-		
 			var id = $('#id').val();
+			id = id.toUpperCase();
+			$("#id").val(id);
+			
 			$.ajax({
 				url : '${pageContext.request.contextPath}/idCheck?id='+ id,
 				type : 'get',

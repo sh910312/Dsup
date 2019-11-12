@@ -39,65 +39,39 @@ function openButton(menu,a){ /*  버튼 새창 */ // menu,a >> 첫번째와 두�
 	
 }
 
-</script>
-
-<script>
-
-
 
 
 $(function() {
-	
+
+	update();   // 게시글 업데이트
 	del();      // 게시글 삭제
-	update();   // 게시글 수정
-	back();     // 돌아가기
-	
+
 	insertRe(); // 댓글 등록
-	updateRe(); // 댓글 수정
+	updateRe(); // 댓글 업데이트
 	delRe();    // 댓글 삭제
 
+	back();     // 돌아가기
 
 });
 
 
-function insertRe() {
-	$("#insertbtn").click(function() {
 
-		$("#frm2").attr("action", "insertRe");
-		$("#frm2").attr("method", "post");
-		$("#frm2").submit();
-		alert("댓글이 등록 되었습니다.");
-		
-	})
-}
 
-function updateRe() { // 댓글 업데이트
-
-	$("[name='updateReOk']").hide(); // 댓글 수정완료 버튼 숨기기
-		
-		
-	$("#updateRe").click(function() {
-		
-		$("#updateRe").hide();		// 댓글 수정버튼 숨기기
-		$("#updateReOk").show(); // 댓글 수정완료 버튼 보이기
-		$("#deleteRe").hide();		// 댓글 삭제버튼 숨기기
-			
-	})
+function update() { // 게시글 수정
+	console.log("update");
 	
-	$("#updateReOk").click(function() {
-		
-		
-		
-		//수정 완료
-		$("#frm3").attr("action", "컨트롤러에 있는 댓글수정완료");
-		$("#frm3").submit();
-		
-		
+	$("#updatebtn").click(function() { 
+
+		$("#frm1").attr("action", "editSearch");
+		$("#frm1").submit();
 	})
 	
 }
 
 function del() { // 게시글 삭제
+	
+	console.log("del");
+	
 	$("#delbtn").click(function() {
 		
 		$("#frm1").attr("action", "deleteSearch");
@@ -106,36 +80,82 @@ function del() { // 게시글 삭제
 	})
 }
 
-function delRe() {
+
+
+
+function insertRe() { // 댓글 등록
 	
-	$("#delRebtn").click(function() {
-		$("#frm3").attr("action", "delRe");
-		$("#frm3").submit();
+	console.log("insertRe");
+	
+ 	$("#insertbtn").click(function() {
+		
+		$("#frm2").attr("action", "insertRe");
+		$("#frm2").attr("method", "post");
+		$("#frm2").submit();
+		alert("댓글이 등록 되었습니다.");
+		
+	}) 
+
+}
+
+
+function updateRe() { // 댓글 업데이트 
+	
+	//수정하기 버튼
+	$(document).on('click','.updateRebtn',function(){	
+		var text = $(this).parent().parent().find("#editform").text();
+		$(this).parent().parent().find("#editform").html("<input type='text' name='contents' value='"+text+"' id='editDo'>");
+		$(this).parent().html("<button type='button' id='btnDo' class='updateOk btn btn-default btn-xs pull-right'>수정완료</button>");
+	})
+	
+	//수정완료버튼
+	$(document).on('click','.updateOk',function(){
+		var contents = $("#editDo").val();
+		
+		// 내용 입력을 다 했으면 실행
+		$("#frmEditRe").attr("action", "updateRe");
+
+		frmEditRe.contents.value=contents;
+		frmEditRe.reId.value=$(this).parent().parent().find("#reId").val();
+
+		console.log($(this).parent().parent().find("#reId").val());
+		
+		$(this).parent().parent().find("#editform").text(contents);
+		$(this).parent().html('<button type="button" id="updateRebtn" class="updateRebtn btn btn-default btn-xs pull-right">댓글 수정</button>');
+		
+		$("#frmEditRe").submit();
+		
+	});
+
+}
+
+
+
+function delRe() { // 댓글 삭제
+	
+	console.log("delRe");
+	
+	$(".delRebtn").click(function() { // 댓글 삭제 버튼을 클릭했을때
+		
+		frmdel.reId.value=$(this).parent().parent().find("#reId").val();
+		console.log($(this).parent().parent().find("#reId").val());
+		
+		// 실행하라
+		$("#frmdel").attr("action", "delRe");
+		$("#frmdel").submit();
 		alert("댓글이 삭제되었습니다.");
 	})
 	
 }
 
 
-function update() { // 게시글 수정
-	
-	$("#updatebtn").click(function() {
-
-		$("#frm1").attr("action", "editSearch");
-		$("#frm1").submit();
-
-	})
-	
-} 
-
-function back() {
+function back() { // 돌아가기
 	
 	$("#backbtn").click(function() {
 		$("#frm1").attr("action", "SearchMap");
 		$("#frm1").submit();
 	})
 } 
-
 
 
  window.onload = function(){		//db읽어온 텍스트 \n  -> <br> 바꿈
@@ -146,14 +166,8 @@ function back() {
  
 
 </script>
-
-
-
-
-
-
-
 </head>
+
 <body>
 	<div class="container">
 			<div class="row">
@@ -185,6 +199,7 @@ function back() {
 								<br>
 									<div id="test"></div>
 									<input id="updatecotents" type="hidden" value="${search.contents }">
+									
 								<br>
 								<div class="pull-right"><a id="rpSearch" onclick="openButton(0,${search.searchId })">게시글 신고하기</a></div>
 								<div align="center">
@@ -215,27 +230,27 @@ function back() {
 							<div class="row">
 								<form id="frm3">
 								<hr>
-								<div class="form-group col-xs-12">
-								<input type="hidden" name="searchId" value="${search.searchId }">
+								<div id="Recontents" class="form-group col-xs-12">
+									<input type="hidden" name="searchId" value="${search.searchId }">
 
 							
 							<!-- 댓글 리스트 반복문 시작 -->
-									<c:forEach items="${reList }" var="re">
-									<input type="hidden" name="reId" value="${re.reId }">
+								<c:forEach items="${reList }" var="re">
+								<div id="${re.reId }">
+									<input type="hidden" name="reId" id="reId" value="${re.reId }" >
 										${re.userId }  :
-										${re.contents } 
+										<div id="editform">${re.contents }</div> 
 										${re.writeDate }
 									<button type="button" class="btn btn-default btn-xs" onclick="openButton(1,${re.reId })">신고</button>
 									<c:if test="${userId == re.userId }">
-									<button type="button" id="delRebtn" name="delRebtn" class="btn btn-default btn-xs pull-right">삭제</button>
-									<button type="button" id="updateReOk" name="updateReOk" class="btn btn-default btn-xs pull-right">수정완료</button>
-									<button type="button" id="updateRe" name="updateRe" class="btn btn-default btn-xs pull-right">수정</button>
+										<div id="delbtn"><button type="button" id="delRebtn" name="delRebtn" class="delRebtn btn btn-default btn-xs pull-right">댓글 삭제</button></div>
+										<div id="editbtn"><button type="button" id="updateRebtn" class="updateRebtn btn btn-default btn-xs pull-right">댓글 수정</button></div>
 									</c:if>
-										<br>
-										<br>
-									</c:forEach>
+										<br><br>
+								</div>
+								<input type="hidden" name="page" value="1"/>
+								</c:forEach>
 							<!-- 댓글 리스트 반복문 끝 -->							
-							
 							
 							
 							<!-- 페이징 처리 영역-->
@@ -253,17 +268,14 @@ function back() {
 								
 							<!-- 등록 폼 시작 -->
 							<div class="row">
-								<form id="frm2">
+								<div class="form-group col-lg-12" align="center">
+								<form id="frm2" class="form-inline" action="insertRe" method="POST">
 								<input type="hidden" name="searchId" value="${search.searchId }">
-									<input style="width:80%; height: 40px;" name="contents" id="contents" class="form-control" placeholder="댓글을 입력하세요." maxlength="20">
-									<button type="button" id="insertbtn" name="insertbtn" class="btn btn-default" style="height:40px;">등록 </button>
+									<input type="text" style="width: 80%; height: 40px;" name="contents" id="contents" class="form-control" placeholder="댓글을 입력하세요." maxlength="20">
+									<button type="button" id="insertbtn" name="insertbtn" class="btn btn-default" style="width: 100px; height:40px;">등록 </button>
 								</form>									
+								</div>
 							<!-- 등록 폼 끝 -->
-
-
-
-
-
 								
 							<!-- 댓글 조회 폼 -->
 								<form name="frm">
@@ -271,15 +283,26 @@ function back() {
 									<input type="hidden" name="page" value="1"/> <!-- 페이징 -->
 								</form>
 							<!-- 댓글 조회 폼 끝 -->
-
-
-
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+
+<form id="frmEditRe" name="frmEditRe">
+<input type="hidden" name="searchId" value="${search.searchId }">
+<input type="hidden" name="reId">
+<input type="hidden" name="contents">
+</form>
+
+<form id="frmdel" name="frmdel">
+<input type="hidden" name="searchId" value="${search.searchId }">
+<input type="hidden" name="reId">
+</form>
+
+
+
 
 <script type="text/javascript">
 
@@ -289,7 +312,6 @@ function go_page(p){
 }
 
 </script>
-
 
 
 </body>

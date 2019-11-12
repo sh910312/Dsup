@@ -261,8 +261,8 @@ public class DAO {
 
 	public String schemaLogin(String id, String pwd) {
 		// TODO Auto-generated method stub
-		String loginSuccess = "";
-		String sql = "select * from user_sch_tb where user_sch_nm = ? and user_sch_pw = ?";
+		String user_sch_nm = "";
+		String sql = "select user_sch_nm from user_sch_tb where user_sch_nm = ? and user_sch_pw = ?";
 		
 		try {
 			psmt = conn.prepareStatement(sql);
@@ -271,16 +271,16 @@ public class DAO {
 			rs = psmt.executeQuery();
 			
 			while(rs.next()) {
-				loginSuccess = "success";
+				user_sch_nm = rs.getString("user_sch_nm");
 			}
 		} catch (SQLException e) {
 			// TODO: handle exception
 			e.printStackTrace();
-			loginSuccess = "fail";
+			user_sch_nm = "";
 		}finally {
 			//close();
 		}
 		
-		return loginSuccess;
+		return user_sch_nm;
 	}
 }

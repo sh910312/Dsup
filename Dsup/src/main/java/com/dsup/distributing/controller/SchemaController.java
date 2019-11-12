@@ -18,4 +18,9 @@ public class SchemaController {
 		//model.addAttribute("schemaUse", schemaService.serviceSchemaList(vo));
 		return "distributing/distributingMain";
 	}
+	@RequestMapping("/distributingMain2")
+	public String serviceSchemaList2(SchemaVO vo, Model model) {
+		//model.addAttribute("schemaUse", schemaService.serviceSchemaList(vo));
+		return "distributing/distributingMain2";
+	}
 }

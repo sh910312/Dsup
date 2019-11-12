@@ -27,9 +27,9 @@
 		<%@include file="bar.jsp"%>
 	</div>
 	<header>
-	<div class="navbar navbar-dark bg-dark box-shadow">
-		<div class="container d-flex justify-content-between">
-			<a href="#" class="navbar-brand d-flex align-items-center"> 
+	<div class="navbar navbar-dark bg-dark box-shadow" style="position:relative; display: inline-block; width:70%;" >
+		<!-- <div class="container d-flex justify-content-between"> -->
+			<a href="#" class="navbar-brand d-flex align-items-center pull-left"> 
 				<i class="fa fa-database" aria-hidden="true" style="margin-right: 10px"></i>
 				<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
 				<circle cx="12" cy="13" r="4"></circle></svg> <strong>DBhelper</strong>
@@ -39,18 +39,28 @@
 			  		<span class="navbar-toggler-icon"></span>
 			  	</button>
 			  	<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-			    	<button class="dropdown-item" type="button">Action</button>
-			    	<button class="dropdown-item" type="button">Another action</button>
-			    	<button class="dropdown-item" type="button">Something else here</button>
+			    	<button class="dropdown-item" type="button">메뉴바1</button>
+			    	<button class="dropdown-item" type="button">메뉴바2</button>
+			    	<button class="dropdown-item" type="button">메뉴바3</button>
 			  	</div>
 			</div>
 		</div>
-	</div>
+	<!-- </div> -->
 	</header>
 	<main role="main">
-		<div class="album py-5 bg-light">
-			<div class="container">
-				<div class="row">
+		<div class="album py-5" style="position:relative; display: inline-block;width: 70%;">  <!-- 수정중 -->
+			<!-- <div class="container"> -->
+				
+				
+				
+				 <!-- 메인로고 시작점(아래 3가지 div로 감싸는부분)-->
+				<div class="row"> 
+					
+					
+					
+					
+					
+					<!-- SQL 부분 시작-->
 					<div class="main-menu col-md-4" onclick="location.href='./sqlIndex'">
 						<div class="card mb-4 box-shadow">
 							<img class="card-img-top"
@@ -64,6 +74,13 @@
 							</div>
 						</div>
 					</div>
+					<!-- SQL 부분 끝-->					
+					
+					
+					
+					
+					
+					<!-- 테이블스페이스 시작-->					
 					<div class="main-menu col-md-4" onclick="location.href='./dbIndex'">
 						<div class="card mb-4 box-shadow">
 							<img class="card-img-top"
@@ -77,7 +94,14 @@
 							</div>
 						</div>
 					</div>
-					<div class="main-menu col-md-4" onclick="location.href='./distributingMain'">
+					<!-- 테이블스페이스 끝-->					
+					
+					
+					
+					
+					
+					<!-- 종량제 부분 시작-->					
+					<div class="main-menu col-md-4" onclick="disClick()">
 						<div class="card mb-4 box-shadow">
 							<img class="card-img-top"
 								data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail"
@@ -97,9 +121,33 @@
 							</div>
 						</div>
 					</div>
+					<!-- 종량제 부분 끝-->					
+					
+					
+					
+					
+					
 				</div>
+				<!-- 메인로고 끝(아래 3가지 div로 감싸는부분)-->
+				
+				
+				
+				
+				
+				
 			</div>
-		</div>
+		<!-- </div> -->
 	</main>
+<script type="text/javascript">
+function disClick(){
+	if("${payService}" == "Y"){
+		location.href='./distributingMain2'
+	}else{
+		location.href='./distributingMain'	
+		
+	}
+}
+
+</script>
 </body>
 </html>

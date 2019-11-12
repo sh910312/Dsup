@@ -6,8 +6,10 @@
 	<!-- [윤정] 테이블스페이스 이름만 조회 : 백업생성에서 씀 -->
 	<select id="getTablespaceList" parameterType="String" resultType="userTbspcTb">
 		SELECT tablespace_name "tablespaceName"
+			, volumn "volumn"
 		FROM user_tbspc_tb
 		WHERE user_id = #{userId}
+		ORDER BY 1
 	</select>
 	
 	<delete id="deleteTablespace" parameterType="String">
@@ -26,19 +28,22 @@
 	<!-- [윤정1030] 테이블스페이스 리스트 상세 조회 -->
 	<select id="getStorage" parameterType="userTbspcTb" resultType="tablespace">
 		SELECT d.tablespace_name "tablespaceName"
+			, u.user_id "userId"
 			, d.status "status"
 		    , sum(df.bytes/1024/1024) "total"
 		    , sum(fs.bytes/1024/1024) "free"
 		    , sum(df.bytes/1024/1024) - sum(fs.bytes/1024/1024) "used"
 		FROM dba_tablespaces d, user_tbspc_tb u, dba_data_files df, dba_free_space fs
-		WHERE u.user_id = #{userId}
-		AND d.tablespace_name = u.tablespace_name
+		WHERE d.tablespace_name = u.tablespace_name
+		<if test = "userId != '---관리자---'">
+		AND u.user_id = #{userId}
+		</if>
 		<if test="tablespaceName != null and tablespaceName!= ''">
 		AND u.tablespace_name = #{tablespaceName}
 		</if>
 		AND d.tablespace_name = df.tablespace_name
 		AND df.file_id = fs.file_id(+)
-		GROUP BY d.tablespace_name, d.status
+		GROUP BY d.tablespace_name, d.status, u.user_id
 		ORDER BY 1
 	</select>
 	
@@ -59,5 +64,21 @@
 	<select id = "tsNameChk" parameterType="String" resultType="String">
 		SELECT ts_name_chk( #{tablespaceName} ) 
 		FROM dual
+	</select>
+	
+	<!-- [윤정1107] user_tbspc_tb에 용량 입력 -->
+	<insert id = "recordVolumn" parameterType="String">
+		{ call record_volumn (#{tablespaceName}) }
+	</insert>
+	
+	<!-- [윤정1107] 남은 사용량 조회 -->
+	<select id = "getVolumn" parameterType = "userTbspcTb" resultType = "userTbspcTb">
+		SELECT NVL(sum(volumn),0) "volumn"
+		FROM user_tbspc_tb
+		WHERE user_id = #{userId}
+		<if test="tablespaceName != null and tablespaceName!= ''">
+		AND tablespace_name != #{tablespaceName}
+		</if>
+		ORDER BY user_id
 	</select>
 </mapper>

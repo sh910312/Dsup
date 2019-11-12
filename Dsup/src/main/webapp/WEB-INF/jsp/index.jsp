@@ -8,9 +8,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
 <script src="./resources/js/index.js"></script>
+<!-- <script src="./resources/js/memberClient.js"></script> -->
+<script src="./resources/json.min.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet" type="text/css" >
 <link href="./resources/css/index.css" rel="stylesheet" type="text/css" >
-
 </head>
 <body> 
 
@@ -23,16 +24,18 @@
       </ul>
       <div class="panel__forms">
 
-        <!-- Login Form -->
+        <!-- 로그인 폼 -->
         <form class="form panel__login-form" id="login-form" method="post" action="login">
           <div class="form__row">
-            <input type="text" id="userId" class="form__input" name="userId" data-validation="userId" data-error="Invalid email address." required autofocus value = "${requestScope.member.userId}">
+            <input type="text" id="login-userId" class="form__input" name="userId" data-validation="userId" 
+            	   data-error="아이디를 입력하세요." required>
             <span class="form__bar"></span>
             <label for="userId" class="form__label">아이디</label>
             <span class="form__error"></span>
           </div>
           <div class="form__row">
-            <input type="password" id="password" class="form__input" name="password" data-validation="length" data-validation-length="8-25" data-error="Password must contain 8-25 characters." required value = "${memberVO.password }">
+            <input type="password" id="login-password" class="form__input" name="password" data-validation="password" 
+            	   data-error="비밀번호를 입력하세요." required>
             <span class="form__bar"></span>
             <label for="password" class="form__label">비밀번호</label>
             <span class="form__error"></span>
@@ -43,33 +46,52 @@
           </div>
         </form>
 
-        <!-- Register Form -->
-        <form class="form panel__register-form" id="register-form" method="post" action="/">
+        <!-- 회원가입 폼 -->
+        <form class="form panel__register-form" id="register-form" method="post"  >
           <div class="form__row">
-            <input type="text" id="register-email" class="form__input" name="register-mail" data-validation="email" data-error="Invalid email address." required>
+            <input type="text" id="userId" class="form__input" name="userId" data-validation="userId" data-error="Invalid userId" required>
             <span class="form__bar"></span>
-            <label for="register-email" class="form__label">E-mail</label>
+            <label for="userId" class="form__label">아이디</label>
             <span class="form__error"></span>
           </div>
           <div class="form__row">
-            <input type="password" id="register-password" class="form__input" name="register-pass" data-validation="length" data-validation-length="8-25" data-error="Password must contain 8-25 characters" required>
+            <input type="text" id="nickname" class="form__input" name="nickname" data-validation="nickname" data-error="Invalid nickname" required>
             <span class="form__bar"></span>
-            <label for="register-password" class="form__label">Password</label>
+            <label for="nickname" class="form__label">닉네임</label>
             <span class="form__error"></span>
           </div>
           <div class="form__row">
-            <input type="password" id="register-password-check" class="form__input" name="register-repeat-pass" data-validation="confirmation" data-validation-confirm="register-pass" data-error="Your passwords did not match." required>
+            <input type="password" id="password" class="form__input" name="password" data-validation="password" data-validation="password" data-error="Password" required>
             <span class="form__bar"></span>
-            <label for="register-password-check" class="form__label">Check password</label>
+            <label for="password" class="form__label">비밀번호</label>
+            <span class="form__error"></span>
+          </div>
+        <!--   <div class="form__row">
+            <input type="password" id="password-check" class="form__input" name="register-repeat-pass" data-validation="confirmation" data-validation-confirm="register-pass" data-error="Your passwords did not match." required>
+            <span class="form__bar"></span>
+            <label for="password-check" class="form__label">비밀번호 확인</label>
+            <span class="form__error"></span>
+          </div> -->
+          <div class="form__row">
+            <input type="text" id="email" class="form__input" name="eMail" data-validation="email" data-error="Invalid email" required>
+            <span class="form__bar"></span>
+            <label for="email" class="form__label">이메일</label>
             <span class="form__error"></span>
           </div>
           <div class="form__row">
-            <input type="submit" class="form__submit" value="Register!">
+            <input type="text" id="phonenumber" class="form__input" name="phonenumber" data-validation="phonenumber" data-error="Invalid phonenumber" required>
+            <span class="form__bar"></span>
+            <label for="phonenumber" class="form__label">전화번호</label>
+            <span class="form__error"></span>
           </div>
+          <div class="form__row">
+            <!-- <input type="submit" class="form__submit" value="회원가입" id="btnInsert"> -->
+          </div>
+          	<button id="btnInsert">회원가입</button>
         </form>
 
-        <!-- Forgot Password Form -->
-        <form class="form panel__password-form" id="password-form" method="post" action="/">
+        <!-- 비밀번호 찾기 폼 -->
+        <form class="form panel__password-form" id="password-form" method="post" action="logina">
           <div class="form__row">
             <p class="form__info">비밀번호를 찾고자 하는 DBhelper 이메일 ID를 입력해주시면 해당 메일 주소로 비밀번호 재설정 링크를 보내드립니다.</p>
           </div>
@@ -86,5 +108,34 @@
       </div>
     </div>
   </div>
+<script>
+
+  function memberInsert(){
+		//등록버튼클릭
+		$('#btnInsert').on('click', function(){
+			/* var id = $('input:text[name="id"]').val();
+			var name= $('input:text[name="name"]').val();
+			var password = $('[name="password"]').val();
+			var role = $('[name="role"]:checked').val(); */		// $('[name="role"]').val(); 첫번째radio 가져옴	// :checked해야 선택한애가져옴
+			var param = JSON.stringify($("#register-form").serializeObject());	//단건일때 //다건일땐 변환애줘야됨
+			console.log(param);
+			$.ajax({
+				url: "members",
+				type: 'POST',
+				dataType: 'json',
+				data: param, //JSON.stringify({id: id, name:name, password: password, role: role}),
+				contentType: 'application/json',
+				success: function(response){
+					if(response.result == true){	// 서버에서 등록후에 true라고 넘어오면
+						memberList();
+					}
+				},
+				error:function(xht, status, message){
+					alert(" status: " + status + " er:"+message);
+				}
+			});
+		});//등록버튼클릭
+	}//userInsert
+</script>
 </body> 
 </html>

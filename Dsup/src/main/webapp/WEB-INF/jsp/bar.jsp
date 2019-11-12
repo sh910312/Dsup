@@ -74,6 +74,7 @@
 <div style="text-align: right">
 프로필<select id="menu" onchange="goPage()">
 	<option value="">선택</option>
+	<option value="admin">관리자</option>
 	<option value="messge">쪽지함</option>
 	<option value="chatMain">채팅봇</option>
 	<option value="">Q &amp; A</option>
@@ -113,6 +114,9 @@
 		</div>
       </div>
 	</div>
+
+
+
 
 
 <script type="text/javascript">
@@ -172,3 +176,9 @@ function memberUpdate() {
 	});//수정 버튼 클릭
 }//userUpdate
 </script>
+
+<!-- 채팅 영역 시작 -->
+	<div class="pull-right" style="position:relative; display: inline-block; width: 27%;">
+		<%@include file="./chat/chatMain.jsp"%>
+	</div>
+<!-- 채팅 영역 끝 -->

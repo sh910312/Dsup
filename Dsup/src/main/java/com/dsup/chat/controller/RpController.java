@@ -38,9 +38,6 @@ public class RpController {
 	@RequestMapping("getRp")
 	public String getRpsearch(HttpServletRequest request, Model model, SearchVO svo, ReVO revo, RpVO rpvo, ChatVO cvo) {
 		
-		System.out.println(svo);
-		System.out.println(revo);
-		System.out.println(rpvo);
 		
 		// 0번 게시글
 		if (svo.getSearchId() != 0) {
@@ -51,18 +48,14 @@ public class RpController {
 		// 1번 댓글
 		}else if(revo.getReId() != 0) {
 			model.addAttribute("rpType", 1);
-			System.out.println(revo);
 			model.addAttribute("re",reService.getRe(revo));
+			System.out.println(revo);
 		// 2번 채팅신고	
+		}else if(cvo.getChatId() != 0) {
+			model.addAttribute("rpType", 2);
+			model.addAttribute("chat",chatService.getChat(cvo));
+			System.out.println(cvo);
 		}
-		
-//		else {
-//			model.addAttribute("rpType", 2);
-//			System.out.println(cvo);
-//			model.addAttribute("chat",chatService.getChat(cvo));
-//		}
-		
-		
 		
 		
 		return "chat/report/inRp";

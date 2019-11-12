@@ -44,7 +44,7 @@
 <update id="updateRe" parameterType="re">
 	update re
 	<set>
-		<if test="contents != null and contents != ''">contents = #{contents</if>
+		<if test="contents != null and contents != ''">contents = #{contents}</if>
 	</set>
 	where re_id = #{reId}
 </update>
@@ -65,36 +65,37 @@
 <!-- paging 리스트 -->
 	<select id="repageList" resultType="int">
 		select count(*) from re
+		where search_id = #{searchId}
 	</select>
 	
 	
 	
 <!-- 	전체조회 -->
- 	
 	<select id ="reList" resultType="re">
-	select * from re order
-	by re_id desc
+	select * from re 
+	order by 
+	re_id DESC
 	</select>
 
 <!-- 전체조회2 -->
 
 	<select id="reMap" resultType="map">
 	
-	SELECT b.* FROM ( SELECT rownum no, a.* FROM (
-	select re_id as "reId",
-			user_id as "userId",
-			contents as "contents",
-			to_char(write_date, 'YY/MM/DD') as "writeDate" 
-	from re
+	SELECT b.* FROM ( SELECT ROWNUM no, a.* FROM (
+		select re_id as "reId",
+				user_id as "userId",
+				contents as "contents",
+				to_char(write_date, 'YY/MM/DD') as "writeDate" 
+		from re
 
-	where search_id = #{searchId}
+		where search_id = #{searchId}
 	
 	<choose>
 		<when test="orderby != null and orderby != ''">
-			order by #{orderby} desc
+			order by #{ORDERBY} DESC
 		</when>
 		<otherwise>
-			order by re_id desc
+			order by re_id DESC
 		</otherwise>
 	</choose>
 	) a ) b WHERE no BETWEEN #{first} AND #{last}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AdminUserDAO">
+	<select id = "getPayHistory" resultType = "payHisIfTb">
+	SELECT pay_seq "paySeq"
+		  , user_id "userId"
+		  , pay_date "payDate"
+		  , pay_item "payItem"
+		  , pay_type "payType"
+		  , pay_price "payPrice"
+	FROM pay_his_if_tb
+	ORDER BY 3 desc
+	</select>
+	
+	<select id = "userSchema" resultType = "user">
+	SELECT u.user_id "id"
+		, d.username "user"
+		, d.account_status "accountStatus"
+		, d.default_tablespace  "defaultTableSpace"
+	FROM dba_users d, user_sch_tb u
+	where d.username = u.user_sch_nm
+	</select>
+</mapper>

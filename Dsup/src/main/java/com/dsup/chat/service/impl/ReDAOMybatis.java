@@ -24,6 +24,7 @@ public class ReDAOMybatis {
 	public List<ReVO> reList() {
 		return mybatis.selectList("ReDAO.reList");
 	}
+	// 댓글 페이징
 	public List<Map<String, Object>> ReMap(ReVO vo){
 		return mybatis.selectList("ReDAO.reMap", vo);
 	}
@@ -40,6 +41,11 @@ public class ReDAOMybatis {
 	// 상세보기
 	public ReVO getRe(ReVO vo) {
 		return mybatis.selectOne("ReDAO.getRe",vo);
+	}
+	
+	// 수정하기
+	public void update(ReVO vo) {
+		mybatis.update("ReDAO.updateRe", vo);
 	}
 	
 	

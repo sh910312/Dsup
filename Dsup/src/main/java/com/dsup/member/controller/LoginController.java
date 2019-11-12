@@ -26,7 +26,6 @@ public class LoginController {
 	@RequestMapping(value = "login", method = RequestMethod.POST)  //@RequestMapping("login")
 	public String login(@ModelAttribute("member") MemberVO vo, HttpSession session) {
 		//로컬 사용시 주석 해야될 부분 2019.11.01 - 이재문
-		System.out.println("======" + vo);
 		MemberVO member = memberService.login(vo);
 		if(member == null) {
 			return "index";
@@ -34,11 +33,12 @@ public class LoginController {
 			//세션에 저장 목록으로 페이지이동
 			session.setAttribute("member", member);
 			session.setAttribute("userId", member.getUserId());
+			session.setAttribute("payService", member.getPayService());
+			session.setAttribute("userType", member.getUserType());
 			return "redirect:main";
 		}
 		//로컬 사용시 해야될 부분 2019.11.01 - 이재문
 //		session.setAttribute("userId", vo.getUserId());
-//		System.out.println("vo.getUserId() : " + vo.getUserId());
 //		return "main";
 	}
 	@RequestMapping("main")

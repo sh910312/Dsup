@@ -1,12 +1,10 @@
 package com.dsup.dbmanagement.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.dsup.dbmanagement.DatafileVO;
@@ -56,5 +54,15 @@ public class StorageDAOMybatis {
 	// [윤정1031] 테이블스페이스명 중복,예약어 체크
 	public String tsNameChk(String tablespaceName) {
 		return mybatis.selectOne("StorageDAO.tsNameChk", tablespaceName);
+	}
+	
+	// [윤정1107] user_tbspc_tb에 volumn 입력
+	public void recordVolumn (String tablespaceName) {
+		mybatis.insert("StorageDAO.recordVolumn", tablespaceName);
+	}
+	
+	// [윤정 1108] 종량제 이용량(전체 테이블스페이스 용량) 조회
+	public UserTbspcTbVO getVolumn(UserTbspcTbVO vo) {
+		return mybatis.selectOne("StorageDAO.getVolumn", vo);
 	}
 }

@@ -4,7 +4,7 @@
 <!-- users_mapper.xml -->
 <mapper namespace="MemberDAO">
 	<select id="getMemberList" resultType="member" parameterType="member">
-		select user_id, password, nickname, e_mail, user_date, user_type
+		select user_id, password, nickname, e_mail "eMail", user_date, user_type, phonenumber, pay_item, pay_service
 		from users
 		<where>
 			<if test="userId != null and userId != '' ">
@@ -17,7 +17,7 @@
 	</select>
 	<select id="getMember" parameterType="member" resultType="member">
 		select user_id,
-		password, nickname, e_mail, user_date, user_type, phonenumber
+		password, nickname, e_mail, user_date, user_type, phonenumber, pay_item ,pay_service
 		from users
 		where user_id=#{userId}
 	</select>
@@ -25,16 +25,21 @@
 		select user_id "user_id", password "password", nickname "nickname", e_mail "e_mail", user_date "user_date", user_type "user_type", phonenumber "phonenumber"
 		from users
 	</select>
+	<!-- 아이디 중복조회 -->
+	<select id="getUserId" parameterType="member" resultType="member">
+		select user_id 
+		from users 
+		where user_id = #{userId}
+	</select>
 
 	<!-- 등록 -->
 	<insert id="insertMember" parameterType="member">
-		insert into users (user_id, password, nickname, e_mail, user_date, user_type, phonenumber)
+		insert into users (user_id, password, nickname, e_mail, user_date, phonenumber)
 		values ( #{userId},
 		#{password},
 		#{nickname},
 		#{eMail},
-		#{userDate},
-		#{userType},
+		sysdate,
 		#{phonenumber} )
 	</insert>
 

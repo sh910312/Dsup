@@ -41,7 +41,7 @@
 	<select id="searchList" resultType="search">
 		select * from search 
 		order by
-		search_id desc
+		search_id DESC
 	</select>
 
 <!-- paging 리스트 -->
@@ -51,7 +51,7 @@
 
 <!-- 전체조회2 -->
 	<select id="SearchMap" resultType="map">
-		SELECT b.* FROM ( SELECT rownum no, a.* FROM (
+		SELECT b.* FROM ( SELECT ROWNUM no, a.* FROM (
 														select search_id as "searchId",
 															   user_id as "userId", 
 															   title as "title",
@@ -65,10 +65,10 @@
 		</where>
 		<choose>
 			<when test="orderby != null and orderby != ''">
-				order by #{orderby} desc
+				order by #{ORDERBY} DESC
 			</when>
 			<otherwise>
-				order by search_id desc
+				order by search_id DESC
 			</otherwise>
 		</choose>
 		) a ) b WHERE no BETWEEN #{first} AND #{last}

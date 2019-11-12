@@ -19,6 +19,10 @@
 	<script>
 	var sql = "";
 	var oldName = "${ts.tablespaceName}";
+	// [윤정1109] 종량제
+	var service = "${member.payItem}".split("GB")[0];
+	var freeVolumn = 0;
+	var thisVolumn = 0;
 	
 	$(function(){
 		startChk();
@@ -29,6 +33,7 @@
 		$("#addbtn").click(trAdd); // 데이터파일 추가 버튼 클릭
 		$(".yj_trupd").click(trEdit); // 용량수정
 		$("#nameMsg").hide(); // 이름 유효성검사 경고 메시지
+		getVolumn(); // 이용가능한 용량 조회
 	});
 	
 	// [윤정 1104] 온라인/오프라인/리드온리 상태 체크
@@ -38,42 +43,24 @@
 		else
 			$("#readwrite").attr("checked", true);
 		
-		if("${ts.total}" == 0)
-			$("#offline").attr("checked", true);
-		else
-			$("#online").attr("checked", true);
-			
 		statusChk();
 	} // startChk()
 	
 	// [윤정 1104] 상태에 따라 수정가능한 값 제한
 	function statusChk() {
-		var status1 = $("input[name='status1']:checked").val(); // online offline
 		var status2 = $("input[name='status2']:checked").val(); // read write, read only
 		
-		if (status1 == "OFFLINE") { // ---- offline
-			$("#newName").attr("readonly", true); // 테이블스페이스 이름 수정 불가
+		if(status2 == "READ ONLY") { // ---- read only
 			$("#addbtn").attr("disabled", true) // 데이터파일 추가 불가
 			$(".yj_trupd").attr("disabled", true) // 데이터파일 수정 불가
-			$("input[name='status2']").attr("disabled", true); // read write, read only 수정 불가
-		} else { // ---- online
-			$("input[name='status2']").attr("disabled", false); // read write, read only 수정 가능
-			$("#newName").attr("readonly", false); // 테이블스페이스 이름 수정 가능
-			if(status2 == "READ ONLY") { // ---- read only
-				$("#addbtn").attr("disabled", true) // 데이터파일 추가 불가
-				$(".yj_trupd").attr("disabled", true) // 데이터파일 수정 불가
-			} else { // ---- read write
-				$("#addbtn").attr("disabled", false) // 데이터파일 추가 가능
-				$(".yj_trupd").attr("disabled", false) // 데이터파일 수정 가능
-			}
+		} else { // ---- read write
+			$("#addbtn").attr("disabled", false) // 데이터파일 추가 가능
+			$(".yj_trupd").attr("disabled", false) // 데이터파일 수정 가능
 		}
 	}
 	
 	// [윤정 1104] 상태수정 -> sql 추가
 	function statusSql() {
-		$("input[name='status1']").change(function(){
-			sql += "ALTER TABLESPACE " + oldName + " " + $("input[name='status1']:checked").val() + ";";
-		});
 		$("input[name='status2']").change(function(){
 			sql += "ALTER TABLESPACE " + oldName + " " + $("input[name='status2']:checked").val() + ";";
 		});
@@ -97,8 +84,7 @@
 		var size = "<input type = 'text' id = 'newSize' required class = 'form-control'>";
 		var $sizeunit = $("<select>").attr("id","newSizeunit").addClass("form-control")
 									.append($("<option>").val("M").text("MB"))
-									.append($("<option>").val("G").text("GB"))
-									.append($("<option>").val("T").text("TB")); // 용량 단위
+									.append($("<option>").val("G").text("GB")); // 용량 단위
 		var $okbtn = $("<input>").attr("type","button").attr("id","addOk").val("추가완료").click(trAddOk).addClass("btn btn-outline-info");
 		var $canbtn = $("<input>").attr("type","button").attr("id","addCancel").val("취소").click(trAddCan).addClass("btn btn-outline-secondary");
 		
@@ -127,7 +113,7 @@
 		var sizeunit = $("#newSizeunit").val();
 		
 		// ↓ 용량 제대로 입력했는지 확인
-		if(isNaN(size) || size <= 0) {
+		if( isNaN(size) || size <= 0 || (parseInt(size)-parseFloat(size)!=0?true:false) ) {
 			$('#sizeError').fadeIn(400).delay(1000).fadeOut(400);
 		} else {
 			$("#addbtn").attr("disabled",false); // tr 추가 버튼 활성화
@@ -142,6 +128,7 @@
 								.append( $("<td>").append( $("<input>").attr("type", "button").val("용량수정").addClass("yj_trupd btn btn-outline-info").click(trEdit) ) 
 											);
 			$("tbody").append($tr);
+			getThisVolumn();
 		}
 	}
 	
@@ -156,8 +143,7 @@
 		
 		var $sizeunit = $("<select>").attr("id","sizeunit").addClass("form-control")
 									.append($("<option>").val("M").text("MB"))
-									.append($("<option>").val("G").text("GB"))
-									.append($("<option>").val("T").text("TB")); // 용량 단위
+									.append($("<option>").val("G").text("GB")); // 용량 단위
 		// ↓ 테이블 내용 수정
 		$tr.find("td:eq(1)").empty()
 							.append( $("<input>").attr("type","text").attr("id","size").val(oldValue).addClass("form-control") );
@@ -165,7 +151,7 @@
 							.append( $sizeunit );
 		$tr.find("td:eq(3)").empty()
 							.append( $("<input>").attr("type","button").attr("id","updOk").val("수정완료").addClass("btn btn-outline-info") )
-							.append( $("<input>").attr("type","button").attr("id","updCancel").val("취소하기").addClass("btn btn-outline-secondary") );
+							.append( $("<input>").attr("type","button").attr("id","updCancel").val("취소").addClass("btn btn-outline-secondary") );
 
 		$("#updOk").click(trEditOk); // 수정 완료
 		// ↓ 수정 취소
@@ -189,7 +175,7 @@
 		var filename = $tr.find("td:eq(0)").text();
 		
 		// ↓ 용량 제대로 입력했는지 확인
-		if(isNaN(size) || size <= 0) {
+		if( isNaN(size) || size <= 0 || (parseInt(size)-parseFloat(size)!=0?true:false) ) {
 			$('#sizeError').fadeIn(400).delay(1000).fadeOut(400);
 		} else {
 			$(".yj_trupd").attr("disabled", false); // 다른 행의 '용량수정' 버튼 활성화
@@ -202,20 +188,33 @@
 								.append( $("<input>").attr("type", "button").val("용량수정").attr("class", "yj_trupd btn btn-outline-info").click(trEdit) );
 		
 			sql += "ALTER DATABASE DATAFILE '" + filename + "' RESIZE " + size + sizeunit + ";";
+			getThisVolumn();
 		}
 	}
 	
 	// [윤정 1104] 수정하기 버튼 클릭
 	function submit(){
+		var err = 0;
 		
-		var newName = $("#newName").val();
-		if (newName != oldName) { // 이름 변경 
-			sql += "ALTER TABLESPACE " + oldName + " RENAME TO " + newName + ";";
-			sql += "UPDATE user_tbspc_tb SET tablespace_name = '" + newName + "' WHERE tablespace_name = '" + oldName + "';";
+		if( $("#newName").hasClass("is-invalid") )
+			err += 1;
+
+		if(thisVolumn > freeVolumn) {
+			$('#volumnError').fadeIn(400).delay(1000).fadeOut(400);
+			err += 1;
+		}
+		console.log(err);
+		if (err == 0) {
+			var newName = $("#newName").val();
+			if (newName != oldName) { // 이름 변경 
+				sql += "ALTER TABLESPACE " + oldName + " RENAME TO " + newName + ";";
+				sql += "UPDATE user_tbspc_tb SET tablespace_name = '" + newName + "' WHERE tablespace_name = '" + oldName + "';";
+			}
+			
+			$("#sql").val(sql);
+			$("#frm").submit();
 		}
 		
-		$("#sql").val(sql);
-		$("#frm").submit();
 	}
 	
 	// [윤정 1031] 테이블스페이스명 유효성 검사 
@@ -228,21 +227,18 @@
 			if(name == oldName) {
 				$("#nameMsg").hide();
 				$("#newName").removeClass("is-invalid");
-				$("#updbtn").attr("disabled", false);
 				return;
 			}
 			
 			// 아이디를 입력하지 않은 경우
 			if(name == '') { 
 				$("#nameMsg").show().text("이름을 입력해주세요");
-				$("#updbtn").attr("disabled", true);
 				return;
 			}
 			
 			// [윤정1101] 이름 첫 글자 영어만
 			if(!name.substr(0,1).match(/[A-Z]/)) {
 				$("#nameMsg").show().text("이름 첫 글자는 영어만 입력할 수 있습니다");
-				$("#updbtn").attr("disabled", true);
 				return;
 			}
 			
@@ -256,7 +252,6 @@
 				}
 				if(err > 0) {
 					$("#nameMsg").show().text("영어, 숫자, _만 입력할 수 있습니다");
-					$("#updbtn").attr("disabled", true);
 					return;
 				}
 			}
@@ -268,16 +263,46 @@
 					// 중복이면 0, 아니면 1
 					if(data == 0) { // 중복
 						$("#nameMsg").show().text("사용할 수 없는 이름입니다");
-						$("#updbtn").attr("disabled", true);
 					} else { // 중복x
 						$("#nameMsg").hide();
-						$("#updbtn").attr("disabled", false);
 						$("#newName").removeClass("is-invalid");
 					}
 				}
 			}) // ajax
 		}); // .blur(function)
 	} // tsNameChkFunction
+	
+	// [윤정1108] 종량제 이용량 조회
+	function getVolumn(){
+		var userId = "${sessionScope.member.userId}";
+		var tablespaceName = "${ts.tablespaceName}";
+		$.ajax({
+			url : "volumn?userId=" + userId + "&tablespaceName=" + tablespaceName,
+			type : "GET",
+			success : function(data){
+				$("#volumn").text((data.volumn));
+				freeVolumn = ( service - (data.volumn) ) * 1024; // 단위 MB
+				$("#freeVolumn").text(freeVolumn);
+				getThisVolumn();
+			},
+			error : function(xhr, status, message) {
+				alert(" status: " + status + "er:" + message);
+			}
+		});
+	}
+	
+	// [윤정 1109] 이 테이블스페이스의 용량
+	function getThisVolumn(){
+		thisVolumn = 0;
+		$("tbody>tr").each(function(){
+			var size = parseInt($(this).find("td:eq(1)").text());
+			var unit = $(this).find("td:eq(2)").text();
+			if(unit == 'G')
+				size = size * 1024;
+			thisVolumn += size;
+			});
+		$("#thisVolumn").text(thisVolumn);
+	}
 	</script>
 </head>
 <body>
@@ -306,18 +331,6 @@
 			상태
 		</div>
 		<div class = "col-2">
-			<input type = "radio" name = "status1" id = "online" value = "ONLINE" class = "form-check-input">
-				<label for = "online">online</label>
-		</div>
-		<div class = "col-2">
-			<input type = "radio" name = "status1" id = "offline" value = "OFFLINE" class = "form-check-input">
-				<label for = "offline">offline</label>
-		</div>
-	</div>
-	
-	<div class = "row">
-		<div class = "col-2"></div>
-		<div class = "col-2">
 			<input type = "radio" name = "status2" id = "readwrite" value = "READ WRITE" class = "form-check-input">
 				<label for = "readwrite">read write</label>
 		</div>
@@ -330,13 +343,18 @@
 	<div class = "row">
 		<div class = "col-2">안내사항</div>
 		<div class = "col-10">
-			offline 상태는 데이터파일 용량 조회가 불가능합니다. online상태로 변경 후 다시 조회해주세요.<br>
-			offline 상태에서는 테이블 스페이스 이름 수정, 데이터파일 수정 및 추가가 불가능합니다.<br>
 			read only 상태에서는 데이터파일 수정 및 추가가 불가능합니다.<br>
 		</div>
 	</div>
 	
-	<br><br><br>
+	<br><br>
+	
+	<h1>종량제 정보</h1>
+	종량제 이용량 : <span id = "volumn"></span> / ${member.payItem} <br>
+	이용가능한 용량 : <span id = "freeVolumn"></span> MB<br>
+	현제 테이블스페이스 용량 : <span id = "thisVolumn"></span> MB<br>
+	
+	<br><br>
 	
 	<div class = "row">
 		<div class = "col">
@@ -372,12 +390,14 @@
 		</table>
 	</div>
 	
-<div class='yj_error' style='display:none' id="sizeError">용량은 0보다 큰 숫자만 입력할 수 있습니다!</div>
+<div class='yj_error' style='display:none' id="sizeError">용량은 0보다 큰 정수만 입력할 수 있습니다!</div>
+<div class='yj_error' style='display:none' id="volumnError">이용가능한 용량을 초과했습니다!</div>
 	
 	<div class = "row">
 		<input type = "button" id = "updbtn" value = "수정 완료" class = "btn btn-outline-info btn-block">
 		<input type = "button" id="back" value = "목록으로 돌아가기" class = "btn btn-outline-secondary btn-block"
-					onclick = 'history.back()'>
+				onclick = "location.href='./storageList'">
+	
 	</div>
 </form>
 </div>
