@@ -117,8 +117,7 @@ function openButton(menu, a){ /*  버튼 새창 */
 							<div class="clearfix"></div>
 						</div>
 						<div id="chat" class="panel-collapse collapse in">
-							<div id="chatList" class="portlet-body chat-widget"
-								style="overflow-y: auto; width: auto; height: 600px;"></div>
+							<div id="chatList" class="portlet-body chat-widget"	style="overflow-y: auto; width: auto; height: 650px;"></div>
 					
 							<!-- 대화입력창 시작  -->
 							<div class="portlet-footer">

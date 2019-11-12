@@ -27,7 +27,7 @@
 		<%@include file="bar.jsp"%>
 	</div>
 	<header>
-	<div class="navbar navbar-dark bg-dark box-shadow">
+	<div class="navbar navbar-dark bg-dark box-shadow" style="position:relative; display: inline-block; width:70%;" >
 		<!-- <div class="container d-flex justify-content-between"> -->
 			<a href="#" class="navbar-brand d-flex align-items-center pull-left"> 
 				<i class="fa fa-database" aria-hidden="true" style="margin-right: 10px"></i>
@@ -48,7 +48,7 @@
 	<!-- </div> -->
 	</header>
 	<main role="main">
-		<div class="album py-5" style="position:relative; top:100px;">  <!-- 수정중 -->
+		<div class="album py-5" style="position:relative; display: inline-block;width: 70%;">  <!-- 수정중 -->
 			<!-- <div class="container"> -->
 				
 				
