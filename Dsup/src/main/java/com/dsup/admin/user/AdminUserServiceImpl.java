@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dsup.dbmanagement.UserVO;
 import com.dsup.pay.PayHisIfTbVO;
 
 @Service
@@ -15,6 +16,12 @@ public class AdminUserServiceImpl implements AdminUserService {
 	@Override
 	public List<PayHisIfTbVO> getPayHistory() {
 		return dao.getPayHistory();
+	}
+
+	// 유저 스키마 조회
+	@Override
+	public List<UserVO> userSchema() {
+		return dao.userSchema();
 	}
 
 }

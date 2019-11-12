@@ -17,8 +17,8 @@
 	}
 	
 	// [윤정1111] 결제내역 출력
-	function printPayHistory(result){
-		$.each(result, function(idx, item) {
+	function printPayHistory(payHistory){
+		$.each(payHistory, function(idx, item) {
 			var paySeq = $("<td>").text((item.paySeq));
 			var userId = $("<td>").text((item.userId));
 			var payDate = $("<td>").text((item.payDate));
@@ -26,7 +26,7 @@
 			var payType = $("<td>").text((item.payType));
 			var payPrice = $("<td>").text((item.payPrice));
 			
-			$("tbody").append( $("<tr>").append(paySeq)
+			$("#payHistoryTableTbody").append( $("<tr>").append(paySeq)
 										.append(userId)
 										.append(payDate)
 										.append(payItem)
@@ -67,7 +67,7 @@
 						<th>가격</th>
 					</tr>
 				</tfoot>
-				<tbody>
+				<tbody id = "payHistoryTableTbody">
 				</tbody>
 			</table>
 		</div>
