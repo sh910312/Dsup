@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,11 +26,25 @@
 		filter: none;
 	}
 	</style>
+	<script>
+	console.log("${payService}");
+	</script>
 </head>
 <body>
 <div class = "container">
 
 <br><br><br>
+
+<!-- 왜 안되지?? -->
+<c:if test = "${payService!='Y'}">
+<div class="alert alert-warning alert-dismissible fade show" role="alert" >
+  <strong>종량제를 신청하지 않았습니다!</strong> 테이블 스페이스 관리, 유저 관리, 백업 생성 기능을 이용하실 수 없습니다.<br>
+  <a href = "./distributingMain">종량제 신청하기</a>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+</c:if>
 
 <div class="card-deck">
 
