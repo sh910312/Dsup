@@ -28,7 +28,7 @@ public class DAO {
         String user = "sys as sysdba"; 
         String pw = "oracle";
 //		String user = "sys as sysdba";
-//        String pw = "orcl";
+//       String pw = "orcl";
 		if(schemaid==null || schemaid.equals("")){      
 			
 		}else {

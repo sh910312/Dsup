@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
 <meta charset="utf-8">
@@ -11,20 +11,19 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>SB Admin - Dashboard</title>
+<title>Admin Page</title>
 
 <!-- Custom fonts for this template-->
 <link href="${pageContext.request.contextPath }/resources/js/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
 	type="text/css">
 
 <!-- Page level plugin CSS-->
-<link href="${pageContext.request.contextPath }/resources/js/admin/vendor/datatables/dataTables.bootstrap4.css"
-	rel="stylesheet">
+<%-- <link href="${pageContext.request.contextPath }/resources/js/admin/vendor/datatables/dataTables.bootstrap4.css"
+	rel="stylesheet"> --%>
 
 <!-- Custom styles for this template-->
 <link href="${pageContext.request.contextPath }/resources/js/admin/css/sb-admin.css" rel="stylesheet">
-<!-- Google Chart-->
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
 <style type="text/css">/* Chart.js */
 @
 keyframes chartjs-render-animation {
@@ -83,17 +82,11 @@ function pageChange(type){
 		$('#user-jsp-div').css('display', 'block');
 	}
 }
-
-// ↓ [윤정 1111] user.jsp 에서 쓸거임
-function userPageChange(type) {
-	$(".yj_user").css("display", "none");
-	$("#" + type).css("display", "block");
-}
 </script>
 </head>
 <body id="page-top">
 	<nav class="navbar navbar-expand navbar-dark bg-dark static-top">
-		<a class="navbar-brand mr-1" href="./main">DBhelper</a>
+		<a class="navbar-brand mr-1" href="index.html">DBhelper</a>
 		<button class="btn btn-link btn-sm text-white order-1 order-sm-0"
 			id="sidebarToggle" href="#">
 			<i class="fas fa-bars"></i>
