@@ -20,7 +20,8 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<typeAlias alias="user" type="com.company.app.user.UserVO"/>
  -->
  	<typeAlias alias="user" type="com.dsup.dbmanagement.UserVO"/> <!-- 무겸형님꺼 -->
- 
+ 	<typeAlias alias="messge" type="com.dsup.dbmanagement.service.MessgeVO"/>
+ 	
  	<typeAlias alias="chat" type="com.dsup.chat.ChatVO"/>
  	<typeAlias alias="search" type="com.dsup.chat.SearchVO"/>
  	<typeAlias alias="rp" type="com.dsup.chat.RpVO"/>

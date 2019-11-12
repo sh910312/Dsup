@@ -14,7 +14,7 @@
   <!-- <form action="sendSms.do" method="post" id="smsForm"> -->
   <form method="post" id="smsForm">
     <ul>
-      <li>보낼사람 : <input type="text" name="from"/></li>
+      <li>보내는사람 : <input type="text" name="from"/></li>
       <li>내용 : <textarea name="text"></textarea></li>
       <li><input type="button" onclick="sendSMS('sendSms')" value="전송하기" /></li>
     </ul>
