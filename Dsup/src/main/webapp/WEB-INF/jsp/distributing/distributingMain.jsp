@@ -52,48 +52,48 @@
 		<div class="card-deck mb-3 text-center">
 			<div class="card mb-4 shadow-sm">
 				<div class="card-header">
-					<h4 class="my-0 font-weight-normal">10GB</h4>
+					<h4 class="my-0 font-weight-normal">0.25GB</h4>
 				</div>
 				<div class="card-body">
 					<h1 class="card-title pricing-card-title">
 						<span class="paymoney">10</span>원 <small class="text-muted">/ 월</small>
 					</h1>
 					<ul class="list-unstyled mt-3 mb-4">
-						<li>10GB의 저장용량</li><br>
+						<li>0.25GB의 저장용량</li><br>
 						<li>지금 계정을 업그레이드하여</li>
-						<li>10GB 저장공간을 사용해보세요.</li>
+						<li>0.25GB 저장공간을 사용해보세요.</li>
 					</ul>
 					<button type="button" class="paybtn btn btn-lg btn-block btn-primary">업그레이드</button>
 				</div>
 			</div>
 			<div class="card mb-4 shadow-sm">
 				<div class="card-header">
-					<h4 class="my-0 font-weight-normal">20GB</h4>
+					<h4 class="my-0 font-weight-normal">0.5GB</h4>
 				</div>
 				<div class="card-body">
 					<h1 class="card-title pricing-card-title">
 						<span class="paymoney">200</span>원 <small class="text-muted">/ 월</small>
 					</h1>
 					<ul class="list-unstyled mt-3 mb-4">
-						<li>20GB의 저장용량</li><br>
+						<li>0.5GB의 저장용량</li><br>
 						<li>지금 계정을 업그레이드하여</li>
-						<li>20GB 저장공간을 사용해보세요.</li>
+						<li>0.5GB 저장공간을 사용해보세요.</li>
 					</ul>
 					<button type="button" class="paybtn btn btn-lg btn-block btn-primary">업그레이드</button>
 				</div>
 			</div>
 			<div class="card mb-4 shadow-sm">
 				<div class="card-header">
-					<h4 class="my-0 font-weight-normal">30GB</h4>
+					<h4 class="my-0 font-weight-normal">1GB</h4>
 				</div>
 				<div class="card-body">
 					<h1 class="card-title pricing-card-title">
 						<span class="paymoney">300</span>원 <small class="text-muted">/ 월</small>
 					</h1>
 					<ul class="list-unstyled mt-3 mb-4">
-						<li>30GB의 저장용량</li><br>
+						<li>1GB의 저장용량</li><br>
 						<li>지금 계정을 업그레이드하여</li>
-						<li>30GB 저장공간을 사용해보세요.</li>
+						<li>1GB 저장공간을 사용해보세요.</li>
 					</ul>
 					<button type="button" class="paybtn btn btn-lg btn-block btn-primary">업그레이드</button>
 				</div>
@@ -107,7 +107,21 @@
 	var IMP = window.IMP; // 생략가능
 	IMP.init('imp51227222'); // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
 	$('.paybtn').click(function(){
+		//결제 테스트용
+		/* var amount = $(this).closest(".card-body").find(".paymoney").text()
+		var payItem = $(this).closest(".card").find("h4").text()
+		$.ajax({
+	        	url:"pays",
+	        	type:"POST",
+	        	contentType:'application/json',
+	        	data:JSON.stringify({"payPrice":amount, "payItem":payItem, "payType":'card'}),
+	        	success: function(data) {
+	        		console.log(data);
+	        	}
+	        });  
+		  return; */
 	var amount = $(this).closest(".card-body").find(".paymoney").text()
+	var payItem = $(this).closest(".card").find("h4").text()
 		IMP.request_pay({
 		    pg : 'html5_inicis', // version 1.1.0부터 지원.
 		    pay_method : 'card',
@@ -117,20 +131,21 @@
 		    buyer_name : '${member.userId}',
 		    buyer_nickname : '${member.nickname}',
 		    buyer_email : '${member.eMail}',
-		    m_redirect_url : 'http://localhost/dsup/distributingMain'
+		    /* m_redirect_url : 'http://localhost/dsup/distributingMain2' 모바일에서 결제시 페이지이동*/
 		}, function(rsp) {
 		    if ( rsp.success ) {
-		        var msg = '결제가 완료되었습니다.';
-		        msg += '고유ID : ' + rsp.imp_uid;
+		        var msg = '결제가 완료되었습니다.\n테이블스페이스를 생성해주세요.';
+		        window.location.href = 'http://localhost/dsup/storageList';
+		       /*  msg += '고유ID : ' + rsp.imp_uid;
 		        msg += '상점 거래ID : ' + rsp.merchant_uid;
 		        msg += '결제 금액 : ' + rsp.paid_amount;
-		        msg += '카드 승인번호 : ' + rsp.apply_num;
+		        msg += '카드 승인번호 : ' + rsp.apply_num; */
 		        
-		         $.ajax({
+		        $.ajax({
 		        	url:"pays",
 		        	type:"POST",
-		        	contentType:'application/json;charset=utf-8',
-		        	data:{"userId":"test1234", "price":1000, "item":"10GB", "type":"card"},
+		        	contentType:'application/json',
+		        	data:JSON.stringify({"payPrice":amount, "payItem":payItem, "payType":'card'}),
 		        	success: function(data) {
 		        		console.log(data);
 		        	}
@@ -138,7 +153,7 @@
 		        
 		    } else {
 		        var msg = '결제에 실패하였습니다.';
-		        msg += '에러내용 : ' + rsp.error_msg;
+		       /*  msg += '에러내용 : ' + rsp.error_msg; */
 		    }
 		    alert(msg);
 		});
