@@ -124,6 +124,7 @@
 			$("#name").val(userId);
 			$("#modalPassword").val("");
 			$("#passwordcheck").val("");
+			userUpdate.isLoad = false;
 			
 			// ↓ 모달에서 수정 버튼 눌렀을 때
 			$("#modalUpdBtn").click(function(){
@@ -139,24 +140,23 @@
 				var formData = $("#form1").serializeObject();
 				console.log(formData);
 				$("#form1")[0].reset();
-				
-				if(userUpdate.isLoad){
-				$.ajax({
-					url : "users",
-					type : 'PUT',
-					dataType : 'JSON',
-					data : JSON.stringify( formData ),
-					//data : JSON.stringify({id: id, password:password, defaultTableSpace:defaultTableSpace, accountStatus:accountStatus}),
-					contentType : 'application/json',
-					success : function(data) {
-						userList();
-						return;
-					},	error : function(xhr, status, message) {
-						alert(" status: " + status + "er:" + message);
-					}
-				}); // ajax
+				console.log(userUpdate.isLoad);
+				if(userUpdate.isLoad != true){
+					$.ajax({
+						url : "users",
+						type : 'PUT',
+						dataType : 'JSON',
+						data : JSON.stringify( formData ),
+						//data : JSON.stringify({id: id, password:password, defaultTableSpace:defaultTableSpace, accountStatus:accountStatus}),
+						contentType : 'application/json',
+						success : function(data) {
+							userList();
+						},	error : function(xhr, status, message) {
+							alert(" status: " + status + "er:" + message);
+						}
+					}); // ajax
+					userUpdate.isLoad = true;
 				}
-				userUpdate.isLoad = false;
 			}); // modalUpdBtn click
 		}) // _btnUpdate click
 	} // userUpdate
