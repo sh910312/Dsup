@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MessgeDAO">
+ 	<select id="messgeList" parameterType="messge" resultType="messge">
+		select round(used/total*100) pct, round(free) free, round(used) used, user_id, (select phonenumber from users where user_id = b.user_id)phonenumber
+		from  (
+            SELECT U.USER_ID, 
+                  sum(df.bytes/1024/1024) total
+                , sum(fs.bytes/1024/1024) free
+                , sum(df.bytes/1024/1024) - sum(fs.bytes/1024/1024) used
+            FROM dba_tablespaces d, user_tbspc_tb u, dba_data_files df, dba_free_space fs
+            WHERE d.tablespace_name = u.tablespace_name
+            AND d.tablespace_name = df.tablespace_name
+            AND df.file_id = fs.file_id
+            group by u.user_id
+            )b
+		where used/total*100 > 40
+	</select>
+	 
+</mapper>
