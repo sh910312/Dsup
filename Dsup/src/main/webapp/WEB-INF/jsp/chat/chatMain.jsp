@@ -93,9 +93,9 @@ function openButton(menu, a){ /*  버튼 새창 */
 </head>
 <body>
 <form id="frm">
-	 <div class="container"> 
-		<div class="container bootstrap snippet col-xs-4">
-			<div class="row">
+	 <!-- <div class="container">  -->
+		<!-- <div class="container bootstrap snippet"> -->
+			<!-- <div class="row"> -->
 				<div class="">
 					<div class="portlet portlet-default">
 						<div class="portlet-heading">
@@ -117,8 +117,7 @@ function openButton(menu, a){ /*  버튼 새창 */
 							<div class="clearfix"></div>
 						</div>
 						<div id="chat" class="panel-collapse collapse in">
-							<div id="chatList" class="portlet-body chat-widget"
-								style="overflow-y: auto; width: auto; height: 600px;"></div>
+							<div id="chatList" class="portlet-body chat-widget"	style="overflow-y: auto; width: auto; height: 650px;"></div>
 					
 							<!-- 대화입력창 시작  -->
 							<div class="portlet-footer">
@@ -142,7 +141,7 @@ function openButton(menu, a){ /*  버튼 새창 */
 								<!-- 메세지 입력창 시작  -->
 								<div class="row">
 									<div id="text" class="form-group col-xs-10">
-										<textarea style="width:200px; height: 80px;" id="contents" name="contents" class="form-control"
+										<textarea style="width:80%; height: 80px;" id="contents" name="contents" class="form-control"
 										 placeholder="메세지를 입력하세요." maxlength="100"></textarea>
 									</div>
 									<div class="form-group col-xs-2">
@@ -156,9 +155,9 @@ function openButton(menu, a){ /*  버튼 새창 */
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-	</div> 
+			<!-- </div> -->
+		<!-- </div> -->
+	<!-- </div> --> 
 </form>
 </body>
 </html>

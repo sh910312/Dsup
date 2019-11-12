@@ -178,7 +178,7 @@ function memberUpdate() {
 </script>
 
 <!-- 채팅 영역 시작 -->
-	<div class="col-lg-3">
+	<div class="pull-right" style="position:relative; display: inline-block; width: 27%;">
 		<%@include file="./chat/chatMain.jsp"%>
 	</div>
 <!-- 채팅 영역 끝 -->
