@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.dsup.member.MemberVO;
 import com.dsup.member.service.MemberService;
-import com.dsup.pay.PayVO;
 import com.dsup.pay.service.PayService;
 
 @Controller

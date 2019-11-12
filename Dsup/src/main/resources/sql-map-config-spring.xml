@@ -31,7 +31,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
  	<typeAlias alias="datafile" type="com.dsup.dbmanagement.DatafileVO"/>
  	<typeAlias alias="schema" type="com.dsup.distributing.SchemaVO"/>
  	<typeAlias alias="member" type="com.dsup.member.MemberVO"/>
- 	<typeAlias alias="pay" type="com.dsup.pay.PayVO"/>
  	<typeAlias alias="userTbspcTb" type="com.dsup.dbmanagement.UserTbspcTbVO"/>
  	<typeAlias alias="payHisIfTb" type="com.dsup.pay.PayHisIfTbVO"/>
  </typeAliases>
