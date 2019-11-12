@@ -13,6 +13,20 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 	<style>
+	
+	@media (max-width: 767px) {
+  .navbar .navbar-nav .open .dropdown-menu > .active > a,
+  .navbar .navbar-nav .open .dropdown-menu > .active > a:hover,
+  .navbar .navbar-nav .open .dropdown-menu > .active > a:focus {
+    color: #fff;
+    background-image: -webkit-linear-gradient(top, #337ab7 0%, #2e6da4 100%);
+    background-image:      -o-linear-gradient(top, #337ab7 0%, #2e6da4 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#337ab7), to(#2e6da4));
+    background-image:         linear-gradient(to bottom, #337ab7 0%, #2e6da4 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff337ab7', endColorstr='#ff2e6da4', GradientType=0);
+    background-repeat: repeat-x;
+  }
+}
 	.card { /* [윤정 1105] 카드에 마우스 올리면 마우스 커서 포인터로 */
 		cursor:pointer;
 	}
@@ -34,7 +48,7 @@
 <div class="card-deck">
 
   <div class="card" onclick = "location.href='./storageList'" >
-    <img src="./resources/images/db/dbindex_storage.jpg" class="card-img-top" alt="테이블스페이스 관리 이미지">
+    <img src="./resources/images/db/dbindex_storage.jpg"  class="card-img-top" alt="테이블스페이스 관리 이미지">
     <div class="card-body">
       <h5 class="card-title">테이블스페이스 관리</h5>
       <p class="card-text">테이블 스페이스는 테이블이 저장되는 공간입니다. 신청한 종량제 용량만큼 테이블스페이스를 만들 수 있습니다. </p>

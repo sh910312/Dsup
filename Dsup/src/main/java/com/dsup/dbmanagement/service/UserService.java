@@ -18,7 +18,8 @@ public interface UserService {
 	
 	//삭제
 	public int deleteUser(UserVO vo);
-	
+
+		
 	//수정
 	public int updateUser(UserVO vo);
 	

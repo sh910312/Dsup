@@ -26,8 +26,11 @@
 	</select>
 	
 	<!-- 삭제 -->
-	<delete id="deleteUser" parameterType="user">
-		drop user ${id} 
+	<delete id="deleteUserDrop" parameterType="user">
+		drop user ${id}
+	</delete>
+	<delete id="deleteUser">
+		delete user_sch_tb where user_sch_nm = #{id}
 	</delete>
  	<!-- 단건조회 -->
  	<select id="getUser" parameterType="user" resultType="user">

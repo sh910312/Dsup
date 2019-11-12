@@ -35,6 +35,7 @@
 				}
 		});
 	});
+	
 	function formCheck(){
 		if($("#passwordResult").val()=="false"){
 			alert("비밀번호를 확인하세요!");
@@ -91,7 +92,7 @@
 					}else {
 						 if(id == ""){
 							
-							$('#id_check').text('아이디를 입력해주세요 :)');
+							$('#id_check').text('아이디를 입력해주세요');
 							$('#id_check').css('color', 'red');
 							$("#reg_submit").attr("disabled", true);				
 						  
