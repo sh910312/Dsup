@@ -50,9 +50,9 @@
 						<th>사용자 아이디</th>
 						<th>테이블스페이스 명</th>
 						<th>상태</th>
-						<th>전체 용량</th>
-						<th>사용중인 용량</th>
-						<th>빈 용량</th>
+						<th>전체 용량 (MB)</th>
+						<th>사용중인 용량 (MB)</th>
+						<th>빈 용량 (MB)</th>
 					</tr>
 				</thead>
 				<tfoot>
@@ -60,9 +60,9 @@
 						<th>사용자 아이디</th>
 						<th>테이블스페이스 명</th>
 						<th>상태</th>
-						<th>전체 용량</th>
-						<th>사용중인 용량</th>
-						<th>빈 용량</th>
+						<th>전체 용량 (MB)</th>
+						<th>사용중인 용량 (MB)</th>
+						<th>빈 용량 (MB)</th>
 					</tr>
 				</tfoot>
 				<tbody id = "tsTableTbody">

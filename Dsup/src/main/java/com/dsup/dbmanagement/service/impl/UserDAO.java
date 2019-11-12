@@ -21,6 +21,12 @@ public class UserDAO {
 	public int deleteUser(UserVO dto) {
 		return mybatis.delete("UserDAO.deleteUser", dto);
 	}
+	
+	//삭제
+	public int deleteUserDrop(UserVO dto) {
+		return mybatis.delete("UserDAO.deleteUserDrop", dto);
+	}
+		
 	//생성
 	public int insertUser(UserVO dto) {
 		return mybatis.insert("UserDAO.createUser", dto);

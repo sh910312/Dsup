@@ -177,8 +177,14 @@ function memberUpdate() {
 }//userUpdate
 </script>
 
+<<<<<<< HEAD
 <%-- <!-- 채팅 영역 시작 -->
 	<div class="pull-right col-xs-3">
 		<%@include file="./chat/chatMain.jsp"%>
+=======
+<!-- 채팅 영역 시작 -->
+	<div class="pull-right" style="position:relative; display: inline-block; width: 27%;">
+		<%-- <%@include file="./chat/chatMain.jsp"%> --%>
+>>>>>>> branch 'master' of https://github.com/sh910312/Dsup.git
 	</div>
 <!-- 채팅 영역 끝 --> --%>

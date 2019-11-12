@@ -101,12 +101,11 @@ function openButton(menu, a){ /*  버튼 새창 */
 						<div class="portlet-heading">
 							<div class="portlet-title">
 								<h3>
-									<i class="fa fa-circle text-green"></i>D-sup 실시간 전체채팅 ${chat.chatId}
+									D-sup 실시간 전체채팅 ${chat.chatId}
 								</h3>
 							</div>
 							<div class="portlet-title pull-right">
 								<h3>
-									<i class="fa fa-circle text-green"></i>
 									<%-- <c:if test="${not empty userid}"> --%>
 									<!-- 변경/등록 버튼은 userid가 있는(관리자/회원)만 볼수있다.  -->
 									<button type="button" class="btn btn-default" onclick="openButton(1)">등록</button>
@@ -117,8 +116,7 @@ function openButton(menu, a){ /*  버튼 새창 */
 							<div class="clearfix"></div>
 						</div>
 						<div id="chat" class="panel-collapse collapse in">
-							<div id="chatList" class="portlet-body chat-widget"
-								style="overflow-y: auto; width: auto; height: 600px;"></div>
+							<div id="chatList" class="portlet-body chat-widget"	style="overflow-y: auto; width: auto; height: 560px;"></div>
 					
 							<!-- 대화입력창 시작  -->
 							<div class="portlet-footer">

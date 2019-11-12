@@ -10,6 +10,9 @@
 	
 </head>
 <body>
+<div>
+<%@include file="bar.jsp" %>
+</div>  
 </body>
 	<header>
 		<div class="navbar navbar-dark bg-dark box-shadow">
@@ -29,8 +32,5 @@
 		</div>
 	</header>
     
-	
-<div>
-<%@include file="bar.jsp" %>
-</div>   	
+	 	
 </html>

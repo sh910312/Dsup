@@ -38,7 +38,9 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public int deleteUser(UserVO dto) {
+		userDAO.deleteUserDrop(dto);
 		return userDAO.deleteUser(dto);
+		
 	}
 
 	@Override
@@ -55,6 +57,7 @@ public class UserServiceImpl implements UserService{
 	public UserVO reservedWords(UserVO vo) {
 		return userDAO.getUser(vo);
 	}
+
 
 
 }
