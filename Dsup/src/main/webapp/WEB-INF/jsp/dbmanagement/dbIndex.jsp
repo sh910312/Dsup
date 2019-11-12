@@ -31,11 +31,11 @@
 	</script>
 </head>
 <body>
+<%@include file="../bar.jsp"%>
 <div class = "container">
 
 <br><br><br>
 
-<!-- 왜 안되지?? -->
 <c:if test = "${payService!='Y'}">
 <div class="alert alert-warning alert-dismissible fade show" role="alert" >
   <strong>종량제를 신청하지 않았습니다!</strong> 테이블 스페이스 관리, 유저 관리, 백업 생성 기능을 이용하실 수 없습니다.<br>

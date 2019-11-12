@@ -120,6 +120,7 @@
 	// ↓ 수정 모달 새로 만든것
 	function userUpdate() {
 		$("._btnUpdate").click(function(){
+			console.log("수정 시작");
 			var userId = $(this).closest('tr').find('#hidden_userId').val(); //선택한것에 val 값을 가져오겠다
 			$("#name").val(userId);
 			$("#modalPassword").val("");
@@ -139,6 +140,8 @@
 				var formData = $("#form1").serializeObject();
 				console.log(formData);
 				$("#form1")[0].reset();
+				
+				if(userUpdate.isLoad){
 				$.ajax({
 					url : "users",
 					type : 'PUT',
@@ -148,15 +151,18 @@
 					contentType : 'application/json',
 					success : function(data) {
 						userList();
+						return;
 					},	error : function(xhr, status, message) {
 						alert(" status: " + status + "er:" + message);
 					}
 				}); // ajax
+				}
+				userUpdate.isLoad = false;
 			}); // modalUpdBtn click
 		}) // _btnUpdate click
 	} // userUpdate
 	
-	
+	/*
 	// ↓ 수정 다이얼로그
 	var dialog, form;
 	$(function() {
@@ -218,12 +224,12 @@
 
 		form = dialog.find( "form" );
 	});
-	
+	*/
 	//수정폼
 	function userUpdateForm() {
 		$('body').on('click', '#btnUpdate', function() {
 			var userId = $(this).closest('tr').find('#hidden_userId').val();
-			dialog.dialog("open");
+			//dialog.dialog("open");
 			$("#name").val(userId)
 		});
 	}
