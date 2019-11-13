@@ -20,7 +20,7 @@
 		$.each(backup, function(idx, item) {
 			var userId = $("<td>").text((item.userId));
 			var filename = $("<td>").text((item.backupFileNm));
-			var backupDate = $("<td>").text((item.backupDate));
+			var backupDate = $("<td>").text((item.backupDate).substr(0,10));
 			var backupComment = $("<td>").text((item.backupComment));
 			
 			$("#userBackupTableTbody").append( $("<tr>").append(userId)
