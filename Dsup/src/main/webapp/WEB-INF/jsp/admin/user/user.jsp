@@ -37,7 +37,7 @@
 					</div>
 					<div class="mr-5">테이블 스페이스</div>
 				</div>
-				<a class="card-footer text-white clearfix small z-1" href="#"
+				<a id="tbspc" class="card-footer text-white clearfix small z-1" href="#"
 				 onclick = "userPageChange('userTablespace')">
 					<span class="float-left">View Details</span>
 					<span class="float-right">
@@ -71,7 +71,7 @@
 					</div>
 					<div class="mr-5">결제 이력</div>
 				</div>
-				<a class="card-footer text-white clearfix small z-1" href="#"
+				<a id="payhistory" class="card-footer text-white clearfix small z-1" href="#"
 				 onclick = "userPageChange('payHistory')">
 					<span class="float-left">View Details</span>
 					<span class="float-right">

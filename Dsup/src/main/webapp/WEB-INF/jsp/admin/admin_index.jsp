@@ -10,8 +10,10 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <title>Admin Page</title>
+<!-- 각종 자바스크립트 및 css 링크 -->
 <jsp:include page="scriptLink.jsp"></jsp:include>
-<jsp:include page="volume/volumeJavascriptLink.jsp"></jsp:include>
+<!-- 테이블스페이스 텝 컨드롤하는 자바스크립트 -->
+<jsp:include page="user/tablespaceTapJavascriptLink.jsp"></jsp:include>
 </head>
 <body id="page-top">
 	<nav class="navbar navbar-expand navbar-dark bg-dark static-top">
@@ -37,10 +39,10 @@
 	<div id="wrapper">
 		<!-- Sidebar -->
 		<div id="content-wrapper">
-			<div id="volume-jsp-div" style="display:block;">
+			<%-- <div id="volume-jsp-div" style="display:block;">
 				<jsp:include page="volume/volume.jsp"></jsp:include>
-			</div>
-			<div id="user-jsp-div" style="display:none;">
+			</div> --%>
+			<div id="user-jsp-div" style="display:block;">
 				<jsp:include page="user/user.jsp"></jsp:include>
 			</div>
 			<!-- /.container-fluid -->
