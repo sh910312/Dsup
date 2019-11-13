@@ -13,6 +13,7 @@ public class RpVO {
 	int rpType;				// 신고타입()
 	Date rpDate;			// 신고한 날짜
 	String rpContents;		// 신고사유
+	int boardNum;			// 게시글 번호
 	
 	
 	String orderby; 		// 정렬순서

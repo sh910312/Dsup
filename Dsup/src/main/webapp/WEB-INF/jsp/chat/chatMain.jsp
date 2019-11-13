@@ -43,15 +43,43 @@
     
     // 서버로부터 메시지를 받았을 때
     function onMessage(msg) {
-		var data = msg.data;
-		$("#chatList").append(data + "&nbsp;"
-		+ "<button type='button' class='btn btn-default btn-xs' onclick='openButton(2, this)'>" 
-		+ "신고" + "</button>"
-		+ "<hr>"
-		);
+		    	
+//    	var data = msg.data;
+//		
+//    	$("#chatList").append(data + "&nbsp;"
+//		+ "<button type='button' class='btn btn-default btn-xs' onclick='openButton(2, this)'>" 
+//		+ "신고" + "</button>"
+//		+ "<hr>"
+//		);
+//		$('#chatList').scrollTop($('#chatList')[0].scrollHeight); // 채팅 최신 상태 유지
+    	var data = JSON.parse(msg.data);
+    	
+    	console.log(data);
+    	
+    	switch(data.cmd){
+    	
+    		case "login":
+    			$("#chatList").append(data.msg + "<hr>");
+    			break;
+    		
+    		case "msge":
+    			$("#chatList").append(data.msg + "&nbsp;"
+    				+ "<button type='button' class='btn btn-default btn-xs' onclick='openButton(2, this)'>" 
+    				+ "신고" + "</button>"
+    				+ "<hr>"
+    			);
+    			break;
+    	
+			case "logout":
+				$("#chatList").append(data.msg + "<hr>");
+    			break;
+    	}
+    	
+    	
 		
 		$('#chatList').scrollTop($('#chatList')[0].scrollHeight); // 채팅 최신 상태 유지
-	}
+    
+    }
     
     // 서버와 연결을 끊었을 때
     function onClose(evt) {
@@ -88,8 +116,9 @@ function openButton(menu, a){ /*  버튼 새창 */
 		var name = "채팅신고";
 		var option = 'width=800px, height=300px, left='+ popupX + ', top='+ popupY; 
 		window.open(url,name,option);
+	}else if(menu == "3" || menu == 3){
+		window.open("online","온라인",'width=200px, height=550px, left='+ popupX + ', top='+ popupY )
 	}
-
 }
 </script>
 
@@ -134,11 +163,12 @@ function openButton(menu, a){ /*  버튼 새창 */
 										class="form-control" placeholder="이름" maxlength="8" readonly value="${member.nickname }">
 									</div>
 
-								<!-- 	<div class="form-group col-xs-2 pull-right">
-										현재 접속자 표시 
-										<button type="button" class="btn btn-default pull-right" onclick="openButton(3)"
+<!-- 								<div class="form-group col-xs-2">
+										<button type="button" class="btn btn-default" onclick="openButton(3)"
 										style="height: 40px; width: 100px;">현재	접속자</button>
-									</div> -->
+								</div> -->
+								
+								
 								</div>
 								<!-- 회원 아이디 끝 -->
 								<!-- 메세지 입력창 시작  -->
