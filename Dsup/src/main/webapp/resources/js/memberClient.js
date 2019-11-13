@@ -1,4 +1,4 @@
-/*$(function(){
+$(function(){
 		memberList();	//목록조회
 		
 		memberInsert();	//등록버튼 이벤트지정
@@ -10,7 +10,7 @@
 		memberUpdate();	//수정
 		
 		idCheck();
-});*/
+});
 //사용자 등록요청
 function memberInsert(){
 	//등록버튼클릭
@@ -19,7 +19,6 @@ function memberInsert(){
 		var name= $('input:text[name="name"]').val();
 		var password = $('[name="password"]').val();
 		var role = $('[name="role"]:checked').val(); */		// $('[name="role"]').val(); 첫번째radio 가져옴	// :checked해야 선택한애가져옴
-		console.log("sad");
 		var param = JSON.stringify($("#register-form").serializeObject());	//단건일때 //다건일땐 변환애줘야됨
 		$.ajax({
 			url: "members",
@@ -28,8 +27,15 @@ function memberInsert(){
 			data: param, //JSON.stringify({id: id, name:name, password: password, role: role}),
 			contentType: 'application/json',
 			success: function(response){
+				$('[class="form__error"]').text('');
 				if(response.result == true){	// 서버에서 등록후에 true라고 넘어오면
-					memberList();
+					location.href='login';
+				}else{
+					if(response.idcheck==true){
+						$('[for="userId"]').next().text("다른 아이디를 사용해주세요.");
+					}else if(response.passwordcheck==true){
+						$('[for="password"]').next().text("비밀번호가 다릅니다.");
+					}
 				}
 			},
 			error:function(xht, status, message){

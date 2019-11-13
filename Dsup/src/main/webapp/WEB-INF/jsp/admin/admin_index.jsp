@@ -1,98 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="">
 <meta name="author" content="">
-
-<title>SB Admin - Dashboard</title>
-
-<!-- Custom fonts for this template-->
-<link href="${pageContext.request.contextPath }/resources/js/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
-	type="text/css">
-
-<!-- Page level plugin CSS-->
-<link href="${pageContext.request.contextPath }/resources/js/admin/vendor/datatables/dataTables.bootstrap4.css"
-	rel="stylesheet">
-
-<!-- Custom styles for this template-->
-<link href="${pageContext.request.contextPath }/resources/js/admin/css/sb-admin.css" rel="stylesheet">
-
-<style type="text/css">/* Chart.js */
-@
-keyframes chartjs-render-animation {
-	from {opacity: .99
-}
-
-to {
-	opacity: 1
-}
-
-}
-.chartjs-render-monitor {
-	animation: chartjs-render-animation 1ms
-}
-
-.chartjs-size-monitor, .chartjs-size-monitor-expand,
-	.chartjs-size-monitor-shrink {
-	position: absolute;
-	direction: ltr;
-	left: 0;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	overflow: hidden;
-	pointer-events: none;
-	visibility: hidden;
-	z-index: -1
-}
-
-.chartjs-size-monitor-expand>div {
-	position: absolute;
-	width: 1000000px;
-	height: 1000000px;
-	left: 0;
-	top: 0
-}
-
-.chartjs-size-monitor-shrink>div {
-	position: absolute;
-	width: 200%;
-	height: 200%;
-	left: 0;
-	top: 0
-}
-a{
-	cursor:pointer;
-}
-</style>
-<script>
-function pageChange(type){
-	if(type == 'Volume'){
-		$('#volume-jsp-div').css('display', 'block');
-		$('#user-jsp-div').css('display', 'none');
-	}else if(type == 'User'){
-		$('#volume-jsp-div').css('display', 'none');
-		$('#user-jsp-div').css('display', 'block');
-	}
-}
-
-// ↓ [윤정 1111] user.jsp 에서 쓸거임
-function userPageChange(type) {
-	$(".yj_user").css("display", "none");
-	$("#" + type).css("display", "block");
-}
-</script>
+<title>Admin Page</title>
+<!-- 각종 자바스크립트 및 css 링크 -->
+<jsp:include page="scriptLink.jsp"></jsp:include>
+<!-- 테이블스페이스 텝 컨드롤하는 자바스크립트 -->
+<jsp:include page="user/tablespaceTapJavascriptLink.jsp"></jsp:include>
 </head>
 <body id="page-top">
 	<nav class="navbar navbar-expand navbar-dark bg-dark static-top">
-		<a class="navbar-brand mr-1" href="index.html">Start Bootstrap</a>
+		<a class="navbar-brand mr-1" href="index.html">DBhelper</a>
 		<button class="btn btn-link btn-sm text-white order-1 order-sm-0"
 			id="sidebarToggle" href="#">
 			<i class="fas fa-bars"></i>
@@ -114,10 +39,10 @@ function userPageChange(type) {
 	<div id="wrapper">
 		<!-- Sidebar -->
 		<div id="content-wrapper">
-			<div id="volume-jsp-div" style="display:block;">
+			<%-- <div id="volume-jsp-div" style="display:block;">
 				<jsp:include page="volume/volume.jsp"></jsp:include>
-			</div>
-			<div id="user-jsp-div" style="display:none;">
+			</div> --%>
+			<div id="user-jsp-div" style="display:block;">
 				<jsp:include page="user/user.jsp"></jsp:include>
 			</div>
 			<!-- /.container-fluid -->
