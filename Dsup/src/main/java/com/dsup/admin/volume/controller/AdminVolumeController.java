@@ -1,5 +1,6 @@
 package com.dsup.admin.volume.controller;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,24 @@ public class AdminVolumeController {
 	
 	@RequestMapping("/getTableSpaceCondition")
 	@ResponseBody
-	public LinkedHashMap<String, Object> getTableSpaceCondition(){
-		LinkedHashMap<String, Object> result = service.getTableSpaceCondition();
+	public ArrayList<Object> getTableSpaceCondition(){
+		ArrayList<Object> result = service.getTableSpaceCondition();
+		
+		return result;
+	}
+	
+	@RequestMapping("/getUserVolumCondition")
+	@ResponseBody
+	public ArrayList<Object> getUserVolumCondition(){
+		ArrayList<Object> result = service.getUserVolumCondition();
+		
+		return result;
+	}
+	
+	@RequestMapping("/getDataFileVolumeCondition")
+	@ResponseBody
+	public ArrayList<Object> getDataFileVolumeCondition(){
+		ArrayList<Object> result = service.getDataFileVolumeCondition();
 		
 		return result;
 	}
