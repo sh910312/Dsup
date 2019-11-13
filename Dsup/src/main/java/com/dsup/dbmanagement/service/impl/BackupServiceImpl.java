@@ -27,7 +27,7 @@ public class BackupServiceImpl implements BackupService {
 	@Autowired BackupDAOMybatis dao;
 	
 	@Override
-	public void BackupCreate(BackupVO vo, String tablespaceName) {
+	public void BackupCreate(BackupVO vo, String tablespaceName, String backupPath) {
 		try {
 			// 테이블스페이스 begin backup
 			dao.beginBackup(tablespaceName);
@@ -35,7 +35,7 @@ public class BackupServiceImpl implements BackupService {
 			List<DatafileVO> datafile = new ArrayList<DatafileVO>();
 			datafile = dao.datafileList(tablespaceName);
 			// 압축파일 만들기
-			vo = makeZip(vo, tablespaceName, datafile);
+			vo = makeZip(vo, tablespaceName, datafile, backupPath);
 			// DB에 자료 입력
 			dao.insertBackupList(vo);
 		} catch (Exception e) {
@@ -67,14 +67,14 @@ public class BackupServiceImpl implements BackupService {
 	}
 
 	// [윤정 1028] 파일 압축하기
-	public BackupVO makeZip(BackupVO vo, String tablespaceName, List<DatafileVO> datafile) {
+	public BackupVO makeZip(BackupVO vo, String tablespaceName, List<DatafileVO> datafile, String backupPath) {
 		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyyMMdd HHmmss");
 		SimpleDateFormat format2 = new SimpleDateFormat ( "yyyyMMdd");
 		Date time = new Date();
 		String time1 = format1.format(time);
 		vo.setBackupDate(format2.format(time));
 		
-		File directory = new File("D:\\dsup\\backup");
+		File directory = new File(backupPath);
 		if(!directory.exists()) directory.mkdirs();
 		// 경로 없으면 생성
 		

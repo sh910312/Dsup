@@ -18,8 +18,12 @@
 	// [윤정1113] 백업 목록 출력
 	function printBackup(backup) {
 		$.each(backup, function(idx, item) {
+			var nameOnly = (item.backupFileNm).split("\\");
+			nameOnly = nameOnly[nameOnly.length - 1];
+			// nameOnly : 경로를 제외한 파일명만 추출
+			
 			var userId = $("<td>").text((item.userId));
-			var filename = $("<td>").text((item.backupFileNm));
+			var filename = $("<td>").html("<a href = './download/" + nameOnly + "'>" + (item.backupFileNm) + "</a>");
 			var backupDate = $("<td>").text((item.backupDate).substr(0,10));
 			var backupComment = $("<td>").text((item.backupComment));
 			
