@@ -115,6 +115,12 @@
 			return 1;
 		}
 		
+		// [윤정1112] 길이 30자 넘지 않게
+		if(name.length > 30) {
+			$("#nameMsg").show().text("길이는 30자를 넘을 수 없습니다");
+			return 1;
+		}
+		
 		// [윤정1101] 이름 첫 글자 영어만
 		if(!name.substr(0,1).match(/[A-Z]/)) {
 			$("#nameMsg").show().text("이름 첫 글자는 영어만 입력할 수 있습니다");
