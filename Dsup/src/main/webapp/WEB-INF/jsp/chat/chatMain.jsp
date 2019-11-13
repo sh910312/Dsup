@@ -7,16 +7,22 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, inittal-scale=1">
 <title>채팅창 메인화면</title>
-<link rel="stylesheet" href="./resources/css/bootstrap.css">
 <link rel="stylesheet" href="./resources/css/custom.css">
 <script src="./resources/js/sockjs.js"></script>
+<!-- 부트스트랩 원래버전 -->
+<link rel="stylesheet" href="./resources/css/bootstrap.css">
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="./resources/js/bootstrap.js"></script>
 <script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 
+<!-- 부트스트랩 수정-->
+<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+ -->
 
 <script>
-
 	$(document).ready(function() {
     	$("#sendBtn").click(function() {
  			sendMessage();
@@ -56,7 +62,12 @@
     
     // 서버와 연결을 끊었을 때
     function onClose(evt) {
-		$("#data").append("연결 끊김");
+		$("#data").appendMessage("연결 끊김");
+    }
+    
+    // 서버와 연결을 되었을 때 자동 발송
+    function onOpen(evt) {
+		$("#data").appendMessage("연결 되었습니다.");
     }
 
 
@@ -101,12 +112,11 @@ function openButton(menu, a){ /*  버튼 새창 */
 						<div class="portlet-heading">
 							<div class="portlet-title">
 								<h3>
-									<i class="fa fa-circle text-green"></i>D-sup 실시간 전체채팅 ${chat.chatId}
+									D-sup 실시간 전체채팅 ${chat.chatId}
 								</h3>
 							</div>
 							<div class="portlet-title pull-right">
 								<h3>
-									<i class="fa fa-circle text-green"></i>
 									<%-- <c:if test="${not empty userid}"> --%>
 									<!-- 변경/등록 버튼은 userid가 있는(관리자/회원)만 볼수있다.  -->
 									<button type="button" class="btn btn-default" onclick="openButton(1)">등록</button>
@@ -117,7 +127,7 @@ function openButton(menu, a){ /*  버튼 새창 */
 							<div class="clearfix"></div>
 						</div>
 						<div id="chat" class="panel-collapse collapse in">
-							<div id="chatList" class="portlet-body chat-widget"	style="overflow-y: auto; width: auto; height: 650px;"></div>
+							<div id="chatList" class="portlet-body chat-widget"	style="overflow-y: auto; width: auto; height: 560px;"></div>
 					
 							<!-- 대화입력창 시작  -->
 							<div class="portlet-footer">

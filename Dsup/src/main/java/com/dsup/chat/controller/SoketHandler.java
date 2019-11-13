@@ -38,7 +38,7 @@ public class SoketHandler extends TextWebSocketHandler implements WebSocketHandl
 		
 		Map<String, Object> map = session.getAttributes();
 		MemberVO vo = (MemberVO) map.get("member");
-		
+
 		sessionList.add(session);
 		
 		System.out.println(vo.getNickname()+"님이 접속됨");
@@ -50,23 +50,23 @@ public class SoketHandler extends TextWebSocketHandler implements WebSocketHandl
 		
 		System.out.println(session.getAttributes());
 		
+		
 		Map<String, Object> map = session.getAttributes();
 		MemberVO vo = (MemberVO) map.get("member");
-		
+
 		ChatVO cvo = new ChatVO();
 		
 		cvo.setUserId(vo.getUserId());
 		cvo.setNickname(vo.getNickname());
 		cvo.setContents(message.getPayload());
-		
-		
-		
-//		System.out.println(vo.getNickname() + "으로부터 " + message.getPayload() + "받음" + cvo.getWriteDate());
-		System.out.println(vo.getUserId() + "으로부터 " + message.getPayload() + "받음" + cvo.getWriteDate());
+	
 		
 		int a = chatService.insertChat(cvo);
 		System.out.println(cvo+",,,,"+a);
 		SimpleDateFormat date =  new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		
+		
+		System.out.println(vo.getUserId() + "으로부터 " + message.getPayload() + "받음" + date.format(new Date()));
 		
 		for (WebSocketSession sess : sessionList) {
 			System.out.println("채팅 세션 리스트 작동중?");
@@ -77,8 +77,6 @@ public class SoketHandler extends TextWebSocketHandler implements WebSocketHandl
 			+ "</span>" ));
 			 
 		}
-		
-		
 		
 	}
 

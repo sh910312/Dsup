@@ -1,10 +1,11 @@
 package com.dsup.pay.service;
 
-import com.dsup.pay.PayVO;
+import com.dsup.pay.PayHisIfTbVO;
 
 public interface PayService {
-	public PayVO getPay(PayVO vo);
+	public PayHisIfTbVO getPay(PayHisIfTbVO vo);
 	
-	public int insertPay(PayVO vo);
+	public int insertPay(PayHisIfTbVO vo);
+	
 	
 }
