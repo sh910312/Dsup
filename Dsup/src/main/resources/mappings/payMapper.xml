@@ -3,14 +3,17 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="PayDAO">
  	<!-- 결제 결과 입력 -->
- 	<insert id="insertPay" parameterType="pay">
+ 	<insert id="insertPay" parameterType="payHisIfTb">
  		INSERT INTO PAY_HIS_IF_TB (PAY_SEQ, USER_ID, PAY_DATE, PAY_ITEM, PAY_TYPE, PAY_PRICE) 
 		VALUES ((SELECT NVL(MAX(PAY_SEQ),0)+1 FROM PAY_HIS_IF_TB), 
 				#{userId}, 
 				SYSDATE, 
-				#{item}, 
-				#{type}, 
-				#{price})
+				#{payItem}, 
+				#{payType}, 
+				#{payPrice})
  	</insert>
- 	
+ 	<update id="updatePay" parameterType="payHisIfTb">
+ 		UPDATE USERS SET PAY_SERVICE = 'Y'
+ 		WHERE USER_ID = #{userId} 
+ 	</update>
  </mapper>
