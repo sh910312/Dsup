@@ -162,7 +162,7 @@
 		        bar: { groupWidth: '70%' },
 		        isStacked: true,
 		        legend: { position: 'top' },
-		        hAxis: {
+		        hAxis: { 
 		          minValue: 0,
 		          maxValue: "${member.payItem}".split("GB")[0]
 		        }

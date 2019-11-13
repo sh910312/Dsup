@@ -11,14 +11,14 @@ function getUserSchema() {
 		url : 'userSchema',
 		type : 'GET',
 		dataType : 'json',
-		success : printTsTable
+		success : printUserSchema
 	});
 }
 
 function printUserSchema(userSchema) {
 	$.each(userSchema, function(idx, item) {
-		var id = $("<td>").text((item.id));
-		var user = $("<td>").text((item.user));
+		var id = $("<td>").text((item.id)); // 사용자 id
+		var user = $("<td>").text((item.user)); // 스키마 id
 		var status = $("<td>").text((item.accountStatus));
 		var ts = $("<td>").text((item.defaultTableSpace));
 		
@@ -28,9 +28,9 @@ function printUserSchema(userSchema) {
 											.append(status)
 											.append(ts)
 				);
-		
-		$('#userSchemaTable').DataTable();
 	});
+	
+	$('#userSchemaTable').DataTable();
 }
 </script>
     

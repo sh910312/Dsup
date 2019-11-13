@@ -5,11 +5,12 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
 		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd"
-	>
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing 
 		infrastructure -->
@@ -55,6 +56,26 @@
             <beans:ref bean="LoginInterceptor"/>
         </interceptor>
 	</interceptors>
+	
+	<!-- ↓ [윤정 1112] 종량제 신청 안했으면 DB관리 못하게 -->
+	<beans:bean id="DbMngInterceptor" class="com.dsup.dbmanagement.DbMngInterceptor"/>
+	<interceptors>
+		<beans:bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<beans:property name="paramName" value="lang"/>
+		</beans:bean>	
+		<interceptor>
+            <mapping path="/storageList"/>
+            <mapping path="/storageCreateForm"/>
+            <mapping path="/storageUpdateForm"/>
+            <mapping path="/userList"/>
+            <mapping path="/userCreateForm"/>
+            <mapping path="/storageUpdateForm"/>
+            <mapping path="/backupCreateForm"/>
+            <!-- 백업리스트 조회는 할 수 있음 -->
+            <beans:ref bean="DbMngInterceptor"/>
+        </interceptor>
+	</interceptors>
+	<!-- ↑ [윤정 1112] 종량제 신청 안했으면 DB관리 못하게 -->
 
 	<context:component-scan base-package="com.dsup" >
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
@@ -72,6 +93,9 @@
 		</websocket:handshake-interceptors>
 		<websocket:sockjs></websocket:sockjs>
 	</websocket:handlers>
-
+	
+		<!-- 해당 태그들은 크론탭을 설정에 필요한 태그들 -->
+	<task:scheduler id="jobScheduler" pool-size="10" />
+	<task:annotation-driven scheduler="jobScheduler" />
 
 </beans:beans>

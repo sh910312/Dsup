@@ -35,6 +35,7 @@
 				}
 		});
 	});
+	
 	function formCheck(){
 		if($("#passwordResult").val()=="false"){
 			alert("비밀번호를 확인하세요!");
@@ -93,7 +94,7 @@
 					}else {
 						 if(id == ""){
 							
-							$('#id_check').text('아이디를 입력해주세요 :)');
+							$('#id_check').text('아이디를 입력해주세요');
 							$('#id_check').css('color', 'red');
 							$("#reg_submit").attr("disabled", true);				
 						  
@@ -115,7 +116,7 @@
 	<form action="userList.jsp" id="frm2">
 		<table class = "table table-borderless">
 			<tr>
-				<td>이름</td>
+				<td>스키마아이디</td>
 				<td>
 					<input type="text" name="id" id="id" placeholder="ID" maxlength="50" required
 						class="form-control" >
@@ -153,11 +154,11 @@
 			</tr>
 			<tr>
 				<td>
-					<input type="radio" name="accountStatus" value="lock" checked id = "statusLock" />
+					<input type="radio" name="accountStatus" value="lock" id = "statusLock" />
 					<label class="form-check-label" for="statusLock">lock</label>
 				</td>
 				<td>
-					<input type="radio" name="accountStatus" value="unlock" id = "statusUnlock" />
+					<input type="radio" name="accountStatus" value="unlock" id = "statusUnlock" checked />
 					<label class="form-check-label" for="statusUnlock">unlock</label>
 				</td>
 			</tr>
