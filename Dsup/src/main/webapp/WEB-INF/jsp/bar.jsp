@@ -100,6 +100,7 @@
 			<br><br><br><br><br><br><br>
 			
 			<button id="myBtn">정보변경</button>
+			<button id = "withdrawGo">회원탈퇴</button>
 		</div>
 		<div id="modify">
 		    <h3>Modify</h3>
