@@ -148,7 +148,7 @@
 <script type="text/javascript">
 function disClick(){
 	if("${payService}" == "Y"){
-		location.href='./distributingMain2'
+		location.href='./storageList'
 	}else{
 		location.href='./distributingMain'	
 		

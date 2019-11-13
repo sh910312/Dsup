@@ -10,7 +10,7 @@ public interface MemberService {
 	public List<MemberVO> getMemberList(MemberVO vo);
 	public List<Map> getMemberListMap(MemberVO user);
 	//등록
-	public int insertMember(MemberVO vo);
+	public Map insertMember(MemberVO vo);
 	//수정
 	public int updateMember(MemberVO vo);
 	//삭제
