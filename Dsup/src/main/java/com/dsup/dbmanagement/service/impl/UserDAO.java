@@ -47,10 +47,6 @@ public class UserDAO {
 		return mybatis.selectOne("UserDAO.getUser", vo);
 	}
 	
-	//스키마 생성
-	public int insertSchemaTb(UserSchemaVO dto) {
-		return mybatis.insert("UserDAO.insertinsertSchemaTb", dto);
-	}
 
 	//id중복 체크
 	public int checkOverId(String id) {

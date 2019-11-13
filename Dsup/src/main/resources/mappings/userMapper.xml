@@ -36,7 +36,7 @@
  	<select id="getUser" parameterType="user" resultType="user">
  		select USERNAME id,  ACCOUNT_STATUS, DEFAULT_TABLESPACE
  		from DBA_USERS
- 		where lower(USERNAME)=#{id}
+ 		where upper(USERNAME)=#{id}
  	</select>
  	
 	<!-- 수정 -->

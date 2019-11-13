@@ -10,6 +10,6 @@ public class UserVO {
 	private String accountStatus;
 	private String user;
 	private String reservedWords;
-	
+	private String idCheck;
 	
 }
