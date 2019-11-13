@@ -28,9 +28,9 @@ function printUserSchema(userSchema) {
 											.append(status)
 											.append(ts)
 				);
-		
-		$('#userSchemaTable').DataTable();
 	});
+	
+	$('#userSchemaTable').DataTable();
 }
 </script>
     
