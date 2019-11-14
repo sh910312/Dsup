@@ -20,6 +20,13 @@ public class ChatController {
 		
 		return "chat/chatMain";
 	}
+	
+	// 온라인
+	@RequestMapping("/online")
+	public String onlineList(ChatVO vo, Model model) {
+		
+		return "chat/online";
+	}
 
 	
 

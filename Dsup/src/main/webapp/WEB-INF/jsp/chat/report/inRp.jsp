@@ -33,7 +33,7 @@ function okbtn() {
 		$("#frm").attr("method", "post");
 		$("#frm").submit();
 		alert("신고가 완료되었습니다.");
-		
+		self.close();
 	})
 }
 
@@ -81,6 +81,7 @@ function okbtn() {
 								신고 내용			 : ${search.contents }<br><br><br>
 								<br>
 								<input type="hidden" name="rpUserId" value="${search.userId }" />
+								<input type="hidden" name="boardNum" value="${search.searchId}" />
 								</c:when>
 														 
 								<c:when test="${rpType == 1 }">
@@ -91,6 +92,7 @@ function okbtn() {
 								신고 내용			 : ${re.contents }<br><br><br>
 								<br>
 								<input type="hidden" name="rpUserId" value="${re.userId }" />
+								<input type="hidden" name="boardNum" value="${re.reId}" />
 								</c:when>
 							
 							
@@ -102,6 +104,8 @@ function okbtn() {
 								신고 내용			 : ${chat.contents }<br><br><br>
 								<br>
 								<input type="hidden" name="rpUserId" value="${chat.userId }" />
+								<input type="hidden" name="boardNum" value="${chat.chatId}" />
+								
 								</c:when>
 							</c:choose></h4>
 							<!-- 신고 상세내용 끝 -->

@@ -8,7 +8,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
 <script src="./resources/js/index.js"></script>
-<!-- <script src="./resources/js/memberClient.js"></script> -->
+<script src="./resources/js/memberClient.js"></script>
 <script src="./resources/json.min.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet" type="text/css" >
 <link href="./resources/css/index.css" rel="stylesheet" type="text/css" >
@@ -66,12 +66,12 @@
             <label for="password" class="form__label">비밀번호</label>
             <span class="form__error"></span>
           </div>
-        <!--   <div class="form__row">
-            <input type="password" id="password-check" class="form__input" name="register-repeat-pass" data-validation="confirmation" data-validation-confirm="register-pass" data-error="Your passwords did not match." required>
+          <div class="form__row">
+            <input type="password" id="password-check" class="form__input" name="password2" data-validation="confirmation" data-validation-confirm="register-pass" data-error="Your passwords did not match." required>
             <span class="form__bar"></span>
             <label for="password-check" class="form__label">비밀번호 확인</label>
             <span class="form__error"></span>
-          </div> -->
+          </div>
           <div class="form__row">
             <input type="text" id="email" class="form__input" name="eMail" data-validation="email" data-error="Invalid email" required>
             <span class="form__bar"></span>
@@ -85,9 +85,8 @@
             <span class="form__error"></span>
           </div>
           <div class="form__row">
-            <!-- <input type="submit" class="form__submit" value="회원가입" id="btnInsert"> -->
+            <input type="button" class="form__submit" value="회원가입" id="btnInsert">
           </div>
-          	<button id="btnInsert">회원가입</button>
         </form>
 
         <!-- 비밀번호 찾기 폼 -->
@@ -108,34 +107,5 @@
       </div>
     </div>
   </div>
-<script>
-
-  function memberInsert(){
-		//등록버튼클릭
-		$('#btnInsert').on('click', function(){
-			/* var id = $('input:text[name="id"]').val();
-			var name= $('input:text[name="name"]').val();
-			var password = $('[name="password"]').val();
-			var role = $('[name="role"]:checked').val(); */		// $('[name="role"]').val(); 첫번째radio 가져옴	// :checked해야 선택한애가져옴
-			var param = JSON.stringify($("#register-form").serializeObject());	//단건일때 //다건일땐 변환애줘야됨
-			console.log(param);
-			$.ajax({
-				url: "members",
-				type: 'POST',
-				dataType: 'json',
-				data: param, //JSON.stringify({id: id, name:name, password: password, role: role}),
-				contentType: 'application/json',
-				success: function(response){
-					if(response.result == true){	// 서버에서 등록후에 true라고 넘어오면
-						memberList();
-					}
-				},
-				error:function(xht, status, message){
-					alert(" status: " + status + " er:"+message);
-				}
-			});
-		});//등록버튼클릭
-	}//userInsert
-</script>
 </body> 
 </html>

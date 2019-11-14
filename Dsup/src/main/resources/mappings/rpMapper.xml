@@ -31,6 +31,7 @@
 						,rp_user_id
 						,rp_type
 		        		,rp_contents
+		        		,board_num
 		)
 		
 		values( 	 #{rpId}
@@ -38,6 +39,7 @@
 					,#{rpUserId}
 					,#{rpType}
 					,#{rpContents}
+					,#{boardNum}
 		)
 
 	</insert>
@@ -61,6 +63,7 @@
 			user_id as "userId",
 			contents as "contents",
 			to_char(write_date, 'YY/MM/DD') as "writeDate" 
+			board_num as "boardNum"
 	from re
 
 	where search_id = #{searchId}

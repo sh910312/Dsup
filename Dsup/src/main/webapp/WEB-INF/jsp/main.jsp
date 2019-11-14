@@ -35,9 +35,8 @@
 <!-- 메뉴바 시작 -->
 <header>
 	<div class="navbar navbar-dark bg-dark box-shadow">
-		<!-- 로고 가운데정렬 (잠시막아둠)  -->
-		<!-- <div class="container d-flex justify-content-between"> --> 
-			<a href="#" class="navbar-brand d-flex align-items-center pull-left"> 
+		<div class="container d-flex justify-content-between">
+			<a href="./main" class="navbar-brand d-flex align-items-center">
 				<i class="fa fa-database" aria-hidden="true" style="margin-right: 10px"></i>
 				<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
 				<circle cx="12" cy="13" r="4"></circle></svg> <strong>DBhelper</strong>
@@ -52,7 +51,7 @@
 			    	<button class="dropdown-item" type="button">메뉴바3</button>
 			  	</div>
 			</div>
-		<!-- </div> 로고 가운데 정렬(잠시 막아둠) --> 
+		</div> 
 	</div>
 </header>
 <!-- 메뉴바 끝 -->	
@@ -153,7 +152,7 @@
 <script type="text/javascript">
 function disClick(){
 	if("${payService}" == "Y"){
-		location.href='./distributingMain2'
+		location.href='./storageList'
 	}else{
 		location.href='./distributingMain'	
 		
