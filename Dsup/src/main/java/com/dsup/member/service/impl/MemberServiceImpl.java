@@ -65,6 +65,6 @@ public class MemberServiceImpl implements MemberService{
 
 	// ↓윤정 탈퇴
 	public int withdrawal(MemberVO vo) {
-		return MemberDAO.withdrawal(vo);
+		return memberDAO.withdrawal(vo);
 	};
 }
