@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <script>
-	$(function() {
+ 	$(function() {
 		getPayHistory();
 	});
 	
@@ -35,10 +35,11 @@
 						);
 		});
 		
-		$('#payHistoryTable').DataTable();
-	}
+ 		$('#payHistoryTable').DataTable({
+			 "lengthMenu": [5, 10, 25, 50]
+		}); 
+	} 
 </script>
-
 <!-- DataTables Example -->
 <div class="card mb-3">
 	<div class="card-header">
@@ -47,7 +48,7 @@
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table table-bordered table-hover" id="payHistoryTable" width="100%" cellspacing="0">
-				<thead>
+				<thead id="admin-thead-volume">
 					<tr>
 						<th>결제번호</th>
 						<th>사용자 아이디</th>

@@ -36,7 +36,7 @@ public class SQLController {
 	public String sqlIndex(Model model, HttpSession session) {
 		ArrayList<String> schemaList = sqlService.getUserSchemaName(session);
 		model.addAttribute("schemaList", schemaList);
-		String schemaid = (String)session.getAttribute("schemaid");
+		//String schemaid = (String)session.getAttribute("schemaid");
 		
 		return "sql/sql_index";
 	}

@@ -39,10 +39,8 @@ public class MemberRestController {
 		System.out.println(vo.getUserId());
 		System.out.println(vo.getPassword());
 		
-		memberService.insertMember(vo);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("result", true);
-		map.put("member", true);
+		Map<String, Object> map = memberService.insertMember(vo);
+		
 		return map;
 	}
 	
