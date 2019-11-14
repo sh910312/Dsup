@@ -96,7 +96,9 @@ function back() {
 								<br>
 									<%-- <input type="text" id="updatecotents" style="width:100%; height:200px; overflow:auto;"  readonly value="${search.contents }"> --%>
 									<input hidden="hidden"/> <!-- 엔터키 안먹게 하는방법  -->
-									<textarea style="width:100%; height:200px;" id="contents" name="contents" class="form-control" placeholder="${search.contents }"></textarea>
+									<textarea style="width:100%; height:200px;" 
+									id="contents" name="contents" class="form-control" 
+									placeholder="${search.contents }">${search.contents }</textarea>
 								<br>
 								<div align="center">
 								<br>

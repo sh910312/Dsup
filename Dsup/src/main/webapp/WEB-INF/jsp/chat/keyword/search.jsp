@@ -88,7 +88,7 @@ function insert() {
  										<c:if test="${usersId != null}">
 										<input name="searchList" type="checkbox" value="${search.searchId }"/>
 										</c:if> 
-										
+										${search.searchId }
 										<a href="getSearch?searchId=${search.searchId }"> ${search.title }</a>
 										</div>
 										</c:forEach>
