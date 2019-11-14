@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		<!-- Google Chart Canvas -->
-		<div id="chart_div" style="width: 900px; height: 500px;"></div>
+		<div id="tablespace_chart_div" style="width: 900px; height: 500px;"></div>
 	</div>
 	<div class="card-footer small text-muted">Updated yesterday
 		at 11:59 PM</div>
