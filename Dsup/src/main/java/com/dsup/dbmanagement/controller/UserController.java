@@ -92,7 +92,7 @@ public class UserController {
 	@RequestMapping(value="/users/{id}", method=RequestMethod.DELETE)
 	@ResponseBody
 	public Map deleteUser(@PathVariable String id, UserVO vo, Model model) {
-		vo.setId(id);
+		vo.setUser(id);
 		userService.deleteUser(vo);
 		return Collections.singletonMap("result", true);
 		

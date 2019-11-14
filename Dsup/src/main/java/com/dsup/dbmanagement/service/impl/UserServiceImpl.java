@@ -58,6 +58,12 @@ public class UserServiceImpl implements UserService{
 		return userDAO.getUser(vo);
 	}
 
+	@Override
+	public List<UserVO> getUserSchema(String userId) {
+		// 윤정 목록조회
+		return userDAO.getUserSchema(userId);
+	}
+
 
 
 }

@@ -59,4 +59,11 @@
 		where user_id = #{userId}
 	</delete>
 	
+	<!-- 윤정 회원탈퇴신청 -->
+	<update id = "withdrawal" parameterType="member">
+		UPDATE USERS SET user_type = ${userType}
+						, pay_item = null
+						, pay_service = #{payService}
+		WHERE user_id = #{userId}
+	</update>
 </mapper>

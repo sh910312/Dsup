@@ -7,7 +7,7 @@ import com.dsup.dbmanagement.TablespaceVO;
 import com.dsup.dbmanagement.UserTbspcTbVO;
 
 public interface StorageService {
-	List<TablespaceVO> getStorageList(String userId);
+	List<UserTbspcTbVO> getStorageList(String userId);
 	void deleteStorage(String tablespaceName);
 	void createStorage(String sql, UserTbspcTbVO vo);
 	List<TablespaceVO> getStorage(UserTbspcTbVO vo);

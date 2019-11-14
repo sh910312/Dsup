@@ -126,6 +126,7 @@
 			$("#passwordcheck").val("");
 			userUpdate.isLoad = false;
 			
+		
 			// ↓ 모달에서 수정 버튼 눌렀을 때
 			$("#modalUpdBtn").click(function(){
 				if( $("#modalPassword").val() != $("#passwordcheck").val()){

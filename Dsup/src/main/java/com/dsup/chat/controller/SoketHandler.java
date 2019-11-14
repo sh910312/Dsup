@@ -1,8 +1,10 @@
 package com.dsup.chat.controller;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +19,7 @@ import com.dsup.chat.ChatVO;
 import com.dsup.chat.service.ChatService;
 import com.dsup.chat.service.SearchService;
 import com.dsup.member.MemberVO;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SoketHandler extends TextWebSocketHandler implements WebSocketHandler {
 	
@@ -40,9 +43,46 @@ public class SoketHandler extends TextWebSocketHandler implements WebSocketHandl
 		MemberVO vo = (MemberVO) map.get("member");
 
 		sessionList.add(session);
-		
 		System.out.println(vo.getNickname()+"님이 접속됨");
+
+	
+		String msg = vo.getNickname()+"님이 입장하였습니다.";
+		String nickname = "";
+		int chatid = 0;
+		
+		sendMaseege("login", msg,  nickname,  chatid);
+	
+	
 	}
+	
+	
+	
+	public void sendMaseege(String cmd, String msg, String nickname, int chatid) throws IOException {
+		
+		SimpleDateFormat date =  new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		
+		Map<String, String> map = new HashMap<String, String>();
+		String temp =  "<h4>" + nickname + "</h4>"
+				+ "<div class='pull-right'>" + date.format(new Date())	+ "</div>"
+				+ "<span> " + msg
+				+ " <input type='hidden' value='" + chatid+ "'>" 
+				+ "</span>";
+		
+		map.put("cmd", cmd);
+		map.put("msg", temp);
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonString = mapper.writeValueAsString(map);
+		
+		System.out.println(jsonString);
+		
+		for (WebSocketSession sess : sessionList) {
+			System.out.println("채팅 세션 리스트 작동중?");
+			sess.sendMessage(new TextMessage(jsonString));
+			 
+		}
+		
+	}
+	
 
 	// 클라이언트가 서버로 메시지를 전송했을 때 실행되는 메서드
 	@Override
@@ -63,20 +103,15 @@ public class SoketHandler extends TextWebSocketHandler implements WebSocketHandl
 		
 		int a = chatService.insertChat(cvo);
 		System.out.println(cvo+",,,,"+a);
-		SimpleDateFormat date =  new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		
 		
-		System.out.println(vo.getUserId() + "으로부터 " + message.getPayload() + "받음" + date.format(new Date()));
+		//System.out.println(vo.getUserId() + "으로부터 " + message.getPayload() + "받음" + date.format(new Date()));
+		String msg = message.getPayload();
+		String nickname = cvo.getNickname();
+		int chatid = cvo.getChatId();
 		
-		for (WebSocketSession sess : sessionList) {
-			System.out.println("채팅 세션 리스트 작동중?");
-			sess.sendMessage(new TextMessage("<h4>" + cvo.getNickname() + "</h4>"
-			+ "<div class='pull-right'>" + date.format(new Date())
-			+ "</div>" + " <span> " + message.getPayload()+" "
-			+ "<input type='hidden' value='" + cvo.getChatId()+ "'>" 
-			+ "</span>" ));
-			 
-		}
+		sendMaseege("msge", msg,  nickname,  chatid);
+	
 		
 	}
 
@@ -89,6 +124,14 @@ public class SoketHandler extends TextWebSocketHandler implements WebSocketHandl
 		
 		sessionList.remove(session);
 		System.out.println(vo.getNickname() +"님이 퇴장함");
+	
+		
+		String msg = vo.getNickname() +"님이 퇴장함";
+		String nickname = "";
+		int chatid = 0;
+		
+		sendMaseege("logout", msg,  nickname,  chatid);
+	
 	}
 
 }

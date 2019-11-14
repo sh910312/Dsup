@@ -63,6 +63,7 @@
 			modal.style.display = "block";
 			modify.style.display = "none";
 		    myInfo.style.display = "block";
+		    withdrawal.style.display = "none"; // 윤정 탈퇴양식
 		}else{
 			location.href=value			
 		}
@@ -100,6 +101,7 @@
 			<br><br><br><br><br><br><br>
 			
 			<button id="myBtn">정보변경</button>
+			<button id = "withdrawGo">회원탈퇴</button>
 		</div>
 		<div id="modify">
 		    <h3>Modify</h3>
@@ -112,6 +114,18 @@
 			<button type="button" id="btnUpdate" >수정</button>
 			</form>
 		</div>
+		<!-- ↓윤정1113 회원탈퇴 -->
+		<div id="withdrawal">
+			<h3>회원탈퇴</h3>
+			<h4>회원 탈퇴 정책</h4>
+			1. 회원 탈퇴 일로부터 계정과 닉네임을 포함한 계정 정보(아이디/이메일/닉네임/휴대폰번호)는 '개인 정보 보호 정책'에 따라 30일간 보관(잠김) 되며, 30일이 경과된 후에는 모든 개인 정보는 완전히 삭제되며 더 이상 복구할 수 없게 됩니다. <br>
+			2. 테이블스페이스와 유저 스키마, 백업파일은 탈퇴 즉시 모두 삭제되며 복구가 불가능합니다.<br>
+			<br>
+			<form name="withdrawalFrm" action="">
+			<button type="button" id="btnWithdrawal">탈퇴하기</button>
+			</form>
+		</div>
+		<!-- ↑윤정 회원탈퇴 -->
       </div>
 	</div>
 
@@ -130,13 +144,11 @@ var infoEMail = document.getElementById('infoEMail');
 
 modify.style.display = "none";
 
-btn.onclick = function(){
+btn.onclick = function(){ // 정보변경 버튼 클릭
 	modify.style.display = "block";
     myInfo.style.display = "none";
-    
-    
 }
-close.onclick = function() {
+close.onclick = function() { // 닫기 버튼 클릭
     modal.style.display = "none";
 }
 window.onclick = function(event) {
@@ -145,9 +157,38 @@ window.onclick = function(event) {
     	document.frm.reset();
     }
 }
+// ↓윤정 '회원탈퇴' 버튼 클릭시, 탈퇴 폼 보이게
+$("#withdrawGo").click(function(){
+	myInfo.style.display = "none";
+	$("#withdrawal").toggle();
+});
+// ↓윤정 회원탈퇴 신청 처리
+function withdrawalFunc(){
+	var userId = "${userId}";
+	console.log(JSON.stringify({userId:userId, userType:0, payService:'N'}));
+	$.ajax({
+		url: "memberWithdrawal",
+		type : "PUT",
+		dataType: 'json',
+		data : JSON.stringify({userId:userId, userType:0, payService:'N'}),
+		contentType : 'application/json',
+		success : function(response) {
+			if(response.result == true) {
+					alert("성공!");
+				} else {
+					alert("실패!");
+				}
+		},
+		error : function() {
+			
+		}
+	});
+}
+
 
 $(function(){
 	memberUpdate();
+	$("#btnWithdrawal").click(withdrawalFunc); // ← 윤정 탈퇴 신청 처리
 });
 function memberUpdate() {
 	//수정 버튼 클릭
@@ -177,8 +218,9 @@ function memberUpdate() {
 }//userUpdate
 </script>
 
-<%-- <!-- 채팅 영역 시작 -->
-	<div class="pull-right" style="position:relative; display: inline-block; width: 27%;">
+
+<!-- 채팅 영역 시작 -->
+	<div class="pull-right col-xs-3">
 		<%@include file="./chat/chatMain.jsp"%>
 	</div>
-<!-- 채팅 영역 끝 --> --%>
+<!-- 채팅 영역 끝 --> 
