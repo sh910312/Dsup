@@ -17,4 +17,6 @@ public interface MemberService {
 	public int deleteMember(MemberVO vo);
 	//로그인 체크
 	public MemberVO login(MemberVO vo);
+	// 탈퇴(윤정)
+	public int withdrawal(MemberVO vo);
 }

@@ -57,6 +57,8 @@ public class UserDAO {
 		return 0;
 	}
 
-	
-
+	// 윤정 목록조회
+	public List<UserVO> getUserSchema(String userId) {
+		return mybatis.selectList("UserDAO.getUserSchema", userId);
+	}
 }

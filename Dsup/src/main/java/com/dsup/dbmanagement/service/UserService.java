@@ -28,5 +28,5 @@ public interface UserService {
 
 	//id 예약어
 	public UserVO reservedWords(UserVO vo);
-	
+	public List<UserVO> getUserSchema(String userId); // 윤정 목록조회
 }
