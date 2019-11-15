@@ -14,8 +14,6 @@
 	<script>
 	$(function(){
 		tsList();
-		//dfList();
-		//$("#tablespaceName").change(dfList);
 	});
 	
 	// [1024] 테이블스페이스 리스트 요청
@@ -58,14 +56,14 @@
 		<div class = "row">
 			<label for="backupComment" class="col-1 col-form-label">코멘트</label>
 			<div class = "col-8">
-				<input type = "text" name = "backupComment" id = "backupComment"
+				<input type = "text" name = "backupComment" id = "backupComment" maxlength = 1000
 						class = "form-control">
 			</div>
 			<div class = "col-1">
 				<input type = "submit" id = "backupBtn" value = "백업하기" class = "btn btn-outline-info">
 			</div>
 			<div class = "col-1">
-				<input type = "submit" value = "뒤로가기" class = "btn btn-outline-secondary" onclick = "history.back()">
+				<input type = "button" value = "뒤로가기" class = "btn btn-outline-secondary" onclick = "history.back()">
 			</div>
 		</div>
 	</form>

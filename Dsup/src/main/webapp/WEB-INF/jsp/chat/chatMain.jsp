@@ -112,7 +112,7 @@ function openButton(menu, a){ /*  버튼 새창 */
 		
 		var url = "getRp?chatId="+id;
 		var name = "채팅신고";
-		var option = 'width=484px, height=447px, left='+ popupX + ', top='+ popupY; 
+		var option = 'width=484px, height=570px, left='+ popupX + ', top='+ popupY; 
 		window.open(url,name,option);
 	}else if(menu == "3" || menu == 3){
 		window.open("online","온라인",'width=200px, height=550px, left='+ popupX + ', top='+ popupY )
