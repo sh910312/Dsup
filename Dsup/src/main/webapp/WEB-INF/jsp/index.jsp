@@ -41,7 +41,7 @@
             <span class="form__error"></span>
           </div>
           <div class="form__row">
-            <input type="submit" class="form__submit" value="로그인">
+            <input type="submit" id="checkValue" class="form__submit" value="로그인">
             <a href="#password-form" class="form__retrieve-pass" role="button">비밀번호를 잊으셨나요?</a>
           </div>
         </form>

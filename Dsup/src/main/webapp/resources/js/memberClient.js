@@ -9,17 +9,53 @@ $(function(){
 	
 		memberUpdate();	//수정
 		
-		idCheck();
+		checkValue()
 });
+function checkValue(){	
+	$('#checkValue').on('click', function(){
+		var userId = $("userId").val();
+		$('[class="form__error"]').text('');
+		if (userId.length < 1){
+			$('[for="userId"]').next().text("다른 아이디를 사용해주세요.");
+		
+		}
+	})	
+  
+}	
+			/*$.ajax({
+				url: "members",
+				type: 'POST',
+				dataType: 'json',
+				data: param, 
+				contentType: 'application/json',
+				success: function(response){
+					$('[class="form__error"]').text('');
+					if(response.result == true){	// 서버에서 등록후에 true라고 넘어오면
+						location.href='login';
+					}else{
+						if(response.idcheck==true){
+							$('[for="userId"]').next().text("다른 아이디를 사용해주세요.");
+						}else if(response.passwordcheck==true){
+							$('[for="password"]').next().text("비밀번호가 다릅니다.");
+						}
+*/
 //사용자 등록요청
 function memberInsert(){
 	//등록버튼클릭
 	$('#btnInsert').on('click', function(){
-		/* var id = $('input:text[name="id"]').val();
-		var name= $('input:text[name="name"]').val();
+		var id = $('input:text[name="userId"]').val();
+		/*var nickname= $('input:text[name="nickname"]').val();
 		var password = $('[name="password"]').val();
-		var role = $('[name="role"]:checked').val(); */		// $('[name="role"]').val(); 첫번째radio 가져옴	// :checked해야 선택한애가져옴
-		var param = JSON.stringify($("#register-form").serializeObject());	//단건일때 //다건일땐 변환애줘야됨
+		*/
+		
+		 if(id == "") {
+			 alert("아이디를 입력하세요");
+			
+		 }
+		 /*if(new String(nickname).valueOf() == "undefined") return true;
+		 if(new String(password).valueOf() == "undefined") return true;*/
+
+		 var param = JSON.stringify($("#register-form").serializeObject());	//단건일때 //다건일땐 변환애줘야됨
 		$.ajax({
 			url: "members",
 			type: 'POST',
@@ -147,75 +183,5 @@ function memberListResult(data){	//data서버에서넘겨받은 json
 	});//each
 }//userListResult
 
-function idCheck(){
-	
-	$('#btnIdCheck').on('click', function(){
-		var userId = $("userId").val();
-		
-		if (userId.length < 1){
-			alert("아이디를 입력해주시기 바랍니다.");
-		} else {
-			
-			$.ajax({
-				url: "members",
-				type: "POST",
-				dataType: "json",
-				data: {userId: userId},
-				contentType: 'application/json',
-				success : function(result) {
-				    if (result == 0) {
-				     $("#user_id").attr("disabled", true);
-				     alert("사용이 가능한 아이디입니다.");
-				    } else if (result == 1) {
-				     alert("이미 존재하는 아이디입니다. \n다른 아이디를 사용해주세요.");
-				    }
-				   }
-			});
-		}
-	})
-}
 
 
-/*$(document).ready(function() {
-	 $("#user_id_checkBtn").unbind("click").click(function(e) {
-	  e.preventDefault();
-	  fn_userIDCheck();
-	 });
-	});
-	 
-	function fn_userIDCheck() {
-	 var userId = $("#user_id").val();
-	 var userData = {"ID": userId}
-	 
-	 if (userId.length < 1)
-	 {
-	  alert("아이디를 입력해주시기 바랍니다.");
-	 }
-	 else
-	 {
-	  $.ajax({
-	   type : "POST", 
-	   url : "/user/checkUserID.do", 
-	   data : userData,
-	   dataType : "json",
-	   error : function(error) {
-	    alert("서버가 응답하지 않습니다. \n다시 시도해주시기 바랍니다.");
-	   },
-	   success : function(result) {
-	    if (result == 0)
-	    {
-	     $("#user_id").attr("disabled", true);
-	     alert("사용이 가능한 아이디입니다.");
-	    }
-	    else if (result == 1)
-	    {
-	     alert("이미 존재하는 아이디입니다. \n다른 아이디를 사용해주세요.");
-	    }
-	    else
-	    {
-	     alert("에러가 발생하였습니다.");
-	    }
-	   }
-	  });
-	 }
-	}*/
