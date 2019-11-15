@@ -150,17 +150,22 @@
 		var values = new Array();
 		names[0] = "테이블스페이스 명";
 		values[0] = "사용량 (GB)";
+		var sum = 0;
 		$.each(list,
 			function(idx, item) {
 				names.push((item.tablespaceName));
 				values.push((item.volumn));
+				sum += item.volumn;
 			}
 		);
 		
-		if(names.length == 1) {
+		if(names.length == 1) { // 데이터가 없을 때
 			console.log("no tablespace!");
 			names.push("");
 			values.push(0);
+		} else { // 총 사용량 합계 출력
+			names.push({type:'string', role:'annotation'});
+			values.push(sum + "GB 사용중");
 		}
 		
 		console.log(names);
@@ -178,6 +183,24 @@
 		      var options = {
 		        title: '종량제 사용량 (단위 GB)',
 		        chartArea: {width: '95%'},
+		        annotations: {
+		            alwaysOutside: true,
+		            textStyle: {
+		              fontSize: 14,
+		              auraColor: 'none',
+		              color: '#555'
+		            },
+		            boxStyle: {
+		              stroke: '#ccc',
+		              strokeWidth: 1,
+		              gradient: {
+		                color1: '#f3e5f5',
+		                color2: '#f3e5f5',
+		                x1: '0%', y1: '0%',
+		                x2: '100%', y2: '100%'
+		              }
+		            }
+		        },
 		        bar: { groupWidth: '70%' },
 		        isStacked: true,
 		        legend: { position: 'top' },
