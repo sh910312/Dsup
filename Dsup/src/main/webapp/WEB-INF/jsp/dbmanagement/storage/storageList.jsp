@@ -90,9 +90,9 @@
 									+ (item.tablespaceName) + "'>"
 									+ (item.tablespaceName) + "</a>");
 				var $status = $("<td>").text((item.status));
-				var $total = $("<td align='right'>").text((item.total));
-				var $used = $("<td align='right'>").text((item.used));
-				var $free = $("<td align='right'>").text((item.free));
+				var $total = $("<td align='right'>").text((item.total) + " MB");
+				var $used = $("<td align='right'>").text((item.used) + " MB");
+				var $free = $("<td align='right'>").text((item.free) + " MB");
 
 				$("tbody").append(
 					$("<tr>")
@@ -165,7 +165,7 @@
 			values.push(0);
 		} else { // 총 사용량 합계 출력
 			names.push({type:'string', role:'annotation'});
-			values.push(sum + "GB 사용중");
+			values.push(sum + "GB (" + (sum * 1024) + " MB) 사용중");
 		}
 		
 		console.log(names);
@@ -186,7 +186,7 @@
 		        annotations: {
 		            alwaysOutside: true,
 		            textStyle: {
-		              fontSize: 14,
+		              fontSize: 18,
 		              auraColor: 'none',
 		              color: '#555'
 		            },

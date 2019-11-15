@@ -55,9 +55,9 @@
 			<c:forEach items="${df}" var="df">
 				<tr>
 					<td>${df.fileName}</td>
-					<td align='right'>${df.total}</td>
-					<td align='right'>${df.used}</td>
-					<td align='right'>${df.free}</td>
+					<td align='right'>${df.total} MB</td>
+					<td align='right'>${df.used} MB</td>
+					<td align='right'>${df.free} MB</td>
 				</tr>
 			</c:forEach>
 		</tbody>
