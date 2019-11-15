@@ -42,7 +42,7 @@
 	
 	<h1>데이터 파일</h1>
 	
-	<table class="table table-hover">
+	<table class="table table-hover table-bordered">
 		<thead>
 			<tr>
 				<th>파일 이름</th>
@@ -55,9 +55,9 @@
 			<c:forEach items="${df}" var="df">
 				<tr>
 					<td>${df.fileName}</td>
-					<td>${df.total}</td>
-					<td>${df.used}</td>
-					<td>${df.free}</td>
+					<td align='right'>${df.total}</td>
+					<td align='right'>${df.used}</td>
+					<td align='right'>${df.free}</td>
 				</tr>
 			</c:forEach>
 		</tbody>

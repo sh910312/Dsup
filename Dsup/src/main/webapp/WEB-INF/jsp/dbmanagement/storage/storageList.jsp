@@ -90,9 +90,9 @@
 									+ (item.tablespaceName) + "'>"
 									+ (item.tablespaceName) + "</a>");
 				var $status = $("<td>").text((item.status));
-				var $total = $("<td>").text((item.total));
-				var $used = $("<td>").text((item.used));
-				var $free = $("<td>").text((item.free));
+				var $total = $("<td align='right'>").text((item.total));
+				var $used = $("<td align='right'>").text((item.used));
+				var $free = $("<td align='right'>").text((item.free));
 
 				$("tbody").append(
 					$("<tr>")
