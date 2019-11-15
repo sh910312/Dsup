@@ -30,7 +30,9 @@ function printUserSchema(userSchema) {
 				);
 	});
 	
-	$('#userSchemaTable').DataTable();
+	$('#userSchemaTable').DataTable({
+		 "lengthMenu": [5, 10, 25, 50]
+	});
 }
 </script>
     

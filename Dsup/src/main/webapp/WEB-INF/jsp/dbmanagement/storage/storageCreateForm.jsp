@@ -23,7 +23,6 @@
 	$(function(){
 		$("#btn").click(formCheck);
 		$("#addbtn").click(add);
-		tsNameChkFunction();
 		$("#nameMsg").hide();
 		filenameInput();
 		getVolumn();
@@ -36,15 +35,20 @@
 		var tsname = $("#tablespaceName").val();
 		var datafile = "";
 		var err = 0;
+		var sizeErr = 0;
 		
-		if( thisVolumn > freeVolumn ) {
+		if( thisVolumn > freeVolumn ) { // 종량제 제한을 초과했을 경우
 			$('#volumnError').fadeIn(400).delay(1000).fadeOut(400);
 			return;
 		}
 		
-		if(tsname == '') err += 1;
+		if(tsname == '') { // 테이블스페이스 이름 입력하였는지 확인
+ 			$('#tsnameError').fadeIn(400).delay(1000).fadeOut(400);
+			return;
+		}
 		
-		if( $("#tablespaceName").hasClass("is-invalid") ) 
+		// 이름 유효성 맞지 않으면
+		if( !$("#tablespaceName").hasClass("is-valid") ) 
 			err += 1;
 		
 		// 데이터파일 입력한 값 확인
@@ -55,12 +59,14 @@
 			
 			if( isNaN(size) || size <= 0 || (parseInt(size)-parseFloat(size)!=0?true:false) ) {
 				console.log("error!");
-				$('#sizeError').fadeIn(400).delay(1000).fadeOut(400);
 				err = err + 1;
+				sizeErr ++;
 			} else {
 				datafile += " '" + filename + ".dbf' size " + size + sizeunit + ","
 			}
 		});
+		if(sizeErr > 0)
+			$('#sizeError').fadeIn(400).delay(1000).fadeOut(400);
 		
 		datafile = datafile.substring(0, datafile.length-1); // 맨 마지막 , 제거
 		// 데이터파일 입력한 값을 '데이터파일명.dbf' size 0m, ... 로 양식에 맞게 만들어 datafile의 값에 저장
@@ -151,6 +157,7 @@
 				} else { // 중복x
 					$("#nameMsg").hide();
 					$("#tablespaceName").removeClass("is-invalid");
+					$("#tablespaceName").addClass("is-valid");
 				}
 			}
 		}) // ajax
@@ -263,10 +270,9 @@
 					onclick = 'history.back()'>
 		</div>
 		
-		<div class='yj_error' style='display:none' id="sizeError">용량은 0보다 큰 숫자만 입력할 수 있습니다!</div>
+		<div class='yj_error' style='display:none' id="sizeError">용량은 0보다 큰 정수만 입력할 수 있습니다!</div>
 		<div class='yj_error' style='display:none' id="tsnameError">테이블스페이스 이름을 입력하세요!</div>
 		<div class='yj_error' style='display:none' id="volumnError">이용가능한 용량을 초과했습니다!</div>
-		
 	</form>
 </div>
 </body>

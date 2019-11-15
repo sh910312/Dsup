@@ -59,14 +59,17 @@ public class SoketHandler extends TextWebSocketHandler implements WebSocketHandl
 	
 	public void sendMaseege(String cmd, String msg, String nickname, int chatid) throws IOException {
 		
-		SimpleDateFormat date =  new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		SimpleDateFormat date =  new SimpleDateFormat("HH:mm");
+//		SimpleDateFormat date =  new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		
 		Map<String, String> map = new HashMap<String, String>();
-		String temp =  "<h4>" + nickname + "</h4>"
+		String temp = "<div>"
 				+ "<div class='pull-right'>" + date.format(new Date())	+ "</div>"
-				+ "<span> " + msg
-				+ " <input type='hidden' value='" + chatid+ "'>" 
-				+ "</span>";
+				+ "<h4>" + nickname + "</h4>"
+				+ "<span style='display:block; width:200px;'> " + msg
+				+ "<input type='hidden' value='" + chatid+ "'>" 
+				+ "</span>"
+				+ "</div>";
 		
 		map.put("cmd", cmd);
 		map.put("msg", temp);
