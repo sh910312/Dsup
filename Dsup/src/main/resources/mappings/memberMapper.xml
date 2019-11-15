@@ -64,6 +64,15 @@
 		UPDATE USERS SET user_type = ${userType}
 						, pay_item = null
 						, pay_service = #{payService}
+						, del_date = sysdate + 30
 		WHERE user_id = #{userId}
 	</update>
+	
+	<!-- 윤정 탈퇴신청하고 한달 지난 회원 삭제 처리 -->
+	<delete id = "deleteWithdrawalUsers">
+	DELETE FROM users
+	<![CDATA[
+  		WHERE del_date <= sysdate
+  	]]>
+	</delete>
 </mapper>
