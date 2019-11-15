@@ -22,18 +22,13 @@
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
 	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 	crossorigin="anonymous"></script>
-
+<!-- 토스트 css -->
+<link rel = "stylesheet" href="./resources/css/Toast.css">
 <script>
 	$(document).ready(function() {
 		tablespaceList();
 		getVolumn();
-
-		$("#updbtn").click(function() {
-			$("#frm").attr("action", "storageUpdateForm");
-			$("#frm").submit();
-		});
-		// 수정 버튼 클릭
-
+		btnClickFunc(); // 버튼 클릭 이벤트
 		$("#delbtn").click(function() {
 			$("#frm").attr("action", "storageDelete");
 			$("#frm").submit();
@@ -45,16 +40,33 @@
 			$("#frm").submit();
 		});
 		// 생성 버튼 클릭
-
-		$("#showbtn").click(function() {
-			$("#frm").attr("action", "storageShow");
-			$("#frm").submit();
-		});
-		//조회 버튼 클릭
-
 		radioCheck();
 		delCheck();
 	});
+	// [윤정 1114] 수정/삭제/조회 버튼 클릭
+	function btnClickFunc() {
+		$(".yj_btn").click(function() {
+			var tablespaceName = $('input:radio[name="tablespaceName"]:checked').val();
+			if (typeof tablespaceName == "undefined") { // 체크하지 않았을 경우
+				$('#tsError').fadeIn(400).delay(1000).fadeOut(400);
+			} else { // 체크했을 경우
+				switch( $(this).val() ) {
+				case "수정":
+					$("#frm").attr("action", "storageUpdateForm");
+					$("#frm").submit();
+					break;
+				case "삭제":
+					$("#frm").attr("action", "storageDelete");
+					$('#delModal').modal('show')
+					break;
+				case "조회":
+					$("#frm").attr("action", "storageShow");
+					$("#frm").submit();
+					break;
+				} // switch
+			} // if else
+		});
+	}
 
 	// [윤정 1030] 테이블스페이스 리스트 조회 요청
 	function tablespaceList() {
@@ -93,7 +105,7 @@
 		);
 	}
 
-	// [윤정1031] tr 클릭시 라디오 체크
+	// [윤정1031] tr 클릭시 라디오 체크 ---------- 안됨
 	function radioCheck() {
 		$("tbody tr").click(function() {
 			console.log("클릭!");
@@ -187,10 +199,10 @@
 		<form id="frm" method="post">
 
 			<div class="btn-group" role="group">
-				<input id="updbtn" type="button" value="수정" class="btn btn-outline-info">
-				<input type="button" value="삭제" class="btn btn-outline-info" data-toggle="modal" data-target="#delModal" onclick="delCheck()">
-				<input id="crebtn" type="button" value="생성" class="btn btn-outline-info">
-				<input id="showbtn" type="button" value="조회" class="btn btn-outline-info">
+				<input id="updbtn" type="button" value="수정" class="btn btn-outline-info yj_btn">
+				<input type="button" value="삭제" class="btn btn-outline-info yj_btn" onclick="delCheck()">
+				<input id="crebtn" type="button" value="생성" class="btn btn-outline-info yj_btn">
+				<input id="showbtn" type="button" value="조회" class="btn btn-outline-info yj_btn">
 			</div>
 
 			<br>
@@ -236,12 +248,14 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-						<button type="button" class="btn btn-info" id = "delbtn">삭제</button>
+						<button type="button" class="btn btn-info" id = "delbtn">삭제하기</button>
 					</div>
 				</div>
 			</div>
 		</div>
 
+		<!-- [윤정 1115] 테이블스페이스를 선택하지 않았을때 toast 출력 -->
+		<div class='yj_error' style='display:none' id="tsError">테이블스페이스를 선택해주세요!</div>
 	</div>
 </body>
 </html>
