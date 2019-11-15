@@ -122,7 +122,7 @@
 			2. 테이블스페이스와 유저 스키마, 백업파일은 탈퇴 즉시 모두 삭제되며 복구가 불가능합니다.<br>
 			<br>
 			<form name="withdrawalFrm" action="">
-			<button type="button" id="btnWithdrawal">탈퇴하기</button>
+			<button type="button" id="btnWithdrawal">탈퇴신청</button>
 			</form>
 		</div>
 		<!-- ↑윤정 회원탈퇴 -->
@@ -221,6 +221,6 @@ function memberUpdate() {
 
 <!-- 채팅 영역 시작 -->
 	<div class="pull-right col-xs-3">
-		<%@include file="./chat/chatMain.jsp"%>
+		<%-- <%@include file="./chat/chatMain.jsp"%> --%>
 	</div>
 <!-- 채팅 영역 끝 --> 
