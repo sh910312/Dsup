@@ -15,6 +15,13 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 	
+	<style>
+	table {
+		table-layout:fixed; /* 너비 지정 */
+		word-break:break-all; /* 문자 단위 줄바꿈 */
+	}
+	</style>
+	
 	<script>
 	$(function(){
 		backupList();
@@ -126,13 +133,13 @@
 	</div>
 	
 	<form action="backupDelete" id = "frm">
-	<table id = "table"  class="table table-hover">
+	<table id = "table"  class="table table-hover table-bordered">
 		<thead>
 			<tr>
-				<th><input type = "checkbox" id="checkAll"></th>
-				<th>백업파일 이름</th>
-				<th>백업 날짜</th>
-				<th>코멘트</th>
+				<th style="width:5%"><input type = "checkbox" id="checkAll"></th>
+				<th style="width:30%">백업파일 이름</th>
+				<th style="width:10%">백업 날짜</th>
+				<th style="width:55%">코멘트</th>
 			</tr>
 		</thead>
 		<tbody>

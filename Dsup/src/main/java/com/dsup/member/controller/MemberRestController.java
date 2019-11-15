@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -124,9 +125,12 @@ public class MemberRestController {
 		backup.backupDelete(buarr);
 			
 		// ↓ update users 
-		if (memberService.withdrawal(vo) == 1)
+		if (memberService.withdrawal(vo) == 1) {
 			return Collections.singletonMap("result", true);
-		else
+		} else {
 			return Collections.singletonMap("result", false);
+		}
 	}
+	
+	
 }

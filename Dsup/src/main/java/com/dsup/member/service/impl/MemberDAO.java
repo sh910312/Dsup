@@ -53,8 +53,13 @@ public class MemberDAO {
 		return mybatis.delete("MemberDAO.deleteMember", dto);
 	}
 	
-	// 탈퇴 윤정
+	// 탈퇴신청 윤정
 	public int withdrawal(MemberVO vo) {
 		return mybatis.update("MemberDAO.withdrawal", vo);
+	}
+	
+	// 탈퇴한달지난회원삭제 윤정
+	public void deleteWithdrawalUsers() {
+		mybatis.delete("MemberDAO.deleteWithdrawalUsers");
 	}
 }

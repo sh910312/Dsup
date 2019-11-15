@@ -68,17 +68,20 @@
 		
 		if( $("#modalPassword").val() != $("#passwordcheck").val()){
 			alert("비밀번호를 확인하세요!");
+			return false;
 		}
 		
-		if($("#passwordResult").val()=="false"){
+		else if($("#passwordResult").val()=="false"){
 			alert("비밀번호를 확인하세요!");
+			return false;
 		}
 		
-		if($("#modalPassword").val() == ""){
-			alert("비밀번호를 입력하세요");	
+		else if($("#modalPassword").val() == ""){
+			alert("비밀번호를 입력하세요");
+			return false;	
 		}
 		
-		return false;
+		return true;
 	}
 	
 	
@@ -136,7 +139,8 @@
 			
 		
 			// ↓ 모달에서 수정 버튼 눌렀을 때
-			$("#modalUpdBtn").click(function(){
+			$("#modalUpdBtn").click(function(e){
+				e.stopPropagation();
 				var condition = formCheck();
 				var id = $("#name").val();
 				var password = $("#modalPassword").val();
@@ -145,9 +149,8 @@
 				
 				var formData = $("#form1").serializeObject();
 				console.log(formData);
-				$("#form1")[0].reset();
 				console.log(userUpdate.isLoad);
-				if(userUpdate.isLoad != true && condition != false){
+				if(userUpdate.isLoad != true && condition == true){
 					$.ajax({
 						url : "users",
 						type : 'PUT',
@@ -156,6 +159,8 @@
 						//data : JSON.stringify({id: id, password:password, defaultTableSpace:defaultTableSpace, accountStatus:accountStatus}),
 						contentType : 'application/json',
 						success : function(data) {
+							$("#form1")[0].reset();
+							$('#updateModal').modal('hide');
 							userList();
 						},	error : function(xhr, status, message) {
 							alert(" status: " + status + "er:" + message);
@@ -175,20 +180,20 @@
 		});
 	}
 </script>
-<div class = "container"  style = "margin-left: 20px;" >
+<div class = "container">
 	<div class = "row justify-content-between">
 		<div class = "col">
-			<h2>User 목록</h2>
+			<h2>스키마 목록</h2>
 		</div>
 		<div class = "col-auto">
 			<button type="button" onclick="location.href='userCreateForm'" class = "btn btn-outline-info">생성</button>
 		</div>
 	</div>
-	
+	<div style = "margin-bottom: 20px "></div>
 	<table class="table text-center table-hover">
 		<thead>
 			<tr>
-				<th>아이디</th>
+				<th>SCHEMA ID</th>
 				<th>ACCOUNTSTATUS</th>
 				<th>DEFAULTTABLESPACE</th>
 				<th></th>
@@ -201,7 +206,7 @@
 	
 	<!-- 삭제시 모달 등장 -->
 	<div class="modal fade" id="delModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true" style = "margin-left: 20px;">
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -228,7 +233,7 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">유저 스키마 수정</h5>
+					<h5 class="modal-title" id="exampleModalLabel">스키마 수정</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>

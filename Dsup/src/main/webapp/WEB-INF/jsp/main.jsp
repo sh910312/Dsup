@@ -10,17 +10,30 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <title>DBhelper</title>
-<!-- Bootstrap core CSS -->
+
+<!-- 기존 Bootstrap core CSS -->
+<!-- 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
- <style>
+ -->
+
+<!-- 윤정 부트스트랩 -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- ↓ DB헬퍼 아이콘 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/navbars/">
+<style>
 .main-menu {
 	cursor: pointer;
-	
-	
 }
 </style>
 <script>
@@ -29,44 +42,14 @@
 			url : 'DeclarationList',
 			type : 'GET',
 			dataType : "JSON"
-			 
 		})
 	}
 </script>
 </head>
 <body>
-
-
-
-
-<!-- 메뉴바 시작 -->
-<header>
-	<div class="navbar navbar-dark bg-dark box-shadow">
-		<div class="container d-flex justify-content-between">
-			<a href="./main" class="navbar-brand d-flex align-items-center">
-				<i class="fa fa-database" aria-hidden="true" style="margin-right: 10px"></i>
-				<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-				<circle cx="12" cy="13" r="4"></circle></svg> <strong>DBhelper</strong>
-			</a>
-			<div class="dropdown">
-			  	<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			  		<span class="navbar-toggler-icon"></span>
-			  	</button>
-			  	<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-			    	<button class="dropdown-item" type="button">메뉴바1</button>
-			    	<button class="dropdown-item" type="button">메뉴바2</button>
-			    	<button class="dropdown-item" type="button">메뉴바3</button>
-			  	</div>
-			</div>
-		</div> 
-	</div>
-</header>
-<!-- 메뉴바 끝 -->	
-	
 <!-- 프로필 바 시작-->	
 	<div><%@include file="bar.jsp"%></div>
 <!-- 프로필 바 끝-->
-
 
 
 	<main role="main">
