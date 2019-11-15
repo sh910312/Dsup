@@ -53,6 +53,7 @@
             <mapping path="/*"/>
             <mapping path="/user/*"/>
             <exclude-mapping path="/login"/>
+            <exclude-mapping path="/members"/>
             <beans:ref bean="LoginInterceptor"/>
         </interceptor>
 	</interceptors>

@@ -36,6 +36,15 @@
 	cursor: pointer;
 }
 </style>
+<script>
+	function declarationList(){
+		$.ajax({
+			url : 'DeclarationList',
+			type : 'GET',
+			dataType : "JSON"
+		})
+	}
+</script>
 </head>
 <body>
 <!-- 프로필 바 시작-->	
