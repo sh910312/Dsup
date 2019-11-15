@@ -21,10 +21,10 @@
 	
 	// [윤정 1105] 사용량 퍼센트 
 	function usedPercent(){
-		var percent = ${ts.used} / ${ts.total} * 100;
+		var percent = (${ts.used} / ${ts.total} * 100).toFixed(2);
 		$("#totalProgress").html(
-						'<div class="progress-bar bg-info" role="progressbar" style="width: ' + percent + '%;" aria-valuenow="' + percent  +'" aria-valuemin="0" aria-valuemax="100">' + percent + '%</div>'		
-					);
+			'<div class="progress-bar bg-info" role="progressbar" style="width: ' + percent + '%;" aria-valuenow="' + percent  +'" aria-valuemin="0" aria-valuemax="100">' + percent + '%</div>'		
+		);
 	}
 	</script>
 </head>
@@ -37,7 +37,7 @@
 	전체 용량 : ${ts.total}MB <br>
 	사용량 : ${ts.used}MB <br>
 	빈 용량 : ${ts.free}MB <br>
-	<div class="progress" style="height: 20px;" id = "totalProgress">
+	<div class="progress" style="height: 30px;" id = "totalProgress">
 	</div>
 	
 	<h1>데이터 파일</h1>
