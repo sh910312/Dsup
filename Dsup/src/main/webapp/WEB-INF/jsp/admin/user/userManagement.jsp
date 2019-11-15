@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <script>
-	$(function() {
+	/* $(function() {
 		getMember();
 	});
 	
@@ -38,10 +38,31 @@
 							);
 		});
 		
-		$('#memberTable').DataTable();
-	}
+		$('#memberTable').DataTable({
+			 "lengthMenu": [5, 10, 25, 50]
+		});
+	} */
 </script>
-
+<!-- Google Chart Section -->
+<div class="card mb-3" style="display:none;">
+	<div class="card-header">
+		<i class="fas fa-chart-area"></i> Area Chart Example
+	</div>
+	<div class="card-body">
+		<div class="chartjs-size-monitor">
+			<div class="chartjs-size-monitor-expand">
+				<div class=""></div>
+			</div>
+			<div class="chartjs-size-monitor-shrink">
+				<div class=""></div>
+			</div>
+		</div>
+		<!-- Google Chart Canvas -->
+		<div id="usermanagement_chart_div" style="width: 900px; height: 500px;"></div>
+	</div>
+	<div class="card-footer small text-muted">Updated yesterday
+		at 11:59 PM</div>
+</div>
 <!-- DataTables Example -->
 <div class="card mb-3">
 	<div class="card-header">
@@ -49,7 +70,7 @@
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
-			<table class="table table-bordered" id="memberTable" width="100%" cellspacing="0">
+			<table class="table table-bordered table-hover" id="memberTable" width="100%" cellspacing="0">
 				<thead>
 					<tr>
 						<th>아이디</th>

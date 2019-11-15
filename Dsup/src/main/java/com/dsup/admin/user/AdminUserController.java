@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dsup.dbmanagement.BackupVO;
 import com.dsup.dbmanagement.TablespaceVO;
 import com.dsup.dbmanagement.UserTbspcTbVO;
 import com.dsup.dbmanagement.UserVO;
+import com.dsup.dbmanagement.service.BackupService;
 import com.dsup.dbmanagement.service.StorageService;
 import com.dsup.dbmanagement.service.UserService;
 import com.dsup.pay.PayHisIfTbVO;
@@ -24,6 +26,7 @@ public class AdminUserController {
 	@Autowired AdminUserService adminUser;
 	@Autowired StorageService storageService;
 	@Autowired UserService userService;
+	@Autowired BackupService backupService;
 	
 	// [윤정 1111] 결제내역
 	@ResponseBody
@@ -43,9 +46,17 @@ public class AdminUserController {
 	
 	// [윤정1111] 유저
 	//목록조회
-		@RequestMapping(value="/userSchema", method=RequestMethod.GET)
-		@ResponseBody
-		public List<UserVO> userSchema() {
-			return adminUser.userSchema();
-		}
+	@RequestMapping(value="/userSchema", method=RequestMethod.GET)
+	@ResponseBody
+	public List<UserVO> userSchema() {
+		return adminUser.userSchema();
+	}
+	
+	// [윤정1113] 백업
+	@RequestMapping(value="getAdminBackup", method=RequestMethod.GET)
+	@ResponseBody
+	public List<BackupVO> getAdminBackup(HttpSession session){
+		String userId = "---관리자---";
+		return backupService.getBackupList(userId);
+	}
 }

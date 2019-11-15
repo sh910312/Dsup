@@ -47,13 +47,13 @@
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
-			<table class="table table-bordered" id="payHistoryTable" width="100%" cellspacing="0">
+			<table class="table table-bordered table-hover" id="payHistoryTable" width="100%" cellspacing="0">
 				<thead id="admin-thead-volume">
 					<tr>
 						<th>결제번호</th>
 						<th>사용자 아이디</th>
 						<th>결제일자</th>
-						<th>결제수단</th>
+						<th>종량제</th>
 						<th>결제수단</th>
 						<th>가격</th>
 					</tr>
@@ -63,7 +63,7 @@
 						<th>결제번호</th>
 						<th>사용자 아이디</th>
 						<th>결제일자</th>
-						<th>결제수단</th>
+						<th>종량제</th>
 						<th>결제수단</th>
 						<th>가격</th>
 					</tr>

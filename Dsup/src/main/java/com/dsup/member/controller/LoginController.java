@@ -27,7 +27,8 @@ public class LoginController {
 	public String login(@ModelAttribute("member") MemberVO vo, HttpSession session) {
 		//로컬 사용시 주석 해야될 부분 2019.11.01 - 이재문
 		MemberVO member = memberService.login(vo);
-		if(member == null) {
+		if(member == null || member.getUserType().equals("0")) {
+			// 윤정 : member.getUserType().equals("0") --> 탈퇴신청한 회원인경우
 			return "index";
 		} else {
 			//세션에 저장 목록으로 페이지이동
@@ -35,7 +36,7 @@ public class LoginController {
 			session.setAttribute("userId", member.getUserId());
 			session.setAttribute("payService", member.getPayService());
 			session.setAttribute("userType", member.getUserType());
-			return "redirect:main";
+			return "redirect:iframe";
 		}
 		//로컬 사용시 해야될 부분 2019.11.01 - 이재문
 //		session.setAttribute("userId", vo.getUserId());
@@ -50,6 +51,11 @@ public class LoginController {
 	@RequestMapping("index")
 	public String index() {
 		return "index";
+	}
+	
+	@RequestMapping("iframe")
+	public String ifame() {
+		return "iframe";
 	}
 	
 	

@@ -25,6 +25,7 @@ public class DAO {
 	public DAO(HttpSession session) {
 		String schemaid = (String)session.getAttribute("schemaid");
 		String schemapwd = (String)session.getAttribute("schemapwd");
+		System.out.println("schemaid : " + schemaid);
         String user = "sys as sysdba"; 
         String pw = "oracle";
 //		String user = "sys as sysdba";
@@ -126,17 +127,17 @@ public class DAO {
 				}
 				
 				if(i == columnCnt) {
-					select = select + value;
+					select = select + "/*|*/" + value + "/*|*/";
 				}else {
-					select = select + value + ", ";
+					select = select + "/*|*/" + value + "/*|*/" + ", ";
 				}
 			}			
 			hash.put("COL_NAME", innerList);
 			
-			if(sql.contains("*")) {
+			if(sql.contains(" * ")) {
 				//System.out.println("문자열 포함");
 				//System.out.println("SELECT : " + select);
-				sql = sql.replace("*", select);
+				sql = sql.replaceFirst("\\*", select);
 				System.out.println("Changed Child SQL : \n" + sql);
 			}
 			hash.put("SQL", sql);
@@ -262,6 +263,9 @@ public class DAO {
 	public String schemaLogin(String id, String pwd) {
 		// TODO Auto-generated method stub
 		String user_sch_nm = "";
+		System.out.println(">>>>>>>>>>>>>>>>>>>>"+ pwd);
+		id = id.toUpperCase();
+		pwd = pwd.toUpperCase();
 		String sql = "select user_sch_nm from user_sch_tb where user_sch_nm = ? and user_sch_pw = ?";
 		
 		try {

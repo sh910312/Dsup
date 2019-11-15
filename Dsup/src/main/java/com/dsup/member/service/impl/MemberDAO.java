@@ -52,4 +52,9 @@ public class MemberDAO {
 		System.out.println("mybatis 사용자 삭제");
 		return mybatis.delete("MemberDAO.deleteMember", dto);
 	}
+	
+	// 탈퇴 윤정
+	public int withdrawal(MemberVO vo) {
+		return mybatis.update("MemberDAO.withdrawal", vo);
+	}
 }

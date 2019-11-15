@@ -38,6 +38,11 @@ function okbtn() {
 }
 
 
+window.onload = function(){		//db읽어온 텍스트 \n  -> <br> 바꿈
+	var text = document.getElementById("updatecotents");
+	var result = text.value.replace(/(\n|\r\n)/g, '<br>');
+	document.getElementById("test").innerHTML = result;
+}; 
 
 
 
@@ -70,16 +75,20 @@ function okbtn() {
 							
 							<!-- 신고 상세내용 시작 -->
 							<div class="row" align="center">
+							
 							<h3>신고 상세내용</h3>
 							
 							<!-- 신고타입 0번 = 게시글신고 // 1번은 = 댓글신고 // 2번 = 채팅신고 -->
 							<h4><c:choose>
+							
 								<c:when test="${rpType == 0}">
 								신고번호			 : ${search.searchId}<br>							
 								신고대상  		 : ${search.userId }<br>
-								게시글 등록날짜 	 : <fmt:formatDate value="${search.writeDate }" pattern="yy-MM-dd" /><br>
-								신고 내용			 : ${search.contents }<br><br><br>
+								게시글 등록날짜 	 : <fmt:formatDate value="${search.writeDate }" pattern="yy-MM-dd" /><br><br><br>
+								- 신고 내용 -			  <br>
 								<br>
+								<div id="test" style="min-height:50px; overflow:auto; width: 60%;"></div>
+								<input id="updatecotents" type="hidden" value="${search.contents }">
 								<input type="hidden" name="rpUserId" value="${search.userId }" />
 								<input type="hidden" name="boardNum" value="${search.searchId}" />
 								</c:when>
@@ -87,10 +96,11 @@ function okbtn() {
 								<c:when test="${rpType == 1 }">
 								신고번호			 : ${re.reId}<br>
 								신고대상  		 : ${re.userId }<br>
-								댓글 등록날짜 		 : <fmt:formatDate value="${re.writeDate }" pattern="yy-MM-dd" /><br>
-								
-								신고 내용			 : ${re.contents }<br><br><br>
+								댓글 등록날짜 		 : <fmt:formatDate value="${re.writeDate }" pattern="yy-MM-dd" /><br><br><br>
+								- 신고 내용 -			  <br>
 								<br>
+								<div id="test" style="min-height:50px; overflow:auto; width: 60%;"></div>
+								<input id="updatecotents" type="hidden" value="${re.contents }">
 								<input type="hidden" name="rpUserId" value="${re.userId }" />
 								<input type="hidden" name="boardNum" value="${re.reId}" />
 								</c:when>
@@ -99,10 +109,11 @@ function okbtn() {
 								<c:when test="${rpType == 2 }">
 								신고번호			 : ${chat.chatId}<br>
 								신고대상자 		 : ${chat.userId }<br>
-								채팅 입력날짜	 	 : <fmt:formatDate value="${chat.writeDate }" pattern="yy-MM-dd" /><br>
-								
-								신고 내용			 : ${chat.contents }<br><br><br>
+								채팅 입력날짜	 	 : <fmt:formatDate value="${chat.writeDate }" pattern="yy-MM-dd" /><br><br><br>
+								- 신고 내용 -			  <br>
 								<br>
+								<div id="test" style="min-height:50px; overflow:auto; width: 60%;"></div>
+								<input id="updatecotents" type="hidden" value="${chat.contents }">
 								<input type="hidden" name="rpUserId" value="${chat.userId }" />
 								<input type="hidden" name="boardNum" value="${chat.chatId}" />
 								
