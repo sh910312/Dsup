@@ -50,7 +50,7 @@ public class StorageController {
 	// user_tbspc_tb 조회 - (테이블스페이스 이름, volumn만 있음)
 	@ResponseBody
 	@RequestMapping(value="/tablespaceList", method=RequestMethod.GET)
-	public List<TablespaceVO> getTablespaceList(HttpSession session){
+	public List<UserTbspcTbVO> getTablespaceList(HttpSession session){
 		String userId = (String)session.getAttribute("userId");
 		
 		return storageService.getStorageList(userId);

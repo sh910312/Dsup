@@ -27,7 +27,7 @@
 	
 	<!-- 삭제 -->
 	<delete id="deleteUserDrop" parameterType="user">
-		drop user ${id}
+		drop user ${user}
 	</delete>
 	<delete id="deleteUser">
 		delete user_sch_tb where user_sch_nm = #{id}
@@ -36,7 +36,7 @@
  	<select id="getUser" parameterType="user" resultType="user">
  		select USERNAME id,  ACCOUNT_STATUS, DEFAULT_TABLESPACE
  		from DBA_USERS
- 		where lower(USERNAME)=#{id}
+ 		where upper(USERNAME)=#{id}
  	</select>
  	
 	<!-- 수정 -->
@@ -46,4 +46,15 @@
 			  default TableSpace ${defaultTableSpace}
 			  account ${accountStatus}
 	</update>
+	
+	<!-- 윤정 조회 -->
+	<select id = "getUserSchema" parameterType = "String" resultType = "user">
+	SELECT u.user_id "id"
+		, d.username "user"
+		, d.account_status "accountStatus"
+		, d.default_tablespace  "defaultTableSpace"
+	FROM dba_users d, user_sch_tb u
+	where d.username = u.user_sch_nm
+	AND u.user_id = #{userId}
+	</select>
 </mapper>

@@ -80,6 +80,23 @@
 				</a>
 			</div>
 		</div>
+		<div class="col-xl-3 col-sm-6 mb-3">
+			<div class="card text-white bg-info o-hidden h-100">
+				<div class="card-body">
+					<div class="card-body-icon">
+						<i class="fas fa-fw fa-copy"></i>
+					</div>
+					<div class="mr-5">백업</div>
+				</div>
+				<a class="card-footer text-white clearfix small z-1" href="#"
+				 onclick = "userPageChange('userBackup')">
+					<span class="float-left">View Details</span>
+					<span class="float-right">
+						<i class="fas fa-angle-right"></i>
+					</span>
+				</a>
+			</div>
+		</div>
 	</div>
 	
 	<!-- DataTables 들어올 자리 -->
@@ -95,6 +112,9 @@
 		</div>
 		<div id = "userSchema" class="yj_user" style="display:none">
 			<jsp:include page="userSchema.jsp"></jsp:include>
+		</div>
+		<div id = "userBackup" class="yj_user" style="display:none">
+			<jsp:include page="userBackup.jsp"></jsp:include>
 		</div>
 	</div>
 </div>

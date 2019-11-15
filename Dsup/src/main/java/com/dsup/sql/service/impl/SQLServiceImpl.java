@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -24,6 +26,8 @@ public class SQLServiceImpl implements SQLService{
 		// TODO Auto-generated method stub
 		System.out.println("\n--- DBread.java ---");
 		String sql = (String)request.getParameter("sql").toUpperCase().replaceAll("\n", " ");
+		int fromIndex = sql.indexOf("FROM");
+		sql= sql.substring(0, fromIndex) + "/*CHILDFM*/" + sql.substring(fromIndex, sql.length()); 
 		System.out.println("sql : " + sql);
 		System.out.println("---------------\n");
 		return getData(sql, session);
@@ -37,6 +41,7 @@ public class SQLServiceImpl implements SQLService{
 	      try {
 			Map<String, Object> object = mapper.readValue(request.getParameter("param"), Map.class);
 			String child_sql = request.getParameter("child_sql");
+			child_sql = child_sql.replaceFirst("/\\*CHILDFM\\*/", ""); 
 			System.out.println("test : " + object.get("param"));
 			//오더바이 대상 컬럼과 오더바이 종류 쌍
 			List<Map<String, String>> list = (List)object.get("param");
@@ -54,7 +59,7 @@ public class SQLServiceImpl implements SQLService{
 	        	}
 			}
 			
-	        sql = "SELECT * " +
+	        sql = "SELECT * " + "/*CHILDFM*/" +
 	              "FROM (" + child_sql + ") " +
 	              "ORDER BY " + orderby;
 			//union 이후 orderby 할 경우 이상해짐 - 2019.11.07
@@ -83,6 +88,8 @@ public class SQLServiceImpl implements SQLService{
 			Map<String, Object> object = mapper.readValue(request.getParameter("param"), Map.class);
 			//자식 sql 변수
 			String child_sql = request.getParameter("sql").toUpperCase();
+			System.out.println("1.1. child_sql = " + child_sql);
+			child_sql = child_sql.replaceFirst("/\\*CHILDFM\\*/", ""); 
 			System.out.println("1. child_sql = " + child_sql);
 			int child_sqlFromIndex = child_sql.indexOf("FROM");
 			String child_sql_select = child_sql.substring(0, child_sqlFromIndex).replace("SELECT ", "");
@@ -140,7 +147,7 @@ public class SQLServiceImpl implements SQLService{
 						if(expression_list.get(i).contains("IF ")) {
 							//추가 하려는 컬럼명의 index와 expression의 index는 동일 하기 때문에 똑같은 index사용해서 값을 뽑아옴
 							String exp = expression_list.get(i).replace("IF", "CASE WHEN");
-							exp = exp + " AS " + colName_list.get(i);
+							exp = "/*|*/" + exp + " AS " + colName_list.get(i) + "/*|*/";
 							select_stmt_list.set(j, exp);
 							//컬럼이 동일하 녀석들 추가 컬럼 이름 list와 표현 list에서 제거 : 하나의 for문에 돌릴려니 자식 컬럼 개수만큼 계속 추가되서 나중에 남은 것들 따로 할 생각
 							colName_list.remove(i);
@@ -148,15 +155,16 @@ public class SQLServiceImpl implements SQLService{
 							System.out.println(">3." + j + ".1 select_stmt_list : " + select_stmt_list.toString());
 						}else if(checkOperaterExp(expression_list.get(i))){
 							//추가하려는 컬럼의 expression이 함수 일 경우
-							String exp = "SELECT " + expression_list.get(i) + " FROM (" + child_sql + ")";
-							exp = "(" + exp + ") AS " + colName_list.get(i);
+							String temp_child_sql = child_sql.replaceAll("/\\*\\|\\*/", "");
+							String exp = "SELECT " + expression_list.get(i) + " FROM (" + temp_child_sql + ")";
+							exp = "/*|*/" + "(" + exp + ") AS " + colName_list.get(i) + "/*|*/";
 							select_stmt_list.set(j, exp);
 							colName_list.remove(i);
 							expression_list.remove(i);
 							System.out.println(">3." + j + ".2 select_stmt_list : " + select_stmt_list.toString());
 						}else {
 							//추가하려는 컬럼의 expression이 숫자이든 문자이든 상관없이 그냥 추가 시키면 그만임
-							String exp = expression_list.get(i) + " AS " + colName_list.get(i);
+							String exp = expression_list.get(i) + " AS " + "/*|*/" + colName_list.get(i) + "/*|*/";
 							select_stmt_list.set(j, exp);
 							colName_list.remove(i);
 							expression_list.remove(i);
@@ -170,19 +178,20 @@ public class SQLServiceImpl implements SQLService{
 				if(expression_list.get(i).contains("IF ")) {
 					//추가 하려는 컬럼명의 index와 expression의 index는 동일 하기 때문에 똑같은 index사용해서 값을 뽑아옴
 					String exp = expression_list.get(i).replace("IF", "CASE WHEN");
-					exp = exp + " AS " + colName_list.get(i);
+					exp = "/*|*/" + exp + " AS " + colName_list.get(i) + "/*|*/";
 					select_stmt_list.add(exp);
 					System.out.println(">>>3." + i + ".1 select_stmt_list : " + select_stmt_list.toString());
 				}else if(checkOperaterExp(expression_list.get(i))){
 					//추가하려는 컬럼의 expression이 함수 일 경우
-					String exp = "SELECT " + expression_list.get(i) + " FROM (" + child_sql + ")";
-					exp = "(" + exp + ") AS " + colName_list.get(i);
+					String temp_child_sql = child_sql.replaceAll("/\\*\\|\\*/", "");
+					String exp = "SELECT " + expression_list.get(i) + " FROM (" + temp_child_sql + ")";
+					exp = "/*|*/" + "(" + exp + ") AS " + colName_list.get(i) + "/*|*/";
 					System.out.println("exp : " + exp);
 					select_stmt_list.add(exp);
 					System.out.println(">>>3." + i + ".2 select_stmt_list : " + select_stmt_list.toString());
 				}else {
 					//추가하려는 컬럼의 expression이 숫자이든 문자이든 상관없이 그냥 추가 시키면 그만임
-					String exp = expression_list.get(i) + " AS " + colName_list.get(i);
+					String exp = expression_list.get(i) + " AS " + "/*|*/" + colName_list.get(i) + "/*|*/";
 					select_stmt_list.add(exp);
 					System.out.println(">>>3." + i + ".3 select_stmt_list : " + select_stmt_list.toString());
 				}
@@ -198,49 +207,13 @@ public class SQLServiceImpl implements SQLService{
 				}
 			}
 			
-			sql = "SELECT " + select_stmt + " " +
+			child_sql = child_sql.replaceAll("/\\*CHILDFM\\*/", "");
+			child_sql = child_sql.replaceAll("/\\*\\|\\*/", "");
+			sql = "SELECT " + select_stmt + " " + "/*CHILDFM*/" + 
 				  "FROM (" + child_sql + ") "; 
-			
-			//191108 여러가지 조합의 expression을 받지 못하여 수정함
-	//		String expression = request.getParameter("expression").toUpperCase().replaceAll("\n", " ");
-	//		expression = expression.replace("IF", "CASE WHEN");
-	//		String colName = request.getParameter("colName").toUpperCase();
 			
 			System.out.println("[Maked SQL For Addition] : \n" + sql);
 			System.out.println("---------------\n");
-			//191108 여러가지 조합의 expression을 받지 못하여 수정함
-//			boolean operater_usage = false;
-//			for(String operater : operaterList) {
-//				//System.out.println("operater = " + operater);
-//				operater_usage = expression.contains(operater);
-//				if(operater_usage == true) {
-//					break;
-//				}
-//			}
-//			
-//			if(child_sql.contains(colName)) {
-//				//기존의 컬럼의 값을 바꾸고 싶어 하는 경우
-//				if(operater_usage) {
-//					
-//				}else {
-//					expression = expression  + " AS " + colName;
-//					sql = child_sql.replaceFirst(colName, expression);
-//				}
-//			}else {
-//				if(operater_usage) {
-//					//새로운 컬럼에 오퍼레이더 함수를 사용하여 추가하고 싶은 경우
-//					//select * from (child_sql)이 안되는 이유? 기존 컬럼명을 바꾸는 거랑 operateor 쓴거랑 case when 쓴거랑 한꺼번에 올 수도 있어서인데 얘도 문제가 생길거 같은데??? - 191108
-//					sql = "SELECT * " +
-//				          "FROM " + "(" + child_sql +") CROSS JOIN " +
-//				                    "(SELECT " + expression + " AS " + colName + " " +
-//				                     "FROM " + "(" + child_sql + "))";
-//				}else {
-//					//새로운 컬럼에 case when 쓰고 싶은 경우
-//					//select * from (child_sql)이 안되는 이유? 기존 컬럼명을 바꾸는 거랑 operateor 쓴거랑 case when 쓴거랑 한꺼번에 올 수도 있어서
-//					expression = ", " + expression + " AS " + colName + " FROM";
-//					sql = child_sql.replaceFirst(" FROM", expression);
-//				}
-//			}
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -333,7 +306,9 @@ public class SQLServiceImpl implements SQLService{
 		// TODO Auto-generated method stub
 		System.out.println("\n--- Join.java ---");
 		String master_sql = request.getParameter("master_sql").toUpperCase().replaceAll("\n", " ");
+		System.out.println("master_sql : " + master_sql);
 		String slave_sql = request.getParameter("slave_sql").toUpperCase().replaceAll("\n", " ");
+		System.out.println("slave_sql : " + slave_sql);
 		String join_type = request.getParameter("join_type").toUpperCase().replaceAll("\n", " ");
 		String join = "";
 		//191107 3중 조인 시 애매한 컬럼 명 에러 - 별칭으로 줄 master와 slave 키들 request로 받아와야됨
@@ -345,6 +320,7 @@ public class SQLServiceImpl implements SQLService{
 		List<Map<String, String>> on_stmt_list = null;
 		String master_on_col = "";
 		String slave_on_col = "";
+		//SQL의 Join할 대 ON절 뒤에 올 문장 만드는 부분 
 		try {
 			Map<String, Object> join_key = mapper.readValue(request.getParameter("join_key"), Map.class);
 			System.out.println("5. Join Key List : " + join_key.get("join_key"));
@@ -366,25 +342,52 @@ public class SQLServiceImpl implements SQLService{
 			e.printStackTrace();
 		}
 		
-		int masterFromIndex = master_sql.indexOf("FROM");
-		String master_select = master_sql.substring(0, masterFromIndex).replace("SELECT ", "");
+		int masterFromIndex = master_sql.indexOf("/*CHILDFM*/");;
+		String master_select = master_sql.substring(0, masterFromIndex).replaceFirst("SELECT ", "");
 		int maset_select_last_blank_index = master_select.lastIndexOf(" ");
+		//자식 SQL의 SELECT와 FROM 사이의 공백 제거부분
 		master_select = master_select.substring(0, maset_select_last_blank_index);
-		System.out.println("master_select : " + master_select);
 		//master_select = master_select.replaceAll(" ", "");
-		String[] master_cols = master_select.split(",");
-		List<String> master_col_list = Arrays.asList(master_cols);
-		//master select문 컬럼들 앞에 공백 없애는 부분
-		for(int i=0; i<master_col_list.size(); i++) {
-			String str = master_col_list.get(i).replaceFirst(" ", "");
-			//왠지 마스터 컬럼에 as 붙어 있으면 오류 날거 같은데?? - 191108
-			if(str.contains(".")) {
-				String[] array = str.split("\\.");
-				str = array[1];
+//		String[] master_cols = master_select.split(",");
+//		List<String> temp_master_col_list = Arrays.asList(master_cols);
+//		List<String> master_col_list = Arrays.asList(master_cols);
+		List<String> temp_master_col_list = new ArrayList<String>();
+		List<String> master_col_list = new ArrayList<String>();
+		Pattern pattern = Pattern.compile("[/*|*/](.*?)[/*|*/]");
+		Matcher matcher = pattern.matcher(master_select);
+		while (matcher.find()) {
+			String col = matcher.group(1);
+			if(!col.equals("")) {
+				temp_master_col_list.add(col);
+				master_col_list.add(col);
 			}
-			master_col_list.set(i, str);
+				    		    
+		    if(matcher.group(1) ==  null)
+		    	break;
 		}
 		System.out.println("2. master_col_list : " + master_col_list.toString());
+		//191114 필요없어 보여 주석으로 막음
+//		for(int i=0; i<master_col_list.size(); i++) {
+//			String str = temp_master_col_list.get(i);
+//			master_col_list.set(i, str);
+//			String col = master_col_list.get(i);
+//			System.out.println(">master_col_list.get(." + i + ") : " + col);
+//			//자식 컬럼에서 마침표와 AS 빼고 순수 컬럼명만 가지고 오는 부분
+//			if(col.contains(" AS ")) {
+//				//AS 붙은 컬럼 처리
+//				String[] split = col.split(" AS ");
+//				col = split[1];
+//				master_col_list.set(i, col);
+//			}else if(col.contains(".")){
+//				//마침표 붙은 컬럼 처리
+//				String[] split = col.split("\\.");
+//				col = split[1];
+//				master_col_list.set(i, col);
+//			}else {
+//				//마침표와 AS 빼고 순수 컬럼들 처리
+//				master_col_list.set(i, col);
+//			}
+		
 		String master_select_col = "";
 		String[] temp;
 		String[] temp2;
@@ -396,39 +399,39 @@ public class SQLServiceImpl implements SQLService{
 				if(master_col_list.get(i).contains(" AS ")) {
 					System.out.println(">> AS 포함 부분 처리");
 					temp = master_col_list.get(i).split(" AS ");
-					master_select_col += "a." + temp[1] + ", ";
+					master_select_col +="/*|*/" +  "a." + temp[1] + "/*|*/" + ", ";
 				}else {
 					//191107 에러 1.4 원인 수정 부분
 					if(master_col_list.get(i).replaceFirst(" ", "").contains(".")) {
 						System.out.println(">> AS 미포함  && . 포함 부분 처리");
 						temp2 = master_col_list.get(i).replaceFirst(" ", "").split("\\.");
 						System.out.println("master_col_list.get(i).replaceFirst(\" \", \"\")  : " + master_col_list.get(i).replaceFirst(" ", ""));
-						master_select_col += "a." + temp2[1] + ", ";
+						master_select_col +="/*|*/" +  "a." + temp2[1] + "/*|*/" + ", ";
 					}else {
 						System.out.println(">> AS 미포함  && . 미포함 부분 처리");
-						master_select_col += "a." + master_col_list.get(i).replaceFirst(" ", "") + ", ";
+						master_select_col += "/*|*/" + "a." + master_col_list.get(i).replaceFirst(" ", "") + "/*|*/" + ", ";
 					}
 				}
 			}else {
 				if(master_col_list.get(i).contains(" AS ")) {
 					System.out.println(">> AS 포함 부분 처리");
 					temp = master_col_list.get(i).split(" AS ");
-					master_select_col += "a." + temp[1];
+					master_select_col += "/*|*/" + "a." + temp[1] + "/*|*/";
 				}else {
 					//191107 에러 1.4 원인 수정 부분
 					if(master_col_list.get(i).replaceFirst(" ", "").contains(".")) {
 						System.out.println(">> AS 미포함  && . 포함 부분 처리");
 						temp2 = master_col_list.get(i).replaceFirst(" ", "").split("\\.");
-						master_select_col += "a." + temp2[1];
+						master_select_col += "/*|*/" + "a." + temp2[1] + "/*|*/";
 					}else {
 						System.out.println(">> AS 미포함  && . 미포함 부분 처리");
-						master_select_col += "a." + master_col_list.get(i).replaceFirst(" ", "");
+						master_select_col += "/*|*/" + "a." + master_col_list.get(i).replaceFirst(" ", "") + "/*|*/";
 					}
 				}
 			}
 		}
 		
-		int slaveFromIndex = slave_sql.indexOf("FROM");
+		int slaveFromIndex = slave_sql.indexOf("/*CHILDFM*/");
 		String slave_select = slave_sql.substring(0, slaveFromIndex).replace("SELECT ", "");
 		int slave_select_last_blank_index = slave_select.lastIndexOf(" ");
 		slave_select = slave_select.substring(0, slave_select_last_blank_index);
@@ -453,9 +456,9 @@ public class SQLServiceImpl implements SQLService{
 					System.out.println(">> AS 포함 부분 처리");
 					slave_temp = slave_col_list.get(i).split(" AS ");
 					if(master_col_list.contains(slave_temp[1])) {
-						slave_select_col += "b." + slave_temp[1] + " AS " + slave_temp[1] + "_" + slave_key +", ";
+						slave_select_col += "/*|*/" + "b." + slave_temp[1] + " AS " + slave_temp[1] + "_" + slave_key + "/*|*/" + ", ";
 					}else {
-						slave_select_col += "b." + slave_temp[1] + ", ";
+						slave_select_col += "/*|*/" + "b." + slave_temp[1] + ", ";
 					}
 				}else {
 					//191107 에러 1.4 원인 수정 부분
@@ -463,9 +466,9 @@ public class SQLServiceImpl implements SQLService{
 						System.out.println(">> AS 미포함 & . 포함 부분 처리");
 						slave_temp2 = slave_col_list.get(i).replaceFirst(" ", "").split(".");
 						if(master_col_list.contains(slave_temp2[1])) {
-							slave_select_col += "b." + slave_temp2[1] + " AS " + slave_temp2[1] + "_" + slave_key + ", ";
+							slave_select_col += "/*|*/" + "b." + slave_temp2[1] + " AS " + slave_temp2[1] + "_" + slave_key + "/*|*/" + ", ";
 						}else {
-							slave_select_col += "b." + slave_temp2[1] + ", ";
+							slave_select_col += "/*|*/" + "b." + slave_temp2[1] + "/*|*/" + ", ";
 						}
 					}else {
 //						System.out.println(">> AS 미포함 & . 미포함 부분 처리");
@@ -479,9 +482,9 @@ public class SQLServiceImpl implements SQLService{
 //						}
 						//191107 에러 1.4 원인 수정 2번째 보안
 						if(master_col_list.contains(slave_col_list.get(i).replaceAll(" ", ""))) {
-							slave_select_col += "b." + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_" + slave_key + ", ";
+							slave_select_col += "/*|*/" + "b." + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_" + slave_key + "/*|*/" +  ", ";
 						}else {
-							slave_select_col += "b." + slave_col_list.get(i).replaceAll(" ", "") + ", ";
+							slave_select_col += "/*|*/" + "b." + slave_col_list.get(i).replaceAll(" ", "") + "/*|*/" + ", ";
 						}
 					}
 				}
@@ -489,16 +492,16 @@ public class SQLServiceImpl implements SQLService{
 				if(slave_col_list.get(i).contains(" AS ")) {
 					System.out.println(">> AS 포함 부분 처리");
 					slave_temp = slave_col_list.get(i).split(" AS ");
-					slave_select_col += "b." + slave_temp[1];
+					slave_select_col += "b." + "/*|*/" + slave_temp[1] + "/*|*/";
 				}else {
 					//191107 에러 1.4 원인 수정 부분
 					if(slave_col_list.get(i).replaceFirst(" ", "").contains(".")) {
 						System.out.println(">> AS 미포함 & . 포함 부분 처리");
 						slave_temp2 = slave_col_list.get(i).replaceFirst(" ", "").split(".");
 						if(master_col_list.contains(slave_temp2[1])) {
-							slave_select_col += "b." + slave_temp2[1] + " AS " + slave_temp2[1] + "_" + slave_key;
+							slave_select_col += "/*|*/" + "b." + slave_temp2[1] + " AS " + slave_temp2[1] + "_" + slave_key + "/*|*/";
 						}else {
-							slave_select_col += "b." + slave_temp2[1];
+							slave_select_col += "/*|*/" + "b." + slave_temp2[1] + "/*|*/";
 						}
 					}else {
 						System.out.println(">> AS 미포함 & . 미포함 부분 처리");
@@ -510,9 +513,9 @@ public class SQLServiceImpl implements SQLService{
 //						}
 						//191107 에러 1.4 원인 수정 2번째 보안
 						if(master_col_list.contains(slave_col_list.get(i).replaceAll(" ", ""))) {
-							slave_select_col += "b." + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_" + slave_key;
+							slave_select_col += "/*|*/" + "b." + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_" + slave_key + "/*|*/";
 						}else {
-							slave_select_col += "b." + slave_col_list.get(i).replaceAll(" ", "");
+							slave_select_col += "/*|*/" + "b." + slave_col_list.get(i).replaceAll(" ", "") + "/*|*/";
 						}
 					}
 				}
@@ -521,9 +524,11 @@ public class SQLServiceImpl implements SQLService{
 		
 		String select_stmt = master_select_col + ", " + slave_select_col;
 		System.out.println("4. select_stmt : " + select_stmt);
-		
-		
-		String sql = "SELECT " + select_stmt + " " +
+		master_sql = master_sql.replaceAll("/\\*\\|\\*/", "");
+		master_sql = master_sql.replaceAll("/\\*CHILDFM\\*/", "");
+		slave_sql = slave_sql.replaceAll("/\\*\\|\\*/", "");
+		slave_sql = slave_sql.replaceAll("/\\*CHILDFM\\*/", "");
+		String sql = "SELECT " + select_stmt + " " + "/*CHILDFM*/" +
 		             "FROM (" + master_sql +") a " + join_type + " (" + slave_sql + ") b " +
 				     "ON " + join;
 		
@@ -538,6 +543,7 @@ public class SQLServiceImpl implements SQLService{
 		// TODO Auto-generated method stub
 		System.out.println("\n--- Rename.java ---");
 		String child_sql = request.getParameter("child_sql").toUpperCase().replaceAll("\n", " ");
+		child_sql = child_sql.replaceFirst("/\\*CHILDFM\\*/", ""); 
 		int child_sql_from_index = child_sql.indexOf("FROM");
 		//자식 sql의 select절 뒤의 컬럼들만 뽑아냄
 		String child_sql_select = child_sql.substring(0, child_sql_from_index).replace("SELECT ", "");
@@ -679,7 +685,7 @@ public class SQLServiceImpl implements SQLService{
 		System.out.println("4. step2 > select_stmt : " + select_stmt);
 		
 		String child_sql_from_stmt = child_sql.substring(child_sql_from_index, child_sql.length());
-		String sql = "SELECT " + select_stmt + " " +
+		String sql = "SELECT " + select_stmt + " " + "/*CHILDFM*/" + 
 		              child_sql_from_stmt; 
 		
 		System.out.println("[Maked SQL For Rename] : \n" + sql);
@@ -692,17 +698,216 @@ public class SQLServiceImpl implements SQLService{
 		// TODO Auto-generated method stub
 		System.out.println("\n--- Union.java ---");
 		String master_sql = request.getParameter("master_sql").toUpperCase().replaceAll("\n", " ");
+		System.out.println("master_sql : " + master_sql);
 		String slave_sql = request.getParameter("slaver_sql").toUpperCase().replaceAll("\n", " ");
+		System.out.println("slave_sql : " + slave_sql);
 		String union_type = request.getParameter("union_type").toUpperCase().replaceAll("\n", " ");
-		String sql = "";
-		System.out.println("1. master_sql : " + master_sql);
-		System.out.println("2. slave_sql : " + slave_sql);
-		System.out.println("3. union_type : " + union_type);
-		sql = "(" + master_sql + ") "
-			  + union_type + " " +
-			  "(" + slave_sql  + ")";
-		System.out.println("[Maked SQL For Union] : \n" + sql );
+		String join = "";
+		//191107 3중 조인 시 애매한 컬럼 명 에러 - 별칭으로 줄 master와 slave 키들 request로 받아와야됨
+		String maset_key = request.getParameter("maset_key");
+		String slave_key = request.getParameter("slave_key");
+		System.out.println("1. union_type : " + union_type);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		List<Map<String, String>> on_stmt_list = null;
+		String master_on_col = "";
+		String slave_on_col = "";
+		
+		int masterFromIndex = master_sql.indexOf("/*CHILDFM*/");;
+		String master_select = master_sql.substring(0, masterFromIndex).replaceFirst("SELECT ", "");
+		int maset_select_last_blank_index = master_select.lastIndexOf(" ");
+		//자식 SQL의 SELECT와 FROM 사이의 공백 제거부분
+		master_select = master_select.substring(0, maset_select_last_blank_index);
+		//master_select = master_select.replaceAll(" ", "");
+//		String[] master_cols = master_select.split(",");
+//		List<String> temp_master_col_list = Arrays.asList(master_cols);
+//		List<String> master_col_list = Arrays.asList(master_cols);
+		List<String> temp_master_col_list = new ArrayList<String>();
+		List<String> master_col_list = new ArrayList<String>();
+		Pattern pattern = Pattern.compile("[/*|*/](.*?)[/*|*/]");
+		Matcher matcher = pattern.matcher(master_select);
+		while (matcher.find()) {
+			String col = matcher.group(1);
+			if(!col.equals("")) {
+				temp_master_col_list.add(col);
+				master_col_list.add(col);
+			}
+				    		    
+		    if(matcher.group(1) ==  null)
+		    	break;
+		}
+		System.out.println("2. master_col_list : " + master_col_list.toString());
+		
+		String master_select_col = "";
+		String[] temp;
+		String[] temp2;
+		
+		//191107 에러 1.4 원인 부분
+		for(int i=0; i<master_col_list.size(); i++) {
+			if(i != master_col_list.size() -1) {
+				System.out.println("master_col_list.get(i) : " + master_col_list.get(i));
+				if(master_col_list.get(i).contains(" AS ")) {
+					System.out.println(">> AS 포함 부분 처리");
+					temp = master_col_list.get(i).split(" AS ");
+					master_select_col +="/*|*/" +  temp[1] + "/*|*/" + ", ";
+				}else {
+					//191107 에러 1.4 원인 수정 부분
+					if(master_col_list.get(i).replaceFirst(" ", "").contains(".")) {
+						System.out.println(">> AS 미포함  && . 포함 부분 처리");
+						temp2 = master_col_list.get(i).replaceFirst(" ", "").split("\\.");
+						System.out.println("master_col_list.get(i).replaceFirst(\" \", \"\")  : " + master_col_list.get(i).replaceFirst(" ", ""));
+						master_select_col +="/*|*/" +  temp2[1] + "/*|*/" + ", ";
+					}else {
+						System.out.println(">> AS 미포함  && . 미포함 부분 처리");
+						master_select_col += "/*|*/" + master_col_list.get(i).replaceFirst(" ", "") + "/*|*/" + ", ";
+					}
+				}
+			}else {
+				if(master_col_list.get(i).contains(" AS ")) {
+					System.out.println(">> AS 포함 부분 처리");
+					temp = master_col_list.get(i).split(" AS ");
+					master_select_col += "/*|*/" + temp[1] + "/*|*/";
+				}else {
+					//191107 에러 1.4 원인 수정 부분
+					if(master_col_list.get(i).replaceFirst(" ", "").contains(".")) {
+						System.out.println(">> AS 미포함  && . 포함 부분 처리");
+						temp2 = master_col_list.get(i).replaceFirst(" ", "").split("\\.");
+						master_select_col += "/*|*/" + temp2[1] + "/*|*/";
+					}else {
+						System.out.println(">> AS 미포함  && . 미포함 부분 처리");
+						master_select_col += "/*|*/" + master_col_list.get(i).replaceFirst(" ", "") + "/*|*/";
+					}
+				}
+			}
+		}
+		
+		int slaveFromIndex = slave_sql.indexOf("/*CHILDFM*/");
+		String slave_select = slave_sql.substring(0, slaveFromIndex).replace("SELECT ", "");
+		int slave_select_last_blank_index = slave_select.lastIndexOf(" ");
+		slave_select = slave_select.substring(0, slave_select_last_blank_index);
+		//slave_select = slave_select.replaceAll(" ", "");
+		String[] slave_cols = slave_select.split(",");
+		List<String> slave_col_list = Arrays.asList(slave_cols);
+		//slave select문 컬럼들 앞에 공백 없애는 부분
+		for(int i=0; i<slave_col_list.size(); i++){
+			String str = slave_col_list.get(i).replaceFirst(" ", "");
+			slave_col_list.set(i, str);
+		}
+		System.out.println("3. slave_col_list : " + slave_col_list.toString());
+		String slave_select_col = "";
+		String[] slave_temp;
+		String[] slave_temp2;
+		//191107 에러 1.4 원인 부분
+		// case when 처리 하는 부분 없는 이유? case when 같은 경우 어차피 뒤에 as가 붙어 있기 때문에 as 부분 처리 하는 곳에서 걸러짐 
+		for(int i=0; i<slave_col_list.size(); i++) {
+			if(i != slave_col_list.size() -1) {
+				System.out.println("slave_col_list.get(i) : " + slave_col_list.get(i));
+				if(slave_col_list.get(i).contains(" AS ")) {
+					System.out.println(">> AS 포함 부분 처리");
+					slave_temp = slave_col_list.get(i).split(" AS ");
+					if(master_col_list.contains(slave_temp[1])) {
+						slave_select_col += "/*|*/" + slave_temp[1] + " AS " + slave_temp[1] + "_" + slave_key + "/*|*/" + ", ";
+					}else {
+						slave_select_col += "/*|*/" + slave_temp[1] + ", ";
+					}
+				}else {
+					//191107 에러 1.4 원인 수정 부분
+					if(slave_col_list.get(i).replaceFirst(" ", "").contains(".")) {
+						System.out.println(">> AS 미포함 & . 포함 부분 처리");
+						slave_temp2 = slave_col_list.get(i).replaceFirst(" ", "").split(".");
+						if(master_col_list.contains(slave_temp2[1])) {
+							slave_select_col += "/*|*/" + slave_temp2[1] + " AS " + slave_temp2[1] + "_" + slave_key + "/*|*/" + ", ";
+						}else {
+							slave_select_col += "/*|*/" + slave_temp2[1] + "/*|*/" + ", ";
+						}
+					}else {
+//						System.out.println(">> AS 미포함 & . 미포함 부분 처리");
+//						slave_select_col += "b." + slave_col_list.get(i).replaceFirst(" ", "") + ", ";
+						System.out.println(">> AS 미포함 & . 미포함 부분 처리");
+//						//191107 에러 1.4 원인 수정 부분 : 2중 조인 안되는 부분 처리(조인 키들만 _1 붙도록 했음) => 중복 컬럼들 처리 하기 위해 잠시 막아둠
+//						if(master_on_col.equals(slave_on_col) && slave_col_list.get(i).replaceAll(" ", "").equals(slave_on_col)) {
+//							slave_select_col += "b." + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_1" + ", ";
+//						}else {
+//							slave_select_col += "b." + slave_col_list.get(i).replaceAll(" ", "") + ", ";
+//						}
+						//191107 에러 1.4 원인 수정 2번째 보안
+						if(master_col_list.contains(slave_col_list.get(i).replaceAll(" ", ""))) {
+							slave_select_col += "/*|*/" + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_" + slave_key + "/*|*/" +  ", ";
+						}else {
+							slave_select_col += "/*|*/" + slave_col_list.get(i).replaceAll(" ", "") + "/*|*/" + ", ";
+						}
+					}
+				}
+			}else {
+				if(slave_col_list.get(i).contains(" AS ")) {
+					System.out.println(">> AS 포함 부분 처리");
+					slave_temp = slave_col_list.get(i).split(" AS ");
+					slave_select_col += "b." + "/*|*/" + slave_temp[1] + "/*|*/";
+				}else {
+					//191107 에러 1.4 원인 수정 부분
+					if(slave_col_list.get(i).replaceFirst(" ", "").contains(".")) {
+						System.out.println(">> AS 미포함 & . 포함 부분 처리");
+						slave_temp2 = slave_col_list.get(i).replaceFirst(" ", "").split(".");
+						if(master_col_list.contains(slave_temp2[1])) {
+							slave_select_col += "/*|*/" + slave_temp2[1] + " AS " + slave_temp2[1] + "_" + slave_key + "/*|*/";
+						}else {
+							slave_select_col += "/*|*/" + slave_temp2[1] + "/*|*/";
+						}
+					}else {
+						System.out.println(">> AS 미포함 & . 미포함 부분 처리");
+//						//191107 에러 1.4 원인 수정 부분 : 2중 조인 안되는 부분 처리(조인 키들만 _1 붙도록 했음) => 중복 컬럼들 처리 하기 위해 잠시 막아둠
+//						if(master_on_col.equals(slave_on_col) && slave_col_list.get(i).replaceAll(" ", "").equals(slave_on_col)) {
+//							slave_select_col += "b." + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_1";
+//						}else {
+//							slave_select_col += "b." + slave_col_list.get(i).replaceAll(" ", "");
+//						}
+						//191107 에러 1.4 원인 수정 2번째 보안
+						if(master_col_list.contains(slave_col_list.get(i).replaceAll(" ", ""))) {
+							slave_select_col += "/*|*/" + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_" + slave_key + "/*|*/";
+						}else {
+							slave_select_col += "/*|*/" + slave_col_list.get(i).replaceAll(" ", "") + "/*|*/";
+						}
+					}
+				}
+			}
+		}		
+		
+
+		
+		String select_stmt = master_select_col;
+		System.out.println("4. select_stmt : " + select_stmt);
+		String master_child_sql = "SELECT " + master_select_col + " " + 
+				                  "FROM (" + master_sql + ")";
+		master_child_sql = master_child_sql.replaceAll("/\\*\\|\\*/", "");
+		master_child_sql = master_child_sql.replaceAll("/\\*CHILDFM\\*/", "");
+		System.out.println("4. master_child_sql : " + master_child_sql);
+		String slave_child_sql = "SELECT " + slave_select_col + " " + 
+				                 "FROM (" + slave_sql + ")";
+		slave_child_sql = slave_child_sql.replaceAll("/\\*\\|\\*/", "");
+		slave_child_sql = slave_child_sql.replaceAll("/\\*CHILDFM\\*/", "");
+		System.out.println("4. slave_child_sql : " + slave_child_sql);
+		String sql = "SELECT " + select_stmt + " " + "/*CHILDFM*/" +
+		             "FROM (" + master_child_sql +" " + union_type + " " + slave_child_sql + ")";
+		
+		
+		System.out.println("[Maked SQL For Union] : " + sql );
 		System.out.println("---------------\n");
+		
+		
+		
+//		System.out.println("\n--- Union.java ---");
+//		String master_sql = request.getParameter("master_sql").toUpperCase().replaceAll("\n", " ");
+//		String slave_sql = request.getParameter("slaver_sql").toUpperCase().replaceAll("\n", " ");
+//		String union_type = request.getParameter("union_type").toUpperCase().replaceAll("\n", " ");
+//		String sql = "";
+//		System.out.println("1. master_sql : " + master_sql);
+//		System.out.println("2. slave_sql : " + slave_sql);
+//		System.out.println("3. union_type : " + union_type);
+//		sql = "(" + master_sql + ") "
+//			  + union_type + " " +
+//			  "(" + slave_sql  + ")";
+//		System.out.println("[Maked SQL For Union] : \n" + sql );
+//		System.out.println("---------------\n");
 		return getData(sql, session);
 	}
 	
@@ -747,6 +952,7 @@ public class SQLServiceImpl implements SQLService{
 		String child_sql = request.getParameter("child_sql").toUpperCase().replaceAll("\n", " ");
 		String sql = "INSERT INTO " + targetTable + " " + child_sql;
 		DAO dao = new DAO(session);
+		System.out.println("[Maked SQL] " + sql);
 		dao.dbInsert(sql);
 		System.out.println("---------------\n");
 	}
@@ -800,6 +1006,7 @@ public class SQLServiceImpl implements SQLService{
 		}else {
 			session.setAttribute("schemaid", id);
 			session.setAttribute("schemapwd", pwd);
+			System.out.println(">>>" + session.getAttribute("schemaid"));
 		}
 		
 		return user_sch_nm;

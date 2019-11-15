@@ -372,7 +372,7 @@ var Setting = (function() {
 				case 'Filter':
 					console.log("Filer clean()");
 
-					$('#filer-setting-bar').html(filterTag);
+					$('#filter-setting-bar').html(filterTag);
 					break;
 
 				case 'Join':
@@ -401,9 +401,9 @@ var Setting = (function() {
 					$('#rename-setting-bar').html(renameTag);
 					break;
 				case 'DBinsert':
-					console.log("Rename clean()");
+					console.log("DBinsert clean()");
 
-					$('#rename-setting-bar').html(dbInsertTag);
+					$('#dbinsert-setting-bar').html(dbInsertTag);
 					break;
 				}
 			},

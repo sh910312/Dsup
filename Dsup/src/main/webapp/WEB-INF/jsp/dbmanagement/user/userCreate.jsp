@@ -38,21 +38,31 @@
 	
 	function formCheck(){
 		if($("#passwordResult").val()=="false"){
-			alert("비밀번호를 확인하세요!");
+			alert("비밀번호를 확인하세요");
 			return false;
 		}
 	}
 	
 	//유저생성
 	function userCreate() {
-		$("#btnIns").on("click", function() {
+		var id = $('#id').val();
+		id = id.toUpperCase();
+		$("#id").val(id);
+		userCreate.isLoad = false;
 		
-			
+		$("#btnIns").on("click", function() {
+			console.log(id);
+			if($("#id").val() == "" ){
+				alert("아이디를 확인하세요!");
+				return
+			}
 			if( $("#password").val() != $("#passwordcheck").val()){
 				alert("비밀번호를 확인하세요!");
 				return 
 			}
+
 			var param = JSON.stringify($('#frm2').serializeObject()); 
+			if(userCreate.isLoad != true) {
 			$.ajax({
 				url : "users",
 				type : 'POST',
@@ -67,7 +77,9 @@
 				error : function(xhr, status, message) {
 					alert(" status: " + status + " er:" + message);
 				}
-			});
+			}); // ajax
+			userCreate.isLoad = true;
+			}
 		});//등록 버튼 클릭
 	}//userInsert
 	

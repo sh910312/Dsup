@@ -70,7 +70,8 @@ a{
 }
 </style>
 <script>
-function pageChange(type){
+//volume이랑 user 내용 겹쳐서 volume 안쓰기로 해서 주석처리함
+/* function pageChange(type){
 	if(type == 'Volume'){
 		$('#volume-jsp-div').css('display', 'block');
 		$('#user-jsp-div').css('display', 'none');
@@ -78,5 +79,5 @@ function pageChange(type){
 		$('#volume-jsp-div').css('display', 'none');
 		$('#user-jsp-div').css('display', 'block');
 	}
-}
+} */
 </script>

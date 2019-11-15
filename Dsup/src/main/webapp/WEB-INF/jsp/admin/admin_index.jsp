@@ -9,17 +9,16 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="">
 <meta name="author" content="">
-<title>Admin Page</title>
+<title>Administrator Page</title>
 <!-- 각종 자바스크립트 및 css 링크 -->
 <jsp:include page="scriptLink.jsp"></jsp:include>
-<!-- 테이블스페이스 텝 컨드롤하는 자바스크립트 -->
+<!-- 테이블스페이스, 사용자 관리 메뉴 컨드롤 자바스크립트 -->
 <jsp:include page="user/tablespaceTapJavascriptLink.jsp"></jsp:include>
 </head>
 <body id="page-top">
 	<nav class="navbar navbar-expand navbar-dark bg-dark static-top">
-		<a class="navbar-brand mr-1" href="index.html">DBhelper</a>
-		<button class="btn btn-link btn-sm text-white order-1 order-sm-0"
-			id="sidebarToggle" href="#">
+		<a class="navbar-brand mr-1" href="./main">DBhelper</a>
+		<button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
 			<i class="fas fa-bars"></i>
 		</button>
 		<!-- Navbar Search -->
@@ -37,15 +36,14 @@
 		</form>
 	</nav>
 	<div id="wrapper">
-		<!-- Sidebar -->
 		<div id="content-wrapper">
 			<%-- <div id="volume-jsp-div" style="display:block;">
 				<jsp:include page="volume/volume.jsp"></jsp:include>
 			</div> --%>
 			<div id="user-jsp-div" style="display:block;">
+				<!-- 윤정 : 관리 페이지 -->
 				<jsp:include page="user/user.jsp"></jsp:include>
 			</div>
-			<!-- /.container-fluid -->
 
 			<!-- Sticky Footer -->
 			<footer class="sticky-footer">
@@ -55,9 +53,8 @@
 					</div>
 				</div>
 			</footer>
-
 		</div>
-<!-- 		로그인 정보와 채팅창 넣을공간 -->
+		<!-- 로그인 정보와 채팅창 넣을공간 -->
 		<ul class="sidebar navbar-nav col-lg-3">
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="pagesDropdown"
@@ -68,7 +65,7 @@
 				<div class="dropdown-menu" aria-labelledby="pagesDropdown">
 					<h6 class="dropdown-header">Main:</h6>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" onclick="pageChange('Volume')">Volume</a> 
+					<!-- <a class="dropdown-item" onclick="pageChange('Volume')">Volume</a> --> 
 					<a class="dropdown-item" onclick="pageChange('User')">User</a>
 					<div class="dropdown-divider"></div>
 					<h6 class="dropdown-header">Part :</h6>
@@ -77,11 +74,7 @@
 				</div>
 			</li>
 		</ul>
-		
-		<!-- /.content-wrapper -->
-
 	</div>
-	<!-- /#wrapper -->
 
 	<!-- Scroll to Top Button-->
 	<a class="scroll-to-top rounded" href="#page-top"> <i
@@ -89,7 +82,7 @@
 	</a>
 
 	<!-- Logout Modal-->
-	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
+<!-- 	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -109,8 +102,8 @@
 				</div>
 			</div>
 		</div>
-	</div>
-
+	</div> -->
+	
 	<!-- Bootstrap core JavaScript-->
 	<script src="${pageContext.request.contextPath }/resources/js/admin/vendor/jquery/jquery.min.js"></script>
 	<script src="${pageContext.request.contextPath }/resources/js/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
