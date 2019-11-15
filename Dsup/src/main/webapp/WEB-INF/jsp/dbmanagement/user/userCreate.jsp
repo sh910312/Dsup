@@ -15,6 +15,7 @@
 		userCreate(); //user등록
 		idCheckFunction(); //id체크
 		formCheck(); //비밀번호체크
+	
 	});
 	//비밀번호 입력확인
 	$(function(){
@@ -82,8 +83,8 @@
 		});//등록 버튼 클릭
 	}//userInsert
 	
-	// 아이디 유효성 검사(1 = 중복 / 0 != 중복)
-	
+
+ 	//아이디 유효성 검사(1 = 중복 / 0 != 중복)
 	function idCheckFunction(){
 		$("#id").blur(function() {
 			// id = "id_reg" / name = "userId"
@@ -91,13 +92,13 @@
 			var idJ = /^[a-z0-9][a-z0-9]{4,11}$/;
 			id = id.toUpperCase();
 			$("#id").val(id);
-			
+
 			$.ajax({
 				url : '${pageContext.request.contextPath}/idCheck?id='+ id,
 				type : 'get',
 				success : function(data) {
 					console.log("1 = 중복o / 0 = 중복x : "+ data);							
-				      //이름의 유효성 검사
+				      
 
 					if (data == 1) {
 						// 1 : 아이디가 중복되는 문구
@@ -124,16 +125,21 @@
 							$('#id_check').css('color', 'blue');
 							$("#reg_submit").attr("disabled", false);
 							
-						}
+						 }
 					}
 				}, error : function() {
 						console.log("실패");
-				}
-			});
+						}
+		
+			
+				}) // ajax
+			
 		});
-	}
+	} 
+	
+
 </script>
-<div class = "container" style = "margin-left: 20px;">
+<div class = "container">
 <div class="form-group">
 	<form action="userList.jsp" id="frm2">
 		<table class = "table table-borderless">

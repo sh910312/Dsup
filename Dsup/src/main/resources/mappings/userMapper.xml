@@ -9,10 +9,9 @@
 	</insert>
 	
 	<!-- id 예약어 -->
-	<select id="reservedWords" resultType="map">
-		select USER_id 
- 		from users
- 		where USER_id in(SELECT KEYWORD FROM V$RESERVED_WORDS)
+	<select id="reservedWords" parameterType="String" resultType="String">
+		select sc_name_chk( #{reservedWords} )
+		from dual
 
 	</select>
 	
