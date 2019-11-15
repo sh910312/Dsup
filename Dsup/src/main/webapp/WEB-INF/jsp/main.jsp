@@ -24,7 +24,14 @@
 }
 </style>
 <script>
-
+	function declarationList(){
+		$.ajax({
+			url : 'DeclarationList',
+			type : 'GET',
+			dataType : "JSON"
+			 
+		})
+	}
 </script>
 </head>
 <body>

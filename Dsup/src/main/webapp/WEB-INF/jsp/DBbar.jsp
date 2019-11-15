@@ -1,18 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	
-	<!-- ↓ DB헬퍼 아이콘 -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	
-</head>
-<body>
-<div>
+    
 <%@include file="bar.jsp" %>
-</div>  
+ 
 </body>
 	<header>
 		<div class="navbar navbar-dark bg-dark box-shadow">
@@ -31,6 +21,3 @@
 			</div>
 		</div>
 	</header>
-    
-	 	
-</html>

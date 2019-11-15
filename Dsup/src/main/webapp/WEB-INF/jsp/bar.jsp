@@ -180,6 +180,6 @@ function memberUpdate() {
 
 <!-- 채팅 영역 시작 -->
 	<div class="pull-right col-xs-3">
-		<%@include file="./chat/chatMain.jsp"%>
+<%-- 		<%@include file="./chat/chatMain.jsp"%> --%>
 	</div>
 <!-- 채팅 영역 끝 --> 
