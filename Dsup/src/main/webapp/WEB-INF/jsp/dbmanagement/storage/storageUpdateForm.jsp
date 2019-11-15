@@ -27,7 +27,6 @@
 	$(function(){
 		startChk();
 		$("#updbtn").click(submit);
-		tsNameChkFunction();
 		$("input:radio").change(statusChk);
 		statusSql();
 		$("#addbtn").click(trAdd); // 데이터파일 추가 버튼 클릭
@@ -196,86 +195,16 @@
 	function submit(){
 		var err = 0;
 		
-		if( $("#newName").hasClass("is-invalid") )
-			err += 1;
-
 		if(thisVolumn > freeVolumn) {
 			$('#volumnError').fadeIn(400).delay(1000).fadeOut(400);
 			err += 1;
 		}
 		console.log(err);
-		if (err == 0) {
-			var newName = $("#newName").val();
-			if (newName != oldName) { // 이름 변경 
-				sql += "ALTER TABLESPACE " + oldName + " RENAME TO " + newName + ";";
-				sql += "UPDATE user_tbspc_tb SET tablespace_name = '" + newName + "' WHERE tablespace_name = '" + oldName + "';";
-			}
-			
+		if (err == 0) {			
 			$("#sql").val(sql);
 			$("#frm").submit();
 		}
-		
 	}
-	
-	// [윤정 1031] 테이블스페이스명 유효성 검사 
-	function tsNameChkFunction() {
-		$("#newName").blur(function(){
-			var name = $("#newName").val().toUpperCase();
-			$("#newName").val(name).addClass("is-invalid");
-			
-			// [윤정 1104] 기존의 네임과 같은 경우
-			if(name == oldName) {
-				$("#nameMsg").hide();
-				$("#newName").removeClass("is-invalid");
-				return;
-			}
-			
-			// 아이디를 입력하지 않은 경우
-			if(name == '') { 
-				$("#nameMsg").show().text("이름을 입력해주세요");
-				return;
-			}
-			
-			// [윤정1112] 길이 30자 넘지 않게
-			if(name.length > 30) {
-				$("#nameMsg").show().text("길이는 30자를 넘을 수 없습니다");
-				return;
-			}
-			// [윤정1101] 이름 첫 글자 영어만
-			if(!name.substr(0,1).match(/[A-Z]/)) {
-				$("#nameMsg").show().text("이름 첫 글자는 영어만 입력할 수 있습니다");
-				return;
-			}
-			
-			// [윤정 1101] 이름에 A-Z, 0-9, _ 만 쓸 수 있도록
-			var err = 0;
-			var cnt = name.length;
-			for(i = 0; i < cnt; i ++) {
-				var chk = name.charAt(i);
-				if (!chk.match(/[0-9]/) && !chk.match(/[A-Z]/) && chk != '_'){
-					err = err + 1;
-				}
-				if(err > 0) {
-					$("#nameMsg").show().text("영어, 숫자, _만 입력할 수 있습니다");
-					return;
-				}
-			}
-		
-			$.ajax({
-				url : "tsNameChk?tablespaceName=" + name,
-				type : 'GET',
-				success : function(data) {
-					// 중복이면 0, 아니면 1
-					if(data == 0) { // 중복
-						$("#nameMsg").show().text("사용할 수 없는 이름입니다");
-					} else { // 중복x
-						$("#nameMsg").hide();
-						$("#newName").removeClass("is-invalid");
-					}
-				}
-			}) // ajax
-		}); // .blur(function)
-	} // tsNameChkFunction
 	
 	// [윤정1108] 종량제 이용량 조회
 	function getVolumn(){
@@ -326,7 +255,7 @@
 			이름
 		</div>
 		<div class = "col-10">
-			<input type = "text" value = "${ts.tablespaceName}" class = "form-control" name = "newName" id = "newName">
+			<input type = "text" value = "${ts.tablespaceName}" class = "form-control" name = "newName" id = "newName" readonly>
 			<div class="invalid-feedback" id = "nameMsg"></div>
 		</div>
 	</div>
