@@ -95,9 +95,9 @@
 				var $free = $("<td>").text((item.free));
 
 				$("tbody").append(
-						$("<tr>").append($radio).append($tablespaceName)
-								.append($status).append($total).append(
-										$used).append($free));
+					$("<tr>")
+						.append($radio).append($tablespaceName).append($status).append($total).append($used).append($free)
+					);
 					
 				$('input:radio[name="tablespaceName"]').eq(0).attr("checked", true);
 				// 첫 번째 라디오 자동 체크

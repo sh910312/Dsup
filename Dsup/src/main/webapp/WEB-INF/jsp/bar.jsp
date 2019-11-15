@@ -69,7 +69,12 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarsExample07">
+    <!-- ↓ 윤정 DB관리 바 들어올 부분 -->
+ 	<ul class="navbar-nav mr-auto" id = "DBbar">
+ 	</ul>
+	<!-- ↑ 윤정 DB관리 바 들어올 부분 -->
       
+    <div class = "col-auto">
       <form class="form-inline my-2 my-md-0">
         <ul class="navbar-nav mr-auto">
         <li class="nav-item dropdown">
@@ -84,6 +89,7 @@
         </li>
       </ul>
       </form>
+      </div>
     </div>
   </div>
 </nav>
@@ -267,5 +273,4 @@ $(document).ready(function(){
 <%-- <!-- 채팅 영역 시작 -->
 	<div class="pull-right col-xs-3">
 <%-- 		<%@include file="./chat/chatMain.jsp"%> --%>
-	</div>
-<!-- 채팅 영역 끝 -->  --%>
+<!-- 채팅 영역 끝 --> 
