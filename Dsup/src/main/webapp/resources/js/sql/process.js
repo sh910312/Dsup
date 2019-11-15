@@ -59,8 +59,8 @@ var Process = (function() {
 					}
 					var expression = $('#fiter-expression').val();
 					$('#fiter-expression').html(expression);
-					request.open("Post", "Filter.do?sql=" + child_sql
-							+ "&expression=" + expression, false);
+					request.open("Post", "Filter.do?sql=" + encodeURI(child_sql)
+							+ "&expression=" + encodeURI(expression), false);
 
 					request.onreadystatechange = function() {
 						if (request.readyState == 4 && request.status == 200) {
@@ -488,7 +488,7 @@ var Process = (function() {
 					
 					if(where_stmt != null || where_stmt != ""){
 						var sql = "UPDATE " + target_table + " a SET (" + set_stmt + ") =" +
-				          "(SELECT " + select_stmt + " " +
+				          "(SELECT b." + select_stmt + " " +
 				           "FROM (" + child_sql + ") b " + 
 				           "WHERE " + where_stmt + ") ";
 					}else{

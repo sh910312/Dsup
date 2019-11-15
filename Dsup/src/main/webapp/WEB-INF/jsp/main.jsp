@@ -11,8 +11,8 @@
 <meta name="author" content="">
 <title>DBhelper</title>
 <!-- Bootstrap core CSS -->
- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -62,8 +62,9 @@
 
 
 
-	<!-- <main role="main"> -->
-		<div class="album py-5" style="position:relative; display: inline-block;width: 70%;">  <!-- 수정중 -->
+	<main role="main">
+		<div class="album py-5">  <!-- 수정중 -->
+		<!-- <div class="album py-5" style="position:relative; display: inline-block;width: 70%;"> -->  <!-- 대체 -->
 			<div class="container"> 
 				
 				
@@ -148,7 +149,7 @@
 				
 			</div>
 		</div> 
-	<!-- </main> --> 
+	</main> 
 <script type="text/javascript">
 function disClick(){
 	if("${payService}" == "Y"){
