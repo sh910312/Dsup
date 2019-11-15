@@ -19,12 +19,12 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
         HttpSession session = request.getSession();
         MemberVO loginVO = (MemberVO) session.getAttribute("member");
  
-/*
+
         if(loginVO == null){
             response.sendRedirect("login");
             return false;
         }
-*/
+
         
         return true;
     }
