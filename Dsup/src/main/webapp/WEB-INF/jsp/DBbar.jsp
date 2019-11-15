@@ -25,7 +25,7 @@
 				</a>
 				
 				<a href = "storageList" class = "bd-hightlight navbar-brand">테이블 스페이스</a>
-				<a href = "userList" class = "bd-hightlight navbar-brand">유저</a>
+				<a href = "userList" class = "bd-hightlight navbar-brand">스키마</a>
 				<a href = "backupList" class = "bd-hightlight navbar-brand">백업</a>
 				
 			</div>
