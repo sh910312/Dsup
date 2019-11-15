@@ -38,7 +38,6 @@ public class RpController {
 	@RequestMapping("getRp")
 	public String getRpsearch(HttpServletRequest request, Model model, SearchVO svo, ReVO revo, RpVO rpvo, ChatVO cvo) {
 		
-		
 		// 0번 게시글
 		if (svo.getSearchId() != 0) {
 			model.addAttribute("rpType", 0);
@@ -71,7 +70,7 @@ public class RpController {
 //		return "chat/report/inRp";
 //	}
 
-	// 신고하기처리
+	// 신고처리
 	@RequestMapping("/RpOk")
 	public String insertSearch(RpVO vo, HttpServletRequest request, HttpSession session) {
 		MemberVO member = (MemberVO) session.getAttribute("member");

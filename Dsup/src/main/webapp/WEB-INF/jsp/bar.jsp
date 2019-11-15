@@ -64,7 +64,13 @@
 			modify.style.display = "none";
 		    myInfo.style.display = "block";
 		    withdrawal.style.display = "none"; // 윤정 탈퇴양식
-		}else{
+		
+		
+		}else if(value == "chatlogout"){ // 수호 메인화면에서 메뉴바에 있는 로그아웃을 하면 채팅도 함께 로그아웃한다. 
+		    parent.frames["frameChat"].logout(); // frameChat : 프레임네임 // chatlogout : chatMain에 있는 함수이름
+		    location.href=value
+		}
+		else{
 			location.href=value			
 		}
 		document.getElementById("menu").selectedIndex=0;
