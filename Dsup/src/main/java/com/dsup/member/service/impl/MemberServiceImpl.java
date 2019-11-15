@@ -63,8 +63,14 @@ public class MemberServiceImpl implements MemberService{
 		return null;
 	}
 
-	// ↓윤정 탈퇴
+	// ↓윤정 탈퇴신청
 	public int withdrawal(MemberVO vo) {
 		return memberDAO.withdrawal(vo);
+	}
+	
+	// ↓윤정 탈퇴신청 후 한 달 지난 회원 삭제 처리
+	@Override
+	public void deleteWithdrawalUsers() {
+		memberDAO.deleteWithdrawalUsers();
 	};
 }

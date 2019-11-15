@@ -174,10 +174,12 @@
         </button>
       </div>
       <div class="modal-body">
-		<h4>회원 탈퇴 정책</h4>
-		1. 회원 탈퇴 일로부터 계정과 닉네임을 포함한 계정 정보(아이디/이메일/닉네임/휴대폰번호)는 '개인 정보 보호 정책'에 따라 30일간 보관(잠김) 되며, 30일이 경과된 후에는 모든 개인 정보는 완전히 삭제되며 더 이상 복구할 수 없게 됩니다. <br>
-		2. 테이블스페이스와 유저 스키마, 백업파일은 탈퇴 즉시 모두 삭제되며 복구가 불가능합니다.<br>
-		<br>
+      	<div id = "withdrawalMsg">
+			<h4>회원 탈퇴 정책</h4>
+			1. 회원 탈퇴 일로부터 계정과 닉네임을 포함한 계정 정보(아이디/이메일/닉네임/휴대폰번호)와 결제 정보는 '개인 정보 보호 정책'에 따라 30일간 보관(잠김) 되며, 30일이 경과된 후에는 모든 개인 정보는 완전히 삭제되며 더 이상 복구할 수 없게 됩니다. <br>
+			2. 테이블스페이스와 유저 스키마, 백업파일은 탈퇴 즉시 모두 삭제되며 복구가 불가능합니다.<br>
+			<br>
+		</div>
       </div>
       <div class="modal-footer">
       	<button type="button" id="btnWithdrawal" class = "btn btn-info">탈퇴하기</button>
@@ -209,18 +211,20 @@ function withdrawalFunc(){
 		data : JSON.stringify({userId:userId, userType:0, payService:'N'}),
 		contentType : 'application/json',
 		success : function(response) {
-			if(response.result == true) {
-					alert("성공!");
-				} else {
-					alert("실패!");
-				}
+			if(response.result == true) { // result == true
+				location.href = './withdrawalSuccess';
+			} else { // result == false
+				$("#withdrawalMsg").html(
+					"<h4>탈퇴 실패</h4>" +
+					"다시 시도해주세요."
+				);
+			}
 		},
 		error : function() {
 			
 		}
 	});
 }
-
 
 function memberUpdate() {
 	//수정 버튼 클릭

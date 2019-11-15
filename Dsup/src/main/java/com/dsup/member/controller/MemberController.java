@@ -34,4 +34,11 @@ public class MemberController {
 	public String Modify() {
 		return "member/modify";
 	} 
+	
+	// ↓ 윤정 회원탈퇴 완료 페이지
+	@RequestMapping("/withdrawalSuccess")
+	public String withdrawalSuccesS(HttpSession session) {
+		session.invalidate();	//세션무효화
+		return "withdrawalSuccess";
+	}
 }

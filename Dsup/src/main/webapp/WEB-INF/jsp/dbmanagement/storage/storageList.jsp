@@ -156,6 +156,13 @@
 				values.push((item.volumn));
 			}
 		);
+		
+		if(names.length == 1) {
+			console.log("no tablespace!");
+			names.push("");
+			values.push(0);
+		}
+		
 		console.log(names);
 		console.log(values);
 		
