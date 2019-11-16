@@ -18,9 +18,10 @@ public interface SQLService {
 	public LinkedHashMap<String, Object> union(HttpServletRequest request, HttpSession session);
 	public ArrayList<String> targetTableList(HttpServletRequest request, HttpSession session);
 	public ArrayList<HashMap<String, String>> targetTableInfo(HttpServletRequest request, HttpSession session);
-	public void dbInsert(HttpServletRequest request, HttpSession session);
-	public void dbUpdate(HttpServletRequest request, HttpSession session);
+	public LinkedHashMap<String, Object> dbInsert(HttpServletRequest request, HttpSession session);
+	public LinkedHashMap<String, Object> dbUpdate(HttpServletRequest request, HttpSession session);
 	public void dbDelete(HttpServletRequest request, HttpSession session);
 	public ArrayList<String> getUserSchemaName(HttpSession session);
 	public String schemaLogin(String id, String pwd, HttpSession session);
+	public LinkedHashMap<String, Object> getOtherData(HttpServletRequest request, HttpSession session);
 }

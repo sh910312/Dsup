@@ -33,9 +33,10 @@ function connection(){
 		if (request.readyState == 4 && request.status == 200) {
 			result = request.responseText;
 			console.log("Result : " + result);
-			if(result == null){
+			if(result == null || result==""){
 			    var tag =  '<i class="fas fa-power-off fa-4x"></i>';
 			    $('#login-success-breath').html(tag);
+			    $('#schema-psw-input').val("");
 			}else{
 			    var tag =  '<i class="fas fa-power-off fa-2x ripple" style="color : #fd5581;"></i><i class="fas fa-power-off fa-2x ripple"></i>';
 			    $('#connected-schema-nm').text(result.toUpperCase());
@@ -60,6 +61,9 @@ function disconnection(){
 			var tag =  '<i class="fas fa-power-off fa-4x"></i>';
 		    $('#login-success-breath').html(tag);
 		    $('#connected-schema-nm').text("START");
+		    //원래대로 로그인 창을 바꾸는 부분
+		    $('#schema-Name-select option:eq(0)').prop("selected", true);
+		    $('#schema-psw-input').val("");
 		    console.log("Schema Disconnection");
 		}
 	};

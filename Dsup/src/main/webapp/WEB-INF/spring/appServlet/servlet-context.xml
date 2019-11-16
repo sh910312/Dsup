@@ -64,13 +64,15 @@
 			<beans:property name="paramName" value="lang"/>
 		</beans:bean>	
 		<interceptor>
-            <mapping path="/storageList"/>
+            <mapping path="/"/>
             <mapping path="/storageCreateForm"/>
             <mapping path="/storageUpdateForm"/>
             <mapping path="/userList"/>
             <mapping path="/userCreateForm"/>
             <mapping path="/storageUpdateForm"/>
             <mapping path="/backupCreateForm"/>
+            <exclude-mapping path="/index"/>
+            <exclude-mapping path="/login"/>
             <!-- 백업리스트 조회는 할 수 있음 -->
             <beans:ref bean="DbMngInterceptor"/>
         </interceptor>

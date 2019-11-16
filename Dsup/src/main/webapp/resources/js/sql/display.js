@@ -14,15 +14,16 @@ var Display = (function () {
         
     	return {
             // public methods and variables
-    		showData : function(){
+    		showData : function(sql, rowCount){
+    			
     			if(tag == ""){
     				
     			}else{
     				newWindow("MyWindow");
     				//console.log("[display] tag : " + tag);
-    				window.open("ShowData.do", 
+    				window.open("ShowData.do?sql=" + encodeURI(sql) + "&rowCount=" + encodeURI(rowCount), 
     						newName, 
-    				"width=600, height=400, toolbar=no, menubar=no, scrollbars=no, resizable=yes, location=no");
+    				"width=1200, height=500, toolbar=no, menubar=no, scrollbars=no, resizable=yes, location=no");
     				
     			}
     		}

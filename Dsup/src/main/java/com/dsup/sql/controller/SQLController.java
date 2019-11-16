@@ -18,6 +18,13 @@ import com.dsup.sql.service.SQLService;
 public class SQLController {
 	@Autowired SQLService sqlService;
 	
+	@RequestMapping("/getOtherData")
+	@ResponseBody
+	public LinkedHashMap<String, Object> getOtherData(HttpServletRequest request, HttpSession session) {
+		LinkedHashMap<String, Object> result = sqlService.getOtherData(request, session);
+		
+		return result;
+	}
 	@RequestMapping("/Connection")
 	@ResponseBody
 	public String schemaLogin(String id, String pwd, HttpSession session) {
@@ -40,10 +47,21 @@ public class SQLController {
 		
 		return "sql/sql_index";
 	}
+	//테스트용
 	@RequestMapping("/ShowData.do")
-	public String showData(String tag) {
+	public String showData(Model model, HttpServletRequest request) {
+		String sql = request.getParameter("sql");
+		String rowCount = request.getParameter("rowCount");
+		model.addAttribute("sql", sql);
+		model.addAttribute("rowCount", rowCount);
+		
 		return "sql/setting/tableview";
 	}
+	//기존 방법
+//	@RequestMapping("/ShowData.do")
+//	public String showData(String tag) {
+//		return "sql/setting/tableview";
+//	}
 	@RequestMapping("/DBread.do")
 	@ResponseBody
 	public LinkedHashMap<String, Object> dbRead(HttpServletRequest request, HttpSession session) {
@@ -106,13 +124,15 @@ public class SQLController {
 	}
 	@RequestMapping("/DBinsert.do")
 	@ResponseBody
-	public void DBinsert(HttpServletRequest request, HttpSession session) {
-		 sqlService.dbInsert(request, session);
+	public LinkedHashMap<String, Object> DBinsert(HttpServletRequest request, HttpSession session) {
+		LinkedHashMap<String, Object> result = sqlService.dbInsert(request, session);
+		return result;
 	}
 	@RequestMapping("/DBupdate.do")
 	@ResponseBody
-	public void DBupdate(HttpServletRequest request, HttpSession session) {
-		 sqlService.dbUpdate(request, session);
+	public LinkedHashMap<String, Object> DBupdate(HttpServletRequest request, HttpSession session) {
+		LinkedHashMap<String, Object> result = sqlService.dbUpdate(request, session);
+		return result;
 	}
 	@RequestMapping("/DBdelete.do")
 	@ResponseBody

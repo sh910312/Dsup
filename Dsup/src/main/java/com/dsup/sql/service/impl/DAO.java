@@ -81,11 +81,16 @@ public class DAO {
 		String select = "";
 		
 		try {
-			psmt = conn.prepareStatement(sql);
+			String rownum_sql = "SELECT * FROM (" + sql + ") WHERE ROWNUM<=100";
+			//System.out.println("rownum_sql : " + rownum_sql);
+			//text 부분
+			psmt = conn.prepareStatement(rownum_sql);
+			//기존 부분
+//			psmt = conn.prepareStatement(sql);
 			rs = psmt.executeQuery();
 			ResultSetMetaData meta = rs.getMetaData();
 			int columnCnt = meta.getColumnCount(); //�÷��� ��
-			System.out.println("==================> colnumCnt : " + columnCnt);
+			//System.out.println("==================> colnumCnt : " + columnCnt);
 			
 			
 			////////////////////////////////////////////////////////////////////////////
@@ -100,7 +105,8 @@ public class DAO {
 				  inner_hash.put("value", value);
 				  temp.add(inner_hash);
 			  } 
-			  System.out.println(">>> " +  inner_hash.toString()); hash.put("COL_NM_TYPE", temp);
+			  System.out.println(">>> " +  inner_hash.toString()); 
+			  hash.put("COL_NM_TYPE", temp);
 			 
 			////////////////////////////////////////////////////////////////////////////
 			
@@ -138,7 +144,7 @@ public class DAO {
 				//System.out.println("문자열 포함");
 				//System.out.println("SELECT : " + select);
 				sql = sql.replaceFirst("\\*", select);
-				System.out.println("Changed Child SQL : \n" + sql);
+				System.out.println("Changed Child SQL For Start : \n" + sql);
 			}
 			hash.put("SQL", sql);
 			
@@ -164,7 +170,10 @@ public class DAO {
 				 //System.out.println(index + ". " + innerList.toString());
 				 index += 1;
 			}
-			//innerList.add(innerHash);
+			//해당 sql의 총 row수 가지고 오는 부분
+			int rowCount = getRowCount(sql);
+			
+			hash.put("ROWCOUNT", rowCount);
 			hash.put("DATA", innerHash);
 			
 			//outerList.add(hash);
@@ -176,6 +185,21 @@ public class DAO {
 		}
 		
 		return hash;
+	}
+	public int getRowCount(String param) {
+		int rowCount = 0;
+		String sql = "SELECT COUNT(*) AS rowCount FROM (" + param + ")"; 
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				rowCount = rs.getInt("rowCount");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return rowCount;
 	}
 
 	public ArrayList<String> getTargetTableList() {
@@ -233,20 +257,7 @@ public class DAO {
 		return list;
 	}
 
-	public void dbInsert(String sql) {
-		// TODO Auto-generated method stub
-		try {
-			psmt = conn.prepareStatement(sql);
-			rs = psmt.executeQuery();
-		} catch (SQLException e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}finally {
-			//close();
-		}
-	}
-
-	public void dbUpdate(String sql) {
+	public LinkedHashMap<String, Object> dbInsert(String sql, String target_table) {
 		// TODO Auto-generated method stub
 		try {
 			psmt = conn.prepareStatement(sql);
@@ -258,6 +269,29 @@ public class DAO {
 			//close();
 		}
 		
+		String newSql = "SELECT * FROM " + target_table;
+		LinkedHashMap<String, Object> result = getData(newSql);
+		
+		return result;
+	}
+
+	public LinkedHashMap<String, Object> dbUpdate(String sql, String target_table) {
+		// TODO Auto-generated method stub
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			//close();
+		}
+		
+		String newSql = "SELECT * FROM " + target_table;
+		LinkedHashMap<String, Object> result = getData(newSql);
+		
+		return result;
+		
 	}
 
 	public String schemaLogin(String id, String pwd) {
@@ -265,7 +299,7 @@ public class DAO {
 		String user_sch_nm = "";
 		System.out.println(">>>>>>>>>>>>>>>>>>>>"+ pwd);
 		id = id.toUpperCase();
-		pwd = pwd.toUpperCase();
+		//pwd = pwd.toUpperCase();
 		String sql = "select user_sch_nm from user_sch_tb where user_sch_nm = ? and user_sch_pw = ?";
 		
 		try {
@@ -286,5 +320,51 @@ public class DAO {
 		}
 		
 		return user_sch_nm;
+	}
+
+	public LinkedHashMap<String, Object> getOtherData(String sql) {
+		// TODO Auto-generated method stub
+		ArrayList<Object> innerList = null;
+		ArrayList<Object> list = null;
+		LinkedHashMap<String, Object> innerHash = new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, Object> hash = new LinkedHashMap<String, Object>();
+		String key;
+		String value;
+		String select = "";
+		
+		try {
+			//text 부분
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			ResultSetMetaData meta = rs.getMetaData();
+			int columnCnt = meta.getColumnCount();
+			int index = 1;
+			
+			innerList =  new ArrayList<Object>();
+			innerHash = new LinkedHashMap<String, Object>(); 
+			while(rs.next()) {
+				list = new ArrayList<Object>();
+				 for(int i=1 ; i<=columnCnt ; i++){
+					 value =  rs.getString(meta.getColumnName(i));
+					 list.add(value);
+				 }
+				 innerHash.put(Integer.toString(index), list);
+				 index += 1;
+			}
+			//해당 sql의 총 row수 가지고 오는 부분
+			int rowCount = getRowCount(sql);
+			
+			hash.put("ROWCOUNT", rowCount);
+			hash.put("DATA", innerHash);
+			
+			//outerList.add(hash);
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			//close();
+		}
+		
+		return hash;
 	}
 }

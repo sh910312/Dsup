@@ -1,6 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!-- 이재문 필요한 link 파일들 -->   
+	<!-- Bootstrap core JavaScript-->
+	<script src="${pageContext.request.contextPath }/resources/js/admin/vendor/jquery/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath }/resources/js/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="${pageContext.request.contextPath }/resources/js/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Page level plugin JavaScript-->
+	<script src="${pageContext.request.contextPath }/resources/js/admin/vendor/chart.js/Chart.min.js"></script>
+	<script src="${pageContext.request.contextPath }/resources/js/admin/vendor/datatables/jquery.dataTables.js"></script>
+	<script src="${pageContext.request.contextPath }/resources/js/admin/vendor/datatables/dataTables.bootstrap4.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="${pageContext.request.contextPath }/resources/js/admin/js/sb-admin.min.js"></script>
+
+	<!-- Demo scripts for this page-->
+	<script src="${pageContext.request.contextPath }/resources/js/admin/js/demo/datatables-demo.js"></script>
+	<script src="${pageContext.request.contextPath }/resources/js/admin/js/demo/chart-area-demo.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js" defer="defer"></script>

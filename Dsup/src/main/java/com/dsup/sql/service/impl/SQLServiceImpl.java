@@ -945,27 +945,33 @@ public class SQLServiceImpl implements SQLService{
 	}
 	
 	@Override
-	public void dbInsert(HttpServletRequest request, HttpSession session) {
+	public LinkedHashMap<String, Object> dbInsert(HttpServletRequest request, HttpSession session) {
 		// TODO Auto-generated method stub
 		System.out.println("\n--- DBinsert.java ---");
-		String targetTable = request.getParameter("target_table").toUpperCase().replaceAll("\n", " ");
-		String child_sql = request.getParameter("child_sql").toUpperCase().replaceAll("\n", " ");
-		String sql = "INSERT INTO " + targetTable + " " + child_sql;
+		String sql = request.getParameter("sql").toUpperCase().replaceAll("\n", " ");
+		String target_table = request.getParameter("target_table");
 		DAO dao = new DAO(session);
 		System.out.println("[Maked SQL] " + sql);
-		dao.dbInsert(sql);
+		LinkedHashMap<String, Object> result = dao.dbInsert(sql, target_table);
+		System.out.println("[DAO result] " + result.toString());
 		System.out.println("---------------\n");
+		
+		return result;
 	}
 
 	@Override
-	public void dbUpdate(HttpServletRequest request, HttpSession session) {
+	public LinkedHashMap<String, Object> dbUpdate(HttpServletRequest request, HttpSession session) {
 		// TODO Auto-generated method stub
 		System.out.println("\n--- DBinsert.java ---");
 		String sql = request.getParameter("sql");
+		String target_table = request.getParameter("target_table");
 		System.out.println("1. sql : " + sql);
 		DAO dao = new DAO(session);
-		dao.dbUpdate(sql);
+		LinkedHashMap<String, Object> result = dao.dbUpdate(sql, target_table);
+		
 		System.out.println("---------------\n");
+		
+		return result;
 	}
 
 	@Override
@@ -1010,6 +1016,23 @@ public class SQLServiceImpl implements SQLService{
 		}
 		
 		return user_sch_nm;
+	}
+
+	@Override
+	public LinkedHashMap<String, Object> getOtherData(HttpServletRequest request, HttpSession session) {
+		// TODO Auto-generated method stub
+		System.out.println("\n--- getOtherData.java ---");
+		String sql = request.getParameter("sql");
+		String newRowCount = request.getParameter("newRowCount");
+		System.out.println("[Request Prameter] newRowCount : " + newRowCount);
+		sql = "SELECT * FROM (" + sql + ") WHERE ROWNUM<=" + newRowCount;
+		System.out.println("[Maked SQL] " + sql);
+		DAO dao = new DAO(session);
+		LinkedHashMap<String, Object> result = dao.getOtherData(sql);
+		System.out.println("result : " + result.toString());
+		System.out.println();
+				
+		return result;
 	}
 
 
