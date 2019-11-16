@@ -8,19 +8,10 @@
 <meta name="viewport" content="width=device-width, inittal-scale=1">
 <title>채팅창 메인화면</title>
 <link rel="stylesheet" href="./resources/css/custom.css">
-<script src="./resources/js/sockjs.js"></script>
-<!-- 부트스트랩 원래버전 -->
 <link rel="stylesheet" href="./resources/css/bootstrap.css">
+<script src="./resources/js/sockjs.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="./resources/js/bootstrap.js"></script>
-<script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-
-<!-- 부트스트랩 수정-->
-<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
- -->
 
 <script>
 	$(document).ready(function() {
@@ -121,7 +112,7 @@ function openButton(menu, a){ /*  버튼 새창 */
 		
 		var url = "getRp?chatId="+id;
 		var name = "채팅신고";
-		var option = 'width=800px, height=300px, left='+ popupX + ', top='+ popupY; 
+		var option = 'width=484px, height=570px, left='+ popupX + ', top='+ popupY; 
 		window.open(url,name,option);
 	}else if(menu == "3" || menu == 3){
 		window.open("online","온라인",'width=200px, height=550px, left='+ popupX + ', top='+ popupY )
@@ -148,8 +139,7 @@ function openButton(menu, a){ /*  버튼 새창 */
 								<h3>
 									<%-- <c:if test="${not empty userid}"> --%>
 									<!-- 변경/등록 버튼은 userid가 있는(관리자/회원)만 볼수있다.  -->
-									<button type="button" class="btn btn-default" onclick="openButton(1)">등록</button>
-									<button type="button" class="btn btn-default" onclick="openButton(0)">검색</button>
+									<button type="button" class="btn btn-default" onclick="openButton(0)">검색하기</button>
 									<%-- </c:if> --%>
 								</h3>
 							</div>
@@ -161,9 +151,17 @@ function openButton(menu, a){ /*  버튼 새창 */
 							<!-- 대화입력창 시작  -->
 							<div class="portlet-footer">
 							
+							
+							
+							
+							
 								<!-- 회원아이디 부분 시작  -->
 								<div class="row">
 									<div class="form-group col-xs-4">
+									
+									
+									
+									
 										<!-- 로그인을 하면 회원아이디로 대체 -->
 										<input id="nickname" type="hidden" value="${member.nickname }">
 										<input style="width:100px; height: 40px;" name="nick" id="nick" 
@@ -174,10 +172,11 @@ function openButton(menu, a){ /*  버튼 새창 */
 										<button type="button" class="btn btn-default" onclick="openButton(3)"
 										style="height: 40px; width: 100px;">현재	접속자</button>
 								</div> -->
-								
-								
 								</div>
 								<!-- 회원 아이디 끝 -->
+								
+								
+								
 								<!-- 메세지 입력창 시작  -->
 								<div class="row">
 									<div id="text" class="form-group col-xs-10">
@@ -190,8 +189,17 @@ function openButton(menu, a){ /*  버튼 새창 */
 									</div>
 								</div>
 								<!-- 메세지 입력창 끝 -->
+								
+								
 							</div>
 							<!-- 대화입력창 끝  -->
+							
+							
+							
+							
+							
+							
+							
 						</div>
 					</div>
 				</div>

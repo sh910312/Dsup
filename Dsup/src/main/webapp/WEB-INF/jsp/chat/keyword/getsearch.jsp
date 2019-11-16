@@ -27,14 +27,14 @@ function openButton(menu,a){ /*  버튼 새창 */ // menu,a >> 첫번째와 두�
 		
 		console.log("aaaaaaaaaa")
 		// rpId에 게시글 넘버 넣기, type은 0으로 지정 하기
-		window.open("getRp?searchId=${search.searchId }","게시글신고",'width=800px, height=300px, left='+ popupX + ', top='+ popupY);
+		window.open("getRp?searchId=${search.searchId }","게시글신고",'width=484px, height=447px, left='+ popupX + ', top='+ popupY);
 
 	
 	}else if(menu == "1" || menu == 1){ // 댓글 신고
 		
 		console.log(a);
 		
-		window.open("getRp?reId="+a,"댓글신고",'width=800px, height=300px, left='+ popupX + ', top='+ popupY);
+		window.open("getRp?reId="+a,"댓글신고",'width=484px, height=447px, left='+ popupX + ', top='+ popupY);
 	}
 	
 }
@@ -158,7 +158,7 @@ function back() { // 돌아가기
 } 
 
 
- window.onload = function(){		//db읽어온 텍스트 \n  -> <br> 바꿈
+ window.onload = function(){ //db읽어온 텍스트 \n  -> <br> 바꿈
 	var text = document.getElementById("updatecotents");
 	var result = text.value.replace(/(\n|\r\n)/g, '<br>');
 	document.getElementById("test").innerHTML = result;
@@ -238,15 +238,16 @@ function back() { // 돌아가기
 								<c:forEach items="${reList }" var="re">
 								<div id="${re.reId }">
 									<input type="hidden" name="reId" id="reId" value="${re.reId }" >
-										${re.userId }  :
-										<div id="editform">${re.contents }</div> 
+
+										${re.userId }
 										${re.writeDate }
-									<button type="button" class="btn btn-default btn-xs" onclick="openButton(1,${re.reId })">신고</button>
+										<button type="button" class="btn btn-default btn-xs" onclick="openButton(1,${re.reId })">신고</button>
 									<c:if test="${userId == re.userId }">
 										<div id="delbtn"><button type="button" id="delRebtn" name="delRebtn" class="delRebtn btn btn-default btn-xs pull-right">댓글 삭제</button></div>
 										<div id="editbtn"><button type="button" id="updateRebtn" class="updateRebtn btn btn-default btn-xs pull-right">댓글 수정</button></div>
 									</c:if>
-										<br><br>
+										<div id="editform">${re.contents }</div> 
+										<br>
 								</div>
 								<input type="hidden" name="page" value="1"/>
 								</c:forEach>
@@ -271,7 +272,7 @@ function back() { // 돌아가기
 								<div class="form-group col-lg-12" align="center">
 								<form id="frm2" class="form-inline" action="insertRe" method="POST">
 								<input type="hidden" name="searchId" value="${search.searchId }">
-									<input type="text" style="width: 80%; height: 40px;" name="contents" id="contents" class="form-control" placeholder="댓글을 입력하세요." maxlength="20">
+									<input type="text" style="width: 80%; height: 40px;" name="contents" id="contents" class="form-control" placeholder="댓글을 입력하세요." maxlength="50">
 									<button type="button" id="insertbtn" name="insertbtn" class="btn btn-default" style="width: 100px; height:40px;">등록 </button>
 								</form>									
 								</div>

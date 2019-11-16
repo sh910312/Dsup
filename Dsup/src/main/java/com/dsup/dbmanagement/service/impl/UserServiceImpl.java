@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dsup.dbmanagement.UserVO;
-import com.dsup.dbmanagement.service.UserSchemaVO;
 import com.dsup.dbmanagement.service.UserService;
 
 @Service
@@ -53,15 +52,24 @@ public class UserServiceImpl implements UserService{
 		return userDAO.getUser(vo);
 	}
 
-	@Override
-	public UserVO reservedWords(UserVO vo) {
-		return userDAO.getUser(vo);
-	}
+	/*
+	 * @Override public UserVO reservedWords(UserVO vo) { return
+	 * userDAO.getUser(vo); }
+	 */
 
 	@Override
 	public List<UserVO> getUserSchema(String userId) {
 		// 윤정 목록조회
 		return userDAO.getUserSchema(userId);
+	}
+
+	@Override
+	public int scChk(String reservedWords) {
+		if(userDAO.scChk(reservedWords) == null)
+			return 1;
+		else
+			return 0;
+		
 	}
 
 

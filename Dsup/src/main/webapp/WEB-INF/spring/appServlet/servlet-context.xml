@@ -53,6 +53,9 @@
             <mapping path="/*"/>
             <mapping path="/user/*"/>
             <exclude-mapping path="/login"/>
+            <exclude-mapping path="/members"/>
+            <exclude-mapping path="/withdrawalSuccess"/>
+            <!-- ↑ 윤정 회원탈퇴 완료 페이지  -->
             <beans:ref bean="LoginInterceptor"/>
         </interceptor>
 	</interceptors>
