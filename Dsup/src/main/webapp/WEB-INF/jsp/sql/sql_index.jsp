@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>DBhelper</title>
+<title>DBhelper - SQL</title>
 <meta name="description" content="Drag a link to reconnect it. Nodes have custom Adornments for selection, resizing, and rotating.  The Palette includes links." />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
