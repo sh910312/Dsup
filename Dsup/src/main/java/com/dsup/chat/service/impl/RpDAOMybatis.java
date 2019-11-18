@@ -31,7 +31,7 @@ public class RpDAOMybatis { // (p.513)
 	}
 
 	// 중복체크
-	public RpVO checkRp(RpVO vo) {
+	public int checkRp(RpVO vo) {
 		return mybatis.selectOne("RpDAO.checkRp", vo);
 	}
 	

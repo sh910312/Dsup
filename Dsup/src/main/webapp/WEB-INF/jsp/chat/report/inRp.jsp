@@ -53,8 +53,8 @@ window.onload = function(){		//db읽어온 텍스트 \n  -> <br> 바꿈
 
 </head>
 <body>
-
-
+${checkRp}==================
+<c:if test="${checkRp eq 0 }">
 <form id="frm">
 	<div class="container">
 			<div class="row">
@@ -138,5 +138,12 @@ window.onload = function(){		//db읽어온 텍스트 \n  -> <br> 바꿈
 			</div>
 		</div>
 	</form>
+	</c:if>
+	<c:if test="${checkRp gt 0 }">
+	
+	ㅇㅇㅇㅇㅇㅇ
+	
+	
+	</c:if>
 </body>
 </html>
