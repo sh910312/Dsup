@@ -5,20 +5,24 @@ $(function(){
 	
 		memberUpdate();	//수정
 		
+		checkValue();
 });
 
-/*function checkValue(){	
+function checkValue(){	
 	$('#checkValue').on('click', function(){
-		var userId = $("userId").val();
+		/*var userId = $("userId").val();
 		$('[class="form__error"]').text('');
 		if (userId.length < 1){
-			$('[for="userId"]').next().text("다른 아이디를 사용해주세요.");
+			$('[for="userId"]').next().text("아이디를 입력해주세요.");
+		*/
+		if($('#login-userId').val() == ''){
+			$('[for="userId"]').next().text("아이디를 입력해주세요.");
+			return false;
+		}	
 		
-		}
 	})	
-  
 }	
-	*/		/*$.ajax({
+			/*$.ajax({
 				url: "members",
 				type: 'POST',
 				dataType: 'json',

@@ -55,26 +55,25 @@
     	console.log(data);
     	
     	switch(data.cmd){
-    	
+    		
     		case "login":
     			$("#chatList").append(data.msg + "<hr>");
     			break;
     		
     		case "msge":
-    			$("#chatList").append(data.msg + "&nbsp;"
-    				+ "<button type='button' class='btn btn-default btn-xs' onclick='openButton(2, this)'>" 
-    				+ "신고" + "</button>"
-    				+ "<hr>"
-    			);
+    			var btn = "";
+	    			console.log(data.userId)
+    			if("${userId}" != data.userId){
+    				btn = "<button type='button' class='btn btn-default btn-xs' onclick='openButton(2, this)'>" + "신고" + "</button>";
+    			}
+    				$("#chatList").append(data.msg + "&nbsp;" + btn + "<hr>");
     			break;
-    	
+    			
 			case "logout":
 				$("#chatList").append(data.msg + "<hr>");
     			break;
     	}
     	
-    	
-		
 		$('#chatList').scrollTop($('#chatList')[0].scrollHeight); // 채팅 최신 상태 유지
     
     }
@@ -83,6 +82,13 @@
     function onClose(evt) {
 		$("#data").appendMessage("연결 끊김");
     }
+
+    // 로그아웃 했을 때
+    function chatlogout(evt) {
+    	sock.close();
+    }
+    
+    
     
     // 서버와 연결을 되었을 때 자동 발송
     function onOpen(evt) {
@@ -90,10 +96,11 @@
     }
 
 
+    
 
-   
     
 </script>
+
 
 <script>
 
@@ -103,7 +110,7 @@ function openButton(menu, a){ /*  버튼 새창 */
 	var popupY = (document.body.offsetHeight / 2) - (200/2);
 
 	if (menu == "0" || menu == 0){
-		window.open("SearchMap","검색하기",'width=800px, height=400px, left='+ popupX + ', top='+ popupY);
+		window.open("SearchMap","검색하기",'width=728px, height=383px, left='+ popupX + ', top='+ popupY);
 	}else if(menu == "1" || menu == 1){
 		window.open("insertSearchForm","등록하기",'width=800px, height=350px, left='+ popupX + ', top='+ popupY )
 	}else if(menu == "2" || menu == 2) {
@@ -112,7 +119,7 @@ function openButton(menu, a){ /*  버튼 새창 */
 		
 		var url = "getRp?chatId="+id;
 		var name = "채팅신고";
-		var option = 'width=484px, height=570px, left='+ popupX + ', top='+ popupY; 
+		var option = 'width=484px, height=523px, left='+ popupX + ', top='+ popupY; 
 		window.open(url,name,option);
 	}else if(menu == "3" || menu == 3){
 		window.open("online","온라인",'width=200px, height=550px, left='+ popupX + ', top='+ popupY )

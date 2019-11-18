@@ -33,15 +33,6 @@
 			</select>
 		</div>
 	</div>
-<!-- 	<div>
-		<div style="font-weight: bold;">Add Type</div>
-		<div>
-			<select id="dbinsert-add-type" name="dbinsert-select" class="dbinsert-select">
-				<option>Manual</option>
-				<option>Auto</option>
-			</select>
-		</div>
-	</div> -->
 </div>
 <div id="dbinsert-contents-container" style="border: black solid 1px; display:flex;">
 	<div style = "margin-right:15px">
@@ -81,9 +72,21 @@
 	</div>
 </div>
 <div style="border: black solid 1px;">
-	<div style="font-weight: bold;">Where Statement</div>
+	<div style="font-weight: bold;">Matching Columns</div>
 	<div>
 		<table id="dbinsert-execution-table" border=1>
+			<tr>
+				<th>Target Col</th>
+				<th>=</th>
+				<th>Input Col</th>
+		   </tr>
+		</table>
+	</div>
+</div>
+<div style="border: black solid 1px;">
+	<div style="font-weight: bold;">Where Statement</div>
+	<div>
+		<table id="dbinsert-whereStmt-table" border=1>
 			<tr>
 				<th>Target Col</th>
 				<th>=</th>
@@ -101,12 +104,6 @@
 		</table>
 	</div>
 </div>
-<!-- <div style="border: black solid 1px; display:flex;">
-	<div style="font-weight: bold;">Delete/Update Where Statement</div>
-	<div>
-		<textarea id="dbinsert-where-statement" rows="" cols="" disabled></textarea>
-	</div>
-</div> -->
 <div style="border: black solid 1px; display: flex;">
 	<div>
 		<button onclick="controller.apply('DBinsert')">Apply</button>

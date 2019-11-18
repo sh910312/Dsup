@@ -65,7 +65,15 @@ var Setting = (function() {
 		}
 		
 		function dbInsertManualAdd(add_type, t){
-			var input_col = $('#dbinsert-table tr.clicked td').eq(0).text();
+			var input_col = $('#dbinsert-table tr.clicked td').eq(1).text();
+			var target_col = $('#dbinsert-target-table tr.clicked td').eq(1).text();
+			var tag = "<tr>" + 
+						"<td class='target_col'>" + target_col + "</td>" + 
+						"<td>=</td>" + 
+						"<td class='input_col'>" + input_col + "</td>" + 
+					  "</tr>";
+			$('#dbinsert-execution-table').append(tag);
+			              
 			$('#dbinsert-target-table tr.clicked td').eq(3).text(input_col)
 
 			changeTrClassName(add_type, t);
@@ -614,8 +622,7 @@ var Setting = (function() {
 					var selected_target_col = $('#where-stmt-target-select option:selected').text();
 					var selecte_target_col_type = $('#dbinsert-table tr td:contains("' + selected_target_col + '")')
 														.eq(0).siblings().text();
-					var same_type_input_col_leng = 
-						$('#dbinsert-table tr td:contains("' + selecte_target_col_type + '")').length;
+					var same_type_input_col_leng = $('#dbinsert-table tr td:contains("' + selecte_target_col_type + '")').length;
 					var tag = "<option></option>";
 					if(select_tag_id == "where-stmt-target-select"){
 						for(var i=0; i<same_type_input_col_leng; i++){
@@ -651,9 +658,9 @@ var Setting = (function() {
 						var select_val = $('#'+select_tag_id+' option:selected').val();
 						
 						if(select_val == 'Insert' || select_val == 'Delete'){
-							$('#dbinsert-execution-table select').attr("disabled", "disabled");
+							$('#dbinsert-whereStmt-table select').attr("disabled", "disabled");
 						}else{
-							$('#dbinsert-execution-table select').removeAttr("disabled");
+							$('#dbinsert-whereStmt-table select').removeAttr("disabled");
 						}
 					}
 				}else if(change_type == 'dbinsert-add-type'){
@@ -963,6 +970,7 @@ var Setting = (function() {
 							}
 						}else{
 							//Auto일때 처리
+							var tag = "";
 							var auto_added_length = $('#dbinsert-contents-container table tr.Auto_added').length;
 							if (auto_added_length == 0){
 								//auto로 처음 add 시키는 상황
@@ -972,12 +980,14 @@ var Setting = (function() {
 								for(var i=1; i<input_table_length; i++){
 									//empnovarchar
 									var input_col_txt = $('#dbinsert-table tr').eq(i).children().text();
+									var input_tr_class = $('#dbinsert-table').children().eq(i).attr('class');
 									//empno
 									input_col = $('#dbinsert-table tr').eq(i).children().eq(0).text();
 									//varchar
 									input_col_type = $('#dbinsert-table tr').eq(i).children().eq(1).text();
 									for(var  j=1; j<target_table_length; j++){
 										var target_col = $('#dbinsert-target-table tr').eq(j).children().eq(1).text();
+										var target_tr_class = $('#dbinsert-target-table').children().eq(j).attr('class')
 										var target_type = $('#dbinsert-target-table tr').eq(j).children().eq(0).text();
 										//empnovarchar
 										var target_col_txt = target_col + target_type;
@@ -985,18 +995,18 @@ var Setting = (function() {
 											input_table_tr.eq(i).attr('class', 'clicked');
 											target_table_tr.eq(j).attr('class',	'clicked');
 											$('#dbinsert-target-table tr.clicked td').eq(3).text(input_col);
-//											tag += "<tr><td class='target_col'>"
-//												+ target_col
-//												+ "</td>" +
-//												"<td>=</td>" +
-//												+ "<td class='input_col'>"
-//												+ input_col
-//												+ "</td>"
+											tag += "<tr><td class='target_col'>"
+												+ target_col
+												+ "</td>"
+												+ "<td>=</td>" 
+												+ "<td class='input_col'>"
+												+ input_col
+												+ "</td></tr>";
 //												+ "<td class='type'>"
 //												+ target_col_type
 //												+ "</td></tr>";
-//										$("#dbinsert-execution-table").append(tag);
-//										tag = "";
+										$("#dbinsert-execution-table").append(tag);
+										tag = "";
 										// 색깔 바꿔 주면서 class 이름을
 										// "add타입_added"로 해줌.
 										changeTrClassName(add_type, t);

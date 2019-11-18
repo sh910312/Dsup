@@ -437,11 +437,29 @@ var Process = (function() {
 						}
 					}
 				}
+
 				
 				if(execution_mode == "Insert"){
+					//매칭컬럼들 가지고 오는 부분
+					var for_length = $('#dbinsert-execution-table tr td.target_col').length;
+					var target_cols = "";
+					var input_cols = "";
+					for(var i=0; i<for_length; i++){
+						var target_col = $('#dbinsert-execution-table tr td.target_col').eq(i).text();
+						var input_col = $('#dbinsert-execution-table tr td.input_col').eq(i).text();
+						if(i == for_length-1){
+							target_cols += target_col;
+							input_cols += input_col;
+						}else{
+							target_cols += target_col + ", ";						 
+							input_cols += input_col + ", ";
+						}
+					}
 					
-					request.open("Post", "DBinsert.do?target_table=" + encodeURI(target_table) +
-							"&child_sql=" + encodeURI(child_sql), false);
+					var sql = "INSERT INTO " + target_table + "(" + target_cols + ") " + child_sql;
+
+					request.open("Post", "DBinsert.do?sql=" + encodeURI(sql) + 
+							"&target_table=" + encodeURI(target_table), false);
 
 					request.onreadystatechange = function() {
 						if (request.readyState == 4 && request.status == 200) {
@@ -455,14 +473,14 @@ var Process = (function() {
 					//sal<1000 and deptno<=20
 					//$('#dbinsert-execution-table tr td.target_col').eq(0).text()
 					var where_stmt = "";
-					var where_stmt_cnt = $('#dbinsert-execution-table select').length/2;
+					var where_stmt_cnt = $('#dbinsert-whereStmt-table select').length/2;
 					for(var i=0; i<where_stmt_cnt; i++){
 						var target_col = $('#where-stmt-target-select option:selected').text();
 						var input_col = $('#where-stmt-input-select option:selected').text();
 						if(i == where_stmt_cnt-1){
-							where_stmt += "a." + target_col + "= b." + input_col;
+							where_stmt += "a." + target_col + "=b." + input_col;
 						}else{
-							where_stmt += "a." + target_col + "= b." + input_col + ", ";
+							where_stmt += "a." + target_col + "=b." + input_col + ", ";
 						}
 					}
 					
@@ -486,19 +504,59 @@ var Process = (function() {
 						}
 					}
 					
+					//매칭컬럼들 가지고 오는 부분
+					var for_length = $('#dbinsert-execution-table tr td.target_col').length;
+					var target_cols = "";
+					var input_cols = "";
+					var update_set_stmt = "";
+					for(var i=0; i<for_length; i++){
+						var target_col = $('#dbinsert-execution-table tr td.target_col').eq(i).text();
+						var input_col = $('#dbinsert-execution-table tr td.input_col').eq(i).text();
+						if(i == for_length-1){
+							target_cols += "a." + target_col;
+							input_cols += "b." + input_col;
+							var temp_update_set_stmt = "a." + target_col + "=" + "b." + input_col;
+							console.log("[where구문 update구문 비교하는 부분] where_stmt : " + where_stmt + " | " + "temp_update_set_stmt : " + temp_update_set_stmt);
+							if(where_stmt != temp_update_set_stmt){
+								update_set_stmt += "a." + target_col + "=" + "b." + input_col;
+							}
+
+						}else{
+							target_cols += "a." + target_col + ", ";						 
+							input_cols += "b." + input_col + ", ";
+							var temp_update_set_stmt = "a." + target_col + "=" + "b." + input_col;
+							console.log("[where구문 update구문 비교하는 부분] where_stmt : " + where_stmt + " | " + "temp_update_set_stmt : " + temp_update_set_stmt);
+							if(where_stmt != temp_update_set_stmt){
+								update_set_stmt += "a." + target_col + "=" + "b." + input_col + ", ";
+							}
+						}
+					}
+					var sql = "";
 					if(where_stmt != null || where_stmt != ""){
-						var sql = "UPDATE " + target_table + " a SET (" + set_stmt + ") =" +
-				          "(SELECT b." + select_stmt + " " +
-				           "FROM (" + child_sql + ") b " + 
-				           "WHERE " + where_stmt + ") ";
+//						var sql = "UPDATE " + target_table + " a SET (" + set_stmt + ") =" +
+//				          "(SELECT b." + select_stmt + " " +
+//				           "FROM (" + child_sql + ") b " + 
+//				           "WHERE " + where_stmt + ") ";
+						//Merge Update 해야되는 부분
+						sql = "MERGE INTO " + target_table + " a " +
+										    "USING (" + child_sql + ") b " + 
+										    "  ON (" + where_stmt + ") " +
+										    "WHEN MATCHED THEN " +
+										    "    UPDATE SET " + update_set_stmt + " " +
+										    "WHEN NOT MATCHED THEN " +
+										    "    INSERT (" + target_cols + ")" + 
+										    "    VALUES (" + input_cols + ")";
 					}else{
-						var sql = "UPDATE " + target_table + " " +
-				          "SET (" + set_stmt + ")=" +
-				          "(SELECT " + select_stmt + " " +
+						sql = "UPDATE " + target_table + " " +
+				          "SET (" + target_cols + ")=" +
+				          "(SELECT " + input_cols + " " +
 				           "FROM (" + child_sql + "))";
 					}
 					
-					request.open("Post", "DBupdate.do?sql=" + encodeURI(sql), false);
+					console.log("[Update SQL] " + sql);
+					
+					request.open("Post", "DBupdate.do?sql=" + encodeURI(sql) +
+							"&target_table=" + target_table, false);
 
 					request.onreadystatechange = function() {
 						if (request.readyState == 4 && request.status == 200) {
@@ -508,6 +566,9 @@ var Process = (function() {
 					};
 					
 					request.send(null);
+					
+				}else if(execution_mode == 'merge'){
+					
 				}
 			}
 		};

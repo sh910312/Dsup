@@ -90,14 +90,14 @@
 									+ (item.tablespaceName) + "'>"
 									+ (item.tablespaceName) + "</a>");
 				var $status = $("<td>").text((item.status));
-				var $total = $("<td>").text((item.total));
-				var $used = $("<td>").text((item.used));
-				var $free = $("<td>").text((item.free));
+				var $total = $("<td align='right'>").text((item.total) + " MB");
+				var $used = $("<td align='right'>").text((item.used) + " MB");
+				var $free = $("<td align='right'>").text((item.free) + " MB");
 
 				$("tbody").append(
-						$("<tr>").append($radio).append($tablespaceName)
-								.append($status).append($total).append(
-										$used).append($free));
+					$("<tr>")
+						.append($radio).append($tablespaceName).append($status).append($total).append($used).append($free)
+					);
 					
 				$('input:radio[name="tablespaceName"]').eq(0).attr("checked", true);
 				// 첫 번째 라디오 자동 체크
@@ -150,17 +150,22 @@
 		var values = new Array();
 		names[0] = "테이블스페이스 명";
 		values[0] = "사용량 (GB)";
+		var sum = 0;
 		$.each(list,
 			function(idx, item) {
 				names.push((item.tablespaceName));
 				values.push((item.volumn));
+				sum += item.volumn;
 			}
 		);
 		
-		if(names.length == 1) {
+		if(names.length == 1) { // 데이터가 없을 때
 			console.log("no tablespace!");
 			names.push("");
 			values.push(0);
+		} else { // 총 사용량 합계 출력
+			names.push({type:'string', role:'annotation'});
+			values.push(sum + "GB (" + (sum * 1024) + " MB) 사용중");
 		}
 		
 		console.log(names);
@@ -178,6 +183,24 @@
 		      var options = {
 		        title: '종량제 사용량 (단위 GB)',
 		        chartArea: {width: '95%'},
+		        annotations: {
+		            alwaysOutside: true,
+		            textStyle: {
+		              fontSize: 18,
+		              auraColor: 'none',
+		              color: '#555'
+		            },
+		            boxStyle: {
+		              stroke: '#ccc',
+		              strokeWidth: 1,
+		              gradient: {
+		                color1: '#f3e5f5',
+		                color2: '#f3e5f5',
+		                x1: '0%', y1: '0%',
+		                x2: '100%', y2: '100%'
+		              }
+		            }
+		        },
 		        bar: { groupWidth: '70%' },
 		        isStacked: true,
 		        legend: { position: 'top' },

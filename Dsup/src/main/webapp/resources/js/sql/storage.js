@@ -18,7 +18,8 @@ var Storage = (function () {
         		 //"COL_NAME" : momo.getColNameInfo(),
         		 //"COL_TYPE" : momo.getColTypeInfo(),	
         		 "COL_NM_TYPE" : momo.getColTypePair(),
-        		 "DISPLAY_TABLE_TAG" : momo.getTableTag()}
+        		 "DISPLAY_TABLE_TAG" : momo.getTableTag(),
+        		 "ROWCOUNT" : momo.getRowCount()}
         	
         	var map = new Map();
         	map[key] = value;
@@ -76,9 +77,11 @@ var Storage = (function () {
         			case "DISPLAY_TABLE_TAG" :
         				result = json[k].DISPLAY_TABLE_TAG;
         				break;
-        			case "" :
+        			case "SQL" :
+        				result = json[k].SQL;
         				break;
-        			case "" :
+        			case "ROWCOUNT" :
+        				result = json[k].ROWCOUNT;
         				break;
         			case "" :
         				break;

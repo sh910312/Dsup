@@ -16,41 +16,46 @@ var MoMo = (function() {
 		var json;
 		var colTypePair;
 		var childInfo;
+		var rowCount;
 
 		function makeTableTag(json){
 			console.log(json);
 			// console.log("jsonLength : " + jsonLength);
 			var rownum = 1;
 			var tag = '';
+			var thead = '';
+			var tbody = '';
 			for (var key in json) {
+				//<thead>만드는 부분
 				if(key == "COL_NAME"){
 					var a_json = json[key];
-					tag = tag + 
+					thead = thead + 
 						'<tr style="font-weight: bold;">' +
 							'<td></td>';
 					for(var i=0; i<json[key].length; i++){
-						tag = tag + 
+						thead = thead + 
 							'<th>' + json[key][i] + '</th>';
 					}
-					tag = tag+
+					thead = thead+
 						'</tr>';
+				//<tbody>만드는 부분
 				}else if(key == "DATA"){
 					var a_json = json[key];
 				
 					for(a_key in a_json){
-						tag = tag +
+						tbody = tbody +
 						'<tr>' +
 							'<td>' + a_key + '</td>';
 						for(var i=0; i<a_json[a_key].length; i++){
-							tag = tag + 
+							tbody = tbody + 
 							'<td>' + a_json[a_key][i] + '</td>';
 						}
 					}
-					tag = tag+
-						'</tr>';
+					tbody = tbody + '</tr>';
 					rownum += 1;
 				}
 			}
+			tag = '<thead>' + thead + '</thead><tbody>' + tbody + '</tbody>';
 			
 			return tag;
 		}
@@ -85,6 +90,8 @@ var MoMo = (function() {
 					}else if(key == "COL_TYPE"){
 						//console.log(json[key]);
 						colTypeInfo = json[key];
+					}else if(key == "ROWCOUNT"){
+						rowCount = json[key];
 					}else{
 						//console.log(json[key]);
 						dataInfo = json[key];
@@ -102,6 +109,9 @@ var MoMo = (function() {
 				key = k;
 				type = t;
 				childsInfo = c;
+			},
+			setRowCount : function(p){
+				rowCount = p;
 			},
 			setColTypePair : function(p){
 				colTypePair = p;
@@ -138,6 +148,9 @@ var MoMo = (function() {
 			},
 			setTableTag : function(p) {
 				tableTag = p;
+			},
+			getRowCount : function(p) {
+				return rowCount;
 			},
 			getColTypePair : function(){
 				return colTypePair;

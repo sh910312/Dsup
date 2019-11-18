@@ -1,4 +1,4 @@
-//공용으로 사용할 수 있는 함수 정의
+//Global 변수
 var common;
 var table_tag;
 var Command = (function() {
@@ -108,7 +108,7 @@ var Command = (function() {
 									var list = process.getDBinsertTargetTableList();
 									setting.decorateTargetTableList(t, list);
 								}
-								//console.log("[child info] : " + info);
+								console.log("[child info] : " + info);
 								setting.decorate(k, t, info, "new");
 								setting.open(k, t);
 								
@@ -134,6 +134,10 @@ var Command = (function() {
 				}else{
 					var info = storage.getChildInfo(momo.getKey(), momo.getChildsInfo());
 					process.dbInsert(info);
+					//191115 DBinsert아이콘도 트랜잭션 실행 후 Show Data로 결과를 볼 수 있도록 추가함.
+					momo.setMoMo(result);
+					storage.setLocalStorage(momo);
+					//
 				}
 
 			},
@@ -166,7 +170,11 @@ var Command = (function() {
 			},
 			showData : function(k){
 				table_tag = storage.getLocalStorage(k, "DISPLAY_TABLE_TAG");
-				display.showData();
+				var sql = storage.getLocalStorage(k, "SQL");
+				var rowCount = storage.getLocalStorage(k, "ROWCOUNT");
+				//console.log("[Show Data] sql : " + sql);
+				//console.log("[Show Data] rowCount : " + rowCount);
+				display.showData(sql, rowCount);
 			},
 			join : function(){
 				setting.join();

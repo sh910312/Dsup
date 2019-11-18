@@ -43,6 +43,9 @@ function insert() {
 	})
 }
 
+window.onload = function(){ 
+	window.resizeTo(728,450);
+}; 
 
 
 </script>
@@ -89,7 +92,8 @@ function insert() {
 										<input name="searchList" type="checkbox" value="${search.searchId }"/>
 										</c:if> 
 										${search.searchId }
-										<a href="getSearch?searchId=${search.searchId }"> ${search.title }</a>
+										<a href="getSearch?searchId=${search.searchId }">${search.title }</a>
+										
 										</div>
 										</c:forEach>
 
