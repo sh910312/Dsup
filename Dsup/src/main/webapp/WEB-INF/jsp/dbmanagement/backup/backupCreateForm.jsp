@@ -23,7 +23,7 @@
 	// [1024] 테이블스페이스 리스트 요청
 	function tsList() {
 		$.ajax({
-			url : 'tablespaceList',
+			url : 'getStorage',
 			type : 'GET',
 			dataType : 'json',
 			success: tsListResult
@@ -34,11 +34,23 @@
 	function tsListResult(ts) {
 		$.each(ts, function(idx, item){
 			var $radio = $("<td>").append($("<input>").attr("name","tablespaceName").attr("type","radio").val((item.tablespaceName)));
-			$("tbody").append($("<tr>").append($radio).append("<td>" + (item.tablespaceName) + "</td>"));
+			$("tbody").append( 
+						$("<tr>").append($radio)
+								.append("<td>" + (item.tablespaceName) + "</td>")
+								.append("<td>" + item.status + "</td>")
+					);
 		});
 		
-		$('input:radio[name="tablespaceName"]').eq(0).attr("checked", true);
-		// 첫 번째 라디오 자동 체크
+		readonlyDisabled();
+	}
+	
+	// [윤정 1118] readonly상태인건 선택 못하게
+	function readonlyDisabled(){
+		$("tbody tr").each(function(){
+			var status = $(this).find("td:eq(2)").text();
+			if(status == 'READ ONLY')
+				$(this).find("input:radio").attr("disabled", true);
+		});
 	}
 	
 	// [윤정 1115] 테이블스페이스 선택하지 않았을경우 처리
@@ -55,12 +67,16 @@
 <%@include file="/WEB-INF/jsp/DBbar.jsp" %>
 <div class = "container">
 	<h1>테이블스페이스 선택</h1>
+	<span style="color:red">백업파일은 생성날짜로부터 30일간 보관됩니다.<br>
+	read only 상태의 테이블스페이스는 백업 불가능합니다.</span>
+	<br>
 	<form id="frm" method="post" action="backupCreate">
 		<table id = "tb" class = "table table-hover table-bordered">
 			<thead>
 				<tr>
 					<th></th>
 					<th>테이블스페이스 이름</th>
+					<th>상태</th>
 				</tr>
 			</thead>
 			<tbody></tbody>
