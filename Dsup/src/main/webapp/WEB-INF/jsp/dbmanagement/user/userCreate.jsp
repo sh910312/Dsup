@@ -41,6 +41,7 @@
 	//유저생성
 	function userCreate() {
 		var id = $('#id').val();
+		var idChkYn = false;
 		id = id.toUpperCase();
 		$("#id").val(id);
 		userCreate.isLoad = false;
@@ -49,6 +50,10 @@
 			console.log(id);
 			if($("#id").val() == "" ){
 				alert("아이디를 확인하세요!");
+				return
+			}
+			if (idChkYn == false){
+				alert("아이디 중복체크하세요")
 				return
 			}
 			if( $("#password").val() != $("#passwordcheck").val()){
@@ -83,21 +88,32 @@
 		});//등록 버튼 클릭
 	}//userInsert
 	
-
+	
  	//아이디 유효성 검사(1 = 중복 / 0 != 중복)
 	function idCheckFunction(){
 		$("#id").blur(function() {
 			// id = "id_reg" / name = "userId"
 			var id = $('#id').val();
-			var idJ = /^[a-z0-9][a-z0-9]{4,11}$/;
 			id = id.toUpperCase();
 			$("#id").val(id);
 
+			 if(id == ""){				
+				$('#id_check').text('아이디를 입력해주세요');
+				$('#id_check').css('color', 'red');
+				$("#reg_submit").attr("disabled", true);				
+			  return
+			} if(!id.substr(0,1).match(/[A-Z]/)) {
+				$('#id_check').text('사용할 수 없는 문자입니다.');
+				$('#id_check').css('color', 'red');
+				$("#reg_submit").attr("disabled", true);
+				return
+			} 
+			idChkYn = false;
 			$.ajax({
 				url : '${pageContext.request.contextPath}/idCheck?id='+ id,
 				type : 'get',
 				success : function(data) {
-					console.log("1 = 중복o / 0 = 중복x : "+ data);							
+					console.log("1 = 중복o / 0 = 중복x : 2 = 키워드o"+ data);							
 				      
 
 					if (data == 1) {
@@ -107,25 +123,17 @@
 						$("#reg_submit").attr("disabled", true);
 						return
 					}   
-					else {
-						 if(id == ""){
-							
-							$('#id_check').text('아이디를 입력해주세요');
-							$('#id_check').css('color', 'red');
-							$("#reg_submit").attr("disabled", true);				
-						  return
-						} 	if(!id.substr(0,1).match(/[A-Z]/)) {
-							$('#id_check').text('사용할 수 없는 문자입니다.');
-							$('#id_check').css('color', 'red');
-							$("#reg_submit").attr("disabled", true);
-							return
-						}
-						 else{
-							$("#id_check").text("사용가능한 아이디입니다.");
-							$('#id_check').css('color', 'blue');
-							$("#reg_submit").attr("disabled", false);
-							
-						 }
+					else if (data == 2) {
+						$("#id_check").text("예약어는 사용할 수 없습니다. ");
+						$("#id_check").css("color", "red");
+						$("#reg_submit").attr("disabled", true);
+						return
+						
+					}else{
+						$("#id_check").text("사용가능한 아이디입니다.");
+						$('#id_check').css('color', 'blue');
+						$("#reg_submit").attr("disabled", false);
+						idChkYn = true
 					}
 				}, error : function() {
 						console.log("실패");
@@ -148,7 +156,7 @@
 				<td>
 					<input type="text" name="id" id="id" placeholder="ID" size="30" maxlength="12" required
 						class="form-control" >
-					<div class="check_font" id="id_check"></div> 
+					<div class="check_font" id="id_check"></div>
 				</td> 
 			</tr>
 
