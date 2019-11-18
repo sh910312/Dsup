@@ -18,7 +18,7 @@ public class Scheduler {
 	@Autowired
 	MessgeService messgeService;
 	
-	@Scheduled(cron = "0 9 14 ? * MON-FRI")
+	@Scheduled(cron = "0 9 15 ? * MON-FRI")
 	
 		 public void sendSms() throws Exception {
 

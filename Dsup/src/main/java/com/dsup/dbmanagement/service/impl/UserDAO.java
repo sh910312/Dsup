@@ -49,12 +49,17 @@ public class UserDAO {
 	
 
 	//id중복 체크
-	public int checkOverId(String id) {
-		return 0;
+	public List<Map<String, Object>> idCheck(UserVO vo) {
+		return mybatis.selectList("UserDAO.idCheck", vo);
 	}
 
 	// 윤정 목록조회
 	public List<UserVO> getUserSchema(String userId) {
 		return mybatis.selectList("UserDAO.getUserSchema", userId);
+	}
+
+	//id 예약어
+	public String scChk(String reservedWords) {
+		return mybatis.selectOne("UserDAO.scChk", reservedWords);
 	}
 }
