@@ -8,4 +8,5 @@ public interface BackupService {
 	public void BackupCreate(BackupVO vo, String tablespaceName, String backupPath);
 	public List<BackupVO> getBackupList(String userId);
 	public void backupDelete(String[] deleteFiles);
+	public List<BackupVO> getOverBackup();
 }

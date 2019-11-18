@@ -1,0 +1,1351 @@
+Found a 58 line (256 tokens) duplication in the following files: 
+Starting at line 345 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 716 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+		int masterFromIndex = master_sql.indexOf("/*CHILDFM*/");;
+		String master_select = master_sql.substring(0, masterFromIndex).replaceFirst("SELECT ", "");
+		int maset_select_last_blank_index = master_select.lastIndexOf(" ");
+		//?ûê?ãù SQL?ùò SELECT?? FROM ?Ç¨?ù¥?ùò Í≥µÎ∞± ?†úÍ±∞Î?Î∂?
+		master_select = master_select.substring(0, maset_select_last_blank_index);
+		//master_select = master_select.replaceAll(" ", "");
+//		String[] master_cols = master_select.split(",");
+//		List<String> temp_master_col_list = Arrays.asList(master_cols);
+//		List<String> master_col_list = Arrays.asList(master_cols);
+		List<String> temp_master_col_list = new ArrayList<String>();
+		List<String> master_col_list = new ArrayList<String>();
+		Pattern pattern = Pattern.compile("[/*|*/](.*?)[/*|*/]");
+		Matcher matcher = pattern.matcher(master_select);
+		while (matcher.find()) {
+			String col = matcher.group(1);
+			if(!col.equals("")) {
+				temp_master_col_list.add(col);
+				master_col_list.add(col);
+			}
+				    		    
+		    if(matcher.group(1) ==  null)
+		    	break;
+		}
+		System.out.println("2. master_col_list : " + master_col_list.toString());
+		//191114 ?ïÑ?öî?óÜ?ñ¥ Î≥¥Ïó¨ Ï£ºÏÑù?úºÎ°? ÎßâÏùå
+//		for(int i=0; i<master_col_list.size(); i++) {
+//			String str = temp_master_col_list.get(i);
+//			master_col_list.set(i, str);
+//			String col = master_col_list.get(i);
+//			System.out.println(">master_col_list.get(." + i + ") : " + col);
+//			//?ûê?ãù Ïª¨Îüº?óê?Ñú ÎßàÏπ®?ëú?? AS ÎπºÍ≥† ?àú?àò Ïª¨ÎüºÎ™ÖÎßå Í∞?Ïß?Í≥? ?ò§?äî Î∂?Î∂?
+//			if(col.contains(" AS ")) {
+//				//AS Î∂ôÏ? Ïª¨Îüº Ï≤òÎ¶¨
+//				String[] split = col.split(" AS ");
+//				col = split[1];
+//				master_col_list.set(i, col);
+//			}else if(col.contains(".")){
+//				//ÎßàÏπ®?ëú Î∂ôÏ? Ïª¨Îüº Ï≤òÎ¶¨
+//				String[] split = col.split("\\.");
+//				col = split[1];
+//				master_col_list.set(i, col);
+//			}else {
+//				//ÎßàÏπ®?ëú?? AS ÎπºÍ≥† ?àú?àò Ïª¨Îüº?ì§ Ï≤òÎ¶¨
+//				master_col_list.set(i, col);
+//			}
+		
+		String master_select_col = "";
+		String[] temp;
+		String[] temp2;
+		
+		//191107 ?óê?ü¨ 1.4 ?õê?ù∏ Î∂?Î∂?
+		for(int i=0; i<master_col_list.size(); i++) {
+			if(i != master_col_list.size() -1) {
+				System.out.println("master_col_list.get(i) : " + master_col_list.get(i));
+				if(master_col_list.get(i).contains(" AS ")) {
+					System.out.println(">> AS ?è¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+					temp = master_col_list.get(i).split(" AS ");
+					master_select_col +="/*|*/" +  "a." + temp[1] + "/*|*/" + ", ";
+=====================================================================
+Found a 32 line (255 tokens) duplication in the following files: 
+Starting at line 428 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 778 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+						master_select_col += "/*|*/" + "a." + master_col_list.get(i).replaceFirst(" ", "") + "/*|*/";
+					}
+				}
+			}
+		}
+		
+		int slaveFromIndex = slave_sql.indexOf("/*CHILDFM*/");
+		String slave_select = slave_sql.substring(0, slaveFromIndex).replace("SELECT ", "");
+		int slave_select_last_blank_index = slave_select.lastIndexOf(" ");
+		slave_select = slave_select.substring(0, slave_select_last_blank_index);
+		//slave_select = slave_select.replaceAll(" ", "");
+		String[] slave_cols = slave_select.split(",");
+		List<String> slave_col_list = Arrays.asList(slave_cols);
+		//slave selectÎ¨? Ïª¨Îüº?ì§ ?ïû?óê Í≥µÎ∞± ?óÜ?ï†?äî Î∂?Î∂?
+		for(int i=0; i<slave_col_list.size(); i++){
+			String str = slave_col_list.get(i).replaceFirst(" ", "");
+			slave_col_list.set(i, str);
+		}
+		System.out.println("3. slave_col_list : " + slave_col_list.toString());
+		String slave_select_col = "";
+		String[] slave_temp;
+		String[] slave_temp2;
+		//191107 ?óê?ü¨ 1.4 ?õê?ù∏ Î∂?Î∂?
+		// case when Ï≤òÎ¶¨ ?ïò?äî Î∂?Î∂? ?óÜ?äî ?ù¥?ú†? case when Í∞ôÏ? Í≤ΩÏö∞ ?ñ¥Ï∞®Ìîº ?í§?óê asÍ∞? Î∂ôÏñ¥ ?ûàÍ∏? ?ïåÎ¨∏Ïóê as Î∂?Î∂? Ï≤òÎ¶¨ ?ïò?äî Í≥≥Ïóê?Ñú Í±∏Îü¨Ïß? 
+		for(int i=0; i<slave_col_list.size(); i++) {
+			if(i != slave_col_list.size() -1) {
+				System.out.println("slave_col_list.get(i) : " + slave_col_list.get(i));
+				if(slave_col_list.get(i).contains(" AS ")) {
+					System.out.println(">> AS ?è¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+					slave_temp = slave_col_list.get(i).split(" AS ");
+					if(master_col_list.contains(slave_temp[1])) {
+						slave_select_col += "/*|*/" + "b." + slave_temp[1] + " AS " + slave_temp[1] + "_" + slave_key + "/*|*/" + ", ";
+=====================================================================
+Found a 22 line (153 tokens) duplication in the following files: 
+Starting at line 80 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\controller\StorageController.java
+Starting at line 114 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\controller\StorageController.java
+
+	public ModelAndView storageShow(@RequestParam String tablespaceName, HttpSession session) {
+		ModelAndView mv = new ModelAndView();
+		
+		String userId = (String)session.getAttribute("userId");
+		UserTbspcTbVO vo = new UserTbspcTbVO();
+		vo.setUserId(userId);
+		vo.setTablespaceName(tablespaceName);
+		TablespaceVO ts = new TablespaceVO();
+		ts = storageService.getStorageOne(vo);
+		
+		if(ts != null) {
+			mv.addObject("ts", ts);
+			
+			List<DatafileVO> list = new ArrayList<DatafileVO>();
+			list = storageService.getDatafile(ts.getTablespaceName());
+			for(DatafileVO df : list) {
+				String[] arr = df.getFileName().split("\\\\");
+				df.setFileName(arr[arr.length-1]);
+			}
+			mv.addObject("df", list);
+		}
+		mv.setViewName("dbmanagement/storage/storageShow");
+=====================================================================
+Found a 16 line (142 tokens) duplication in the following files: 
+Starting at line 487 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 837 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+							slave_select_col += "/*|*/" + "b." + slave_col_list.get(i).replaceAll(" ", "") + "/*|*/" + ", ";
+						}
+					}
+				}
+			}else {
+				if(slave_col_list.get(i).contains(" AS ")) {
+					System.out.println(">> AS ?è¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+					slave_temp = slave_col_list.get(i).split(" AS ");
+					slave_select_col += "b." + "/*|*/" + slave_temp[1] + "/*|*/";
+				}else {
+					//191107 ?óê?ü¨ 1.4 ?õê?ù∏ ?àò?†ï Î∂?Î∂?
+					if(slave_col_list.get(i).replaceFirst(" ", "").contains(".")) {
+						System.out.println(">> AS ÎØ∏Ìè¨?ï® & . ?è¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+						slave_temp2 = slave_col_list.get(i).replaceFirst(" ", "").split(".");
+						if(master_col_list.contains(slave_temp2[1])) {
+							slave_select_col += "/*|*/" + "b." + slave_temp2[1] + " AS " + slave_temp2[1] + "_" + slave_key + "/*|*/";
+=====================================================================
+Found a 32 line (135 tokens) duplication in the following files: 
+Starting at line 157 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\DAO.java
+Starting at line 340 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\DAO.java
+
+			hash.put("COL_TYPE", innerList);
+			
+			int index = 1;
+			
+			innerList =  new ArrayList<Object>();
+			innerHash = new LinkedHashMap<String, Object>(); 
+			while(rs.next()) {
+				list = new ArrayList<Object>();
+				 for(int i=1 ; i<=columnCnt ; i++){
+					 value =  rs.getString(meta.getColumnName(i));
+					 list.add(value);
+				 }
+				 innerHash.put(Integer.toString(index), list);
+				 //System.out.println(index + ". " + innerList.toString());
+				 index += 1;
+			}
+			//?ï¥?ãπ sql?ùò Ï¥? row?àò Í∞?Ïß?Í≥? ?ò§?äî Î∂?Î∂?
+			int rowCount = getRowCount(sql);
+			
+			hash.put("ROWCOUNT", rowCount);
+			hash.put("DATA", innerHash);
+			
+			//outerList.add(hash);
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			//close();
+		}
+		
+		return hash;
+	}
+=====================================================================
+Found a 16 line (127 tokens) duplication in the following files: 
+Starting at line 34 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\controller\MessgeController.java
+Starting at line 51 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Scheduler.java
+
+	    System.out.println(result.get("status"));
+	    
+	    if ( (Boolean) result.get("status") == true) {
+	      // Î©îÏãúÏß? Î≥¥ÎÇ¥Í∏? ?Ñ±Í≥? Î∞? ?†Ñ?Ü°Í≤∞Í≥º Ï∂úÎ†•
+	      System.out.println("?Ñ±Í≥?");
+	      System.out.println(result.get("group_id")); // Í∑∏Î£π?ïÑ?ù¥?îî
+	      System.out.println(result.get("result_code")); // Í≤∞Í≥ºÏΩîÎìú
+	      System.out.println(result.get("result_message")); // Í≤∞Í≥º Î©îÏãúÏß?
+	      System.out.println(result.get("success_count")); // Î©îÏãúÏß??ïÑ?ù¥?îî
+	      System.out.println(result.get("error_count")); // ?ó¨?ü¨Í∞? Î≥¥ÎÇº?ãú ?ò§Î•òÎÇú Î©îÏãúÏß? ?àò
+	    } else {
+	      // Î©îÏãúÏß? Î≥¥ÎÇ¥Í∏? ?ã§?å®
+	      System.out.println("?ã§?å®");
+	      System.out.println(result.get("code")); // REST API ?óê?ü¨ÏΩîÎìú
+	      System.out.println(result.get("message")); // ?óê?ü¨Î©îÏãúÏß?
+	    }
+=====================================================================
+Found a 18 line (104 tokens) duplication in the following files: 
+Starting at line 19 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+Starting at line 15 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\DAOforGetUserScemaNM.java
+
+	public AdminVolumeDAO() {
+        String user = "sys as sysdba"; 
+        String pw = "oracle";
+//		String user = "sys as sysdba";
+//        String pw = "orcl";
+			
+		try {
+			System.out.println("DB Connection ID : " + user);
+			System.out.println("DB Connection PWD : " + pw);
+//			String url = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
+            String url = "jdbc:oracle:thin:@192.168.0.108:1521:xe";
+            Class.forName("oracle.jdbc.driver.OracleDriver");        
+            conn = DriverManager.getConnection(url, user, pw);
+        } catch (ClassNotFoundException cnfe) {
+            System.out.println("DB ÔøΩÔøΩÔøΩÔøΩÃπÔø? ÔøΩŒµÔøΩ ÔøΩÔøΩÔøΩÔøΩ :"+cnfe.toString());
+        } catch (SQLException sqle) {
+            System.out.println("DB ÔøΩÔøΩÔøΩ”ΩÔøΩÔøΩÔøΩ : "+sqle.toString());
+        } catch (Exception e) {
+=====================================================================
+Found a 12 line (93 tokens) duplication in the following files: 
+Starting at line 25 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+Starting at line 40 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\DAO.java
+Starting at line 21 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\DAOforGetUserScemaNM.java
+
+		try {
+			System.out.println("DB Connection ID : " + user);
+			System.out.println("DB Connection PWD : " + pw);
+//			String url = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
+            String url = "jdbc:oracle:thin:@192.168.0.108:1521:xe";
+            Class.forName("oracle.jdbc.driver.OracleDriver");        
+            conn = DriverManager.getConnection(url, user, pw);
+        } catch (ClassNotFoundException cnfe) {
+            System.out.println("DB ÔøΩÔøΩÔøΩÔøΩÃπÔø? ÔøΩŒµÔøΩ ÔøΩÔøΩÔøΩÔøΩ :"+cnfe.toString());
+        } catch (SQLException sqle) {
+            System.out.println("DB ÔøΩÔøΩÔøΩ”ΩÔøΩÔøΩÔøΩ : "+sqle.toString());
+        } catch (Exception e) {
+=====================================================================
+Found a 7 line (89 tokens) duplication in the following files: 
+Starting at line 463 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 496 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+				}else {
+					//191107 ?óê?ü¨ 1.4 ?õê?ù∏ ?àò?†ï Î∂?Î∂?
+					if(slave_col_list.get(i).replaceFirst(" ", "").contains(".")) {
+						System.out.println(">> AS ÎØ∏Ìè¨?ï® & . ?è¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+						slave_temp2 = slave_col_list.get(i).replaceFirst(" ", "").split(".");
+						if(master_col_list.contains(slave_temp2[1])) {
+							slave_select_col += "/*|*/" + "b." + slave_temp2[1] + " AS " + slave_temp2[1] + "_" + slave_key + "/*|*/" + ", ";
+=====================================================================
+Found a 8 line (88 tokens) duplication in the following files: 
+Starting at line 402 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 752 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+					master_select_col +="/*|*/" +  "a." + temp[1] + "/*|*/" + ", ";
+				}else {
+					//191107 ?óê?ü¨ 1.4 ?õê?ù∏ ?àò?†ï Î∂?Î∂?
+					if(master_col_list.get(i).replaceFirst(" ", "").contains(".")) {
+						System.out.println(">> AS ÎØ∏Ìè¨?ï®  && . ?è¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+						temp2 = master_col_list.get(i).replaceFirst(" ", "").split("\\.");
+						System.out.println("master_col_list.get(i).replaceFirst(\" \", \"\")  : " + master_col_list.get(i).replaceFirst(" ", ""));
+						master_select_col +="/*|*/" +  "a." + temp2[1] + "/*|*/" + ", ";
+=====================================================================
+Found a 7 line (87 tokens) duplication in the following files: 
+Starting at line 813 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 846 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+				}else {
+					//191107 ?óê?ü¨ 1.4 ?õê?ù∏ ?àò?†ï Î∂?Î∂?
+					if(slave_col_list.get(i).replaceFirst(" ", "").contains(".")) {
+						System.out.println(">> AS ÎØ∏Ìè¨?ï® & . ?è¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+						slave_temp2 = slave_col_list.get(i).replaceFirst(" ", "").split(".");
+						if(master_col_list.contains(slave_temp2[1])) {
+							slave_select_col += "/*|*/" + slave_temp2[1] + " AS " + slave_temp2[1] + "_" + slave_key + "/*|*/" + ", ";
+=====================================================================
+Found a 19 line (81 tokens) duplication in the following files: 
+Starting at line 131 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Https.java
+Starting at line 208 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Https.java
+
+				obj.put("status", true);
+				if (obj.get("code") != null) {
+					obj.put("status", false);
+				}
+			} else {
+				obj.put("status", false);
+				obj.put("message", "response is empty");
+			}
+		} catch (Exception e) {
+			obj.put("status", false);
+			obj.put("message", e.toString());
+		}
+		return obj;
+	}
+
+	/*
+	 * https request (GET)
+	 */
+	public JSONObject request(String url_string, HashMap<String, String> params) {
+=====================================================================
+Found a 9 line (78 tokens) duplication in the following files: 
+Starting at line 461 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 811 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+						slave_select_col += "/*|*/" + "b." + slave_temp[1] + ", ";
+					}
+				}else {
+					//191107 ?óê?ü¨ 1.4 ?õê?ù∏ ?àò?†ï Î∂?Î∂?
+					if(slave_col_list.get(i).replaceFirst(" ", "").contains(".")) {
+						System.out.println(">> AS ÎØ∏Ìè¨?ï® & . ?è¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+						slave_temp2 = slave_col_list.get(i).replaceFirst(" ", "").split(".");
+						if(master_col_list.contains(slave_temp2[1])) {
+							slave_select_col += "/*|*/" + "b." + slave_temp2[1] + " AS " + slave_temp2[1] + "_" + slave_key + "/*|*/" + ", ";
+=====================================================================
+Found a 14 line (75 tokens) duplication in the following files: 
+Starting at line 472 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 505 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+						}
+					}else {
+//						System.out.println(">> AS ÎØ∏Ìè¨?ï® & . ÎØ∏Ìè¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+//						slave_select_col += "b." + slave_col_list.get(i).replaceFirst(" ", "") + ", ";
+						System.out.println(">> AS ÎØ∏Ìè¨?ï® & . ÎØ∏Ìè¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+//						//191107 ?óê?ü¨ 1.4 ?õê?ù∏ ?àò?†ï Î∂?Î∂? : 2Ï§? Ï°∞Ïù∏ ?ïà?êò?äî Î∂?Î∂? Ï≤òÎ¶¨(Ï°∞Ïù∏ ?Ç§?ì§Îß? _1 Î∂ôÎèÑÎ°? ?ñà?ùå) => Ï§ëÎ≥µ Ïª¨Îüº?ì§ Ï≤òÎ¶¨ ?ïòÍ∏? ?úÑ?ï¥ ?û†?ãú ÎßâÏïÑ?ë†
+//						if(master_on_col.equals(slave_on_col) && slave_col_list.get(i).replaceAll(" ", "").equals(slave_on_col)) {
+//							slave_select_col += "b." + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_1" + ", ";
+//						}else {
+//							slave_select_col += "b." + slave_col_list.get(i).replaceAll(" ", "") + ", ";
+//						}
+						//191107 ?óê?ü¨ 1.4 ?õê?ù∏ ?àò?†ï 2Î≤àÏß∏ Î≥¥Ïïà
+						if(master_col_list.contains(slave_col_list.get(i).replaceAll(" ", ""))) {
+							slave_select_col += "/*|*/" + "b." + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_" + slave_key + "/*|*/" +  ", ";
+=====================================================================
+Found a 16 line (73 tokens) duplication in the following files: 
+Starting at line 90 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+Starting at line 146 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+
+				map.put("tablespace_name", tablespace_name);
+				map.put("total_size", total_size);
+				map.put("used_size", used_size);
+				map.put("free_size", free_size);
+				map.put("used_percent", used_percent);
+				list.add(map);
+				System.out.println(list.toString());
+			}
+		}catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public ArrayList<Object> getUserVolumCondition(){
+=====================================================================
+Found a 14 line (73 tokens) duplication in the following files: 
+Starting at line 822 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 855 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+						}
+					}else {
+//						System.out.println(">> AS ÎØ∏Ìè¨?ï® & . ÎØ∏Ìè¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+//						slave_select_col += "b." + slave_col_list.get(i).replaceFirst(" ", "") + ", ";
+						System.out.println(">> AS ÎØ∏Ìè¨?ï® & . ÎØ∏Ìè¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+//						//191107 ?óê?ü¨ 1.4 ?õê?ù∏ ?àò?†ï Î∂?Î∂? : 2Ï§? Ï°∞Ïù∏ ?ïà?êò?äî Î∂?Î∂? Ï≤òÎ¶¨(Ï°∞Ïù∏ ?Ç§?ì§Îß? _1 Î∂ôÎèÑÎ°? ?ñà?ùå) => Ï§ëÎ≥µ Ïª¨Îüº?ì§ Ï≤òÎ¶¨ ?ïòÍ∏? ?úÑ?ï¥ ?û†?ãú ÎßâÏïÑ?ë†
+//						if(master_on_col.equals(slave_on_col) && slave_col_list.get(i).replaceAll(" ", "").equals(slave_on_col)) {
+//							slave_select_col += "b." + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_1" + ", ";
+//						}else {
+//							slave_select_col += "b." + slave_col_list.get(i).replaceAll(" ", "") + ", ";
+//						}
+						//191107 ?óê?ü¨ 1.4 ?õê?ù∏ ?àò?†ï 2Î≤àÏß∏ Î≥¥Ïïà
+						if(master_col_list.contains(slave_col_list.get(i).replaceAll(" ", ""))) {
+							slave_select_col += "/*|*/" + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_" + slave_key + "/*|*/" +  ", ";
+=====================================================================
+Found a 6 line (70 tokens) duplication in the following files: 
+Starting at line 155 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 183 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+							System.out.println(">3." + j + ".1 select_stmt_list : " + select_stmt_list.toString());
+						}else if(checkOperaterExp(expression_list.get(i))){
+							//Ï∂îÍ??ïò?†§?äî Ïª¨Îüº?ùò expression?ù¥ ?ï®?àò ?ùº Í≤ΩÏö∞
+							String temp_child_sql = child_sql.replaceAll("/\\*\\|\\*/", "");
+							String exp = "SELECT " + expression_list.get(i) + " FROM (" + temp_child_sql + ")";
+							exp = "/*|*/" + "(" + exp + ") AS " + colName_list.get(i) + "/*|*/";
+=====================================================================
+Found a 7 line (70 tokens) duplication in the following files: 
+Starting at line 463 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 846 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+				}else {
+					//191107 ?óê?ü¨ 1.4 ?õê?ù∏ ?àò?†ï Î∂?Î∂?
+					if(slave_col_list.get(i).replaceFirst(" ", "").contains(".")) {
+						System.out.println(">> AS ÎØ∏Ìè¨?ï® & . ?è¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+						slave_temp2 = slave_col_list.get(i).replaceFirst(" ", "").split(".");
+						if(master_col_list.contains(slave_temp2[1])) {
+							slave_select_col += "/*|*/" + "b." + slave_temp2[1] + " AS " + slave_temp2[1] + "_" + slave_key + "/*|*/" + ", ";
+=====================================================================
+Found a 7 line (70 tokens) duplication in the following files: 
+Starting at line 496 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 813 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+				}else {
+					//191107 ?óê?ü¨ 1.4 ?õê?ù∏ ?àò?†ï Î∂?Î∂?
+					if(slave_col_list.get(i).replaceFirst(" ", "").contains(".")) {
+						System.out.println(">> AS ÎØ∏Ìè¨?ï® & . ?è¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+						slave_temp2 = slave_col_list.get(i).replaceFirst(" ", "").split(".");
+						if(master_col_list.contains(slave_temp2[1])) {
+							slave_select_col += "/*|*/" + "b." + slave_temp2[1] + " AS " + slave_temp2[1] + "_" + slave_key + "/*|*/";
+=====================================================================
+Found a 14 line (68 tokens) duplication in the following files: 
+Starting at line 90 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+Starting at line 146 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+Starting at line 194 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+
+				map.put("tablespace_name", tablespace_name);
+				map.put("total_size", total_size);
+				map.put("used_size", used_size);
+				map.put("free_size", free_size);
+				map.put("used_percent", used_percent);
+				list.add(map);
+				System.out.println(list.toString());
+			}
+		}catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return list;
+	}
+=====================================================================
+Found a 17 line (65 tokens) duplication in the following files: 
+Starting at line 37 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+Starting at line 34 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\DAOforGetUserScemaNM.java
+
+    			e.printStackTrace();
+        }
+	}
+	
+	private void close() {
+		// TODO Auto-generated method stub
+		try {
+			if(rs != null) rs.close();
+			if(psmt != null) psmt.close();
+			if(conn != null) conn.close();
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	public ArrayList<Object> getTableSpaceCondition() {
+=====================================================================
+Found a 18 line (65 tokens) duplication in the following files: 
+Starting at line 88 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 153 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 177 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 201 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+
+			response = https.postRequest(sms_url + "cancel", params);
+
+			// Cancel?? response Í∞? empty Î©? ?Ñ±Í≥?
+			if (response.get("message") == "response is empty") {
+				response.put("status", true);
+				response.put("message", null);
+			}
+		} catch (Exception e) {
+			response.put("status", false);
+			response.put("message", e.toString());
+		}
+		return response;
+	}
+
+	/*
+	 * Balance info
+	 */
+	public JSONObject balance() {
+=====================================================================
+Found a 7 line (64 tokens) duplication in the following files: 
+Starting at line 419 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 769 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+					master_select_col += "/*|*/" + "a." + temp[1] + "/*|*/";
+				}else {
+					//191107 ?óê?ü¨ 1.4 ?õê?ù∏ ?àò?†ï Î∂?Î∂?
+					if(master_col_list.get(i).replaceFirst(" ", "").contains(".")) {
+						System.out.println(">> AS ÎØ∏Ìè¨?ï®  && . ?è¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+						temp2 = master_col_list.get(i).replaceFirst(" ", "").split("\\.");
+						master_select_col += "/*|*/" + "a." + temp2[1] + "/*|*/";
+=====================================================================
+Found a 12 line (63 tokens) duplication in the following files: 
+Starting at line 74 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+Starting at line 176 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+
+		String tablespace_name = "";
+		String total_size = "";
+		String used_size = "";
+		String free_size = "";
+		String used_percent = "";
+		
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				map = new LinkedHashMap<String, Object>();
+				tablespace_name = rs.getString("tablespace_name");
+=====================================================================
+Found a 13 line (63 tokens) duplication in the following files: 
+Starting at line 71 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\DAO.java
+Starting at line 325 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\DAO.java
+
+	public LinkedHashMap<String, Object> getData(String sql) {
+		// TODO Auto-generated method stub
+		//ArrayList<LinkedHashMap<String, Object>> outerList = new ArrayList<LinkedHashMap<String, Object>>();
+		
+		ArrayList<Object> innerList = null;
+		ArrayList<Object> list = null;
+		LinkedHashMap<String, Object> innerHash = new LinkedHashMap<String, Object>();
+		LinkedHashMap<String, Object> hash = new LinkedHashMap<String, Object>();
+		String key;
+		String value;
+		String select = "";
+		
+		try {
+=====================================================================
+Found a 19 line (63 tokens) duplication in the following files: 
+Starting at line 260 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\DAO.java
+Starting at line 278 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\DAO.java
+
+	public LinkedHashMap<String, Object> dbInsert(String sql, String target_table) {
+		// TODO Auto-generated method stub
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			//close();
+		}
+		
+		String newSql = "SELECT * FROM " + target_table;
+		LinkedHashMap<String, Object> result = getData(newSql);
+		
+		return result;
+	}
+
+	public LinkedHashMap<String, Object> dbUpdate(String sql, String target_table) {
+=====================================================================
+Found a 8 line (63 tokens) duplication in the following files: 
+Starting at line 412 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 762 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+						master_select_col += "/*|*/" + "a." + master_col_list.get(i).replaceFirst(" ", "") + "/*|*/" + ", ";
+					}
+				}
+			}else {
+				if(master_col_list.get(i).contains(" AS ")) {
+					System.out.println(">> AS ?è¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+					temp = master_col_list.get(i).split(" AS ");
+					master_select_col += "/*|*/" + "a." + temp[1] + "/*|*/";
+=====================================================================
+Found a 16 line (58 tokens) duplication in the following files: 
+Starting at line 38 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+Starting at line 56 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\DAO.java
+Starting at line 35 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\DAOforGetUserScemaNM.java
+
+        }
+	}
+	
+	private void close() {
+		// TODO Auto-generated method stub
+		try {
+			if(rs != null) rs.close();
+			if(psmt != null) psmt.close();
+			if(conn != null) conn.close();
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	public ArrayList<Object> getTableSpaceCondition() {
+=====================================================================
+Found a 11 line (55 tokens) duplication in the following files: 
+Starting at line 74 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+Starting at line 130 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+Starting at line 176 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+
+		String tablespace_name = "";
+		String total_size = "";
+		String used_size = "";
+		String free_size = "";
+		String used_percent = "";
+		
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				map = new LinkedHashMap<String, Object>();
+=====================================================================
+Found a 5 line (53 tokens) duplication in the following files: 
+Starting at line 403 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 420 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 753 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 770 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+				}else {
+					//191107 ?óê?ü¨ 1.4 ?õê?ù∏ ?àò?†ï Î∂?Î∂?
+					if(master_col_list.get(i).replaceFirst(" ", "").contains(".")) {
+						System.out.println(">> AS ÎØ∏Ìè¨?ï®  && . ?è¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+						temp2 = master_col_list.get(i).replaceFirst(" ", "").split("\\.");
+=====================================================================
+Found a 7 line (51 tokens) duplication in the following files: 
+Starting at line 145 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 177 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+					if(colName_list.get(i).equals(child_sql_cols_list.get(j))) {
+						//from?†ê?ùò Ïª¨ÎüºÎ™ÖÍ? ?èô?ùº?ïò Ïª¨Îüº?óê CASE WHEN ?ûà?ùÑ Í≤ΩÏö∞ Ïª¨ÎüºÎ™ÖÏóê AS Î∂ôÏó¨?Ñú selectÎ¨∏Ïóê ?Ñ£?ñ¥?ïº?ê® : ?ôú?? () ?óê?ü¨ Î∞©Ï? ?ïåÎ¨∏Ïóê
+						if(expression_list.get(i).contains("IF ")) {
+							//Ï∂îÍ? ?ïò?†§?äî Ïª¨ÎüºÎ™ÖÏùò index?? expression?ùò index?äî ?èô?ùº ?ïòÍ∏? ?ïåÎ¨∏Ïóê ?òëÍ∞ôÏ? index?Ç¨?ö©?ï¥?Ñú Í∞íÏùÑ ÎΩëÏïÑ?ò¥
+							String exp = expression_list.get(i).replace("IF", "CASE WHEN");
+							exp = "/*|*/" + exp + " AS " + colName_list.get(i) + "/*|*/";
+							select_stmt_list.set(j, exp);
+=====================================================================
+Found a 4 line (48 tokens) duplication in the following files: 
+Starting at line 399 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 416 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+				if(master_col_list.get(i).contains(" AS ")) {
+					System.out.println(">> AS ?è¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+					temp = master_col_list.get(i).split(" AS ");
+					master_select_col +="/*|*/" +  "a." + temp[1] + "/*|*/" + ", ";
+=====================================================================
+Found a 7 line (47 tokens) duplication in the following files: 
+Starting at line 85 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+Starting at line 188 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+
+				tablespace_name = rs.getString("tablespace_name");
+				total_size = rs.getString("total_size");
+				used_size = rs.getString("used_size");
+				free_size = rs.getString("free_size");
+				used_percent = rs.getString("used_percent") + "%";
+				map.put("tablespace_name", tablespace_name);
+				map.put("total_size", total_size);
+=====================================================================
+Found a 15 line (47 tokens) duplication in the following files: 
+Starting at line 471 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 821 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+							slave_select_col += "/*|*/" + "b." + slave_temp2[1] + "/*|*/" + ", ";
+						}
+					}else {
+//						System.out.println(">> AS ÎØ∏Ìè¨?ï® & . ÎØ∏Ìè¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+//						slave_select_col += "b." + slave_col_list.get(i).replaceFirst(" ", "") + ", ";
+						System.out.println(">> AS ÎØ∏Ìè¨?ï® & . ÎØ∏Ìè¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+//						//191107 ?óê?ü¨ 1.4 ?õê?ù∏ ?àò?†ï Î∂?Î∂? : 2Ï§? Ï°∞Ïù∏ ?ïà?êò?äî Î∂?Î∂? Ï≤òÎ¶¨(Ï°∞Ïù∏ ?Ç§?ì§Îß? _1 Î∂ôÎèÑÎ°? ?ñà?ùå) => Ï§ëÎ≥µ Ïª¨Îüº?ì§ Ï≤òÎ¶¨ ?ïòÍ∏? ?úÑ?ï¥ ?û†?ãú ÎßâÏïÑ?ë†
+//						if(master_on_col.equals(slave_on_col) && slave_col_list.get(i).replaceAll(" ", "").equals(slave_on_col)) {
+//							slave_select_col += "b." + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_1" + ", ";
+//						}else {
+//							slave_select_col += "b." + slave_col_list.get(i).replaceAll(" ", "") + ", ";
+//						}
+						//191107 ?óê?ü¨ 1.4 ?õê?ù∏ ?àò?†ï 2Î≤àÏß∏ Î≥¥Ïïà
+						if(master_col_list.contains(slave_col_list.get(i).replaceAll(" ", ""))) {
+							slave_select_col += "/*|*/" + "b." + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_" + slave_key + "/*|*/" +  ", ";
+=====================================================================
+Found a 4 line (46 tokens) duplication in the following files: 
+Starting at line 749 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 766 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+				if(master_col_list.get(i).contains(" AS ")) {
+					System.out.println(">> AS ?è¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+					temp = master_col_list.get(i).split(" AS ");
+					master_select_col +="/*|*/" +  temp[1] + "/*|*/" + ", ";
+=====================================================================
+Found a 3 line (45 tokens) duplication in the following files: 
+Starting at line 485 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 835 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+							slave_select_col += "/*|*/" + "b." + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_" + slave_key + "/*|*/" +  ", ";
+						}else {
+							slave_select_col += "/*|*/" + "b." + slave_col_list.get(i).replaceAll(" ", "") + "/*|*/" + ", ";
+=====================================================================
+Found a 13 line (45 tokens) duplication in the following files: 
+Starting at line 504 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 854 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+							slave_select_col += "/*|*/" + "b." + slave_temp2[1] + "/*|*/";
+						}
+					}else {
+						System.out.println(">> AS ÎØ∏Ìè¨?ï® & . ÎØ∏Ìè¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+//						//191107 ?óê?ü¨ 1.4 ?õê?ù∏ ?àò?†ï Î∂?Î∂? : 2Ï§? Ï°∞Ïù∏ ?ïà?êò?äî Î∂?Î∂? Ï≤òÎ¶¨(Ï°∞Ïù∏ ?Ç§?ì§Îß? _1 Î∂ôÎèÑÎ°? ?ñà?ùå) => Ï§ëÎ≥µ Ïª¨Îüº?ì§ Ï≤òÎ¶¨ ?ïòÍ∏? ?úÑ?ï¥ ?û†?ãú ÎßâÏïÑ?ë†
+//						if(master_on_col.equals(slave_on_col) && slave_col_list.get(i).replaceAll(" ", "").equals(slave_on_col)) {
+//							slave_select_col += "b." + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_1";
+//						}else {
+//							slave_select_col += "b." + slave_col_list.get(i).replaceAll(" ", "");
+//						}
+						//191107 ?óê?ü¨ 1.4 ?õê?ù∏ ?àò?†ï 2Î≤àÏß∏ Î≥¥Ïïà
+						if(master_col_list.contains(slave_col_list.get(i).replaceAll(" ", ""))) {
+							slave_select_col += "/*|*/" + "b." + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_" + slave_key + "/*|*/";
+=====================================================================
+Found a 6 line (44 tokens) duplication in the following files: 
+Starting at line 38 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 82 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+		System.out.println("\n--- Order.java ---");
+		ObjectMapper mapper = new ObjectMapper();
+		String sql = "";
+	      try {
+			Map<String, Object> object = mapper.readValue(request.getParameter("param"), Map.class);
+			String child_sql = request.getParameter("child_sql");
+=====================================================================
+Found a 9 line (43 tokens) duplication in the following files: 
+Starting at line 218 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 239 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+
+	public JSONObject list() {
+		JSONObject response = new JSONObject();
+		try {
+			// Í∏∞Î≥∏?†ïÎ≥? ?ûÖ?†•
+			HashMap<String, String> params = new HashMap<String, String>();
+			params = setBasicInfo(params);
+
+			// Register sender number request
+			response = https.request(senderid_url + "list", params);
+=====================================================================
+Found a 3 line (43 tokens) duplication in the following files: 
+Starting at line 516 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 866 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+							slave_select_col += "/*|*/" + "b." + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_" + slave_key + "/*|*/";
+						}else {
+							slave_select_col += "/*|*/" + "b." + slave_col_list.get(i).replaceAll(" ", "") + "/*|*/";
+=====================================================================
+Found a 9 line (41 tokens) duplication in the following files: 
+Starting at line 105 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 218 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 239 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+
+	public JSONObject balance() {
+		JSONObject response = new JSONObject();
+		try {
+			// Í∏∞Î≥∏?†ïÎ≥? ?ûÖ?†•
+			HashMap<String, String> params = new HashMap<String, String>();
+			params = setBasicInfo(params);
+
+			// GETÎ∞©Ïãù ?†Ñ?Ü°
+			response = https.request(sms_url + "balance", params); // GETÎ∞©Ïãù ?†Ñ?Ü°
+=====================================================================
+Found a 5 line (41 tokens) duplication in the following files: 
+Starting at line 119 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Https.java
+Starting at line 183 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Https.java
+
+			if (response_code != 200) {
+				in = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+			} else {
+				in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			}
+=====================================================================
+Found a 6 line (40 tokens) duplication in the following files: 
+Starting at line 312 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 704 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+		String join_type = request.getParameter("join_type").toUpperCase().replaceAll("\n", " ");
+		String join = "";
+		//191107 3Ï§? Ï°∞Ïù∏ ?ãú ?ï†Îß§Ìïú Ïª¨Îüº Î™? ?óê?ü¨ - Î≥ÑÏπ≠?úºÎ°? Ï§? master?? slave ?Ç§?ì§ requestÎ°? Î∞õÏïÑ???ïº?ê®
+		String maset_key = request.getParameter("maset_key");
+		String slave_key = request.getParameter("slave_key");
+		System.out.println("1. Join Type : " + join_type);
+=====================================================================
+Found a 4 line (40 tokens) duplication in the following files: 
+Starting at line 399 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 766 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+				if(master_col_list.get(i).contains(" AS ")) {
+					System.out.println(">> AS ?è¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+					temp = master_col_list.get(i).split(" AS ");
+					master_select_col +="/*|*/" +  "a." + temp[1] + "/*|*/" + ", ";
+=====================================================================
+Found a 4 line (40 tokens) duplication in the following files: 
+Starting at line 416 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 749 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+				if(master_col_list.get(i).contains(" AS ")) {
+					System.out.println(">> AS ?è¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+					temp = master_col_list.get(i).split(" AS ");
+					master_select_col += "/*|*/" + "a." + temp[1] + "/*|*/";
+=====================================================================
+Found a 6 line (39 tokens) duplication in the following files: 
+Starting at line 85 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+Starting at line 141 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+Starting at line 188 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+
+				tablespace_name = rs.getString("tablespace_name");
+				total_size = rs.getString("total_size");
+				used_size = rs.getString("used_size");
+				free_size = rs.getString("free_size");
+				used_percent = rs.getString("used_percent") + "%";
+				map.put("tablespace_name", tablespace_name);
+=====================================================================
+Found a 6 line (39 tokens) duplication in the following files: 
+Starting at line 150 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 160 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 167 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+							exp = "/*|*/" + exp + " AS " + colName_list.get(i) + "/*|*/";
+							select_stmt_list.set(j, exp);
+							//Ïª¨Îüº?ù¥ ?èô?ùº?ïò ???Ñù?ì§ Ï∂îÍ? Ïª¨Îüº ?ù¥Î¶? list?? ?ëú?òÑ list?óê?Ñú ?†úÍ±? : ?ïò?Çò?ùò forÎ¨∏Ïóê ?èåÎ¶¥Î†§?ãà ?ûê?ãù Ïª¨Îüº Í∞úÏàòÎßåÌÅº Í≥ÑÏÜç Ï∂îÍ??êò?Ñú ?ÇòÏ§ëÏóê ?Ç®?? Í≤ÉÎì§ ?î∞Î°? ?ï† ?ÉùÍ∞?
+							colName_list.remove(i);
+							expression_list.remove(i);
+							System.out.println(">3." + j + ".1 select_stmt_list : " + select_stmt_list.toString());
+=====================================================================
+Found a 4 line (38 tokens) duplication in the following files: 
+Starting at line 307 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 699 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+		System.out.println("\n--- Join.java ---");
+		String master_sql = request.getParameter("master_sql").toUpperCase().replaceAll("\n", " ");
+		System.out.println("master_sql : " + master_sql);
+		String slave_sql = request.getParameter("slave_sql").toUpperCase().replaceAll("\n", " ");
+=====================================================================
+Found a 14 line (38 tokens) duplication in the following files: 
+Starting at line 472 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 855 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+						}
+					}else {
+//						System.out.println(">> AS ÎØ∏Ìè¨?ï® & . ÎØ∏Ìè¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+//						slave_select_col += "b." + slave_col_list.get(i).replaceFirst(" ", "") + ", ";
+						System.out.println(">> AS ÎØ∏Ìè¨?ï® & . ÎØ∏Ìè¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+//						//191107 ?óê?ü¨ 1.4 ?õê?ù∏ ?àò?†ï Î∂?Î∂? : 2Ï§? Ï°∞Ïù∏ ?ïà?êò?äî Î∂?Î∂? Ï≤òÎ¶¨(Ï°∞Ïù∏ ?Ç§?ì§Îß? _1 Î∂ôÎèÑÎ°? ?ñà?ùå) => Ï§ëÎ≥µ Ïª¨Îüº?ì§ Ï≤òÎ¶¨ ?ïòÍ∏? ?úÑ?ï¥ ?û†?ãú ÎßâÏïÑ?ë†
+//						if(master_on_col.equals(slave_on_col) && slave_col_list.get(i).replaceAll(" ", "").equals(slave_on_col)) {
+//							slave_select_col += "b." + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_1" + ", ";
+//						}else {
+//							slave_select_col += "b." + slave_col_list.get(i).replaceAll(" ", "") + ", ";
+//						}
+						//191107 ?óê?ü¨ 1.4 ?õê?ù∏ ?àò?†ï 2Î≤àÏß∏ Î≥¥Ïïà
+						if(master_col_list.contains(slave_col_list.get(i).replaceAll(" ", ""))) {
+							slave_select_col += "/*|*/" + "b." + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_" + slave_key + "/*|*/" +  ", ";
+=====================================================================
+Found a 12 line (38 tokens) duplication in the following files: 
+Starting at line 505 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 822 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+						}
+					}else {
+						System.out.println(">> AS ÎØ∏Ìè¨?ï® & . ÎØ∏Ìè¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+//						//191107 ?óê?ü¨ 1.4 ?õê?ù∏ ?àò?†ï Î∂?Î∂? : 2Ï§? Ï°∞Ïù∏ ?ïà?êò?äî Î∂?Î∂? Ï≤òÎ¶¨(Ï°∞Ïù∏ ?Ç§?ì§Îß? _1 Î∂ôÎèÑÎ°? ?ñà?ùå) => Ï§ëÎ≥µ Ïª¨Îüº?ì§ Ï≤òÎ¶¨ ?ïòÍ∏? ?úÑ?ï¥ ?û†?ãú ÎßâÏïÑ?ë†
+//						if(master_on_col.equals(slave_on_col) && slave_col_list.get(i).replaceAll(" ", "").equals(slave_on_col)) {
+//							slave_select_col += "b." + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_1";
+//						}else {
+//							slave_select_col += "b." + slave_col_list.get(i).replaceAll(" ", "");
+//						}
+						//191107 ?óê?ü¨ 1.4 ?õê?ù∏ ?àò?†ï 2Î≤àÏß∏ Î≥¥Ïïà
+						if(master_col_list.contains(slave_col_list.get(i).replaceAll(" ", ""))) {
+							slave_select_col += "/*|*/" + "b." + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_" + slave_key + "/*|*/";
+=====================================================================
+Found a 9 line (37 tokens) duplication in the following files: 
+Starting at line 45 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+Starting at line 28 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\service\impl\StorageDAO.java
+Starting at line 63 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\DAO.java
+Starting at line 42 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\DAOforGetUserScemaNM.java
+
+			if(psmt != null) psmt.close();
+			if(conn != null) conn.close();
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	public ArrayList<Object> getTableSpaceCondition() {
+=====================================================================
+Found a 5 line (37 tokens) duplication in the following files: 
+Starting at line 76 of D:\git\Dsup\Dsup\src\main\java\com\dsup\chat\controller\RpController.java
+Starting at line 37 of D:\git\Dsup\Dsup\src\main\java\com\dsup\chat\controller\SearchController.java
+
+	public String insertSearch(RpVO vo, HttpServletRequest request, HttpSession session) {
+		MemberVO member = (MemberVO) session.getAttribute("member");
+		vo.setUserId(member.getUserId());
+		
+		System.out.println("dfsdfsdfsdfsdfsd"+vo);
+=====================================================================
+Found a 16 line (36 tokens) duplication in the following files: 
+Starting at line 47 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 68 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 113 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 133 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 226 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+
+			response = https.postRequest(sms_url + "send", params);
+			//response.put("status", true);
+
+		} catch (Exception e) {
+			response.put("status", false);
+			response.put("message", e.toString());
+		}
+		return response;
+	}
+
+	/*
+	 * Sent messages
+	 * 
+	 * @param set : HashMap<String, String>
+	 */
+	public JSONObject sent(HashMap<String, String> params) {
+=====================================================================
+Found a 5 line (36 tokens) duplication in the following files: 
+Starting at line 164 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 191 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+							System.out.println(">3." + j + ".2 select_stmt_list : " + select_stmt_list.toString());
+						}else {
+							//Ï∂îÍ??ïò?†§?äî Ïª¨Îüº?ùò expression?ù¥ ?à´?ûê?ù¥?ì† Î¨∏Ïûê?ù¥?ì† ?ÉÅÍ¥??óÜ?ù¥ Í∑∏ÎÉ• Ï∂îÍ? ?ãú?Ç§Î©? Í∑∏Îßå?ûÑ
+							String exp = expression_list.get(i) + " AS " + "/*|*/" + colName_list.get(i) + "/*|*/";
+							select_stmt_list.set(j, exp);
+=====================================================================
+Found a 3 line (36 tokens) duplication in the following files: 
+Starting at line 455 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 492 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 805 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 842 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+				if(slave_col_list.get(i).contains(" AS ")) {
+					System.out.println(">> AS ?è¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+					slave_temp = slave_col_list.get(i).split(" AS ");
+=====================================================================
+Found a 1 line (36 tokens) duplication in the following files: 
+Starting at line 485 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 866 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+							slave_select_col += "/*|*/" + "b." + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_" + slave_key + "/*|*/" +  ", ";
+=====================================================================
+Found a 1 line (36 tokens) duplication in the following files: 
+Starting at line 516 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 835 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+							slave_select_col += "/*|*/" + "b." + slave_col_list.get(i).replaceAll(" ", "") + " AS " + slave_col_list.get(i).replaceAll(" ", "") + "_" + slave_key + "/*|*/";
+=====================================================================
+Found a 9 line (34 tokens) duplication in the following files: 
+Starting at line 47 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 68 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 113 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 133 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 226 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 247 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+
+			response = https.postRequest(sms_url + "send", params);
+			//response.put("status", true);
+
+		} catch (Exception e) {
+			response.put("status", false);
+			response.put("message", e.toString());
+		}
+		return response;
+	}
+=====================================================================
+Found a 4 line (33 tokens) duplication in the following files: 
+Starting at line 36 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\controller\UserController.java
+Starting at line 52 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\controller\UserController.java
+
+	public String userList(UserVO vo, Model model, HttpSession session) {
+		String userId = (String)session.getAttribute("userId");
+		model.addAttribute("tableSpaceList",storageService.getStorageList(userId));
+		return "dbmanagement/user/userList";
+=====================================================================
+Found a 13 line (33 tokens) duplication in the following files: 
+Starting at line 50 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 69 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 95 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 114 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 134 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 158 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 182 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 206 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 227 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+
+		} catch (Exception e) {
+			response.put("status", false);
+			response.put("message", e.toString());
+		}
+		return response;
+	}
+
+	/*
+	 * Sent messages
+	 * 
+	 * @param set : HashMap<String, String>
+	 */
+	public JSONObject sent(HashMap<String, String> params) {
+=====================================================================
+Found a 8 line (33 tokens) duplication in the following files: 
+Starting at line 126 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 146 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 170 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 194 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+
+	public JSONObject register(HashMap<String, String> params) {
+		JSONObject response = new JSONObject();
+		try {
+			// Í∏∞Î≥∏?†ïÎ≥? ?ûÖ?†•
+			params = setBasicInfo(params);
+
+			// Register sender number request
+			response = https.postRequest(senderid_url + "register", params);
+=====================================================================
+Found a 3 line (33 tokens) duplication in the following files: 
+Starting at line 54 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Https.java
+Starting at line 166 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Https.java
+
+			for (Entry<String, String> entry : params.entrySet()) {
+				String key = entry.getKey();
+				String value = entry.getValue();
+=====================================================================
+Found a 4 line (32 tokens) duplication in the following files: 
+Starting at line 70 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\controller\UserController.java
+Starting at line 34 of D:\git\Dsup\Dsup\src\main\java\com\dsup\pay\controller\PayRestController.java
+
+		userService.insertUser(vo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("result", true);
+		map.put("user", vo);
+=====================================================================
+Found a 3 line (32 tokens) duplication in the following files: 
+Starting at line 410 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 426 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+					}else {
+						System.out.println(">> AS ÎØ∏Ìè¨?ï®  && . ÎØ∏Ìè¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+						master_select_col += "/*|*/" + "a." + master_col_list.get(i).replaceFirst(" ", "") + "/*|*/" + ", ";
+=====================================================================
+Found a 3 line (31 tokens) duplication in the following files: 
+Starting at line 33 of D:\git\Dsup\Dsup\src\main\java\com\dsup\chat\controller\ReController.java
+Starting at line 76 of D:\git\Dsup\Dsup\src\main\java\com\dsup\chat\controller\RpController.java
+Starting at line 37 of D:\git\Dsup\Dsup\src\main\java\com\dsup\chat\controller\SearchController.java
+
+	public String insertRe(ReVO vo, HttpServletRequest request, HttpSession session) {
+		MemberVO member = (MemberVO) session.getAttribute("member");
+		vo.setUserId(member.getUserId()); // Î°úÍ∑∏?ù∏ ?Ñ∏?Öò ?Ç¥?†§?ÜìÍ∏? ( 1 = Í¥?Î¶¨Ïûê)
+=====================================================================
+Found a 8 line (31 tokens) duplication in the following files: 
+Starting at line 81 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 126 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 146 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 170 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 194 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+
+	public JSONObject cancel(HashMap<String, String> params) {
+		JSONObject response = new JSONObject();
+		try {
+			// Í∏∞Î≥∏?†ïÎ≥? ?ûÖ?†•
+			params = setBasicInfo(params);
+
+			// Cancel reserve message
+			response = https.postRequest(sms_url + "cancel", params);
+=====================================================================
+Found a 6 line (31 tokens) duplication in the following files: 
+Starting at line 95 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 158 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 182 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 206 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 248 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+
+		} catch (Exception e) {
+			response.put("status", false);
+			response.put("message", e.toString());
+		}
+		return response;
+	}
+=====================================================================
+Found a 4 line (31 tokens) duplication in the following files: 
+Starting at line 666 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 670 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+					if(s == select_stmt_col_list.size()-1) {
+						String[] split_array = child_select_col.split(" AS ");
+						split_array[1] = to_col;
+						select_stmt += split_array[0] + " AS " + split_array[1];
+=====================================================================
+Found a 3 line (30 tokens) duplication in the following files: 
+Starting at line 760 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 776 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+					}else {
+						System.out.println(">> AS ÎØ∏Ìè¨?ï®  && . ÎØ∏Ìè¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+						master_select_col += "/*|*/" + master_col_list.get(i).replaceFirst(" ", "") + "/*|*/" + ", ";
+=====================================================================
+Found a 7 line (29 tokens) duplication in the following files: 
+Starting at line 62 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 81 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 126 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 146 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 170 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 194 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+
+	public JSONObject sent(HashMap<String, String> params) {
+		JSONObject response = new JSONObject();
+		try {
+			// Í∏∞Î≥∏?†ïÎ≥? ?ûÖ?†•
+			params = setBasicInfo(params);
+
+			response = https.request(sms_url + "sent", params); // GETÎ∞©Ïãù ?†Ñ?Ü°
+=====================================================================
+Found a 4 line (29 tokens) duplication in the following files: 
+Starting at line 37 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Https.java
+Starting at line 154 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Https.java
+
+			String salt = salt();
+			String timestamp = getTimestamp();
+			String signature = getSignature(params.get("api_secret"), salt, timestamp); 
+			String boundary = salt + timestamp;
+=====================================================================
+Found a 8 line (28 tokens) duplication in the following files: 
+Starting at line 34 of D:\git\Dsup\Dsup\src\main\java\com\dsup\chat\service\impl\ReServiceImpl.java
+Starting at line 42 of D:\git\Dsup\Dsup\src\main\java\com\dsup\chat\service\impl\SearchServiceImpl.java
+
+	public List<Map<String, Object>> ReMap(ReVO vo, Paging paging) {
+
+		// ?éò?ù¥Ïß?Î≤àÌò∏ ?åå?ùºÎØ∏ÌÑ∞
+		if (paging.getPage() == null) {
+			paging.setPage(1);
+		}
+
+		paging.setPageUnit(5); // Í≤åÏãúÍ∏? Í∞??àò
+=====================================================================
+Found a 4 line (28 tokens) duplication in the following files: 
+Starting at line 32 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Https.java
+Starting at line 149 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Https.java
+
+	public JSONObject postRequest(String url_string, HashMap<String, String> params) {
+		JSONObject obj = new JSONObject();
+		try {
+			obj.put("status", false);
+=====================================================================
+Found a 7 line (28 tokens) duplication in the following files: 
+Starting at line 31 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 292 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 536 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 691 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+		System.out.println("sql : " + sql);
+		System.out.println("---------------\n");
+		return getData(sql, session);
+	}
+	
+	@Override
+	public LinkedHashMap<String, Object> order(HttpServletRequest request, HttpSession session) {
+=====================================================================
+Found a 6 line (28 tokens) duplication in the following files: 
+Starting at line 317 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 709 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+		System.out.println("1. Join Type : " + join_type);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		List<Map<String, String>> on_stmt_list = null;
+		String master_on_col = "";
+		String slave_on_col = "";
+=====================================================================
+Found a 4 line (27 tokens) duplication in the following files: 
+Starting at line 72 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+Starting at line 173 of D:\git\Dsup\Dsup\src\main\java\com\dsup\admin\volume\service\AdminVolumeDAO.java
+
+		LinkedHashMap<String, Object> map = null;
+		ArrayList<Object> list = new ArrayList<Object>(); ; 
+		String tablespace_name = "";
+		String total_size = "";
+=====================================================================
+Found a 4 line (27 tokens) duplication in the following files: 
+Starting at line 42 of D:\git\Dsup\Dsup\src\main\java\com\dsup\chat\controller\SoketHandler.java
+Starting at line 125 of D:\git\Dsup\Dsup\src\main\java\com\dsup\chat\controller\SoketHandler.java
+
+		Map<String, Object> map = session.getAttributes();
+		MemberVO vo = (MemberVO) map.get("member");
+
+		sessionList.add(session);
+=====================================================================
+Found a 7 line (27 tokens) duplication in the following files: 
+Starting at line 13 of D:\git\Dsup\Dsup\src\main\java\com\dsup\common\LoginInterceptor.java
+Starting at line 12 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\DbMngInterceptor.java
+
+public class LoginInterceptor extends HandlerInterceptorAdapter{
+	 
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+            throws Exception {
+        
+        HttpSession session = request.getSession();
+=====================================================================
+Found a 19 line (27 tokens) duplication in the following files: 
+Starting at line 109 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\DAO.java
+Starting at line 149 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\DAO.java
+
+			  hash.put("COL_NM_TYPE", temp);
+			 
+			////////////////////////////////////////////////////////////////////////////
+			
+			/*
+			 * LinkedHashMap<String, String> inner_hash = new LinkedHashMap<String, String>(); 
+			 * for(int i=1 ; i<=columnCnt ; i++) { key = meta.getColumnName(i);
+			 * value = meta.getColumnTypeName(i);
+			 * //System.out.println("=============> key : " + key);
+			 * //System.out.println("1. is there? : " + inner_hash.containsKey(key));
+			 * if(inner_hash.containsKey(key)) { //key = key + "_1";
+			 * //System.out.println("2. changed key : " + key); inner_hash.put(key, value);
+			 * }else { inner_hash.put(key, value); } } System.out.println(">>> " +
+			 * inner_hash.toString()); hash.put("COL_NM_TYPE", inner_hash);
+			 */
+			
+			innerList = new ArrayList<Object>();
+			for(int i=1 ; i<=columnCnt ; i++) {
+				value = meta.getColumnName(i);
+=====================================================================
+Found a 3 line (27 tokens) duplication in the following files: 
+Starting at line 459 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 809 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+						slave_select_col += "/*|*/" + "b." + slave_temp[1] + " AS " + slave_temp[1] + "_" + slave_key + "/*|*/" + ", ";
+					}else {
+						slave_select_col += "/*|*/" + "b." + slave_temp[1] + ", ";
+=====================================================================
+Found a 3 line (27 tokens) duplication in the following files: 
+Starting at line 469 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 819 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+							slave_select_col += "/*|*/" + "b." + slave_temp2[1] + " AS " + slave_temp2[1] + "_" + slave_key + "/*|*/" + ", ";
+						}else {
+							slave_select_col += "/*|*/" + "b." + slave_temp2[1] + "/*|*/" + ", ";
+=====================================================================
+Found a 4 line (26 tokens) duplication in the following files: 
+Starting at line 40 of D:\git\Dsup\Dsup\src\main\java\com\dsup\chat\controller\SoketHandler.java
+Starting at line 94 of D:\git\Dsup\Dsup\src\main\java\com\dsup\chat\controller\SoketHandler.java
+
+		System.out.println("?Å¥?ùº?ù¥?ñ∏?ä∏ ?†ë?Üç?ê®");
+		
+		Map<String, Object> map = session.getAttributes();
+		MemberVO vo = (MemberVO) map.get("member");
+=====================================================================
+Found a 5 line (26 tokens) duplication in the following files: 
+Starting at line 125 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Https.java
+Starting at line 192 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Https.java
+
+			while ((inputLine = in.readLine()) != null) {					
+				response = inputLine;
+			}
+
+			if (response != null) {
+=====================================================================
+Found a 2 line (25 tokens) duplication in the following files: 
+Starting at line 97 of D:\git\Dsup\Dsup\src\main\java\com\dsup\chat\controller\SoketHandler.java
+Starting at line 125 of D:\git\Dsup\Dsup\src\main\java\com\dsup\chat\controller\SoketHandler.java
+
+		Map<String, Object> map = session.getAttributes();
+		MemberVO vo = (MemberVO) map.get("member");
+=====================================================================
+Found a 7 line (25 tokens) duplication in the following files: 
+Starting at line 45 of D:\git\Dsup\Dsup\src\main\java\com\dsup\chat\service\impl\ReServiceImpl.java
+Starting at line 54 of D:\git\Dsup\Dsup\src\main\java\com\dsup\chat\service\impl\SearchServiceImpl.java
+
+		paging.setTotalRecord(reDAOMybatis.RePagingList(vo));
+
+		// ?ãú?ûë/ÎßàÏ?Îß? ?†àÏΩîÎìú Î≤àÌò∏
+		vo.setFirst(paging.getFirst());
+		vo.setLast(paging.getLast());
+
+		return reDAOMybatis.ReMap(vo);
+=====================================================================
+Found a 5 line (25 tokens) duplication in the following files: 
+Starting at line 37 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 62 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 81 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 126 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 146 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 170 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+Starting at line 194 of D:\git\Dsup\Dsup\src\main\java\com\dsup\dbmanagement\messge\Coolsms.java
+
+	public JSONObject send(HashMap<String, String> params) {
+		JSONObject response = new JSONObject();
+		try {
+			// Í∏∞Î≥∏?†ïÎ≥? ?ûÖ?†•
+			params = setBasicInfo(params);
+=====================================================================
+Found a 6 line (25 tokens) duplication in the following files: 
+Starting at line 32 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 75 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 293 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 537 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 692 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+		System.out.println("---------------\n");
+		return getData(sql, session);
+	}
+	
+	@Override
+	public LinkedHashMap<String, Object> order(HttpServletRequest request, HttpSession session) {
+=====================================================================
+Found a 3 line (25 tokens) duplication in the following files: 
+Starting at line 181 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 194 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+					exp = "/*|*/" + exp + " AS " + colName_list.get(i) + "/*|*/";
+					select_stmt_list.add(exp);
+					System.out.println(">>>3." + i + ".1 select_stmt_list : " + select_stmt_list.toString());
+=====================================================================
+Found a 2 line (25 tokens) duplication in the following files: 
+Starting at line 405 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 422 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 465 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 498 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 755 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 772 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 815 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 848 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+					if(master_col_list.get(i).replaceFirst(" ", "").contains(".")) {
+						System.out.println(">> AS ÎØ∏Ìè¨?ï®  && . ?è¨?ï® Î∂?Î∂? Ï≤òÎ¶¨");
+=====================================================================
+Found a 3 line (25 tokens) duplication in the following files: 
+Starting at line 502 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 852 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+							slave_select_col += "/*|*/" + "b." + slave_temp2[1] + " AS " + slave_temp2[1] + "_" + slave_key + "/*|*/";
+						}else {
+							slave_select_col += "/*|*/" + "b." + slave_temp2[1] + "/*|*/";
+=====================================================================
+Found a 8 line (25 tokens) duplication in the following files: 
+Starting at line 518 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 868 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+							slave_select_col += "/*|*/" + "b." + slave_col_list.get(i).replaceAll(" ", "") + "/*|*/";
+						}
+					}
+				}
+			}
+		}		
+		
+		String select_stmt = master_select_col + ", " + slave_select_col;
+=====================================================================
+Found a 4 line (25 tokens) duplication in the following files: 
+Starting at line 948 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+Starting at line 963 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
+
+	public LinkedHashMap<String, Object> dbInsert(HttpServletRequest request, HttpSession session) {
+		// TODO Auto-generated method stub
+		System.out.println("\n--- DBinsert.java ---");
+		String sql = request.getParameter("sql").toUpperCase().replaceAll("\n", " ");

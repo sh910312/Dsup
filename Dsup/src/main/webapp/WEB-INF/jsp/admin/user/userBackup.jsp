@@ -44,13 +44,14 @@
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
-			<table class="table table-bordered table-hover" id="userBackupTable" width="100%" cellspacing="0">
+			<table class="table table-bordered table-hover" id="userBackupTable" width="100%" cellspacing="0"
+					style="table-layout:fixed;word-break:break-all;">
 				<thead>
 					<tr>
-						<th>아이디</th>
-						<th>백업파일 이름</th>
-						<th>백업 날짜</th>
-						<th>코멘트</th>
+						<th style="width:10%">아이디</th>
+						<th style="width:30%">백업파일 이름</th>
+						<th style="width:10%">백업 날짜</th>
+						<th style="width:50%">코멘트</th>
 					</tr>
 				</thead>
 				<tfoot>

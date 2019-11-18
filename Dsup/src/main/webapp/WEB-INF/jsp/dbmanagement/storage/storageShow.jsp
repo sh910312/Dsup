@@ -39,7 +39,7 @@
 	빈 용량 : ${ts.free}MB <br>
 	<div class="progress" style="height: 30px;" id = "totalProgress">
 	</div>
-	
+	<br><br>
 	<h1>데이터 파일</h1>
 	
 	<table class="table table-hover table-bordered">
@@ -63,6 +63,7 @@
 		</tbody>
 	</table>
 	
+	<br>
 	<div class ="row">
 		<input type = "button" value = "수정" id = "updgo" class = "btn btn-outline-info btn-block" onclick = "location.href='./storageUpdateForm?tablespaceName=${ts.tablespaceName}'">
 		<input type = "button" value = "뒤로가기" class = "btn btn-outline-secondary btn-block" onclick = "window.history.back()">	
