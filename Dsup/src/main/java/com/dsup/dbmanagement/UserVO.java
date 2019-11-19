@@ -12,4 +12,5 @@ public class UserVO {
 	private String reservedWords;
 	private String idCheck;
 	
+	
 }

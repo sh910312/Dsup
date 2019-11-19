@@ -76,7 +76,8 @@
 		$("#sql").val(sql);
 		
 		if (err == 0) {
-			$("#frm").submit();
+			console.log("submit!");
+			$("#tsCreFrm").submit();
 		}
 	}
 	
@@ -212,7 +213,7 @@
 <body>
 <%@include file="/WEB-INF/jsp/DBbar.jsp" %>
 <div class = "container">
-	<form method = "post" action = "storageCreate" id = "frm">
+	<form method = "post" action = "storageCreate" id = "tsCreFrm" target = "main">
 	<input type = "hidden" id = "sql" name = "sql">
 	<input type = "hidden" name = "userId" value = "${sessionScope.member.userId}">
 		<div class ="row">

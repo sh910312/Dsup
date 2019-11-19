@@ -116,10 +116,5 @@ public class UserController {
 		return vo;
 	}
 	
-	//예약어 
-	@RequestMapping(value="/scChk", method=RequestMethod.GET)
-	@ResponseBody
-	public int scChk(@RequestParam String reservedWords) {
-		return userService.scChk(reservedWords);
-	}
+
 }

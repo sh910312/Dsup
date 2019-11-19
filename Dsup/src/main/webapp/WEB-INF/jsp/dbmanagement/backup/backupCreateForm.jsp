@@ -60,7 +60,7 @@
 		if (typeof tablespaceName == "undefined")  // 체크하지 않았을 경우
 			$('#tsError').fadeIn(400).delay(1000).fadeOut(400);
 		 else  // 체크했을 경우
-			$("#frm").submit();
+			$("#buCreFrm").submit();
 	}
 	</script>
 </head>
@@ -71,7 +71,7 @@
 	<span style="color:red">백업파일은 생성날짜로부터 30일간 보관됩니다.<br>
 	read only 상태의 테이블스페이스는 백업 불가능합니다.</span>
 	<br>
-	<form id="frm" method="post" action="backupCreate">
+	<form id="buCreFrm" method="post" action="backupCreate">
 		<table id = "tb" class = "table table-hover table-bordered">
 			<thead>
 				<tr>

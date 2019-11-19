@@ -30,14 +30,14 @@
 		getVolumn();
 		btnClickFunc(); // 버튼 클릭 이벤트
 		$("#delbtn").click(function() {
-			$("#frm").attr("action", "storageDelete");
-			$("#frm").submit();
+			$("#ts_frm").attr("action", "storageDelete");
+			$("#ts_frm").submit();
 		});
 		// 삭제 버튼 클릭
 
 		$("#crebtn").click(function() {
-			$("#frm").attr("action", "storageCreateForm");
-			$("#frm").submit();
+			$("#ts_frm").attr("action", "storageCreateForm");
+			$("#ts_frm").submit();
 		});
 		// 생성 버튼 클릭
 		radioCheck();
@@ -52,16 +52,16 @@
 			} else { // 체크했을 경우
 				switch( $(this).val() ) {
 				case "수정":
-					$("#frm").attr("action", "storageUpdateForm");
-					$("#frm").submit();
+					$("#ts_frm").attr("action", "storageUpdateForm");
+					$("#ts_frm").submit();
 					break;
 				case "삭제":
-					$("#frm").attr("action", "storageDelete");
+					$("#ts_frm").attr("action", "storageDelete");
 					$('#delModal').modal('show')
 					break;
 				case "조회":
-					$("#frm").attr("action", "storageShow");
-					$("#frm").submit();
+					$("#ts_frm").attr("action", "storageShow");
+					$("#ts_frm").submit();
 					break;
 				} // switch
 			} // if else
@@ -228,7 +228,7 @@
 		<div id="chart_div"></div>
 		<br>
 	
-		<form id="frm" method="post">
+		<form id="ts_frm" method="post" target="main">
 
 			<div class="btn-group" role="group">
 				<input id="updbtn" type="button" value="수정" class="btn btn-outline-info yj_btn">
