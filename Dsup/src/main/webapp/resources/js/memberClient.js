@@ -9,53 +9,53 @@ $(function(){
 });
 
 function checkValue(){	
+	
+	$('#login-userId, #login-password').keyup(function(){
+		$(this).next().next().next().empty();
+	});
+	
 	$('#checkValue').on('click', function(){
-		/*var userId = $("userId").val();
-		$('[class="form__error"]').text('');
-		if (userId.length < 1){
-			$('[for="userId"]').next().text("아이디를 입력해주세요.");
-		*/
 		if($('#login-userId').val() == ''){
 			$('[for="userId"]').next().text("아이디를 입력해주세요.");
-			return false;
+		}
+		if($('#login-password').val() == ''){
+			$('[for="password"]').next().text("비밀번호를 입력해주세요.");
+			return false
 		}	
 		
-	})	
+	});
 }	
-			/*$.ajax({
-				url: "members",
-				type: 'POST',
-				dataType: 'json',
-				data: param, 
-				contentType: 'application/json',
-				success: function(response){
-					$('[class="form__error"]').text('');
-					if(response.result == true){	// 서버에서 등록후에 true라고 넘어오면
-						location.href='login';
-					}else{
-						if(response.idcheck==true){
-							$('[for="userId"]').next().text("다른 아이디를 사용해주세요.");
-						}else if(response.passwordcheck==true){
-							$('[for="password"]').next().text("비밀번호가 다릅니다.");
-						}
-*/
+			
 //사용자 등록요청
 function memberInsert(){
 	//등록버튼클릭
+	$('#userId, #password, #nickname, #email, #phonenumber').keyup(function(){
+		$(this).next().next().next().empty();
+	});
 	$('#btnInsert').on('click', function(){
-	/*	var id = $('input:text[name="userId"]').val();
-		var nickname= $('input:text[name="nickname"]').val();
-		var password = $('[name="password"]').val();
-		
-		
-		 if(id == "") {
-			 alert("아이디를 입력하세요");
-			
-		 }*/
-		 /*if(new String(nickname).valueOf() == "undefined") return true;
-		 if(new String(password).valueOf() == "undefined") return true;*/
-
-		 var param = JSON.stringify($("#register-form").serializeObject());	//단건일때 //다건일땐 변환애줘야됨
+		var err = 0;
+		if($('#userId').val() == ''){
+			$('[for="userId"]').next().text("아이디를 입력해주세요.");
+			err++;
+		}
+		if($('#password').val() == ''){
+			$('[for="password"]').next().text("비밀번호를 입력해주세요.");
+			err++;
+		}
+		if($('#nickname').val() == ''){
+			$('[for="nickname"]').next().text("닉네임을 입력해주세요.");
+			err++;
+		}	
+		if($('#email').val() == ''){
+			$('[for="email"]').next().text("이메일을 입력해주세요.");
+			err++;
+		}	
+		if($('#phonenumber').val() == ''){
+			$('[for="phonenumber"]').next().text("전화번호를 입력해주세요.");
+			err++;
+		}	
+		if (err == 0) {
+		var param = JSON.stringify($("#register-form").serializeObject());	//단건일때 //다건일땐 변환애줘야됨
 		$.ajax({
 			url: "members",
 			type: 'POST',
@@ -68,16 +68,18 @@ function memberInsert(){
 					location.href='login';
 				}else{
 					if(response.idcheck==true){
-						$('[for="userId"]').next().text("다른 아이디를 사용해주세요.");
+						$('[for="userId"]').next().text("이미 사용중인 아이디입니다.");
 					}else if(response.passwordcheck==true){
 						$('[for="password"]').next().text("비밀번호가 다릅니다.");
 					}
 				}
 			},
-			error:function(xht, status, message){
+			/*error:function(xhr, status, message){
 				alert(" status: " + status + " er:"+message);
-			}
-		});
+			}*/
+		}); // ajax
+		err++;
+		}
 	});//등록버튼클릭
 }//userInsert
  	//사용자 삭제 요청
