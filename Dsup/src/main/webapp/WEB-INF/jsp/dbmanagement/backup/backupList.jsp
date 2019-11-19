@@ -49,12 +49,12 @@
 			
 			var $checkBox = $("<td>").append($("<input>").attr("type","checkbox").val((item.backupFileNm)).attr("name", "deleteFiles"));
 			var $backupFileNm = $("<td>").html("<a href = './download/" + fileName + "'>" + fileName + "</a>");
-			var $backupDate = $("<td>").text((item.backupDate).substr(0,10));
+			var $retentionPeriod = $("<td>").text((item.retentionPeriod).substr(0,10));
 			var $backupComment = $("<td>").text((item.backupComment));
 			
 			$("tbody").append($("<tr>").append($checkBox)
 										.append($backupFileNm)
-										.append($backupDate)
+										.append($retentionPeriod)
 										.append($backupComment)
 								);
 			
@@ -131,6 +131,7 @@
 		<input type = "button" id="delBtn" value = "삭제"
 			class = "btn btn-outline-info" >
 	</div>
+	<br>
 	
 	<form action="backupDelete" id = "frm">
 	<table id = "table"  class="table table-hover table-bordered">
@@ -138,7 +139,7 @@
 			<tr>
 				<th style="width:5%"><input type = "checkbox" id="checkAll"></th>
 				<th style="width:30%">백업파일 이름</th>
-				<th style="width:10%">백업 날짜</th>
+				<th style="width:10%">보관기간</th>
 				<th style="width:55%">코멘트</th>
 			</tr>
 		</thead>

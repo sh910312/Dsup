@@ -20,9 +20,9 @@
 	<!-- [윤정1028] 백업 테이블에 자료 입력 -->
 	<insert id="insertBackupList" parameterType = "backup">
 		INSERT INTO user_backup_list_tb
-			(backup_file_nm, user_id, backup_date, backup_comment)
+			(backup_file_nm, user_id, backup_date, backup_comment, retention_period)
 		VALUES
-			(#{backupFileNm}, #{userId}, #{backupDate}, #{backupComment})
+			(#{backupFileNm}, #{userId}, #{backupDate}, #{backupComment}, sysdate + 30)
 	</insert>
 	<!-- [윤정1028] 백업 테이블 조회 -->
 	<select id = "getBackupList" parameterType = "String" resultType="backup">
@@ -30,14 +30,28 @@
 			, user_id "userId"
 			, backup_date "backupDate"
 			, backup_comment "backupComment"
+			, retention_period "retentionPeriod"
 		FROM user_backup_list_tb
 		<if test = "userId != '---관리자---'">
 		WHERE user_id = #{userId}
 		</if>
+		ORDER BY backup_date desc
 	</select>
 	<!-- [윤정1029] 백업 테이블 자료 삭제 -->
 	<delete id = "deleteBackupList" parameterType = "String">
 		DELETE FROM user_backup_list_tb
 		WHERE backup_file_nm = #{backupFileNm}
 	</delete>
+	<!-- [윤정1118] 보관기간 지난 파일 -->
+	<select id = "getOverBackup" resultType="backup">
+		SELECT backup_file_nm "backupFileNm"
+			, user_id "userId"
+			, backup_date "backupDate"
+			, backup_comment "backupComment"
+			, retention_period "retentionPeriod"
+		FROM user_backup_list_tb
+		<![CDATA[
+  		WHERE retention_period < sysdate
+  		]]>
+	</select>
 </mapper>

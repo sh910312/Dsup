@@ -222,9 +222,11 @@
 		<div class = "row">
 			<h3>이용중인 요금제 : <span id = "service">${member.getPayItem()}</span></h3>
 		</div>
+		<br>
 		
 		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 		<div id="chart_div"></div>
+		<br>
 	
 		<form id="frm" method="post">
 
