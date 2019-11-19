@@ -10,7 +10,7 @@
 		  , pay_type "payType"
 		  , pay_price "payPrice"
 	FROM pay_his_if_tb
-	ORDER BY 3 desc
+	ORDER BY pay_date
 	</select>
 	
 	<select id = "userSchema" resultType = "user">
