@@ -9,10 +9,9 @@
 	</insert>
 	
 	<!-- id 예약어 -->
-	<select id="reservedWords" parameterType="String" resultType="String">
-		select sc_name_chk( #{reservedWords} )
-		from dual
-
+	<select id="scChk" resultType="string">
+	SELECT KEYWORD FROM V$RESERVED_WORDS
+	WHERE KEYWORD = #{id} 
 	</select>
 	
 	<!-- 리스트 -->

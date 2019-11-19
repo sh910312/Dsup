@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 
-<frameset cols="70%, 30%">
+<frameset cols="80%, 20%">
   <frame name="main" src="main" />
   <frame name="frameChat" src="chatMain" />
     <body>
