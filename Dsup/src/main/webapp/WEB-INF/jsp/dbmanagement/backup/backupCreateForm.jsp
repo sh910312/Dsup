@@ -56,6 +56,7 @@
 	// [윤정 1115] 테이블스페이스 선택하지 않았을경우 처리
 	function tsCheckFunc() {
 		var tablespaceName = $('input:radio[name="tablespaceName"]:checked').val();
+		console.log(typeof tablespaceName);
 		if (typeof tablespaceName == "undefined")  // 체크하지 않았을 경우
 			$('#tsError').fadeIn(400).delay(1000).fadeOut(400);
 		 else  // 체크했을 경우

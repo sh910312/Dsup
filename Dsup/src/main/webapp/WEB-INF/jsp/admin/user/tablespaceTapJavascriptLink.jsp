@@ -44,6 +44,10 @@ function printMember(member) {
 		var phonenumber = item.phonenumber;
 		var userType = item.userType;
 		var payItem = item.payItem;
+
+		if (userType == '1') userType = '일반회원';
+		else if (userType == '0') userType = '관리자';
+		else if(userType == '2') userType = '탈퇴';
 		
 		tag += "<tr>" +
 					"<td>" + userId + "</td>" +
