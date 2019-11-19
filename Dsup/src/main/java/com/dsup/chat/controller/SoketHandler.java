@@ -50,29 +50,29 @@ public class SoketHandler extends TextWebSocketHandler implements WebSocketHandl
 		String nickname = "";
 		int chatid = 0;
 		
-		sendMaseege("login", msg,  nickname,  chatid);
+		sendMaseege("login", msg,  nickname,  chatid, "");
 	
 	
 	}
 	
 	
 	
-	public void sendMaseege(String cmd, String msg, String nickname, int chatid) throws IOException {
+	public void sendMaseege(String cmd, String msg, String nickname, int chatid, String userId) throws IOException {
 		
-		SimpleDateFormat date =  new SimpleDateFormat("HH:mm");
+		SimpleDateFormat date =  new SimpleDateFormat("MM월dd일 HH:mm");
 //		SimpleDateFormat date =  new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		
 		Map<String, String> map = new HashMap<String, String>();
-		String temp = "<div>"
-				+ "<div class='pull-right'>" + date.format(new Date())	+ "</div>"
+		String temp = 
+				"<div class='pull-right'>" + date.format(new Date())	+ "</div>"
 				+ "<h4>" + nickname + "</h4>"
-				+ "<span style='display:block; width:200px;'> " + msg
+				+ "<span> " + msg
 				+ "<input type='hidden' value='" + chatid+ "'>" 
-				+ "</span>"
-				+ "</div>";
+				+ "</span>";
 		
 		map.put("cmd", cmd);
 		map.put("msg", temp);
+		map.put("userId", userId);
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonString = mapper.writeValueAsString(map);
 		
@@ -104,16 +104,25 @@ public class SoketHandler extends TextWebSocketHandler implements WebSocketHandl
 		cvo.setContents(message.getPayload());
 	
 		
-		int a = chatService.insertChat(cvo);
+		
+		
+		
+		int a = chatService.insertChat(cvo); // DB에 저장된다.
+		
+		
+		
+		
+		
 		System.out.println(cvo+",,,,"+a);
 		
 		
 		//System.out.println(vo.getUserId() + "으로부터 " + message.getPayload() + "받음" + date.format(new Date()));
 		String msg = message.getPayload();
 		String nickname = cvo.getNickname();
+		
 		int chatid = cvo.getChatId();
 		
-		sendMaseege("msge", msg,  nickname,  chatid);
+		sendMaseege("msge", msg,  nickname,  chatid, cvo.getUserId());
 	
 		
 	}
@@ -133,7 +142,7 @@ public class SoketHandler extends TextWebSocketHandler implements WebSocketHandl
 		String nickname = "";
 		int chatid = 0;
 		
-		sendMaseege("logout", msg,  nickname,  chatid);
+		sendMaseege("logout", msg,  nickname,  chatid, "");
 	
 	}
 

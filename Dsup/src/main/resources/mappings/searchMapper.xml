@@ -47,6 +47,19 @@
 <!-- paging 리스트 -->
 	<select id="pageList" resultType="int">
 		select count(*) from search
+		<where>
+			<if test="title != null and title != ''">
+				and upper(title) like '%' || upper(#{title}) || '%'
+			</if>
+		</where>
+		<choose>
+			<when test="orderby != null and orderby != ''">
+				order by #{ORDERBY} DESC
+			</when>
+			<otherwise>
+				order by search_id DESC
+			</otherwise>
+		</choose>
 	</select>
 
 <!-- 전체조회2 -->
@@ -60,7 +73,7 @@
 														from search
 		<where>
 			<if test="title != null and title != ''">
-				and title like '%' || #{title} || '%'
+				and upper(title) like '%' || upper(#{title}) || '%'
 			</if>
 		</where>
 		<choose>

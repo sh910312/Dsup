@@ -30,4 +30,9 @@ public class RpDAOMybatis { // (p.513)
 		return mybatis.selectOne("RpDAO.getRp", vo);
 	}
 
+	// 중복체크
+	public RpVO checkRp(RpVO vo) {
+		return mybatis.selectOne("RpDAO.checkRp", vo);
+	}
+	
 }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Found a 58 line (256 tokens) duplication in the following files: 
 Starting at line 345 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
 Starting at line 716 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl\SQLServiceImpl.java
@@ -1349,3 +1350,5 @@ Starting at line 963 of D:\git\Dsup\Dsup\src\main\java\com\dsup\sql\service\impl
 		// TODO Auto-generated method stub
 		System.out.println("\n--- DBinsert.java ---");
 		String sql = request.getParameter("sql").toUpperCase().replaceAll("\n", " ");
+=======
+>>>>>>> branch 'master' of https://github.com/sh910312/Dsup.git

@@ -28,6 +28,19 @@ function insert() {
 	
 	$("#insertbtn").click(function() {
 		
+		if($("#title").val().length==0){
+			alert("키워드를 입력하세요");
+			$("#contents").focus();
+			return false;
+		}
+		
+		if($("#contents").val().length==0){
+			alert("내용을 입력하세요");
+			$("#contents").focus();
+			return false;
+		}
+		
+		alert("등록되었습니다.");
 		$("#frm").attr("action", "insertSearch");
 		$("#frm").attr("method", "post")
 		$("#frm").submit();
@@ -43,6 +56,9 @@ function back() {
 	})
 } 
 
+window.onload = function(){ 
+	window.resizeTo(728,400);
+}; 
 
 
 </script>
@@ -69,12 +85,12 @@ function back() {
 							<div class="portlet-footer">
 								<div class="row" >
 									<div class="form-group col-xs-10">
-										<input id="title" name="title" class="form-control" placeholder="등록할 키워드를 입력하세요. 15자 이내로 작성하세요." maxlength="15">
+										<input id="title" name="title" class="form-control" placeholder="등록할 키워드를 입력하세요. 20자 이내로 작성하세요." maxlength="20"> <!-- 원래 15  -->
 									</div>
 								</div>
 								<div class="row">
 									<div id="text" class="form-group col-xs-12">
-										<textarea style="height: 150px;" id="contents" name="contents" class="form-control" placeholder="등록할 내용"></textarea>
+										<textarea style="height: 150px;" id="contents" name="contents" class="form-control" placeholder="등록할 내용 300자 내로 작성하세요." maxlength="300"></textarea>
 									</div>
 								</div>
 								<div align="center">

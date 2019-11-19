@@ -32,10 +32,6 @@ function openButton(menu){ /*  버튼 새창 */
 </script>
 
 <script>
-
-
-
-
 $(function() {
 	
 	update();
@@ -46,6 +42,18 @@ $(function() {
 function update() { // 게시글 수정
 	
 	$("#updatebtn").click(function() {
+		
+		if($("#title").val().length==0){
+			alert("제목을 입력하세요");
+			$("#title").focus();
+			return false;
+		}
+		if($("#contents").val().length==0){
+			alert("내용을 입력하세요");
+			$("#contents").focus();
+			return false;
+		}
+		
 		$("#frm1").attr("action", "updateSearch");
 		$("#frm1").submit();
 		alert("수정이 완료되었습니다.")
@@ -62,7 +70,9 @@ function back() {
 	})
 } 
 
-
+window.onload = function(){ 
+	window.resizeTo(728,460);
+}; 
 
 
 </script>

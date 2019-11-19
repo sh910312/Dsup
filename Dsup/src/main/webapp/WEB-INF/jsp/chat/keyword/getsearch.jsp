@@ -17,6 +17,7 @@
 <script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 
 
+
 <script>
 function openButton(menu,a){ /*  버튼 새창 */ // menu,a >> 첫번째와 두번째 값으로 넘겼음
 	
@@ -26,15 +27,15 @@ function openButton(menu,a){ /*  버튼 새창 */ // menu,a >> 첫번째와 두�
 	if (menu == "0" || menu == 0){ // 게시글신고
 		
 		console.log("aaaaaaaaaa")
+		
 		// rpId에 게시글 넘버 넣기, type은 0으로 지정 하기
-		window.open("getRp?searchId=${search.searchId }","게시글신고",'width=484px, height=447px, left='+ popupX + ', top='+ popupY);
-
+		window.open("getRp?searchId=${search.searchId }","게시글신고",'width=484px, height=523px, left='+ popupX + ', top='+ popupY);
 	
 	}else if(menu == "1" || menu == 1){ // 댓글 신고
 		
 		console.log(a);
-		
-		window.open("getRp?reId="+a,"댓글신고",'width=484px, height=447px, left='+ popupX + ', top='+ popupY);
+		alert("댓글신고")
+		window.open("getRp?reId="+a,"댓글신고",'width=484px, height=523px, left='+ popupX + ', top='+ popupY);
 	}
 	
 }
@@ -84,16 +85,20 @@ function del() { // 게시글 삭제
 
 
 function insertRe() { // 댓글 등록
-	
+
 	console.log("insertRe");
 	
  	$("#insertbtn").click(function() {
 		
+		if($("#contents").val().length==0){
+			alert("내용을 입력하세요");
+			$("#contents").focus();
+			return false;
+		}
+ 		
 		$("#frm2").attr("action", "insertRe");
 		$("#frm2").attr("method", "post");
 		$("#frm2").submit();
-		alert("댓글이 등록 되었습니다.");
-		
 	}) 
 
 }
@@ -124,7 +129,6 @@ function updateRe() { // 댓글 업데이트
 		$(this).parent().html('<button type="button" id="updateRebtn" class="updateRebtn btn btn-default btn-xs pull-right">댓글 수정</button>');
 		
 		$("#frmEditRe").submit();
-		
 	});
 
 }
@@ -158,12 +162,29 @@ function back() { // 돌아가기
 } 
 
 
- window.onload = function(){ //db읽어온 텍스트 \n  -> <br> 바꿈
+window.onload = function(){ //db읽어온 텍스트 \n  -> <br> 바꿈
+	
+	window.resizeTo(728,700);
 	var text = document.getElementById("updatecotents");
 	var result = text.value.replace(/(\n|\r\n)/g, '<br>');
 	document.getElementById("test").innerHTML = result;
 }; 
- 
+
+
+$(document).ready(function(){
+
+	$('#updateRebtn').click(function(){
+
+		var offset = $('#editbtn').offset(); //선택한 태그의 위치를 반환
+
+            //animate()메서드를 이용해서 선택한 태그의 스크롤 위치를 지정해서 0.4초 동안 부드럽게 해당 위치로 이동함 
+
+        $('html').animate({scrollTop : offset.top}, 400);
+
+	});
+
+});
+
 
 </script>
 </head>
@@ -180,7 +201,7 @@ function back() { // 돌아가기
 							</div>
 							<div class="portlet-title pull-right">
 								<h3>${search.userId }
-									<fmt:formatDate value="${search.writeDate}" pattern="yy-MM-dd" />
+									<fmt:formatDate value="${search.writeDate}" pattern="yy-MM-dd HH:mm" />
 								</h3>
 							</div>
 							<div class="clearfix"></div>
@@ -197,11 +218,11 @@ function back() { // 돌아가기
 							<div class="row">
 								<form id="frm1">
 								<br>
-									<div id="test"></div>
+									<div id="test" style="max-height:100px; overflow:auto; width: 100%;"></div>
 									<input id="updatecotents" type="hidden" value="${search.contents }">
-									
-								<br>
+								<c:if test="${userId != search.userId }">
 								<div class="pull-right"><a id="rpSearch" onclick="openButton(0,${search.searchId })">게시글 신고하기</a></div>
+								</c:if>
 								<div align="center">
 								<br>
 							
@@ -241,7 +262,9 @@ function back() { // 돌아가기
 
 										${re.userId }
 										${re.writeDate }
+									<c:if test="${userId != re.userId }">
 										<button type="button" class="btn btn-default btn-xs" onclick="openButton(1,${re.reId })">신고</button>
+									</c:if>
 									<c:if test="${userId == re.userId }">
 										<div id="delbtn"><button type="button" id="delRebtn" name="delRebtn" class="delRebtn btn btn-default btn-xs pull-right">댓글 삭제</button></div>
 										<div id="editbtn"><button type="button" id="updateRebtn" class="updateRebtn btn btn-default btn-xs pull-right">댓글 수정</button></div>
@@ -269,11 +292,11 @@ function back() { // 돌아가기
 								
 							<!-- 등록 폼 시작 -->
 							<div class="row">
-								<div class="form-group col-lg-12" align="center">
+								<div class="col-lg-12">
 								<form id="frm2" class="form-inline" action="insertRe" method="POST">
 								<input type="hidden" name="searchId" value="${search.searchId }">
 									<input type="text" style="width: 80%; height: 40px;" name="contents" id="contents" class="form-control" placeholder="댓글을 입력하세요." maxlength="50">
-									<button type="button" id="insertbtn" name="insertbtn" class="btn btn-default" style="width: 100px; height:40px;">등록 </button>
+									<button type="button" id="insertbtn" name="insertbtn" class="btn btn-default" style="width: 50px; height:40px;">등록 </button>
 								</form>									
 								</div>
 							<!-- 등록 폼 끝 -->
