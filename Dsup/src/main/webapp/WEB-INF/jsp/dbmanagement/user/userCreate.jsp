@@ -30,18 +30,19 @@
 				}			
 		});
 	});
-	
+
 	function formCheck(){
 		if($("#passwordResult").val()=="false"){
 			alert("비밀번호를 확인하세요");
 			return false;
 		}
 	}
-	
+
+	var idChkYn = false;
 	//유저생성
 	function userCreate() {
 		var id = $('#id').val();
-		var idChkYn = false;
+		var tableError = 0;
 		id = id.toUpperCase();
 		$("#id").val(id);
 		userCreate.isLoad = false;
@@ -61,9 +62,12 @@
 				return 
 			}
 			if( $("#defaultTableSpace").val() == "" ){
-				alert("defaultTableSpace를 확인하세요!")
+				$("#tableError").css('display', 'block');
 				return
-			}
+			} 
+		
+		
+				
 
 			var param = JSON.stringify($('#frm2').serializeObject()); 
 			if(userCreate.isLoad != true) {
@@ -100,12 +104,12 @@
 			 if(id == ""){				
 				$('#id_check').text('아이디를 입력해주세요');
 				$('#id_check').css('color', 'red');
-				$("#reg_submit").attr("disabled", true);				
+				$("#btnIns").attr("disabled", true);				
 			  return
 			} if(!id.substr(0,1).match(/[A-Z]/)) {
 				$('#id_check').text('사용할 수 없는 문자입니다.');
 				$('#id_check').css('color', 'red');
-				$("#reg_submit").attr("disabled", true);
+				$("#btnIns").attr("disabled", true);
 				return
 			} 
 			idChkYn = false;
@@ -120,19 +124,19 @@
 						// 1 : 아이디가 중복되는 문구
 						$("#id_check").text("사용중인 아이디입니다 ");
 						$("#id_check").css("color", "red");
-						$("#reg_submit").attr("disabled", true);
+						$("#btnIns").attr("disabled", true);
 						return
 					}   
 					else if (data == 2) {
 						$("#id_check").text("예약어는 사용할 수 없습니다. ");
 						$("#id_check").css("color", "red");
-						$("#reg_submit").attr("disabled", true);
+						$("#btnIns").attr("disabled", true);
 						return
 						
 					}else{
 						$("#id_check").text("사용가능한 아이디입니다.");
 						$('#id_check').css('color', 'blue');
-						$("#reg_submit").attr("disabled", false);
+						$("#btnIns").attr("disabled", false);
 						idChkYn = true
 					}
 				}, error : function() {
@@ -148,6 +152,13 @@
 
 </script>
 <div class = "container">
+
+<h3>스키마 생성</h3>
+<div class="alert alert-danger" id="tableError" style='display:none'>
+    <button type="button" class="close" data-dismiss="alert">X</button>
+    <strong>  테이블 스페이스가 없는 경우 테이블 스페이스를 먼저 생성해야 합니다. ! </strong>
+   
+</div>
 <div class="form-group">
 	<form action="userList.jsp" id="frm2">
 		<table class = "table table-borderless">
@@ -182,6 +193,7 @@
 				</td>
 				<td>
 					<select name="defaultTableSpace" id="defaultTableSpace" class = "form-control">
+				 <option value = ""></option> 
 					<c:forEach var = "list" items="${tableSpaceList}">
 					<option value="${list.tablespaceName}">${list.tablespaceName}</option>
 					</c:forEach>
