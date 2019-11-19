@@ -43,18 +43,15 @@ window.onload = function(){		//db읽어온 텍스트 \n  -> <br> 바꿈
 	var result = text.value.replace(/(\n|\r\n)/g, '<br>');
 	document.getElementById("test").innerHTML = result;
 }; 
-
-
-
-
 </script>
 
 
 
 </head>
 <body>
-${checkRp}==================
-<c:if test="${checkRp eq 0 }">
+
+<!-- 신고 이력이 없는 경우 뜨는 페이지 -->
+<c:if test="${checkRp == 0 }">
 <form id="frm">
 	<div class="container">
 			<div class="row">
@@ -139,11 +136,36 @@ ${checkRp}==================
 		</div>
 	</form>
 	</c:if>
-	<c:if test="${checkRp gt 0 }">
-	
-	ㅇㅇㅇㅇㅇㅇ
-	
-	
+
+
+
+<!-- 신고 이력이 있는 경우 뜨는 페이지 -->
+	<c:if test="${checkRp != 0 }">
+	<div class="container">
+			<div class="row">
+				<div class="col-xs-13">
+					<div class="portlet portlet-default">
+						<div class="portlet-heading">
+							<div class="portlet-title">
+								<h3>신고합니다</h3>
+							</div>
+							<div class="portlet-title pull-right">
+							</div>
+							<div class="clearfix"></div>
+						</div>
+						<!-- 대화입력창  -->
+						<div class="portlet-footer">
+							<!-- 신고 상세내용 시작 -->
+							<div class="row" align="center">
+							<h3>이미 신고가 된 상태입니다.</h3>
+									<button type="button" id="close" name="close" class="btn btn-default" onclick="self.close();">닫기</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+				
 	</c:if>
 </body>
 </html>

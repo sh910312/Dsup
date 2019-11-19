@@ -59,6 +59,7 @@ public class ReController {
 		reService.deleteRe(vo);
 
 		return "redirect:getSearch?searchId=" + vo.getSearchId();
+		//return "redirect:getSearch?searchId=" + vo.getSearchId();
 	}
 
 }

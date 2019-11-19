@@ -19,7 +19,7 @@
 <!-- 신고 중복 -->
 	<select id="checkRp" parameterType="rp" resultType="int">
 
-	select count(*) from report where rp_user_id = #{rpUserId} and rp_type=#{rpType} and board_num=#{boardNum}
+	select count(*) from report where user_id = #{userId} and rp_type=#{rpType} and board_num=#{boardNum}
 
 	</select>
 
