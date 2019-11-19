@@ -31,6 +31,8 @@
 		btnClickFunc(); // 버튼 클릭 이벤트
 		$("#delbtn").click(function() {
 			$("#ts_frm").attr("action", "storageDelete");
+			$("#delbtn").attr("disabled", true)
+						.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
 			$("#ts_frm").submit();
 		});
 		// 삭제 버튼 클릭

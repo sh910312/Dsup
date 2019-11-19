@@ -22,7 +22,7 @@
 	var thisVolumn = 0;
 	var submitCheck = 0;
 	$(function(){
-		$("#btn").click(formCheck);
+		$("#trCreOk").click(formCheck);
 		$("#addbtn").click(add);
 		$("#nameMsg").hide();
 		filenameInput();
@@ -77,8 +77,11 @@
 		$("#sql").val(sql);
 		
 		if (err == 0 && submitCheck == 0) {
+			$("#trCreOk").attr("disabled", true)
+						  .html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
 			console.log("submit!");
 			submitCheck = 1;
+			console.log(submitCheck);
 			$("#tsCreFrm").submit();
 		}
 	}
@@ -268,7 +271,7 @@
 			</tbody>
 		</table>
 		<div class = "row">
-			<input type = "button" id="btn" value = "생성" class = "btn btn-outline-info btn-block" onclick="formCheck()">
+			<button type = "button" id = "trCreOk" class = "btn btn-outline-info btn-block" onclick="formCheck()">생성</button>
 			<input type = "button" id="back" value = "목록으로 돌아가기" class = "btn btn-block btn-outline-secondary"
 					onclick = 'history.back()'>
 		</div>

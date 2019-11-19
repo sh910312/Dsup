@@ -57,18 +57,18 @@ function printMember(member) {
 		else if (userType == '0') userType = '관리자';
 		else if(userType == '2') userType = '탈퇴';
 		
-		tag += "<tr>" +
-					"<td>" + userId + "</td>" +
-					"<td>" + password + "</td>" +
-					"<td>" + nickname + "</td>" +
-					"<td>" + email + "</td>" +
-					"<td>" + userDate + "</td>" +
-					"<td>" + phonenumber + "</td>" +
-					"<td>" + userType + "</td>" +
-					"<td>" + payItem + "</td>" +
-				"</tr>";
+		$("#memberTableTbody").append(
+			$( $("<tr>").append( $("<td>").text(userId) )
+						.append( $("<td>").text(password) )
+						.append( $("<td>").text(nickname) )
+						.append( $("<td>").text(email) )
+						.append( $("<td>").text(userDate) )
+						.append( $("<td>").text(phonenumber) )
+						.append( $("<td>").text(userType) )
+						.append( $("<td>").text(payItem) )
+			)
+		);
 	});
-	$("#memberTableTbody").html(tag);
 	if(userManagementTable != ""){
 		console.log("사용자 관리 테이블 파괴");
 		userManagementTable.destroy();
