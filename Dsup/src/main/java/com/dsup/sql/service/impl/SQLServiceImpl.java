@@ -131,7 +131,7 @@ public class SQLServiceImpl implements SQLService{
 			ArrayList<String> expression_list = new ArrayList<String>();
 			for(int i=0; i<length; i++) {
 				colName_list.add(list.get(i).get("colName"));
-				expression_list.add(list.get(i).get("expression"));
+				expression_list.add(list.get(i).get("expression").toUpperCase());
 			}
 			System.out.println("2. expression_list = " + expression_list.toString());
 			System.out.println("3. colName_list = " + colName_list.toString());
@@ -147,6 +147,7 @@ public class SQLServiceImpl implements SQLService{
 						if(expression_list.get(i).contains("IF ")) {
 							//추가 하려는 컬럼명의 index와 expression의 index는 동일 하기 때문에 똑같은 index사용해서 값을 뽑아옴
 							String exp = expression_list.get(i).replace("IF", "CASE WHEN");
+							
 							exp = "/*|*/" + exp + " AS " + colName_list.get(i) + "/*|*/";
 							select_stmt_list.set(j, exp);
 							//컬럼이 동일하 녀석들 추가 컬럼 이름 list와 표현 list에서 제거 : 하나의 for문에 돌릴려니 자식 컬럼 개수만큼 계속 추가되서 나중에 남은 것들 따로 할 생각
