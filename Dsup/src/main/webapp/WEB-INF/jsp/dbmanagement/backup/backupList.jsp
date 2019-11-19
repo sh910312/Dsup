@@ -107,7 +107,7 @@
 	
 	// [윤정 1106] 모달에서 삭제버튼 클릭
 	function modalDelClick(){
-		$("#frm").submit();
+		$("#backupFrm").submit();
     }
 	
 	// [윤정 1029] thead의 체크박스 클릭시 전체 선택, 해제
@@ -133,7 +133,7 @@
 	</div>
 	<br>
 	
-	<form action="backupDelete" id = "frm">
+	<form action="backupDelete" id = "backupFrm">
 	<table id = "table"  class="table table-hover table-bordered">
 		<thead>
 			<tr>

@@ -65,7 +65,7 @@ public class BackupServiceImpl implements BackupService {
 					dao.BackupDelete(fileName);
 					// 파일이 삭제되면 테이블의 데이터도 삭제
 				} 
-			}
+			} else System.out.println("백업 파일 없음");
 		}
 	}
 

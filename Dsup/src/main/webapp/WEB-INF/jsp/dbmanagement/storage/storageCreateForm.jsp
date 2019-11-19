@@ -20,6 +20,7 @@
 	var service = "${member.payItem}".split("GB")[0];
 	var freeVolumn = 0;
 	var thisVolumn = 0;
+	var submitCheck = 0;
 	$(function(){
 		$("#btn").click(formCheck);
 		$("#addbtn").click(add);
@@ -75,8 +76,9 @@
 				+ " LOGGING EXTENT MANAGEMENT LOCAL SEGMENT SPACE MANAGEMENT AUTO";
 		$("#sql").val(sql);
 		
-		if (err == 0) {
+		if (err == 0 && submitCheck == 0) {
 			console.log("submit!");
+			submitCheck = 1;
 			$("#tsCreFrm").submit();
 		}
 	}
@@ -230,8 +232,8 @@
 		<br><br>
 		<h1>종량제 정보</h1>
 		종량제 이용량 : <span id = "volumn"></span> / ${member.payItem} <br>
-		이용가능한 용량 : <span id = "freeVolumn"></span> MB<br>
-		현제 테이블스페이스 용량 : <span id = "thisVolumn">0</span> MB<br>
+		이용가능한 용량 : <span id = "freeVolumn" style = "color:red"></span> MB<br>
+		현제 테이블스페이스 용량 : <span id = "thisVolumn" style = "color:red">0</span> MB<br>
 		<br><br>
 		
 		<div class = "row">
