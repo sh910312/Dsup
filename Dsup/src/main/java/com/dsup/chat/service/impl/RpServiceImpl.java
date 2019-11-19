@@ -31,7 +31,7 @@ public class RpServiceImpl implements RpService {
 	}
 
 	@Override // 중복체크
-	public RpVO checkRp(RpVO vo) {
+	public int checkRp(RpVO vo) {
 		// TODO Auto-generated method stub
 		return rpDAOMybatis.checkRp(vo);
 	}

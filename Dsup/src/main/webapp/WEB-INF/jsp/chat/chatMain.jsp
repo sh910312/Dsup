@@ -31,7 +31,8 @@
 	// 웹소켓을 지정한 url로 연결한다.
     let sock = new SockJS('<c:url value="/soket"/>');
     sock.onmessage = onMessage;
-    sock.onclose = onClose;
+    // sock.onclose = onClose;
+    sock.chatlogout = chatlogout;
 
     // 메시지 전송
     function sendMessage() {
@@ -87,8 +88,6 @@
     function chatlogout(evt) {
     	sock.close();
     }
-    
-    
     
     // 서버와 연결을 되었을 때 자동 발송
     function onOpen(evt) {

@@ -35,6 +35,7 @@ function openButton(menu,a){ /*  버튼 새창 */ // menu,a >> 첫번째와 두�
 		
 		console.log(a);
 		alert("댓글신고")
+		
 		window.open("getRp?reId="+a,"댓글신고",'width=484px, height=523px, left='+ popupX + ', top='+ popupY);
 	}
 	
@@ -188,8 +189,7 @@ $(document).ready(function(){
 
 </script>
 </head>
-
-<body>
+<body>  
 	<div class="container">
 			<div class="row">
 				<div class="col-xs-13">
@@ -336,7 +336,6 @@ function go_page(p){
 }
 
 </script>
-
 
 </body>
 </html>

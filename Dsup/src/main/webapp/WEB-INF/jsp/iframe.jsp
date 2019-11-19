@@ -7,10 +7,8 @@
 <frameset cols="70%, 30%">
   <frame name="main" src="main" />
   <frame name="frameChat" src="chatMain" />
-  <noframes>
     <body>
     </body>
-  </noframes>
 </frameset>
 </html>
 
