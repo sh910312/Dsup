@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,10 +25,11 @@ public class LoginController {
 	
 	//로그인처리
 	@RequestMapping(value = "login", method = RequestMethod.POST)  //@RequestMapping("login")
-	public String login(@ModelAttribute("member") MemberVO vo, HttpSession session) {
+	public String login(@ModelAttribute("member") MemberVO vo, HttpSession session, Model model) {
 		//로컬 사용시 주석 해야될 부분 2019.11.01 - 이재문
 		MemberVO member = memberService.login(vo);
 		if(member == null || member.getUserType().equals("0")) {
+			model.addAttribute("msg", "가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.");
 			// 윤정 : member.getUserType().equals("0") --> 탈퇴신청한 회원인경우
 			return "index";
 		} else {
