@@ -69,6 +69,12 @@ public class BackupServiceImpl implements BackupService {
 		}
 	}
 
+	// 윤정 보관기간 지난 파일
+	@Override
+	public List<BackupVO> getOverBackup() {
+		return dao.getOverBackup();
+	}
+	
 	// [윤정 1028] 파일 압축하기
 	public BackupVO makeZip(BackupVO vo, String tablespaceName, List<DatafileVO> datafile, String backupPath) {
 		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyyMMdd HHmmss");
@@ -94,7 +100,6 @@ public class BackupServiceImpl implements BackupService {
 		    	FileInputStream in = new FileInputStream(file.getFileName());
 		    	Path path = Paths.get(file.getFileName());
 		    	String fileName = path.getFileName().toString();
-		    	System.out.println("파일이름 : " + fileName);
 		    	
 		    	ZipEntry ze = new ZipEntry(fileName);
 		    	out.putNextEntry(ze);
@@ -116,6 +121,4 @@ public class BackupServiceImpl implements BackupService {
 		}
 		return vo;
 	}
-
-
 }

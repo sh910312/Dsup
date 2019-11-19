@@ -16,5 +16,5 @@ public interface RpService {
 	RpVO getRp(RpVO vo);
 	
 	// 신고중복
-	RpVO checkRp(RpVO vo);
+	int checkRp(RpVO vo);
 }

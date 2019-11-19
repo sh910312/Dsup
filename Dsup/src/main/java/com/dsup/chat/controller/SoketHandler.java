@@ -123,7 +123,7 @@ public class SoketHandler extends TextWebSocketHandler implements WebSocketHandl
 		int chatid = cvo.getChatId();
 		
 		sendMaseege("msge", msg,  nickname,  chatid, cvo.getUserId());
-	
+		System.out.println();
 		
 	}
 

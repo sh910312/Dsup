@@ -30,11 +30,12 @@ function openButton(menu,a){ /*  버튼 새창 */ // menu,a >> 첫번째와 두�
 		
 		// rpId에 게시글 넘버 넣기, type은 0으로 지정 하기
 		window.open("getRp?searchId=${search.searchId }","게시글신고",'width=484px, height=523px, left='+ popupX + ', top='+ popupY);
+		//window.open("getRp","게시글신고",'width=484px, height=523px, left='+ popupX + ', top='+ popupY);
 	
 	}else if(menu == "1" || menu == 1){ // 댓글 신고
 		
 		console.log(a);
-		alert("댓글신고")
+		
 		window.open("getRp?reId="+a,"댓글신고",'width=484px, height=523px, left='+ popupX + ', top='+ popupY);
 	}
 	
@@ -149,7 +150,6 @@ function delRe() { // 댓글 삭제
 		$("#frmdel").submit();
 		alert("댓글이 삭제되었습니다.");
 	})
-	
 }
 
 
@@ -172,24 +172,17 @@ window.onload = function(){ //db읽어온 텍스트 \n  -> <br> 바꿈
 
 
 $(document).ready(function(){
-
 	$('#updateRebtn').click(function(){
-
 		var offset = $('#editbtn').offset(); //선택한 태그의 위치를 반환
-
             //animate()메서드를 이용해서 선택한 태그의 스크롤 위치를 지정해서 0.4초 동안 부드럽게 해당 위치로 이동함 
-
         $('html').animate({scrollTop : offset.top}, 400);
-
 	});
-
 });
 
 
 </script>
 </head>
-
-<body>
+<body>  
 	<div class="container">
 			<div class="row">
 				<div class="col-xs-13">
@@ -266,7 +259,7 @@ $(document).ready(function(){
 										<button type="button" class="btn btn-default btn-xs" onclick="openButton(1,${re.reId })">신고</button>
 									</c:if>
 									<c:if test="${userId == re.userId }">
-										<div id="delbtn"><button type="button" id="delRebtn" name="delRebtn" class="delRebtn btn btn-default btn-xs pull-right">댓글 삭제</button></div>
+										<div id="delRebtn"><button type="button" id="delRebtn" name="delRebtn" class="delRebtn btn btn-default btn-xs pull-right">댓글 삭제</button></div>
 										<div id="editbtn"><button type="button" id="updateRebtn" class="updateRebtn btn btn-default btn-xs pull-right">댓글 수정</button></div>
 									</c:if>
 										<div id="editform">${re.contents }</div> 
@@ -295,8 +288,10 @@ $(document).ready(function(){
 								<div class="col-lg-12">
 								<form id="frm2" class="form-inline" action="insertRe" method="POST">
 								<input type="hidden" name="searchId" value="${search.searchId }">
-									<input type="text" style="width: 80%; height: 40px;" name="contents" id="contents" class="form-control" placeholder="댓글을 입력하세요." maxlength="50">
-									<button type="button" id="insertbtn" name="insertbtn" class="btn btn-default" style="width: 50px; height:40px;">등록 </button>
+								
+								<!-- 버튼가 인풋박스 함께 넣는법 : float 이용하기  -->
+									<input type="text" style="width: 85%; height: 40px; float:left" name="contents" id="contents" class="form-control" placeholder="댓글을 입력하세요." maxlength="50">
+									<button type="button" id="insertbtn" name="insertbtn" class="btn btn-default" style="width: 10%; height:40px; float:right">등록 </button>
 								</form>									
 								</div>
 							<!-- 등록 폼 끝 -->
@@ -336,7 +331,6 @@ function go_page(p){
 }
 
 </script>
-
 
 </body>
 </html>

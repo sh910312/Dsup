@@ -1,36 +1,33 @@
-<div>
+<div class="d-flex bg-light" style="border: ridge;">
 	<div id="container-for-icon-image"
-		style="display: inline-block; border: black solid 1px;">
+		style="display: inline-block;">
 		<img src="./resources/images/sql/DBread.png"
 			style="width: 50px; height: 50px;"></img>
 	</div>
 	<div style="display: inline-block;">
-		<div id="container-for-icon-names" style="border: black solid 1px;">
+		<div id="container-for-icon-names">
 			<div style="display: inline-block; font-weight: bold;">Name :</div>
 			<div id="dbread-name" style="display: inline-block;"></div>
 		</div>
-		<div style="border: black solid 1px;">
+		<div>
 			<div style="display: inline-block; font-weight: bold;">Key :</div>
 			<div id="dbread-key" style="display: inline-block;"></div>
 		</div>
 	</div>
 </div>
-<div id="container-for-icon-info">
-	<div style="border: black solid 1px;">
-		<div id="table-list">Table List</div>
-	</div>
-	<div style="border: black solid 1px;">
-		<div>Query Statement</div>
-		<div style="height: 100px;">
-			<textarea id="sql-statement" style="width: 80%; height: 80px;"></textarea>
+<div id="container-for-icon-info" style="border: ridge;">
+	<div style="padding: 15px;" class="container">
+		<div style="text-align: center;"><h6>Query Statement</h6></div>
+		<div style="height: 200px;">
+			<textarea id="sql-statement" class="form-control h-100"></textarea>
 		</div>
 	</div>
 </div>
-<div id="apply-container" class="container">
-	<div style="display: inline-block;">
-		<button id="dbread-apply" onclick="controller.apply('DBread');">Apply</button>
+<div id="apply-container" class="d-flex justify-content-end" style="padding: 10px;border: ridge;">
+	<div class="mx-auto" >
+		<button id="dbread-apply" class="btn btn-outline-secondary" onclick="controller.apply('DBread');">Apply</button>
 	</div>
-	<div style="display: inline-block;">
-		<button id="dbread-cancel" onclick="">Cancel</button>
+	<div class="mx-auto" >
+		<button id="dbread-cancel" class="btn btn-outline-secondary" onclick="">Cancel</button>
 	</div>
 </div>

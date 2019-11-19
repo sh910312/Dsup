@@ -1,5 +1,9 @@
 package com.dsup.member.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,8 +67,9 @@ public class LoginController {
 	
 	//로그아웃처리
 	@RequestMapping("logout")
-	public String logout(HttpSession session) {
+	public void logout(HttpSession session, HttpServletResponse response) throws IOException {
 		session.invalidate();	//세션무효화
-		return "redirect:index";
+		PrintWriter writer=response.getWriter();
+		writer.println("<script>parent.location=\"index\"</script>");
 	}
 }

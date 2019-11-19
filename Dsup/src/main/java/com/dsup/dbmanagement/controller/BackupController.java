@@ -81,4 +81,11 @@ public class BackupController {
 		backupService.backupDelete(deleteFiles);
 		return "redirect:backupList";
 	}
+	
+	// 윤정 1118 보관기간 지난 백업파일
+	@ResponseBody
+	@RequestMapping("overBackup")
+	public List<BackupVO> overBackup(){
+		return backupService.getOverBackup();
+	}
 }

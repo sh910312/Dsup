@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dsup.member.MemberVO;
 import com.dsup.pay.PayHisIfTbVO;
 import com.dsup.pay.service.PayService;
 
@@ -35,6 +36,12 @@ public class PayRestController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("result", true);
 		map.put("pay", true);
+		// ↓ 윤정 결제시 세션 수정
+		session.setAttribute("payService", "Y");
+		MemberVO mvo = (MemberVO) session.getAttribute("member");
+		mvo.setPayItem(vo.getPayItem());
+		session.setAttribute("memver", mvo);
+		
 		return map;
 	}
 }

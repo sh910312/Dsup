@@ -106,9 +106,9 @@
 </div>
 <div style="border: black solid 1px; display: flex;">
 	<div>
-		<button onclick="controller.apply('DBinsert')">Apply</button>
+		<button onclick="controller.apply('DBinsert')" class="btn btn-outline-secondary">Apply</button>
 	</div>
 	<div>
-		<button>Reset</button>
+		<button class="btn btn-outline-secondary">Reset</button>
 	</div>
 </div>

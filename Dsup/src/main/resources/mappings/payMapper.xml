@@ -13,7 +13,7 @@
 				#{payPrice})
  	</insert>
  	<update id="updatePay" parameterType="payHisIfTb">
- 		UPDATE USERS SET PAY_SERVICE = 'Y'
+ 		UPDATE USERS SET PAY_SERVICE = 'Y', pay_item = #{payItem}
  		WHERE USER_ID = #{userId} 
  	</update>
  </mapper>
