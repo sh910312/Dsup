@@ -39,7 +39,7 @@ public class RpController {
 	public String getRpsearch(HttpSession session,HttpServletRequest request, Model model, SearchVO svo, ReVO revo, RpVO rpvo, ChatVO cvo) {
 		
 		MemberVO member = (MemberVO) session.getAttribute("member");
-		rpvo.setRpUserId(member.getUserId());
+		rpvo.setUserId(member.getUserId());
 		
 		
 		// 0번 게시글
@@ -47,6 +47,7 @@ public class RpController {
 			model.addAttribute("rpType", 0);
 			model.addAttribute("search", searchService.getSearch(svo));
 			rpvo.setRpType(0);
+			rpvo.setBoardNum(svo.getSearchId());
 			System.out.println("신고하기 컨트롤러");
 			System.out.println("ddddddddddd"+rpvo);
 			model.addAttribute("checkRp", rpService.checkRp(rpvo));
@@ -60,6 +61,7 @@ public class RpController {
 			model.addAttribute("rpType", 1);
 			model.addAttribute("re",reService.getRe(revo));
 			rpvo.setRpType(1);
+			rpvo.setBoardNum(revo.getReId());
 			
 		
 			
@@ -70,6 +72,7 @@ public class RpController {
 			model.addAttribute("rpType", 2);
 			model.addAttribute("chat",chatService.getChat(cvo));
 			rpvo.setRpType(2);
+			rpvo.setBoardNum(cvo.getChatId());
 			model.addAttribute("checkRp", rpService.checkRp(rpvo));
 			System.out.println(cvo);
 		}
