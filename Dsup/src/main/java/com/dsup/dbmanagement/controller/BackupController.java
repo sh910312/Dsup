@@ -41,7 +41,7 @@ public class BackupController {
 	// [윤정1027] 백업하기
 	@RequestMapping("/backupCreate")
 	public String backupCreate(@RequestParam String tablespaceName, BackupVO vo, HttpServletRequest request) {
-		String backupPath = request.getSession().getServletContext().getRealPath("/resources/dsupBackup");
+		String backupPath = request.getSession().getServletContext().getRealPath("/dsupBackup");
 		backupService.BackupCreate(vo, tablespaceName, backupPath);
 		return "redirect:backupList";
 	}
@@ -59,7 +59,7 @@ public class BackupController {
 	public void downloadBackupResource(HttpServletRequest request,
             						   HttpServletResponse response,
             						   @PathVariable("backupFileNm") String fileName) {
-		String backupPath = request.getSession().getServletContext().getRealPath("/resources/dsupBackup");
+		String backupPath = request.getSession().getServletContext().getRealPath("/dsupBackup");
 		Path path = Paths.get(backupPath,fileName);
 		if(Files.exists(path)) {
             response.setContentType("application/octet-stream;charset=UTF-8"); // 파일의 타입

@@ -28,17 +28,17 @@
         <form class="form panel__login-form" id="login-form" method="post" action="login">
           <div class="form__row">
             <input type="text" id="login-userId" class="form__input" name="userId" data-validation="userId" 
-            	   data-error="아이디를 입력하세요." required>
+            	   data-error="" required value="${member.userId}">
             <span class="form__bar"></span>
             <label for="userId" class="form__label">아이디</label>
             <span class="form__error"></span>
           </div>
           <div class="form__row">
             <input type="password" id="login-password" class="form__input" name="password" data-validation="password" 
-            	   data-error="비밀번호를 입력하세요." required>
+            	   data-error="" required>
             <span class="form__bar"></span>
             <label for="password" class="form__label">비밀번호</label>
-            <span class="form__error"></span>
+            <span class="form__error">${msg}</span>
           </div>
           <div class="form__row">
             <input type="submit" id="checkValue" class="form__submit" value="로그인">
@@ -49,37 +49,37 @@
         <!-- 회원가입 폼 -->
         <form class="form panel__register-form" id="register-form" method="post"  >
           <div class="form__row">
-            <input type="text" id="userId" class="form__input" name="userId" data-validation="userId" data-error="Invalid userId" required>
+            <input type="text" id="userId" class="form__input" name="userId" data-validation="userId" data-error="" required>
             <span class="form__bar"></span>
             <label for="userId" class="form__label">아이디</label>
             <span class="form__error"></span>
           </div>
           <div class="form__row">
-            <input type="text" id="nickname" class="form__input" name="nickname" data-validation="nickname" data-error="Invalid nickname" required>
+            <input type="text" id="nickname" class="form__input" name="nickname" data-validation="nickname" data-error="" required>
             <span class="form__bar"></span>
             <label for="nickname" class="form__label">닉네임</label>
             <span class="form__error"></span>
           </div>
           <div class="form__row">
-            <input type="password" id="password" class="form__input" name="password" data-validation="password" data-validation="password" data-error="Password" required>
+            <input type="password" id="password" class="form__input" name="password" data-validation="password" data-validation="password" data-error="" required>
             <span class="form__bar"></span>
             <label for="password" class="form__label">비밀번호</label>
             <span class="form__error"></span>
           </div>
           <div class="form__row">
-            <input type="password" id="password-check" class="form__input" name="password2" data-validation="confirmation" data-validation-confirm="register-pass" data-error="Your passwords did not match." required>
+            <input type="password" id="password-check" class="form__input" name="password2" data-validation="confirmation" data-validation-confirm="register-pass" data-error="" required>
             <span class="form__bar"></span>
             <label for="password-check" class="form__label">비밀번호 확인</label>
             <span class="form__error"></span>
           </div>
           <div class="form__row">
-            <input type="text" id="email" class="form__input" name="eMail" data-validation="email" data-error="Invalid email" required>
+            <input type="text" id="email" class="form__input" name="eMail" data-validation="email" data-error="" required>
             <span class="form__bar"></span>
             <label for="email" class="form__label">이메일</label>
             <span class="form__error"></span>
           </div>
           <div class="form__row">
-            <input type="text" id="phonenumber" class="form__input" name="phonenumber" data-validation="phonenumber" data-error="Invalid phonenumber" required>
+            <input type="text" id="phonenumber" class="form__input" name="phonenumber" data-validation="phonenumber" data-error="" required>
             <span class="form__bar"></span>
             <label for="phonenumber" class="form__label">전화번호</label>
             <span class="form__error"></span>
@@ -92,7 +92,7 @@
         <!-- 비밀번호 찾기 폼 -->
         <form class="form panel__password-form" id="password-form" method="post" action="logina">
           <div class="form__row">
-            <p class="form__info">비밀번호를 찾고자 하는 DBhelper 이메일 ID를 입력해주시면 해당 메일 주소로 비밀번호 재설정 링크를 보내드립니다.</p>
+            <p class="form__info">DBhelper에 등록된 이메일 주소를 입력해주시면 해당 메일 주소로 임시비밀번호를 보내드립니다.</p>
           </div>
           <div class="form__row">
             <input type="text" id="retrieve-pass-email" class="form__input" name="retrieve-mail" data-validation="email" data-error="Invalid email address." required>

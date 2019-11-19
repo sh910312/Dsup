@@ -131,6 +131,7 @@
 		<input type = "button" id="delBtn" value = "삭제"
 			class = "btn btn-outline-info" >
 	</div>
+	<br>
 	
 	<form action="backupDelete" id = "frm">
 	<table id = "table"  class="table table-hover table-bordered">

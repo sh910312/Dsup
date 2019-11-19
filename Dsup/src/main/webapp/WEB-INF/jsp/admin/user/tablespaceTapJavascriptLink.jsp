@@ -17,9 +17,17 @@ function userPageChange(type) {
    	if(type == "userTablespace"){
 	//테이블스페이스 메뉴 클릭할 때
 	   	getTsTable();
+		$(".breadcrumb > .active").text("테이블 스페이스"); // 윤정 breadcrumb
    	}else if(type == "userManagement"){
 	//사용자 관리 메뉴 클릭할 때
 	   	getMember();
+		$(".breadcrumb > .active").text("사용자 관리");
+	} else if(type == "userSchema") {
+		$(".breadcrumb > .active").text("유저 스키마");
+	} else if(type == "payHistory") {
+		$(".breadcrumb > .active").text("결제 이력");
+	} else if(type == "userBackup") {
+		$(".breadcrumb > .active").text("백업");
 	}
    	$("#" + type).css("display", "block");
 }
@@ -69,7 +77,6 @@ function printMember(member) {
 	userManagementTable = $('#memberTable').DataTable({
 		 "lengthMenu": [5, 10, 25, 50]
 	});
-	
 	//drawChart('user');
 }
 //테이블스페이스 테이블에 넣을 데이터 Ajax호출

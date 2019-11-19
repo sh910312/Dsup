@@ -22,6 +22,7 @@
 			<i class="fas fa-bars"></i>
 		</button>
 		<!-- Navbar Search -->
+		<!-- 
 		<form
 			class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
 			<div class="input-group">
@@ -34,8 +35,47 @@
 				</div>
 			</div>
 		</form>
+		 -->
 	</nav>
+	
+	
 	<div id="wrapper">
+		<!-- 사이드 메뉴바 -->
+		<ul class="sidebar navbar-nav">
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="pagesDropdown"
+					role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+					onclick = "userPageChange('userManagement')"> 
+					<i class="fas fa-fw fa-users"></i> 
+					<span>사용자 관리</span>
+				</a>
+				<a class="nav-link dropdown-toggle" href="#" id="pagesDropdown"
+					role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+					onclick = "userPageChange('userTablespace')">
+					<i class="fas fa-fw fa-cubes"></i> 
+					<span>테이블 스페이스</span>
+				</a>
+				<a class="nav-link dropdown-toggle" href="#" id="pagesDropdown"
+					role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+					onclick = "userPageChange('userSchema')">
+					<i class="fas fa-fw fa-id-card"></i> 
+					<span>유저 스키마</span>
+				</a>
+				<a class="nav-link dropdown-toggle" href="#" id="pagesDropdown"
+					role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+					onclick = "userPageChange('payHistory')">
+					<i class="fas fa-fw fa-shopping-cart"></i> 
+					<span>결제 이력</span>
+				</a>
+				<a class="nav-link dropdown-toggle" href="#" id="pagesDropdown"
+					role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+					onclick = "userPageChange('userBackup')">
+					<i class="fas fa-fw fa-copy"></i> 
+					<span>백업</span>
+				</a>
+			</li>
+		</ul>
+	
 		<div id="content-wrapper">
 			<%-- <div id="volume-jsp-div" style="display:block;">
 				<jsp:include page="volume/volume.jsp"></jsp:include>
@@ -54,55 +94,13 @@
 				</div>
 			</footer>
 		</div>
-		<!-- 로그인 정보와 채팅창 넣을공간 -->
-		<ul class="sidebar navbar-nav col-lg-3">
-			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" href="#" id="pagesDropdown"
-					role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
-					<i class="fas fa-fw fa-folder"></i> 
-					<span>Admin</span>
-				</a>
-				<div class="dropdown-menu" aria-labelledby="pagesDropdown">
-					<h6 class="dropdown-header">Main:</h6>
-					<div class="dropdown-divider"></div>
-					<!-- <a class="dropdown-item" onclick="pageChange('Volume')">Volume</a> --> 
-					<a class="dropdown-item" onclick="pageChange('User')">User</a>
-					<div class="dropdown-divider"></div>
-					<h6 class="dropdown-header">Part :</h6>
-					<a class="dropdown-item" href="#">Page</a> 
-					<a class="dropdown-item" href="#">Page</a>
-				</div>
-			</li>
-		</ul>
+		
 	</div>
 
 	<!-- Scroll to Top Button-->
-	<a class="scroll-to-top rounded" href="#page-top"> <i
-		class="fas fa-angle-up"></i>
+	<a class="scroll-to-top rounded" href="#page-top">
+		<i class="fas fa-angle-up"></i>
 	</a>
-
-	<!-- Logout Modal-->
-<!-- 	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-					<button class="close" type="button" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">×</span>
-					</button>
-				</div>
-				<div class="modal-body">Select "Logout" below if you are ready
-					to end your current session.</div>
-				<div class="modal-footer">
-					<button class="btn btn-secondary" type="button"
-						data-dismiss="modal">Cancel</button>
-					<a class="btn btn-primary" href="login.html">Logout</a>
-				</div>
-			</div>
-		</div>
-	</div> -->
 	
 	<!-- Bootstrap core JavaScript-->
 	<script src="${pageContext.request.contextPath }/resources/js/admin/vendor/jquery/jquery.min.js"></script>
