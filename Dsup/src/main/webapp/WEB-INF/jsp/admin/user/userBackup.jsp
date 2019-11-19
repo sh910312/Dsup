@@ -25,11 +25,13 @@
 			var userId = $("<td>").text((item.userId));
 			var filename = $("<td>").html("<a href = './download/" + nameOnly + "'>" + (item.backupFileNm) + "</a>");
 			var backupDate = $("<td>").text((item.backupDate).substr(0,10));
+			var retentionPeriod = $("<td>").text((item.retentionPeriod).substr(0,10));
 			var backupComment = $("<td>").text((item.backupComment));
 			
 			$("#userBackupTableTbody").append( $("<tr>").append(userId)
 										.append(filename)
 										.append(backupDate)
+										.append(retentionPeriod)
 										.append(backupComment)
 							);
 		});
@@ -44,13 +46,15 @@
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
-			<table class="table table-bordered table-hover" id="userBackupTable" width="100%" cellspacing="0">
+			<table class="table table-bordered table-hover" id="userBackupTable" width="100%" cellspacing="0"
+					style="table-layout:fixed;word-break:break-all;">
 				<thead>
 					<tr>
-						<th>아이디</th>
-						<th>백업파일 이름</th>
-						<th>백업 날짜</th>
-						<th>코멘트</th>
+						<th style="width:10%">아이디</th>
+						<th style="width:20%">백업파일 이름</th>
+						<th style="width:10%">백업 날짜</th>
+						<th style="width:10%">보관 기간</th>
+						<th style="width:50%">코멘트</th>
 					</tr>
 				</thead>
 				<tfoot>
@@ -58,6 +62,7 @@
 						<th>아이디</th>
 						<th>백업파일 이름</th>
 						<th>백업 날짜</th>
+						<th>보관 기간</th>
 						<th>코멘트</th>
 					</tr>
 				</tfoot>

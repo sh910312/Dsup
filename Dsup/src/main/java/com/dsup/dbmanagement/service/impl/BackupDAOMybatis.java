@@ -43,4 +43,9 @@ public class BackupDAOMybatis {
  	public void BackupDelete(String backupFileNm) {
  		mybatis.delete("BackupDAO.deleteBackupList", backupFileNm);
  	}
+ 	
+ 	// [윤정1118] 보관기간 지난 파일 목록
+ 	public List<BackupVO> getOverBackup() {
+ 		return mybatis.selectList("BackupDAO.getOverBackup");
+ 	}
 }
