@@ -26,13 +26,20 @@ public class UserServiceImpl implements UserService{
 	}
 
 	public int idCheck(UserVO vo) {
+		//중복체크
 		UserVO user = userDAO.getUser(vo);
-		if(user == null)
-			
-		return 0;
-		else{
+		if(user != null) {
 			return 1;
 		}
+		
+		//키워드체크
+		String scChk = userDAO.scChk(vo.getId());
+		if(scChk != null) {
+			return 2;
+		}
+		
+		return 0;
+		
 	}
 	
 	@Override
@@ -65,12 +72,10 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public int scChk(String reservedWords) {
-		if(userDAO.scChk(reservedWords) == null)
-			return 1;
-		else
-			return 0;
-		
+		return 0;
 	}
+
+
 
 
 
