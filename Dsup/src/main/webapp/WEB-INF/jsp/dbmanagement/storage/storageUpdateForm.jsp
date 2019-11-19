@@ -327,6 +327,13 @@
 <div class='yj_error' style='display:none' id="sizeError">용량은 0보다 큰 정수만 입력할 수 있습니다!</div>
 <div class='yj_error' style='display:none' id="volumnError">이용가능한 용량을 초과했습니다!</div>
 	
+	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		↓ 수정완료 버튼을 눌러야 수정한 항목이 반영됩니다.
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	
 	<div class = "row">
 		<input type = "button" id = "updbtn" value = "수정 완료" class = "btn btn-outline-info btn-block">
 		<input type = "button" id="back" value = "목록으로 돌아가기" class = "btn btn-outline-secondary btn-block"

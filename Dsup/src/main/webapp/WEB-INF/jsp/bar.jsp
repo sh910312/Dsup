@@ -75,7 +75,6 @@
 	<!-- ↑ 윤정 DB관리 바 들어올 부분 -->
       
     <div class = "col-auto">
-      <form class="form-inline my-2 my-md-0">
         <ul class="navbar-nav mr-auto">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="dropdown07" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">menu</a>
@@ -84,16 +83,37 @@
             	<a class="dropdown-item" href="./admin">관리자메뉴</a>
             </c:if>
             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#myInfoModal">내 정보</a>
-            <a class="dropdown-item" href="./logout">로그아웃</a>
+    		<form class="form-inline my-2 my-md-0" id="frm">
+            	<!-- <a class="dropdown-item" href="./logout">로그아웃</a> -->
+            	<a class="dropdown-item" href="#" id="logout">로그아웃</a>
+      		</form>
           </div>
         </li>
       </ul>
-      </form>
       </div>
     </div>
   </div>
 </nav>
 <!-- 메뉴바 끝	 -->
+<script>
+$(function() {
+	goPage();
+});
+
+	</script>
+<script>
+function goPage(){
+		
+	$("#logout").click(function() { 
+
+ 		// 수호 메인화면에서 메뉴바에 있는 로그아웃을 하면 채팅도 함께 로그아웃한다. 
+		alert("로그아웃되었습니다.");
+		parent.frames["frameChat"].chatlogout(); // frameChat : 프레임네임 // chatlogout : chatMain에 있는 함수이름
+ 		$("#frm").attr("action", "logout");
+		$("#frm").submit();
+	})
+}
+</script>
 	
 	
 <!-- 회원 정보 Modal -->
@@ -124,6 +144,7 @@
     </div>
   </div>
 </div>
+
 
 <!-- 회원 정보 수정 Modal -->
 <div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -197,6 +218,14 @@
 
 
 
+
+
+
+		
+		
+		
+		
+		
 <script type="text/javascript">
 var modal = document.getElementById('myModal');
 var myInfo = document.getElementById('myInfo');

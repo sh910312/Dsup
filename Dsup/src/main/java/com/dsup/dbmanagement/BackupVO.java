@@ -8,4 +8,5 @@ public class BackupVO {
 	private String userId;
 	private String backupDate;
 	private String backupComment;
+	private String retentionPeriod;
 }
