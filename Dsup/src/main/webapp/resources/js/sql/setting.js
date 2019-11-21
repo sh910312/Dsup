@@ -200,7 +200,7 @@ var Setting = (function() {
 										+ '<td>'
 										+ b_json[j].value
 										+ '</td>'
-										+ '<td><input type="text" class="addition-renwal-name" name="addition-renwal-name" style="border:none"/></td>'
+										+ '<td><input type="text" class="addition-renwal-name form-control form-control" name="addition-renwal-name" style="border:none"/></td>'
 								'</tr>';
 							}
 							// result.set(childKey, tag);

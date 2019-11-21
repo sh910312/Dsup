@@ -40,12 +40,11 @@
 				</div>
 			</div>
 		</div>
-		<div style="border: ridge;">
-			<div class="container-for-addition-setting"
-				style="display: inline-block; font-weight: bold;">
+		<div>
+			<div class="container-for-addition-setting" style="font-weight: bold; border: ridge;">
 				<div style="font-weight: bold;">
-					<div style="display: inline-block;">Col Name</div>
-					<div style="display: inline-block;">
+					<div>Col Name</div>
+					<div>
 						<input type="text" class="form-control" id="addition-col-name"/>
 					</div>
 				</div>
@@ -56,7 +55,7 @@
 					</div>
 				</div>
 			</div>
-			<div>
+			<div class="d-flex justify-content-end">
 				<button class="btn btn-outline-secondary" onclick="controller.add('Addition')">Add</button>
 			</div>
 		</div>
@@ -71,11 +70,11 @@
 				</table>
 			</div>
 		</div>
-		<div style="border: ridge;" class="d-flex justify-content-end">
-			<div style="display: inline-block;" class="mx-auto">
+		<div class="d-flex justify-content-end">
+			<div style="display: inline-block;">
 				<button class="btn btn-outline-secondary" onclick="controller.apply('Addition')">Apply</button>
 			</div>
-			<div style="display: inline-block;" class="mx-auto">
+			<div style="display: inline-block;">
 				<button class="btn btn-outline-secondary">Reset</button>
 			</div>
 		</div>

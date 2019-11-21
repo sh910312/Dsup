@@ -438,7 +438,19 @@ public class SQLServiceImpl implements SQLService{
 		slave_select = slave_select.substring(0, slave_select_last_blank_index);
 		//slave_select = slave_select.replaceAll(" ", "");
 		String[] slave_cols = slave_select.split(",");
-		List<String> slave_col_list = Arrays.asList(slave_cols);
+		//List<String> slave_col_list = Arrays.asList(slave_cols);
+		List<String> slave_col_list = new ArrayList<String>();
+		matcher = pattern.matcher(slave_select);
+		while (matcher.find()) {
+			String col = matcher.group(1);
+			if(!col.equals("")) {
+				//temp_master_col_list.add(col);
+				slave_col_list.add(col);
+			}
+				    		    
+		    if(matcher.group(1) ==  null)
+		    	break;
+		}
 		//slave select문 컬럼들 앞에 공백 없애는 부분
 		for(int i=0; i<slave_col_list.size(); i++){
 			String str = slave_col_list.get(i).replaceFirst(" ", "");
@@ -493,7 +505,7 @@ public class SQLServiceImpl implements SQLService{
 				if(slave_col_list.get(i).contains(" AS ")) {
 					System.out.println(">> AS 포함 부분 처리");
 					slave_temp = slave_col_list.get(i).split(" AS ");
-					slave_select_col += "b." + "/*|*/" + slave_temp[1] + "/*|*/";
+					slave_select_col += "/*|*/" +"b." +  slave_temp[1] + "/*|*/";
 				}else {
 					//191107 에러 1.4 원인 수정 부분
 					if(slave_col_list.get(i).replaceFirst(" ", "").contains(".")) {

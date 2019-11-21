@@ -23,11 +23,11 @@
 		</div>
 	</div>
 </div>
-<div id="apply-container" class="d-flex justify-content-end" style="padding: 10px;border: ridge;">
-	<div class="mx-auto" >
+<div id="apply-container" class="d-flex justify-content-end" style="">
+	<div >
 		<button id="dbread-apply" class="btn btn-outline-secondary" onclick="controller.apply('DBread');">Apply</button>
 	</div>
-	<div class="mx-auto" >
+	<div>
 		<button id="dbread-cancel" class="btn btn-outline-secondary" onclick="">Cancel</button>
 	</div>
 </div>
