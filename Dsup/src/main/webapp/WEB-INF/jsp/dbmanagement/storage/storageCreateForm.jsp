@@ -20,8 +20,9 @@
 	var service = "${member.payItem}".split("GB")[0];
 	var freeVolumn = 0;
 	var thisVolumn = 0;
+	var submitCheck = 0;
 	$(function(){
-		$("#btn").click(formCheck);
+		$("#trCreOk").click(formCheck);
 		$("#addbtn").click(add);
 		$("#nameMsg").hide();
 		filenameInput();
@@ -75,8 +76,12 @@
 				+ " LOGGING EXTENT MANAGEMENT LOCAL SEGMENT SPACE MANAGEMENT AUTO";
 		$("#sql").val(sql);
 		
-		if (err == 0) {
+		if (err == 0 && submitCheck == 0) {
+			$("#trCreOk").attr("disabled", true)
+						  .html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
 			console.log("submit!");
+			submitCheck = 1;
+			console.log(submitCheck);
 			$("#tsCreFrm").submit();
 		}
 	}
@@ -230,8 +235,8 @@
 		<br><br>
 		<h1>종량제 정보</h1>
 		종량제 이용량 : <span id = "volumn"></span> / ${member.payItem} <br>
-		이용가능한 용량 : <span id = "freeVolumn"></span> MB<br>
-		현제 테이블스페이스 용량 : <span id = "thisVolumn">0</span> MB<br>
+		이용가능한 용량 : <span id = "freeVolumn" style = "color:red"></span> MB<br>
+		현제 테이블스페이스 용량 : <span id = "thisVolumn" style = "color:red">0</span> MB<br>
 		<br><br>
 		
 		<div class = "row">
@@ -266,7 +271,7 @@
 			</tbody>
 		</table>
 		<div class = "row">
-			<input type = "button" id="btn" value = "생성" class = "btn btn-outline-info btn-block" onclick="formCheck()">
+			<button type = "button" id = "trCreOk" class = "btn btn-outline-info btn-block" onclick="formCheck()">생성</button>
 			<input type = "button" id="back" value = "목록으로 돌아가기" class = "btn btn-block btn-outline-secondary"
 					onclick = 'history.back()'>
 		</div>

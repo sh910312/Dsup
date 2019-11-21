@@ -15,7 +15,7 @@
             AND df.file_id = fs.file_id
             group by u.user_id
             )b
-		where used/total*100 > 40
+		where used/total*100 > 10
 	</select>
 	 
 </mapper>

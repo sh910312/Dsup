@@ -4,14 +4,16 @@
 <!-- users_mapper.xml -->
 <mapper namespace="MemberDAO">
 	<select id="getMemberList" resultType="member" parameterType="member">
-		select user_id, password, nickname, e_mail "eMail", user_date, user_type, phonenumber, pay_item, pay_service
-		from users
+		SELECT u.user_id, u.password, u.nickname, u.e_mail "eMail", u.user_date, u.user_type, u.phonenumber, u.pay_item, u.pay_service, v.volumn 
+		FROM users u
+		LEFT OUTER JOIN (select user_id, sum(volumn) as volumn from user_tbspc_tb group by user_id) v
+		ON u.user_id = v.user_id
 		<where>
 			<if test="userId != null and userId != '' ">
-				user_id like '%' || #{userId} || '%'
+				u.user_id like '%' || #{userId} || '%'
 			</if>
 			<if test="nickname != null and nickname != '' ">
-				and nickname like '%' || #{nickname} || '%'
+				and u.nickname like '%' || #{nickname} || '%'
 			</if>
 		</where>
 	</select>

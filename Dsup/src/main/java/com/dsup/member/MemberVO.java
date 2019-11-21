@@ -14,6 +14,7 @@ public class MemberVO {
 	private String phonenumber;
 	private String payItem;
 	private String payService;
+	private float volumn; // 윤정 관리자페이지에서 사용자별 용량 조회할 때 쓸 것
 	
 	public String geteMail() {
 		return eMail;

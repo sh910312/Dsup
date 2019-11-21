@@ -138,7 +138,7 @@ function openButton(menu, a){ /*  버튼 새창 */
 						<div class="portlet-heading">
 							<div class="portlet-title">
 								<h3>
-									D-sup 실시간 전체채팅 ${chat.chatId}
+									DBhelper 실시간 전체채팅 ${chat.chatId}
 								</h3>
 							</div>
 							<div class="portlet-title pull-right">

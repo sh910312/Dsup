@@ -74,25 +74,25 @@
 				<thead>
 					<tr>
 						<th>아이디</th>
-						<th>비밀번호</th>
 						<th>닉네임</th>
 						<th>이메일</th>
 						<th>가입일</th>
 						<th>연락처</th>
 						<th>등급</th>
 						<th>종량제</th>
+						<th>사용량</th>
 					</tr>
 				</thead>
 				<tfoot>
 					<tr>
 						<th>아이디</th>
-						<th>비밀번호</th>
 						<th>닉네임</th>
 						<th>이메일</th>
 						<th>가입일</th>
 						<th>연락처</th>
 						<th>등급</th>
 						<th>종량제</th>
+						<th>사용량</th>
 					</tr>
 				</tfoot>
 				<tbody id = "memberTableTbody">
