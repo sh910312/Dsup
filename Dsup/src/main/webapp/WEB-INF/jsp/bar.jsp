@@ -139,7 +139,9 @@ function goPage(){
         <button id = "myBtn" class = "btn btn-info"  data-dismiss="modal"
         	data-toggle="modal" data-target="#modifyModal">정보변경</button>
 		<button id = "withdrawGo" class = "btn btn-secondary" data-dismiss="modal"
-			 data-toggle="modal" data-target="#withdrawalModal">회원탈퇴</button>
+			 data-toggle="modal" data-target="#withdrawalModal">
+			회원탈퇴
+		</button>
       </div>
     </div>
   </div>
@@ -238,7 +240,9 @@ var infoEMail = document.getElementById('infoEMail');
 // ↓윤정 회원탈퇴 신청 처리
 function withdrawalFunc(){
 	var userId = "${userId}";
-	console.log(JSON.stringify({userId:userId, userType:0, payService:'N'}));
+	$("#btnWithdrawal").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>잠시만 기다려 주세요');
+	$("#btnWithdrawal").attr("disabled", true);
+	
 	$.ajax({
 		url: "memberWithdrawal",
 		type : "PUT",

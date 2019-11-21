@@ -31,6 +31,8 @@
 		btnClickFunc(); // 버튼 클릭 이벤트
 		$("#delbtn").click(function() {
 			$("#ts_frm").attr("action", "storageDelete");
+			$("#delbtn").attr("disabled", true)
+						.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
 			$("#ts_frm").submit();
 		});
 		// 삭제 버튼 클릭
@@ -40,7 +42,6 @@
 			$("#ts_frm").submit();
 		});
 		// 생성 버튼 클릭
-		radioCheck();
 		delCheck();
 	});
 	// [윤정 1114] 수정/삭제/조회 버튼 클릭
@@ -103,14 +104,6 @@
 				// 첫 번째 라디오 자동 체크
 			}
 		);
-	}
-
-	// [윤정1031] tr 클릭시 라디오 체크 ---------- 안됨
-	function radioCheck() {
-		$("tbody tr").click(function() {
-			console.log("클릭!");
-			$(this).find("input:radio").attr("checked", true);
-		});
 	}
 	
 	// [윤정1105] 삭제시 테이블스페이스명 다시 입력

@@ -3,7 +3,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%><!-- VO 에 date 타입 날짜형식 바꾸기 링크 http://blog.naver.com/PostView.nhn?blogId=lbiryu&logNo=30037958388  -->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="my" tagdir="/WEB-INF/tags" %> 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,9 +14,6 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="./resources/js/bootstrap.js"></script>
 <script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-
-
-
 <script>
 function openButton(menu,a){ /*  버튼 새창 */ // menu,a >> 첫번째와 두번째 값으로 넘겼음
 	
@@ -214,7 +210,7 @@ $(document).ready(function(){
 									<div id="test" style="max-height:100px; overflow:auto; width: 100%;"></div>
 									<input id="updatecotents" type="hidden" value="${search.contents }">
 								<c:if test="${userId != search.userId }">
-								<div class="pull-right"><a id="rpSearch" onclick="openButton(0,${search.searchId })">게시글 신고하기</a></div>
+								<div class="pull-right"><a id="rpSearch" style="cursor:pointer;" onclick="openButton(0,${search.searchId })">게시글 신고하기</a></div>
 								</c:if>
 								<div align="center">
 								<br>
@@ -308,7 +304,6 @@ $(document).ready(function(){
 				</div>
 			</div>
 		</div>
-
 <form id="frmEditRe" name="frmEditRe">
 <input type="hidden" name="searchId" value="${search.searchId }">
 <input type="hidden" name="reId">

@@ -61,7 +61,7 @@ window.onload = function(){
 						<div class="portlet-heading">
 							<div class="portlet-title">
 								<h3>
-									<i class="fa fa-circle text-green"></i>D-sup 검색하기
+									<i class="fa fa-circle text-green"></i>DBhelper 검색하기
 								</h3>
 							</div>
 							<div class="clearfix">

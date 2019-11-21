@@ -22,8 +22,11 @@
 			nameOnly = nameOnly[nameOnly.length - 1];
 			// nameOnly : 경로를 제외한 파일명만 추출
 			
+			var file = (item.backupFileNm).split("\\Dsup\\");
+			file = file[file.length - 1];
+			
 			var userId = $("<td>").text((item.userId));
-			var filename = $("<td>").html("<a href = './download/" + nameOnly + "'>" + (item.backupFileNm) + "</a>");
+			var filename = $("<td>").html("<a href = './download/" + nameOnly + "'>" + file + "</a>");
 			var backupDate = $("<td>").text((item.backupDate).substr(0,10));
 			var retentionPeriod = $("<td>").text((item.retentionPeriod).substr(0,10));
 			var backupComment = $("<td>").text((item.backupComment));

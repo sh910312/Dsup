@@ -33,21 +33,28 @@ function memberInsert(){
 		$(this).next().next().next().empty();
 	});
 	$('#btnInsert').on('click', function(){
+		var err = 0;
 		if($('#userId').val() == ''){
 			$('[for="userId"]').next().text("아이디를 입력해주세요.");
+			err++;
 		}
 		if($('#password').val() == ''){
 			$('[for="password"]').next().text("비밀번호를 입력해주세요.");
+			err++;
 		}
 		if($('#nickname').val() == ''){
 			$('[for="nickname"]').next().text("닉네임을 입력해주세요.");
+			err++;
 		}	
 		if($('#email').val() == ''){
 			$('[for="email"]').next().text("이메일을 입력해주세요.");
+			err++;
 		}	
 		if($('#phonenumber').val() == ''){
 			$('[for="phonenumber"]').next().text("전화번호를 입력해주세요.");
+			err++;
 		}	
+		if (err == 0) {
 		var param = JSON.stringify($("#register-form").serializeObject());	//단건일때 //다건일땐 변환애줘야됨
 		$.ajax({
 			url: "members",
@@ -58,6 +65,7 @@ function memberInsert(){
 			success: function(response){
 				$('[class="form__error"]').text('');
 				if(response.result == true){	// 서버에서 등록후에 true라고 넘어오면
+					alert("회원가입이 완료되었습니다.");
 					location.href='login';
 				}else{
 					if(response.idcheck==true){
@@ -70,7 +78,9 @@ function memberInsert(){
 			/*error:function(xhr, status, message){
 				alert(" status: " + status + " er:"+message);
 			}*/
-		});
+		}); // ajax
+		err++;
+		}
 	});//등록버튼클릭
 }//userInsert
  	//사용자 삭제 요청
