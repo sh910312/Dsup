@@ -47,7 +47,9 @@
 			var fileName = fileName[fileName.length - 1];
 			// fileName : 경로를 제외한 파일명만 추출
 			
-			var $checkBox = $("<td>").append($("<input>").attr("type","checkbox").val((item.backupFileNm)).attr("name", "deleteFiles"));
+			var $checkBox = $("<td>").append(
+						$("<input>").attr("type","checkbox").val((item.backupFileNm)).attr("name", "deleteFiles")
+					);
 			var $backupFileNm = $("<td>").html("<a href = './download/" + fileName + "'>" + fileName + "</a>");
 			var $retentionPeriod = $("<td>").text((item.retentionPeriod).substr(0,10));
 			var $backupComment = $("<td>").text((item.backupComment));

@@ -62,7 +62,7 @@ public class BackupController {
 		String backupPath = request.getSession().getServletContext().getRealPath("/dsupBackup");
 		Path path = Paths.get(backupPath,fileName);
 		if(Files.exists(path)) {
-            response.setContentType("application/octet-stream;charset=UTF-8"); // 파일의 타입
+            response.setContentType("application/octet-stream;charset=UTF-8");
             response.addHeader("Content-Disposition", "attachment; filename="+fileName);
 			try
             {
