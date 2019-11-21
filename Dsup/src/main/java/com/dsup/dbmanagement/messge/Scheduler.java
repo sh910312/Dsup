@@ -18,7 +18,7 @@ public class Scheduler {
 	@Autowired
 	MessgeService messgeService;
 	
-	@Scheduled(cron = "0 9 15 ? * MON-FRI")
+	@Scheduled(cron = "0 0 13,18 ? * MON-FRI")
 	
 		 public void sendSms() throws Exception {
 
@@ -43,8 +43,8 @@ public class Scheduler {
 	
 				    System.out.println(set);
 	
-				   // JSONObject result = coolsms.send(set); // 보내기&전송결과받기
-				    //System.out.println(result.get("status"));
+				    JSONObject result = coolsms.send(set); // 보내기&전송결과받기
+				    System.out.println(result.get("status"));
 			    }
 			    
 			    HashMap<String, String> set = new HashMap<String, String>();

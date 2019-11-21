@@ -8,7 +8,7 @@
 		+ '<a class="nav-link" href="storageList">테이블 스페이스 <span class="sr-only">(current)</span></a>'
 		+ '</li>'
 		+ '<li class="nav-item active">'
-		+ '<a class="nav-link" href="userList">유저 관리 <span class="sr-only">(current)</span></a>'
+		+ '<a class="nav-link" href="userList">스키마 관리 <span class="sr-only">(current)</span></a>'
 		+ '</li>'
 		+ '<li class="nav-item active">'
 		+ '<a class="nav-link" href="backupList">백업 관리<span class="sr-only">(current)</span></a>'
