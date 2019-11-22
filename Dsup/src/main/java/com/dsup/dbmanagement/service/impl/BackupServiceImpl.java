@@ -59,11 +59,9 @@ public class BackupServiceImpl implements BackupService {
 			System.out.println(fileName);
 			File file = new File(fileName);
 			if(file.exists()) {
-				if(file.delete()) {
-					dao.BackupDelete(fileName);
-					// 파일이 삭제되면 테이블의 데이터도 삭제
-				} 
+				file.delete();
 			}
+			dao.BackupDelete(fileName);
 		}
 	}
 
