@@ -127,19 +127,33 @@ function goPage(){
         </button>
       </div>
       <div class="modal-body">
-        	아이디: ${member.userId}<br>
-			닉네임: <span id="infoNickname">${member.nickname}</span><br>
-			이메일: <span id="infoEMail">${member.eMail}</span><br>
-			전화번호: <span id="infoPhonenumber">${member.phonenumber}</span><br>
-			가입날짜: <fmt:parseDate value="${member.userDate}" var="dateFmt" pattern="yyyy-MM-dd HH:mm:ss"/>
-				    <fmt:formatDate value="${dateFmt}" pattern="yyyy-MM-dd"/><br>
+      	<table>
+      		<tr>
+        		<td><strong>아이디</strong></td><td>: ${member.userId}</td>
+       		</tr>
+			<tr>
+				<td><strong>닉네임</strong></td><td><span id="infoNickname">: ${member.nickname}</span></td>
+			</tr>
+			<tr>
+				<td><strong>이메일</strong></td><td><span id="infoEMail">: ${member.eMail}</span></td>
+			</tr>
+			<tr>
+				<td><strong>전화번호</strong></td><td><span id="infoPhonenumber">: ${member.phonenumber}</span></td>
+			</tr>
+			<tr>
+				<td><strong>가입날짜</strong></td><td>: <fmt:parseDate value="${member.userDate}" var="dateFmt" pattern="yyyy-MM-dd HH:mm:ss"/>
+				    <fmt:formatDate value="${dateFmt}" pattern="yyyy-MM-dd"/></td>
+			</tr>
+	  	</table>
 			<br><br>
       </div>
       <div class="modal-footer">
         <button id = "myBtn" class = "btn btn-info"  data-dismiss="modal"
         	data-toggle="modal" data-target="#modifyModal">정보변경</button>
 		<button id = "withdrawGo" class = "btn btn-secondary" data-dismiss="modal"
-			 data-toggle="modal" data-target="#withdrawalModal">회원탈퇴</button>
+			 data-toggle="modal" data-target="#withdrawalModal">
+			회원탈퇴
+		</button>
       </div>
     </div>
   </div>
@@ -159,23 +173,23 @@ function goPage(){
       <div class="modal-body">
 		<form name="frm" action="">
 			<div class="form-group">
-				<label for="mdifyId">아이디</label>
+				<label for="mdifyId"><strong>아이디</strong></label>
 				<input class="form-control-plaintext" id="mdifyId" readonly value = "${member.userId}">
 			</div>
 			<div class="form-group">
-				<label for="mdifyPassword">비밀번호</label>
+				<label for="mdifyPassword"><strong>비밀번호</strong></label>
 				<input name="password"  id="mdifyPassword" value = "${member.password}" class="form-control">
 			</div>
 			<div class="form-group">
-				<label for="mdifyNickname">닉네임</label>
+				<label for="mdifyNickname"><strong>닉네임</strong></label>
 				<input name="nickname"  id="mdifyNickname" value = "${member.nickname}" class="form-control">
 			</div>
 			<div class="form-group">
-				<label for="mdifyEmail">이메일</label>
+				<label for="mdifyEmail"><strong>이메일</strong></label>
 				<input name="eMail"  id="mdifyEmail" value = "${member.eMail}" class="form-control">
 			</div>
 			<div class="form-group">
-				<label for="mdifyTel">전화번호</label>
+				<label for="mdifyTel"><strong>전화번호</strong></label>
 				<input name="phonenumber"  id="mdifyTel" value = "${member.phonenumber}" class="form-control">
 			</div>
 		</form>
@@ -238,7 +252,9 @@ var infoEMail = document.getElementById('infoEMail');
 // ↓윤정 회원탈퇴 신청 처리
 function withdrawalFunc(){
 	var userId = "${userId}";
-	console.log(JSON.stringify({userId:userId, userType:0, payService:'N'}));
+	$("#btnWithdrawal").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>잠시만 기다려 주세요');
+	$("#btnWithdrawal").attr("disabled", true);
+	
 	$.ajax({
 		url: "memberWithdrawal",
 		type : "PUT",

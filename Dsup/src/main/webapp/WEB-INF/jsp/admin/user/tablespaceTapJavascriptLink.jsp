@@ -45,30 +45,30 @@ function printMember(member) {
 	var tag = "";
 	$.each(member, function(idx, item) {
 		var userId = item.userId;
-		var password = item.password;
 		var nickname = item.nickname;
 		var email = item.eMail;
 		var userDate = item.userDate;
 		var phonenumber = item.phonenumber;
 		var userType = item.userType;
 		var payItem = item.payItem;
+		var volumn = item.volumn;
 
 		if (userType == '1') userType = '일반회원';
 		else if (userType == '0') userType = '관리자';
 		else if(userType == '2') userType = '탈퇴';
 		
-		tag += "<tr>" +
-					"<td>" + userId + "</td>" +
-					"<td>" + password + "</td>" +
-					"<td>" + nickname + "</td>" +
-					"<td>" + email + "</td>" +
-					"<td>" + userDate + "</td>" +
-					"<td>" + phonenumber + "</td>" +
-					"<td>" + userType + "</td>" +
-					"<td>" + payItem + "</td>" +
-				"</tr>";
+		$("#memberTableTbody").append(
+			$( $("<tr>").append( $("<td>").text(userId) )
+						.append( $("<td>").text(nickname) )
+						.append( $("<td>").text(email) )
+						.append( $("<td>").text(userDate) )
+						.append( $("<td>").text(phonenumber) )
+						.append( $("<td>").text(userType) )
+						.append( $("<td>").text(payItem) )
+						.append( $("<td>").text(volumn + " GB") )
+			)
+		);
 	});
-	$("#memberTableTbody").html(tag);
 	if(userManagementTable != ""){
 		console.log("사용자 관리 테이블 파괴");
 		userManagementTable.destroy();

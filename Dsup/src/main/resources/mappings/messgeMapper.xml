@@ -3,7 +3,8 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="MessgeDAO">
  	<select id="messgeList" parameterType="messge" resultType="messge">
-		select round(used/total*100) pct, round(free) free, round(used) used, user_id, (select phonenumber from users where user_id = b.user_id)phonenumber
+		select round(used/total*100) pct, round(free) free, round(used) used, user_id, 
+					(select phonenumber from users where user_id = b.user_id)phonenumber
 		from  (
             SELECT U.USER_ID, 
                   sum(df.bytes/1024/1024) total
@@ -15,7 +16,7 @@
             AND df.file_id = fs.file_id
             group by u.user_id
             )b
-		where used/total*100 > 40
+		where used/total*100 > 80
 	</select>
 	 
 </mapper>

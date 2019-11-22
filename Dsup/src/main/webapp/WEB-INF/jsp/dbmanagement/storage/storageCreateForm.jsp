@@ -20,8 +20,9 @@
 	var service = "${member.payItem}".split("GB")[0];
 	var freeVolumn = 0;
 	var thisVolumn = 0;
+	var submitCheck = 0;
 	$(function(){
-		$("#btn").click(formCheck);
+		$("#trCreOk").click(formCheck);
 		$("#addbtn").click(add);
 		$("#nameMsg").hide();
 		filenameInput();
@@ -52,7 +53,7 @@
 			err += 1;
 		
 		// 데이터파일 입력한 값 확인
-		$("tbody>tr").each(function(){
+		$("#tb1 tbody>tr").each(function(){
 			var filename = $(this).find("#filename").val();
 			var size = $(this).find("#size").val();
 			var sizeunit = $(this).find("#sizeunit").val();
@@ -75,8 +76,12 @@
 				+ " LOGGING EXTENT MANAGEMENT LOCAL SEGMENT SPACE MANAGEMENT AUTO";
 		$("#sql").val(sql);
 		
-		if (err == 0) {
+		if (err == 0 && submitCheck == 0) {
+			$("#trCreOk").attr("disabled", true)
+						  .html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
 			console.log("submit!");
+			submitCheck = 1;
+			console.log(submitCheck);
 			$("#tsCreFrm").submit();
 		}
 	}
@@ -169,7 +174,8 @@
 	function filenameInput(){
 		var cnt = 1;
 		var name = $("#tablespaceName").val();
-		$("tbody>tr").each(function(){
+		$("#tb1 tbody>tr").each(function(){
+			console.log(cnt);
 			$(this).find("#filename").val("${sessionScope.member.userId}".toUpperCase() + "_" + name + "_" + cnt);
 			cnt++;
 		});
@@ -198,7 +204,7 @@
 	function getThisVolumn(){
 		$(".yj_size").change(function(){
 			thisVolumn = 0;
-			$("tbody>tr").each(function(){
+			$("#tb1 tbody>tr").each(function(){
 				var size = parseInt( $(this).find("#size").val() );
 				var unit = $(this).find("#sizeunit").val();
 				if(unit == 'G')
@@ -230,8 +236,8 @@
 		<br><br>
 		<h1>종량제 정보</h1>
 		종량제 이용량 : <span id = "volumn"></span> / ${member.payItem} <br>
-		이용가능한 용량 : <span id = "freeVolumn"></span> MB<br>
-		현제 테이블스페이스 용량 : <span id = "thisVolumn">0</span> MB<br>
+		이용가능한 용량 : <span id = "freeVolumn" style = "color:red"></span> MB<br>
+		현제 테이블스페이스 용량 : <span id = "thisVolumn" style = "color:red">0</span> MB<br>
 		<br><br>
 		
 		<div class = "row">
@@ -266,7 +272,7 @@
 			</tbody>
 		</table>
 		<div class = "row">
-			<input type = "button" id="btn" value = "생성" class = "btn btn-outline-info btn-block" onclick="formCheck()">
+			<button type = "button" id = "trCreOk" class = "btn btn-outline-info btn-block" onclick="formCheck()">생성</button>
 			<input type = "button" id="back" value = "목록으로 돌아가기" class = "btn btn-block btn-outline-secondary"
 					onclick = 'history.back()'>
 		</div>

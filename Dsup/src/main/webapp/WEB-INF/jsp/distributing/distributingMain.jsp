@@ -135,7 +135,7 @@
 		}, function(rsp) {
 		    if ( rsp.success ) {
 		        var msg = '결제가 완료되었습니다.\n테이블스페이스를 생성해주세요.';
-		        window.location.href = 'http://localhost/dsup/storageList';
+		        window.location.href = 'http://39.116.34.40/Dsup/storageList';
 		       /*  msg += '고유ID : ' + rsp.imp_uid;
 		        msg += '상점 거래ID : ' + rsp.merchant_uid;
 		        msg += '결제 금액 : ' + rsp.paid_amount;

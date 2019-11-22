@@ -26,13 +26,13 @@ public class UserServiceImpl implements UserService{
 	}
 
 	public int idCheck(UserVO vo) {
-		//중복체크
+		//중복 체크
 		UserVO user = userDAO.getUser(vo);
 		if(user != null) {
 			return 1;
 		}
 		
-		//키워드체크
+		//오라클 예약어 체크
 		String scChk = userDAO.scChk(vo.getId());
 		if(scChk != null) {
 			return 2;

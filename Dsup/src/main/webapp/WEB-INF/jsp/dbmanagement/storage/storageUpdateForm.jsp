@@ -67,16 +67,10 @@
 	
 	// [윤정 1104] 데이터파일 추가
 	function trAdd(){
-		var lastName = $("tr:last-of-type").find("td:eq(0)").text();
-		var temp = lastName.split("\\");
-		lastName = temp[temp.length-1]; // : userId_tablespaceName_numbering.DBF
-		
-		var temp2 = lastName.split("_"); // _numbering.DBF
-		num = temp2[temp2.length-1];
-		num = num.split(".DBF")[0];
-		num = parseInt(num) + 1; // 다음 데이터파일 넘버
+		var userId = "${userId}".toUpperCase();
+		var trCnt = $("#yj_tbspcTable tbody tr").length + 1;
 
-		var fileName = temp2[0] + "_" + temp2[1] + "_" + num + ".DBF";
+		var fileName = userId + "_" + oldName + "_" + trCnt + ".DBF";
 		// ↑ 파일 이름
 		
 		var file = "<input type = 'text' id = 'newFilename' readonly value = '" + fileName + "' class='form-control-plaintext'>";
@@ -88,7 +82,7 @@
 		var $canbtn = $("<input>").attr("type","button").attr("id","addCancel").val("취소").click(trAddCan).addClass("btn btn-outline-secondary");
 		
 		// ↓ 테이블에 행 추가
-		$("tbody").append($("<tr>").append( $("<td>").html(file) )
+		$("#yj_tbspcTable tbody").append($("<tr>").append( $("<td>").html(file) )
 									.append( $("<td>").html(size) )
 									.append( $("<td>").append($sizeunit) )
 									.append( $("<td>").append($okbtn).append($canbtn) )
@@ -126,7 +120,7 @@
 								.append( $("<td>").text(sizeunit) )
 								.append( $("<td>").append( $("<input>").attr("type", "button").val("용량수정").addClass("yj_trupd btn btn-outline-info").click(trEdit) ) 
 											);
-			$("tbody").append($tr);
+			$("#yj_tbspcTable tbody").append($tr);
 			getThisVolumn();
 		}
 	}
@@ -202,7 +196,7 @@
 		console.log(err);
 		if (err == 0) {			
 			$("#sql").val(sql);
-			$("#frm").submit();
+			$("#trUpdFrm").submit();
 		}
 	}
 	
@@ -228,7 +222,7 @@
 	// [윤정 1109] 이 테이블스페이스의 용량
 	function getThisVolumn(){
 		thisVolumn = 0;
-		$("tbody>tr").each(function(){
+		$("#yj_tbspcTable tbody>tr").each(function(){
 			var size = parseInt($(this).find("td:eq(1)").text());
 			var unit = $(this).find("td:eq(2)").text();
 			if(unit == 'G')
@@ -242,7 +236,7 @@
 <body>
 <%@include file="/WEB-INF/jsp/DBbar.jsp" %>
 <div class = "container">
-<form id = "frm" method = "post" action = "sotrageUpdate">
+<form id = "trUpdFrm" method = "post" action = "sotrageUpdate">
 	<input type = "hidden" id = "oldName" name = "oldName" value = "${ts.tablespaceName}">
 	<input type = "hidden" id = "sql" name = "sql">
 	
@@ -285,8 +279,8 @@
 	
 	<h1>종량제 정보</h1>
 	종량제 이용량 : <span id = "volumn"></span> / ${member.payItem} <br>
-	이용가능한 용량 : <span id = "freeVolumn"></span> MB<br>
-	현제 테이블스페이스 용량 : <span id = "thisVolumn"></span> MB<br>
+	이용가능한 용량 : <span id = "freeVolumn" style = "color:red"></span> MB<br>
+	현제 테이블스페이스 용량 : <span id = "thisVolumn" style = "color:red"></span> MB<br>
 	
 	<br><br>
 	
@@ -300,7 +294,7 @@
 		</div>
 	</div>
 	<div class = "row">
-		<table class = "table table-hover">
+		<table class = "table table-hover" id = "yj_tbspcTable">
 			<thead>
 				<tr>
 					<th>이름</th>

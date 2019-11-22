@@ -12,13 +12,11 @@ import com.dsup.dbmanagement.service.MessgeVO;
 
 @Component
 public class Scheduler {
-	/**
-	* 1. 오후 05:50:00에 호출이 되는 스케쥴러
-	*/
+
 	@Autowired
 	MessgeService messgeService;
-	
-	@Scheduled(cron = "0 9 15 ? * MON-FRI")
+	//DB 80% 사용시 월~금 9시, 18시에 자동 문자 보내기 
+	@Scheduled(cron = "0 0 18 ? * MON-FRI")
 	
 		 public void sendSms() throws Exception {
 
@@ -35,16 +33,16 @@ public class Scheduler {
 				    
 				    set.put("from", "01088559500"); // 발신번호
 				    set.put("text",String.format("모모에서 알려드립니다. %s님의 DB용량 %sMB 소진했습니다. %sMB남았습니다.", 
-				    							 messgeList.get(i).getUserId(), 
-				    							 messgeList.get(i).getFree(), 
-				    							 messgeList.get(i).getUsed())); // 문자내용 모모에서 알려드립니다. 
-				    set.put("type", "sms"); // 문자 타입				id(user_id)님의 DB용량 00%(free) 소진했습니다. 00MB(used)남았습니다. 
+				    							 messgeList.get(i).getUserId(),
+				    							 messgeList.get(i).getUsed(),
+				    						     messgeList.get(i).getFree())); 
+				    set.put("type", "sms"); // 문자 타입				
 				    
 	
 				    System.out.println(set);
 	
-				   // JSONObject result = coolsms.send(set); // 보내기&전송결과받기
-				    //System.out.println(result.get("status"));
+				    JSONObject result = coolsms.send(set); // 보내기&전송결과받기
+				    System.out.println(result.get("status"));
 			    }
 			    
 			    HashMap<String, String> set = new HashMap<String, String>();

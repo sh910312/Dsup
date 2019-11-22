@@ -11,11 +11,11 @@
 <body>
 <jsp:include page="sql_index_include.jsp"></jsp:include>
 <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-	<a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">DBhelper</a>
+	<a class="navbar-brand col-sm-3 col-md-2 mr-0" href="./main">DBhelper</a>
 </nav>
 <div class="container-fluid">
 	<div class="row">
-	    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+	    <nav class="col-md-3 d-none d-md-block bg-light sidebar">
     		<div class="sidebar-sticky">
 				<div id="start-setting-bar">
 					<jsp:include page="setting/startsetview.jsp"></jsp:include>
@@ -49,7 +49,7 @@
 				</div>
        	 	</div>
 	    </nav>
-    	<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-2">
+    	<main role="main" class="col-md-9 ml-sm-auto col-lg-9 px-2">
     		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-2 pb-2 mb-2 mt-2 border-bottom" style="border:groove;">
         		<div id="myPaletteDiv" class="form-control form-control-dark w-100" style="height:60px; border:none"></div>
       		</div>

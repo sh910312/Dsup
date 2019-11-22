@@ -65,6 +65,7 @@ function memberInsert(){
 			success: function(response){
 				$('[class="form__error"]').text('');
 				if(response.result == true){	// 서버에서 등록후에 true라고 넘어오면
+					alert("회원가입이 완료되었습니다.");
 					location.href='login';
 				}else{
 					if(response.idcheck==true){

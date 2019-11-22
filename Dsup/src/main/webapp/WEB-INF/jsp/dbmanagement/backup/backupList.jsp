@@ -47,7 +47,9 @@
 			var fileName = fileName[fileName.length - 1];
 			// fileName : 경로를 제외한 파일명만 추출
 			
-			var $checkBox = $("<td>").append($("<input>").attr("type","checkbox").val((item.backupFileNm)).attr("name", "deleteFiles"));
+			var $checkBox = $("<td>").append(
+						$("<input>").attr("type","checkbox").val((item.backupFileNm)).attr("name", "deleteFiles")
+					);
 			var $backupFileNm = $("<td>").html("<a href = './download/" + fileName + "'>" + fileName + "</a>");
 			var $retentionPeriod = $("<td>").text((item.retentionPeriod).substr(0,10));
 			var $backupComment = $("<td>").text((item.backupComment));
@@ -107,7 +109,7 @@
 	
 	// [윤정 1106] 모달에서 삭제버튼 클릭
 	function modalDelClick(){
-		$("#frm").submit();
+		$("#backupFrm").submit();
     }
 	
 	// [윤정 1029] thead의 체크박스 클릭시 전체 선택, 해제
@@ -133,7 +135,7 @@
 	</div>
 	<br>
 	
-	<form action="backupDelete" id = "frm">
+	<form action="backupDelete" id = "backupFrm">
 	<table id = "table"  class="table table-hover table-bordered">
 		<thead>
 			<tr>

@@ -25,22 +25,22 @@
 		
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-        <property name="url" value="jdbc:oracle:thin:@114.200.227.226:1521:XE"/>
+        <property name="url" value="jdbc:oracle:thin:@39.116.34.40:1521:XE"/>
 		<!--!!절대 건들지말것 !! system 계정으로 통일함  --> <!-- 10.29 긴급회의 : dba계정으로 통합~~~~~~~ -->
-        <property name="username" value="system"/> <!-- system 계정 제발 바꾸지마셈  -->  
-        <property name="password" value="oracle"/>  
+        <property name="username" value="sys as sysdba"/> <!-- system 계정 제발 바꾸지마셈  -->  
+        <property name="password" value="yedam4212460"/>  
     </bean>
    	<bean id="dataSourceScott" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-        <property name="url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+        <property name="url" value="jdbc:oracle:thin:@39.116.34.40:1521:XE"/>
         <property name="username" value="scott"/>
         <property name="password" value="tiger"/>
     </bean>
    	<bean id="dataSourceDBA" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-        <property name="url" value="jdbc:oracle:thin:@192.168.0.108:1521:XE"/>
+        <property name="url" value="jdbc:oracle:thin:@39.116.34.40:1521:XE"/>
         <property name="username" value="sys as sysdba"/>
-        <property name="password" value="oracle"/>
+        <property name="password" value="yedam4212460"/>
     </bean>
        
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">

@@ -19,6 +19,7 @@
 <script>
 $(function(){
 	$('#myPaletteDiv div').css('display', 'none');
+	$('td').css("vertical-align", "middle");
 });
 </script>
 <style>
@@ -37,7 +38,9 @@ $(function(){
     }
   }
 </style>
+<script>
 
+</script>
 <style>
 body {
   font-size: .875rem;
@@ -48,7 +51,9 @@ body {
   height: 16px;
   vertical-align: text-bottom;
 }
-
+table{
+	text-align: center;
+}
 /*
  * Sidebar
  */
