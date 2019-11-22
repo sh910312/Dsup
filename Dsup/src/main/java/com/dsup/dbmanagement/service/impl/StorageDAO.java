@@ -11,8 +11,8 @@ public class StorageDAO {
 	
 	public StorageDAO() {
 		String user = "sys as sysdba";
-		String password = "oracle";
-		String url = "jdbc:oracle:thin:@192.168.0.108:1521:xe";
+		String password = "yedam4212460";
+		String url = "jdbc:oracle:thin:@39.116.34.40:1521:xe";
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection(url, user, password);
