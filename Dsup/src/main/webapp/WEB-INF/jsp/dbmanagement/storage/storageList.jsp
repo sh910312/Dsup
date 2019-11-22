@@ -25,7 +25,6 @@
 <!-- 토스트 css -->
 <link rel = "stylesheet" href="./resources/css/Toast.css">
 <script>
-	var tsCheck = 0;
 	$(document).ready(function() {
 		tablespaceList();
 		getVolumn();
@@ -44,17 +43,13 @@
 		});
 		// 생성 버튼 클릭
 		delCheck();
-		
-		$("input:radio[name='tablespaceName']").change(function(){
-			tsCheck = 1;
-		});
 	});
 	// [윤정 1114] 수정/삭제/조회 버튼 클릭
 	function btnClickFunc() {
 		$(".yj_btn").click(function() {
 			var tablespaceName = $('input:radio[name="tablespaceName"]:checked').val();
 			console.log(tablespaceName);
-			if (typeof tablespaceName == "undefined" || tsCheck == 0) { // 체크하지 않았을 경우
+			if (typeof tablespaceName == "undefined") { // 체크하지 않았을 경우
 				$('#tsError').fadeIn(400).delay(1000).fadeOut(400);
 			} else { // 체크했을 경우
 				switch( $(this).val() ) {
@@ -106,7 +101,8 @@
 						.append($radio).append($tablespaceName).append($status).append($total).append($used).append($free)
 					);
 					
-				$('input:radio[name="tablespaceName"]').eq(0).attr("checked", true);
+				
+				//$('input:radio[name="tablespaceName"]').eq(0).attr("checked", true);
 				// 첫 번째 라디오 자동 체크
 			}
 		);
