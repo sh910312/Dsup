@@ -262,6 +262,7 @@
 							</select>
 						</div>
 						<div class = "form-group">
+							잠금 여부:
 							<div class = "row">
 								<div class = "col">
 									<input type="radio" name="accountStatus" value="lock" id="upd_lock"/>
