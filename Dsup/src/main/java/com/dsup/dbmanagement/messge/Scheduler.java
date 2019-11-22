@@ -16,7 +16,7 @@ public class Scheduler {
 	@Autowired
 	MessgeService messgeService;
 	//DB 80% 사용시 월~금 9시, 18시에 자동 문자 보내기 
-	@Scheduled(cron = "0 0 15 ? * MON-FRI")
+	@Scheduled(cron = "0 0 18 ? * MON-FRI")
 	
 		 public void sendSms() throws Exception {
 
