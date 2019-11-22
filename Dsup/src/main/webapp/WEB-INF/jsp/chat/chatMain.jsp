@@ -42,39 +42,23 @@
     
     // 서버로부터 메시지를 받았을 때
     function onMessage(msg) {
-		    	
-//    	var data = msg.data;
-//		
-//    	$("#chatList").append(data + "&nbsp;"
-//		+ "<button type='button' class='btn btn-default btn-xs' onclick='openButton(2, this)'>" 
-//		+ "신고" + "</button>"
-//		+ "<hr>"
-//		);
-//		$('#chatList').scrollTop($('#chatList')[0].scrollHeight); // 채팅 최신 상태 유지
     	var data = JSON.parse(msg.data);
-    	
-    	console.log(data);
-    	
     	switch(data.cmd){
-    		
-    		case "login":
+    		case "login": // 로그인
     			$("#chatList").append(data.msg + "<hr>");
     			break;
-    		
-    		case "msge":
+    		case "msge": // 메세지 
     			var btn = "";
 	    			console.log(data.userId)
-    			if("${userId}" != data.userId){
+    			if("${userId}" != data.userId){ // 로그인 한 아이디로는 신고 버튼을 볼 수가 없다.
     				btn = "<button type='button' class='btn btn-default btn-xs' onclick='openButton(2, this)'>" + "신고" + "</button>";
     			}
     				$("#chatList").append(data.msg + "&nbsp;" + btn + "<hr>");
     			break;
-    			
-			case "logout":
+			case "logout": // 로그아웃
 				$("#chatList").append(data.msg + "<hr>");
     			break;
     	}
-    	
 		$('#chatList').scrollTop($('#chatList')[0].scrollHeight); // 채팅 최신 상태 유지
     
     }

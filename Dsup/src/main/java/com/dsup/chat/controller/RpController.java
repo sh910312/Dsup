@@ -34,37 +34,25 @@ public class RpController {
 	ChatService chatService;
 	
 
-	// 신고하기 -- 상세보기
+	// 신고
 	@RequestMapping("getRp")
 	public String getRpsearch(HttpSession session,HttpServletRequest request, Model model, SearchVO svo, ReVO revo, RpVO rpvo, ChatVO cvo) {
 		
 		MemberVO member = (MemberVO) session.getAttribute("member");
 		rpvo.setUserId(member.getUserId());
-		
-		
 		// 0번 게시글
 		if (svo.getSearchId() != 0) {
 			model.addAttribute("rpType", 0);
 			model.addAttribute("search", searchService.getSearch(svo));
 			rpvo.setRpType(0);
 			rpvo.setBoardNum(svo.getSearchId());
-			System.out.println("신고하기 컨트롤러");
-			System.out.println("ddddddddddd"+rpvo);
 			model.addAttribute("checkRp", rpService.checkRp(rpvo));
-			
-			
-			
-			System.out.println(searchService.getSearch(svo));
-			System.out.println("신고하기 컨트롤러 끝");
 		// 1번 댓글
 		}else if(revo.getReId() != 0) {
 			model.addAttribute("rpType", 1);
 			model.addAttribute("re",reService.getRe(revo));
 			rpvo.setRpType(1);
 			rpvo.setBoardNum(revo.getReId());
-			
-		
-			
 			model.addAttribute("checkRp", rpService.checkRp(rpvo));
 			System.out.println(revo);
 		// 2번 채팅신고	
@@ -74,22 +62,9 @@ public class RpController {
 			rpvo.setRpType(2);
 			rpvo.setBoardNum(cvo.getChatId());
 			model.addAttribute("checkRp", rpService.checkRp(rpvo));
-			System.out.println(cvo);
 		}
-		
-		
 		return "chat/report/inRp";
 	}
-	
-//	// 상세조회 -- 댓글 신고
-//	@RequestMapping("getRpre")
-//	public String getRpre(HttpServletRequest request, Model model, ReVO revo) {
-//		
-//		model.addAttribute("re", reService.getRe(revo));
-//		System.out.println(revo);
-//		System.out.println(reService.getRe(revo));
-//		return "chat/report/inRp";
-//	}
 
 	// 신고처리
 	@RequestMapping("/RpOk")
@@ -98,7 +73,6 @@ public class RpController {
 		vo.setUserId(member.getUserId());
 		
 		rpService.inRp(vo);
-		//return "redirect:/getRp=" + vo.getRpId();
 		return "redirect:/SearchMap"; // 이쪽으로 이동 // redirech 안에는 requestmapping 내용을 넣는다
 	}
 
