@@ -565,11 +565,26 @@ public class SQLServiceImpl implements SQLService{
 		child_sql_select = child_sql_select.substring(0, blank_index);
 		//컬럼들 ,를 기준으로 각각 뽑아냄
 		String[] child_sql_split = child_sql_select.split(",");
-		List<String> child_sql_split_list = Arrays.asList(child_sql_split);
-		for(int i=0; i<child_sql_split_list.size(); i++) {
-			String str = child_sql_split_list.get(i).replaceFirst(" ", "");
-			child_sql_split_list.set(i, str);
+//		List<String> child_sql_split_list = Arrays.asList(child_sql_split);
+//		for(int i=0; i<child_sql_split_list.size(); i++) {
+//			String str = child_sql_split_list.get(i).replaceFirst(" ", "");
+//			child_sql_split_list.set(i, str);
+//		}
+//////////////////////////////////////////////////////////////////////////////////////////
+		Pattern pattern = Pattern.compile("[/*|*/](.*?)[/*|*/]");
+		Matcher matcher = pattern.matcher(child_sql_select);
+		List<String> child_sql_split_list = new ArrayList<String>();
+		while (matcher.find()) {
+			String col = matcher.group(1);
+			if(!col.equals("")) {
+				System.out.println("rename.java | col : " + col);
+				child_sql_split_list.add(col);
+			}
+				    		    
+		    if(matcher.group(1) ==  null)
+		    	break;
 		}
+////////////////////////////////////////////////////////////////////////////////////////////
 		System.out.println("1. child_sql_split_list : " + child_sql_split_list.toString());
 		int child_sql_split_length = child_sql_split.length;
 		
@@ -668,9 +683,9 @@ public class SQLServiceImpl implements SQLService{
 			//이름을 변경하는 컬럼이 아니면 자식 컬럼명 사용
 			if(from_col.equals(to_col)) {
 				if(s == select_stmt_col_list.size()-1) {
-					select_stmt += child_select_col;
+					select_stmt += "/*|*/" + child_select_col + "/*|*/";
 				}else {
-					select_stmt += child_select_col + ", ";
+					select_stmt += "/*|*/" + child_select_col + "/*|*/" + ", ";
 				}
 			//이름을 변경하고자 하는 컬럼의 경우
 			}else {
@@ -679,17 +694,17 @@ public class SQLServiceImpl implements SQLService{
 					if(s == select_stmt_col_list.size()-1) {
 						String[] split_array = child_select_col.split(" AS ");
 						split_array[1] = to_col;
-						select_stmt += split_array[0] + " AS " + split_array[1];
+						select_stmt += "/*|*/" + split_array[0] + " AS " + split_array[1] + "/*|*/";
 					}else { 
 						String[] split_array = child_select_col.split(" AS ");
 						split_array[1] = to_col;
-						select_stmt += split_array[0] + " AS " + split_array[1] + ", ";
+						select_stmt += "/*|*/" + split_array[0] + " AS " + split_array[1] + "/*|*/" + ", ";
 					}
 				}else {
 					if(s == select_stmt_col_list.size()-1) {
-						select_stmt += child_select_col + " AS " + to_col;
+						select_stmt += "/*|*/" + child_select_col + " AS " + to_col + "/*|*/";
 					}else {
-						select_stmt += child_select_col + " AS " + to_col + ", ";
+						select_stmt += "/*|*/" + child_select_col + " AS " + to_col + "/*|*/" + ", ";
 					}
 				}
 			}

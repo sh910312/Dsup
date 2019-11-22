@@ -43,11 +43,9 @@ public class ReController {
 
 		MemberVO member = (MemberVO) session.getAttribute("member");
 		rvo.setUserId(member.getUserId());
-
-
+		
 		reService.updateRe(rvo);
 		System.out.println(rvo);
-		
 		
 		return "redirect:getSearch?searchId=" + rvo.getSearchId();
 	}

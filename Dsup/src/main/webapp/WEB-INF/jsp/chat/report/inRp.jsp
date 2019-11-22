@@ -72,12 +72,9 @@ window.onload = function(){		//db읽어온 텍스트 \n  -> <br> 바꿈
 							
 							<!-- 신고 상세내용 시작 -->
 							<div class="row" align="center">
-							
 							<h3>신고 상세내용</h3>
-							
 							<!-- 신고타입 0번 = 게시글신고 // 1번은 = 댓글신고 // 2번 = 채팅신고 -->
 							<h4><c:choose>
-							
 								<c:when test="${rpType == 0}">
 								신고번호			 : ${search.searchId}<br>							
 								신고대상  		 : ${search.userId }<br>
@@ -89,7 +86,6 @@ window.onload = function(){		//db읽어온 텍스트 \n  -> <br> 바꿈
 								<input type="hidden" name="rpUserId" value="${search.userId }" />
 								<input type="hidden" name="boardNum" value="${search.searchId}" />
 								</c:when>
-														 
 								<c:when test="${rpType == 1 }">
 								신고번호			 : ${re.reId}<br>
 								신고대상  		 : ${re.userId }<br>
@@ -101,8 +97,6 @@ window.onload = function(){		//db읽어온 텍스트 \n  -> <br> 바꿈
 								<input type="hidden" name="rpUserId" value="${re.userId }" />
 								<input type="hidden" name="boardNum" value="${re.reId}" />
 								</c:when>
-							
-							
 								<c:when test="${rpType == 2 }">
 								신고번호			 : ${chat.chatId}<br>
 								신고대상자 		 : ${chat.userId }<br>
@@ -113,11 +107,9 @@ window.onload = function(){		//db읽어온 텍스트 \n  -> <br> 바꿈
 								<input id="updatecotents" type="hidden" value="${chat.contents }">
 								<input type="hidden" name="rpUserId" value="${chat.userId }" />
 								<input type="hidden" name="boardNum" value="${chat.chatId}" />
-								
 								</c:when>
 							</c:choose></h4>
 							<!-- 신고 상세내용 끝 -->
-	
 							<textarea style="width:100%; height:100px;" id="rp_contents" name="rpContents" class="form-control" placeholder="신고사유를 작성하세요."></textarea>
 								<br>
 								<input type="hidden" name="searchId" value="${search.searchId }" />
@@ -127,7 +119,6 @@ window.onload = function(){		//db읽어온 텍스트 \n  -> <br> 바꿈
 								
 									<button type="button" id="Okbtn" name="Okbtn" class="btn btn-default">신고완료</button>
 									<button type="button" id="close" name="close" class="btn btn-default" onclick="self.close();">닫기</button>
-	
 							</div>
 						</div>
 					</div>
@@ -136,8 +127,6 @@ window.onload = function(){		//db읽어온 텍스트 \n  -> <br> 바꿈
 		</div>
 	</form>
 	</c:if>
-
-
 
 <!-- 신고 이력이 있는 경우 뜨는 페이지 -->
 	<c:if test="${checkRp != 0 }">
