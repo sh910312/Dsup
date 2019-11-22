@@ -53,7 +53,7 @@
 			err += 1;
 		
 		// 데이터파일 입력한 값 확인
-		$("tbody>tr").each(function(){
+		$("#tb1 tbody>tr").each(function(){
 			var filename = $(this).find("#filename").val();
 			var size = $(this).find("#size").val();
 			var sizeunit = $(this).find("#sizeunit").val();
@@ -174,7 +174,8 @@
 	function filenameInput(){
 		var cnt = 1;
 		var name = $("#tablespaceName").val();
-		$("tbody>tr").each(function(){
+		$("#tb1 tbody>tr").each(function(){
+			console.log(cnt);
 			$(this).find("#filename").val("${sessionScope.member.userId}".toUpperCase() + "_" + name + "_" + cnt);
 			cnt++;
 		});
@@ -203,7 +204,7 @@
 	function getThisVolumn(){
 		$(".yj_size").change(function(){
 			thisVolumn = 0;
-			$("tbody>tr").each(function(){
+			$("#tb1 tbody>tr").each(function(){
 				var size = parseInt( $(this).find("#size").val() );
 				var unit = $(this).find("#sizeunit").val();
 				if(unit == 'G')

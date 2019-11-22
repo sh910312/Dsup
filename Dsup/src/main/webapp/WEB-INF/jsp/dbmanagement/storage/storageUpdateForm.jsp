@@ -67,8 +67,8 @@
 	
 	// [윤정 1104] 데이터파일 추가
 	function trAdd(){
-		var userId = "${userId}";
-		var trCnt = $("#yj_tbspcTable tbody tr").length;
+		var userId = "${userId}".toUpperCase();
+		var trCnt = $("#yj_tbspcTable tbody tr").length + 1;
 
 		var fileName = userId + "_" + oldName + "_" + trCnt + ".DBF";
 		// ↑ 파일 이름
@@ -82,7 +82,7 @@
 		var $canbtn = $("<input>").attr("type","button").attr("id","addCancel").val("취소").click(trAddCan).addClass("btn btn-outline-secondary");
 		
 		// ↓ 테이블에 행 추가
-		$("tbody").append($("<tr>").append( $("<td>").html(file) )
+		$("#yj_tbspcTable tbody").append($("<tr>").append( $("<td>").html(file) )
 									.append( $("<td>").html(size) )
 									.append( $("<td>").append($sizeunit) )
 									.append( $("<td>").append($okbtn).append($canbtn) )
@@ -120,7 +120,7 @@
 								.append( $("<td>").text(sizeunit) )
 								.append( $("<td>").append( $("<input>").attr("type", "button").val("용량수정").addClass("yj_trupd btn btn-outline-info").click(trEdit) ) 
 											);
-			$("tbody").append($tr);
+			$("#yj_tbspcTable tbody").append($tr);
 			getThisVolumn();
 		}
 	}
@@ -222,7 +222,7 @@
 	// [윤정 1109] 이 테이블스페이스의 용량
 	function getThisVolumn(){
 		thisVolumn = 0;
-		$("tbody>tr").each(function(){
+		$("#yj_tbspcTable tbody>tr").each(function(){
 			var size = parseInt($(this).find("td:eq(1)").text());
 			var unit = $(this).find("td:eq(2)").text();
 			if(unit == 'G')

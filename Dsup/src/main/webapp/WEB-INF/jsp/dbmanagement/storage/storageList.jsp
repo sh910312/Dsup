@@ -48,6 +48,7 @@
 	function btnClickFunc() {
 		$(".yj_btn").click(function() {
 			var tablespaceName = $('input:radio[name="tablespaceName"]:checked').val();
+			console.log(tablespaceName);
 			if (typeof tablespaceName == "undefined") { // 체크하지 않았을 경우
 				$('#tsError').fadeIn(400).delay(1000).fadeOut(400);
 			} else { // 체크했을 경우
