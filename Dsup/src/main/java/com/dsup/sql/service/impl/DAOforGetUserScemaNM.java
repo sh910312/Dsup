@@ -14,7 +14,7 @@ public class DAOforGetUserScemaNM {
 
 	public DAOforGetUserScemaNM() {
         String user = "sys as sysdba"; 
-        String pw = "oracle";
+        String pw = "yedam4212460";
 //        String user = "sys as sysdba"; 
 //        String pw = "orcl";
 		
@@ -22,7 +22,7 @@ public class DAOforGetUserScemaNM {
 			System.out.println("DB Connection ID : " + user);
 			System.out.println("DB Connection PWD : " + pw);
 //			String url = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
-            String url = "jdbc:oracle:thin:@192.168.0.108:1521:xe";
+            String url = "jdbc:oracle:thin:@39.116.34.40:xe";
             Class.forName("oracle.jdbc.driver.OracleDriver");        
             conn = DriverManager.getConnection(url, user, pw);
         } catch (ClassNotFoundException cnfe) {
