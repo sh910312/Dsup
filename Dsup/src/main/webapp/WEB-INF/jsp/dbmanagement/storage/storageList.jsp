@@ -96,7 +96,7 @@
 				var $used = $("<td align='right'>").text((item.used) + " MB");
 				var $free = $("<td align='right'>").text((item.free) + " MB");
 
-				$("tbody").append(
+				$("#storageTable tbody").append(
 					$("<tr>")
 						.append($radio).append($tablespaceName).append($status).append($total).append($used).append($free)
 					);
@@ -236,7 +236,7 @@
 			<br>
 
 			<div class="row">
-				<table class="table table-bordered table-hover">
+				<table class="table table-bordered table-hover" id = "storageTable">
 					<thead>
 						<tr>
 							<th></th>

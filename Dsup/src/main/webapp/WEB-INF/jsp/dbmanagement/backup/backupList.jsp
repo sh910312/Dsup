@@ -54,7 +54,7 @@
 			var $retentionPeriod = $("<td>").text((item.retentionPeriod).substr(0,10));
 			var $backupComment = $("<td>").text((item.backupComment));
 			
-			$("tbody").append($("<tr>").append($checkBox)
+			$("#table tbody").append($("<tr>").append($checkBox)
 										.append($backupFileNm)
 										.append($retentionPeriod)
 										.append($backupComment)
